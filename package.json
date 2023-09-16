@@ -1,0 +1,22 @@
+{
+  "name": "ts-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "typescript": "^5.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vinjatovix/ts-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vinjatovix/ts-api/issues"
+  },
+  "homepage": "https://github.com/vinjatovix/ts-api#readme"
+}
