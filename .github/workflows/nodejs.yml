@@ -1,0 +1,45 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Run linting
+        run: |
+          npm run lint
+
+      - name: Build
+        run: |
+          npm run build --if-present
+
+      - name: Run tests and generate coverage
+        run: |
+          npm run test
+
+      - name: Prepare SonarCloud analysis
+        run: |
+          npm install -g sonarqube-scanner
+          sonar-scanner \
+            -Dsonar.projectKey=vinjatovix_ts-api \
+            -Dsonar.organization=vinjatovix \
+            -Dsonar.sources=src \
+            -Dsonar.exclusions=node_modules/**,coverage/**,dist/**,build/** \
+            -Dsonar.tests=tests \
+            -Dsonar.test.inclusions=**/*.test.ts \
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov-merged.info \
+            -Dsonar.login=$SONAR_TOKEN
