@@ -1,0 +1,7 @@
+#!/bin/bash
+
+npm run check-dependencies
+
+npm run lint
+
+npm run test

@@ -2,12 +2,28 @@
   "name": "ts-api",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "dependencies": {
-    "typescript": "^5.2.2"
+  "engines": {
+    "node": ">=18.2.1",
+    "npm": ">=8.19.2"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "check-dependencies": "madge --circular ./src",
+    "dev:api": "cross-env NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/newApp/backend/start.ts",
+    "lint": "eslint . --ext .ts --max-warnings=0",
+    "lint:fix": "eslint . --ext .ts --fix",
+    "pre-commit": "lint-staged"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "{src,tests}/**/*.ts": [
+      "prettier --write",
+      "npm run lint:fix",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
@@ -18,5 +34,19 @@
   "bugs": {
     "url": "https://github.com/vinjatovix/ts-api/issues"
   },
-  "homepage": "https://github.com/vinjatovix/ts-api#readme"
+  "homepage": "https://github.com/vinjatovix/ts-api#readme",
+  "dependencies": {
+    "typescript": "^4.4.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.7.2",
+    "@typescript-eslint/parser": "^6.7.2",
+    "eslint": "^8.49.0",
+    "husky": "^8.0.3",
+    "lint-staged": "10.5.4",
+    "madge": "^6.1.0",
+    "prettier": "^2.8.8",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1"
+  }
 }
