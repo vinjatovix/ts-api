@@ -1,0 +1,30 @@
+name: Sonar push
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  sonarcloud:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "18.12.1"
+      - name: Install dependencies
+        run: npm install
+      - name: Install Jest globally
+        run: sudo npm install -g jest
+      - name: Run Tests
+        env:
+          SECRET: mockSecret
+        run: npm run test
+      - name: SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
