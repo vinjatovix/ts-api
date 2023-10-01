@@ -4,7 +4,7 @@ export class ApiApp {
   server?: Server;
 
   async start() {
-    const port: string = process.env.PORT || '3000';
+    const port: string = process.env.PORT ?? '3000';
     this.server = new Server(port);
 
     return this.server.listen();
