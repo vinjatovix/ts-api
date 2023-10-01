@@ -31,15 +31,9 @@ jobs:
         run: |
           npm run test
 
-      - name: Prepare SonarCloud analysis
-        run: |
-          npm install -g sonarqube-scanner
-          sonar-scanner \
-            -Dsonar.projectKey=vinjatovix_ts-api \
-            -Dsonar.organization=vinjatovix \
-            -Dsonar.sources=src \
-            -Dsonar.exclusions=node_modules/**,coverage/**,dist/**,build/** \
-            -Dsonar.tests=tests \
-            -Dsonar.test.inclusions=**/*.test.ts \
-            -Dsonar.javascript.lcov.reportPaths=coverage/lcov-merged.info \
-            -Dsonar.login=$SONAR_TOKEN
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
