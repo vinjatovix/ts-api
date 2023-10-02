@@ -133,3 +133,4 @@ dist
 
 test-report.xml
 debug.json
+config/*.env

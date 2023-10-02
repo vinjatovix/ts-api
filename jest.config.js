@@ -9,5 +9,11 @@ module.exports = {
   reporters: ['default'],
   testResultsProcessor: 'jest-sonar-reporter',
   coverageReporters: ['text', 'html', 'lcov', 'clover'],
-  coveragePathIgnorePatterns: ['/node_modules/', '/test/']
+  coveragePathIgnorePatterns: [
+    '/interfaces/',
+    '/node_modules/',
+    '/test/',
+    '/start.ts',
+    '/server.ts',
+  ]
 };
