@@ -13,6 +13,10 @@
     "lint": "eslint . --ext .ts --max-warnings=0",
     "lint:fix": "eslint . --ext .ts --fix",
     "pre-commit": "lint-staged",
+    "build": "npm run build:clean && npm run build:tsc && npm run build:di",
+    "build:tsc": "tsc -p tsconfig.prod.json",
+    "build:di": "find ./src -type f \\( -name '*.json' -o -name '*.yml' -o -name '*.yaml' -o -name '*.html' -o -name '*.png' \\) -exec rsync --relative {} dist/ \\;",
+    "build:clean": "rm -r dist; exit 0",
     "test": "npm run test:unit && npm run test:features",
     "test:features": "cross-env NODE_ENV=test cucumber-js -p apiApp_backend",
     "test:unit": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --coverage"
@@ -25,8 +29,7 @@
   "lint-staged": {
     "{src,tests}/**/*.ts": [
       "prettier --write",
-      "npm run lint:fix",
-      "git add"
+      "npm run lint:fix"
     ]
   },
   "repository": {
