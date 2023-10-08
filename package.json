@@ -22,9 +22,10 @@
     "start": "node ./dist/src/apps/apiApp/backend/start.js",
     "start:local": "npm run build && cross-env NODE_ENV=local node ./dist/src/apps/apiApp/backend/start.js",
     "pre-commit": "lint-staged",
-    "test": "npm run test:unit && npm run test:features",
-    "test:features": "cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp_backend",
-    "test:unit": "cross-env NODE_ENV=test PORT=3378 jest --detectOpenHandles --forceExit --coverage"
+    "test": "npm run test:unit && npm run test:features && npm run test:combined",
+    "test:features": "nyc --reporter=lcov --reporter=text-summary cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp_backend",
+    "test:unit": "cross-env NODE_ENV=test PORT=3378 jest --detectOpenHandles --forceExit --coverage",
+    "test:combined": "nyc merge .nyc_output 'coverage/*.json' && nyc report --reporter=lcov --reporter=text-summary"
   },
   "husky": {
     "hooks": {
@@ -74,10 +75,12 @@
     "chai": "^4.3.10",
     "eslint": "^8.51.0",
     "husky": "^8.0.3",
+    "istanbul": "^0.4.5",
     "jest": "^29.7.0",
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "14.0.1",
     "madge": "^6.1.0",
+    "nyc": "^15.1.0",
     "prettier": "^3.0.3",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1"
