@@ -15,11 +15,8 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Change to the scripts directory
-      run: cd scripts
-
     - name: Update README version
-      run: bash update_readme_version.sh
+      run: bash ./scripts/update_readme_version.sh
 
     - name: Commit changes
       run: |
