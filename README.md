@@ -1,4 +1,4 @@
-# ts-api [![Version](https://img.shields.io/badge/Version-1.0.0-blue.svg)](https://semver.org)
+# ts-api [![Version](https://img.shields.io/badge/Version-1.1.8-blue.svg)](https://semver.org)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vinjatovix_ts-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vinjatovix_ts-api)
 
 ## Quality report
@@ -66,15 +66,20 @@ npm run docker
 
 Access the API at http://localhost:PORT.
 
+## Prepare release
+This repository uses semver, `$RELEASE_TYPE` could be major, minor or patch.
+```bash
+npm run prepare-release $RELEASE_TYPE
+```
+
 ## Npm Scripts
 - build: Clean the previous build, transpile TypeScript, and copy necessary files to the dist directory.
 - check-dependencies: Check for circular dependencies in the source code using madge.
 - dev: Run the application in development mode using ts-node-dev.
 - docker: Build the Docker image and start the application using Docker Compose.
-- lint: Lint the TypeScript code using ESLint.
-- lint:fix: Fix linting issues automatically.
 - start: Start the transpiled build in the deployment server.
 - start:local: Start the transpiled application in the local environment.
+- prepare-release: accepts major, minor, patch. Updates release files, commit and push the new tag.
 - test: Run both unit and feature tests.
 - test:features: Run feature tests using Cucumber.js.
 - test:unit: Run unit tests using Jest.
