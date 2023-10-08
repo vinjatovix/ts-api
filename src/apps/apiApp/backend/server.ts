@@ -51,7 +51,9 @@ export class Server {
     return new Promise((resolve) => {
       const env: string = this.express.get('env');
       this.httpServer = this.express.listen(this.port, () => {
-        const host = env === 'local' ? `${this.host}:${this.port}` : this.host;
+        const host = ['local', 'test'].includes(env)
+          ? `${this.host}:${this.port}`
+          : this.host;
         const message: string = `Backend App is running at ${host} in ${env} mode`;
         console.log(message);
         resolve();

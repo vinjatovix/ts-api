@@ -20,7 +20,7 @@
     "pre-commit": "lint-staged",
     "test": "npm run test:unit && npm run test:features",
     "test:features": "cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp_backend",
-    "test:unit": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --coverage"
+    "test:unit": "cross-env NODE_ENV=test PORT=3378 jest --detectOpenHandles --forceExit --coverage"
   },
   "husky": {
     "hooks": {

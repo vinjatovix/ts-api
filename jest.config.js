@@ -11,6 +11,7 @@ module.exports = {
   coverageReporters: ['text', 'html', 'lcov', 'clover'],
   coveragePathIgnorePatterns: [
     '/interfaces/',
+    '/dist/',
     '/node_modules/',
     '/test/',
     '/start.ts',
