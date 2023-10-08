@@ -15,8 +15,11 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Import GPG key
-      run: echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 --decode | gpg --import
+    - name: Decrypt and import GPG key
+      run: |
+        echo "${{ secrets.GPG_PRIVATE_KEY }}" | base64 -d > clave_privada.enc
+        openssl aes-256-cbc -d -in clave_privada.enc -out clave_privada.asc -k ${{ secrets.PASSWORD }}
+        gpg --import clave_privada.asc
 
     - name: Change to the scripts directory
       run: cd scripts
