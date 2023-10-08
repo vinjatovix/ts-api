@@ -12,9 +12,19 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        ref: v2 # Especifica la versión v2 para asegurar la compatibilidad con Node.js 16
+
+    - name: Use Node.js 16
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Change to the scripts directory
+      run: cd scripts
 
     - name: Update README version
-      run: ./scripts/update_readme_version.sh  # Ejecuta el script
+      run: bash update_readme_version.sh
 
     - name: Commit changes
       run: |
