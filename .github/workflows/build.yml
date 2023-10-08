@@ -22,6 +22,9 @@ jobs:
       - name: Install dependencies
         run: npm install  # Adjust for your specific setup
 
+      - name: Build
+        run: npm run build
+
       - name: Run tests
         run: npm run test  # Adjust for your specific test command
 
