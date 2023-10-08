@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Update README version
-      run: ./update_readme_version.sh  # Ejecuta el script
+      run: ./scripts/update_readme_version.sh  # Ejecuta el script
 
     - name: Commit changes
       run: |
