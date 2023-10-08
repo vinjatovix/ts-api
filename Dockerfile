@@ -15,6 +15,7 @@ COPY ./dist /app/dist
 # Expone el puerto en el que la aplicación va a ejecutarse
 EXPOSE 3000
 ENV PORT=3000
+ENV NODE_ENV=local
 
 # Comando para iniciar la aplicación en modo de producción desde la carpeta /app/dist
 CMD ["node", "dist/src/apps/apiApp/backend/start.js"]
