@@ -8,7 +8,7 @@
   },
   "scripts": {
     "check-dependencies": "madge --circular ./src",
-    "dev:api": "cross-env NODE_ENV=dev ts-node-dev --ignore-watch node_modules ./src/apps/apiApp/backend/start.ts",
+    "dev:api": "cross-env NODE_ENV=local ts-node-dev --ignore-watch node_modules ./src/apps/apiApp/backend/start.ts",
     "start:api": "cross-env NODE_ENV=production ts-node ./src/apps/apiApp/backend/start.ts",
     "start": "node ./dist/src/apps/apiApp/backend/start.js",
     "lint": "eslint . --ext .ts --max-warnings=0",
@@ -19,7 +19,7 @@
     "build:di": "find ./src -type f \\( -name '*.json' -o -name '*.yml' -o -name '*.yaml' -o -name '*.html' -o -name '*.png' -o -name '*.env' \\) -exec rsync --relative {} dist/ \\;",
     "build:clean": "rm -r dist; exit 0",
     "test": "npm run test:unit && npm run test:features",
-    "test:features": "cross-env NODE_ENV=test cucumber-js -p apiApp_backend",
+    "test:features": "cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp_backend",
     "test:unit": "cross-env NODE_ENV=test jest --detectOpenHandles --forceExit --coverage"
   },
   "husky": {

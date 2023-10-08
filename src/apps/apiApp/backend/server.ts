@@ -49,12 +49,11 @@ export class Server {
 
   async listen(): Promise<void> {
     return new Promise((resolve) => {
-      const env = this.express.get('env') as string;
+      const env: string = this.express.get('env');
       this.httpServer = this.express.listen(this.port, () => {
-        console.log(
-          `  Mock Backend App is running at ${this.host}:${this.port} in ${env} mode`
-        );
-        console.log('  Press CTRL-C to stop\n');
+        const host = env === 'local' ? `${this.host}:${this.port}` : this.host;
+        const message: string = `Backend App is running at ${host} in ${env} mode`;
+        console.log(message);
         resolve();
       });
     });
