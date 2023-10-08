@@ -15,10 +15,6 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Decrypt and import GPG key
-      run: |
-        gpg --import "${{ secrets.GPG_PRIVATE_KEY }}"
-
     - name: Change to the scripts directory
       run: cd scripts
 
