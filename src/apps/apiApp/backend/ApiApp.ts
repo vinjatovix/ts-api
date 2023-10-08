@@ -2,10 +2,13 @@ import { Server } from './server';
 
 export class ApiApp {
   server?: Server;
+  host?: string;
 
   async start() {
+    const host: string = process.env.HOST ?? 'http://localhost';
     const port: string = process.env.PORT ?? '0';
-    this.server = new Server(port);
+    this.host = host;
+    this.server = new Server(host, port);
 
     return this.server.listen();
   }
