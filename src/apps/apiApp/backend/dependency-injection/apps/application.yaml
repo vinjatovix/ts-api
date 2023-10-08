@@ -1,0 +1,4 @@
+services:
+  Apps.apiApp.controllers.health.GetStatusController:
+    class: ../../controllers/health/GetStatusController
+    arguments: []
