@@ -19,10 +19,12 @@ const corsOptions = {
 export class Server {
   private express: express.Express;
   private port: string;
+  private host: string;
   private httpServer?: http.Server;
 
-  constructor(port: string) {
+  constructor(host: string, port: string) {
     this.port = port;
+    this.host = host;
     this.express = express();
     this.express.use(cors(corsOptions));
     this.express.use(bodyParser.json());
@@ -50,7 +52,7 @@ export class Server {
       const env = this.express.get('env') as string;
       this.httpServer = this.express.listen(this.port, () => {
         console.log(
-          `  Mock Backend App is running at http://localhost:${this.port} in ${env} mode`
+          `  Mock Backend App is running at ${this.host}:${this.port} in ${env} mode`
         );
         console.log('  Press CTRL-C to stop\n');
         resolve();
