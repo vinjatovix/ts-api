@@ -18,4 +18,4 @@ ENV PORT=3000
 ENV NODE_ENV=local
 
 # Comando para iniciar la aplicación en modo de producción desde la carpeta /app/dist
-CMD ["node", "dist/src/apps/apiApp/backend/start.js"]
+CMD ["node", "dist/src/apps/apiApp/start.js"]

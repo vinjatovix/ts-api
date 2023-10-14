@@ -1,0 +1,9 @@
+services:
+  # Context.module.layer.class
+  apiApp.Books.application.BookCreator:
+    class: ../../../../Contexts/apiApp/Books/application/BookCreator
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
+  apiApp.Books.domain.BookRepository:
+    class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/FileBookRepository
+    arguments: ['']
