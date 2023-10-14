@@ -30,7 +30,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commit-message-validator"
     }
   },
   "lint-staged": {
@@ -38,6 +39,12 @@
       "prettier --write",
       "npm run lint:fix"
     ]
+  },
+  "config": {
+    "commit-message-validator": {
+      "pattern": "^\\[GH-[\\d]+\\]\\s.*$",
+      "errorMessage": "Invalid commit message. Valid example: [GH-123] feat(api): add new feature"
+    }
   },
   "repository": {
     "type": "git",
@@ -74,6 +81,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "chai": "^4.3.10",
+    "commit-message-validator": "^1.0.2",
     "eslint": "^8.51.0",
     "husky": "^8.0.3",
     "istanbul": "^0.4.5",
