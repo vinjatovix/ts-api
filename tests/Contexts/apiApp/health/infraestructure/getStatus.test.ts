@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { describe, beforeAll, afterAll, it, expect } from '@jest/globals';
-import { ApiApp } from '../../../../../../src/apps/apiApp/backend/ApiApp';
+import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
 
 let app: ApiApp;
 

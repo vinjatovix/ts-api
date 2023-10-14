@@ -1,6 +1,6 @@
 {
   "name": "ts-api",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "license": "MIT",
   "author": "Vinjatovix",
   "description": "API/REST in TS",
@@ -24,7 +24,7 @@
     "pre-commit": "lint-staged",
     "prepare-release": "./scripts/update_readme_version.sh",
     "test": "npm run test:unit && npm run test:features && npm run test:combined",
-    "test:features": "nyc --reporter=lcov --reporter=text-summary cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp_backend",
+    "test:features": "nyc --reporter=lcov --reporter=text-summary cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp",
     "test:unit": "cross-env NODE_ENV=test PORT=3378 jest --detectOpenHandles --forceExit --coverage",
     "test:combined": "nyc merge .nyc_output 'coverage/*.json' && nyc report --reporter=lcov --reporter=text-summary"
   },
