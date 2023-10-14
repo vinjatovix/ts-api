@@ -38,15 +38,20 @@ export class Random {
     return this.chance.url();
   }
 
-  public word(length: number = 10): string {
-    return this.chance.word({ length });
+  public word({
+    min = 0,
+    max = 256
+  }: { min?: number; max?: number } = {}): string {
+    return this.chance.word({
+      length: Math.floor(Math.random() * (max - min + 1)) + min
+    });
   }
 
   public color(options?: Chance.Options): string {
     return this.chance.color(options ?? {});
   }
 
-  public date(options?: Chance.DateOptions): Date {
+  public date(options?: Chance.DateOptions): Date | string {
     const date = this.chance.date(options ?? {});
 
     return new Date(date);

@@ -1,3 +1,4 @@
+import { InvalidArgumentError } from '../../../shared/domain/value-object/InvalidArgumentError';
 import { StringValueObject } from '../../../shared/domain/value-object/StringValueObject';
 
 export class BookAuthor extends StringValueObject {
@@ -12,7 +13,7 @@ export class BookAuthor extends StringValueObject {
 
   private ensureLengthIsLessThan40characters(value: string): void {
     if (value.length > 40) {
-      throw new Error(
+      throw new InvalidArgumentError(
         `<${this.constructor.name}> <${value}> has more than 40 characters`
       );
     }
