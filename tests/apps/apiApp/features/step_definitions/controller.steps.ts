@@ -32,6 +32,12 @@ Then('the response body should be', async (docString: string) => {
   expect(response.body).to.deep.equal(expectedResponseBody);
 });
 
+Then('the response body should contain', async (docString: string) => {
+  const response = await _request;
+  const expectedResponseBody = JSON.parse(docString);
+  expect(response.body).to.include(expectedResponseBody);
+});
+
 Then('the response body should not be', async (docString: string) => {
   const response = await _request;
   const expectedResponseBody = JSON.parse(docString);
