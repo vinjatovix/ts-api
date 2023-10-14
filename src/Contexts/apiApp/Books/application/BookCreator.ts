@@ -5,6 +5,7 @@ import { Uuid } from '../../../shared/domain/value-object/Uuid';
 import { BookTitle } from '../domain/BookTitle';
 import { ISBN } from '../domain/ISBN';
 import { BookAuthor } from '../domain/BookAuthor';
+import { BookReleaseDate } from '../domain/BookReleaseDate';
 
 export class BookCreator {
   private readonly repository: BookRepository;
@@ -19,7 +20,7 @@ export class BookCreator {
       title: new BookTitle(request.title),
       author: new BookAuthor(request.author),
       isbn: new ISBN(request.isbn),
-      releaseDate: request.releaseDate,
+      releaseDate: new BookReleaseDate(request.releaseDate),
       pages: request.pages
     });
 

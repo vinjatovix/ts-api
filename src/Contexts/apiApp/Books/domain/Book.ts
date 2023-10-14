@@ -1,5 +1,6 @@
 import { BookAuthor } from './BookAuthor';
 import { BookId } from './BookId';
+import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { ISBN } from './ISBN';
 
@@ -8,7 +9,7 @@ export class Book {
   readonly title: BookTitle;
   readonly author: BookAuthor;
   readonly isbn: ISBN;
-  readonly releaseDate: string;
+  readonly releaseDate: BookReleaseDate;
   readonly pages: number;
 
   constructor({
@@ -23,7 +24,7 @@ export class Book {
     title: BookTitle;
     author: BookAuthor;
     isbn: ISBN;
-    releaseDate: string;
+    releaseDate: BookReleaseDate;
     pages: number;
   }) {
     this.id = id;
