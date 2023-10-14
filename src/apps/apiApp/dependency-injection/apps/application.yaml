@@ -2,3 +2,7 @@ services:
   Apps.apiApp.controllers.health.GetStatusController:
     class: ../../controllers/health/GetStatusController
     arguments: []
+
+  Apps.apiApp.controllers.Books.PutBookController:
+    class: ../../controllers/Books/PutBookController
+    arguments: ["@apiApp.Books.application.BookCreator"]
