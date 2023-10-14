@@ -35,7 +35,11 @@ export const validateReqSchema = (
   const extractUnknownFieldsErrorInfo = (
     error: UnknownFieldsError
   ): ValidationErrorInfo => {
-    const errorInfoValue = `Unknown fields: ${error.fields.join(',')}`;
+    const fields = error.fields.map(
+      (field) =>
+        `Unknown field <${field.path}> in <${field.location}> with value <${field.value}>`
+    );
+    const errorInfoValue = fields.join(',');
     return { fields: errorInfoValue };
   };
 
