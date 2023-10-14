@@ -1,0 +1,24 @@
+name: Create Tag on Merge to Main
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  create_tag:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create Git Tag
+        id: create_tag
+        run: |
+          NEW_VERSION=$(echo "v$(node -p 'require(\"./package.json\").version')")
+          git tag -a "$NEW_VERSION" -m "Version $NEW_VERSION"
+          echo "::set-output name=new_tag::$NEW_VERSION"
+
+      - name: Push Git Tag
+        if: steps.create_tag.outputs.new_tag != ''
+        run: git push origin ${{ steps.create_tag.outputs.new_tag }}
