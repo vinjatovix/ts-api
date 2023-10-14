@@ -1,4 +1,4 @@
-# ts-api [![Version](https://img.shields.io/badge/Version-v1.2.1-blue.svg)](https://semver.org)
+# ts-api [![Version](https://img.shields.io/badge/Version-v1.2.2-blue.svg)](https://semver.org)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vinjatovix_ts-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vinjatovix_ts-api)
 
 ## Quality report
