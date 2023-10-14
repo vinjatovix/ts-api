@@ -11,7 +11,7 @@ export class BookFinder {
   }
 
   async run(request: RequestById): Promise<BookResponse> {
-    const book = await this.repository.find(request.id);
+    const book = await this.repository.search(request.id);
 
     if (book === null) {
       throw new NotFoundError(`Book <${request.id}> not found`);

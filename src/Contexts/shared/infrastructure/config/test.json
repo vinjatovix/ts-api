@@ -1,0 +1,9 @@
+{
+  "mongo": {
+    "connection": "mongodb",
+    "url": "localhost:27017",
+    "db": "test",
+    "username": "localUser",
+    "password": "localPassword"
+  }
+}

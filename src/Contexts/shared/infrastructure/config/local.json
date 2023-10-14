@@ -1,0 +1,9 @@
+{
+  "mongo": {
+    "connection": "mongodb",
+    "url": "localhost:27017",
+    "db":"ts-api",
+    "username": "localUser",
+    "password": "localPassword"
+  }
+}

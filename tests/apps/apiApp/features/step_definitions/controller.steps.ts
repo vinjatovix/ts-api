@@ -2,6 +2,7 @@ import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
 import request from 'supertest';
 import { assert } from 'chai';
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
+import { MongoClientFactory } from '../../../../../src/Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory';
 
 let _request: request.Test;
 let _response: request.Response;
@@ -13,6 +14,7 @@ BeforeAll(async () => {
 });
 
 AfterAll(async () => {
+  await MongoClientFactory.closeClient('apiApp');
   await app.stop();
 });
 

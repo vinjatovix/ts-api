@@ -22,6 +22,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Run mongo docker
+        run: |
+          npm run docker:mongo
+
       - name: Run tests
         run: npm run test
 
