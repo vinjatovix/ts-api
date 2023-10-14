@@ -3,12 +3,12 @@ const common = [
   '--require-module ts-node/register' // Load TypeScript module
 ];
 
-const apiApp_backend = [
+const apiApp = [
   ...common,
-  'tests/apps/apiApp/backend/features/**/*.feature',
-  '--require tests/apps/apiApp/backend/features/step_definitions/*.steps.ts'
+  'tests/apps/apiApp/features/**/*.feature',
+  '--require tests/apps/apiApp/features/step_definitions/*.steps.ts'
 ].join(' ');
 
 module.exports = {
-  apiApp_backend
+  apiApp
 };
