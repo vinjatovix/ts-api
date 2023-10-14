@@ -13,12 +13,17 @@ export class FileBookRepository implements BookRepository {
     );
   }
 
-  async search(bookId: string): Promise<Book> {
-    const bookData = await fs.promises.readFile(this.filePath(bookId));
-    const { id, title, author, isbn, releaseDate, pages } =
-      deserialize(bookData);
+  async search(bookId: string): Promise<Book | null> {
+    try {
+      const bookData = await fs.promises.readFile(this.filePath(bookId));
 
-    return new Book({ id, title, author, isbn, releaseDate, pages });
+      const { id, title, author, isbn, releaseDate, pages } =
+        deserialize(bookData);
+
+      return new Book({ id, title, author, isbn, releaseDate, pages });
+    } catch (error) {
+      return null;
+    }
   }
 
   private filePath(id: string): string {

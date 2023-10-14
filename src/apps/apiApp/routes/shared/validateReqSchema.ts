@@ -24,12 +24,9 @@ export const validateReqSchema = (
   const extractFieldErrorInfo = (
     error: FieldValidationError
   ): ValidationErrorInfo | null => {
-    if (error.type === 'field') {
-      const errorInfoKey = error.path;
-      const errorInfoValue = `${error.msg} at ${error.location}. Value: ${error.value}`;
-      return { [errorInfoKey]: errorInfoValue };
-    }
-    return null;
+    const errorInfoKey = error.path;
+    const errorInfoValue = `${error.msg} at ${error.location}. Value: ${error.value}`;
+    return { [errorInfoKey]: errorInfoValue };
   };
 
   const extractUnknownFieldsErrorInfo = (
