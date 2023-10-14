@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import errorHandler from 'errorhandler';
 import express, { Request, Response, NextFunction } from 'express';
@@ -9,9 +8,8 @@ import httpStatus from 'http-status';
 import cors from 'cors';
 import { registerRoutes } from './routes';
 
-dotenv.config();
 const corsOptions = {
-  origin: '*',
+  origin: process.env.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 };
@@ -42,7 +40,7 @@ export class Server {
     router.use(
       (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
         console.log(err);
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
+        res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
       }
     );
   }
