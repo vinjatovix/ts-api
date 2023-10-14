@@ -1,18 +1,24 @@
 import { Book } from '../domain/Book';
 import { BookRepository } from '../domain/BookRepository';
+import { BookCreatorRequest } from './BookCreatorRequest';
+import { Uuid } from '../../../shared/domain/value-object/Uuid';
 
 export class BookCreator {
-  constructor(private repository: BookRepository) {}
+  private readonly repository: BookRepository;
 
-  async run(
-    id: string,
-    title: string,
-    author: string,
-    isbn: string,
-    releaseDate: string,
-    pages: number
-  ): Promise<void> {
-    const book = new Book(id, title, author, isbn, releaseDate, pages);
+  constructor(repository: BookRepository) {
+    this.repository = repository;
+  }
+
+  async run(request: BookCreatorRequest): Promise<void> {
+    const book = new Book({
+      id: new Uuid(request.id),
+      title: request.title,
+      author: request.author,
+      isbn: request.isbn,
+      releaseDate: request.releaseDate,
+      pages: request.pages
+    });
 
     return this.repository.save(book);
   }

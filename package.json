@@ -54,13 +54,15 @@
     "errorhandler": "^1.5.1",
     "express": "^4.18.2",
     "express-promise-router": "^4.1.1",
+    "express-validator": "^7.0.1",
     "glob": "^10.3.10",
     "helmet": "^7.0.0",
     "http-status": "^1.7.0",
     "node-dependency-injection": "^2.7.3",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "uuid-validate": "^0.0.3"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^9.6.0",
@@ -71,6 +73,7 @@
     "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.5",
     "@types/supertest": "^2.0.14",
+    "@types/uuid-validate": "^0.0.1",
     "@typescript-eslint/eslint-plugin": "^6.7.4",
     "@typescript-eslint/parser": "^6.7.4",
     "chai": "^4.3.10",

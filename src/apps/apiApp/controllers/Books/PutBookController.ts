@@ -10,7 +10,7 @@ export class PutBookController implements Controller {
     const { id } = req.params;
     const { title, author, isbn, releaseDate, pages } = req.body;
 
-    await this.bookCreator.run(id, title, author, isbn, releaseDate, pages);
+    await this.bookCreator.run({ id, title, author, isbn, releaseDate, pages });
 
     res.status(httpStatus.CREATED).send();
   }

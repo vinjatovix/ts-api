@@ -1,5 +1,8 @@
 .DS_Store
 .tmp
+.vscode
+docker/data
+fileDb/*.repo
 # Logs
 logs
 *.log
