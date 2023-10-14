@@ -17,10 +17,15 @@ jobs:
         with:
           node-version: '18'
 
+      - name: Set Git Config
+        run: |
+          git config user.email "actions@example.com"
+          git config user.name "GitHub Actions"
+
       - name: Create Git Tag
         id: create_tag
         run: |
-          NEW_VERSION=$(echo "v$(node -p 'require(\"./package.json\").version')")
+          NEW_VERSION=$(node -e "console.log('v' + require('./package.json').version)")
           git tag -a "$NEW_VERSION" -m "Version $NEW_VERSION"
           echo "::set-output name=new_tag::$NEW_VERSION"
 
