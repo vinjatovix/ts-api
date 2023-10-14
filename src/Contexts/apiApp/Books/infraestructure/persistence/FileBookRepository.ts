@@ -7,7 +7,10 @@ export class FileBookRepository implements BookRepository {
   private FILE_PATH = `${process.cwd()}/fileDb/Books`;
 
   async save(book: Book): Promise<void> {
-    fs.promises.writeFile(this.filePath(book.id.toString()), serialize(book));
+    await fs.promises.writeFile(
+      this.filePath(book.id.toString()),
+      serialize(book)
+    );
   }
 
   async search(bookId: string): Promise<Book> {
