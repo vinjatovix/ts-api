@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { globSync } from 'glob';
 
-export function registerRoutes(router: Router) {
+export const registerRoutes = (router: Router) => {
   const routes = globSync('**/*.routes.*', {
     cwd: __dirname,
     ignore: '**/index.ts'
@@ -9,7 +9,7 @@ export function registerRoutes(router: Router) {
   routes.forEach((route) => {
     _register(route, router);
   });
-}
+};
 
 const _register = (routePath: string, router: Router) => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
