@@ -11,7 +11,9 @@ export const register = (router: Router) => {
     param('id').exists().isUUID(),
     body('title').exists().isString(),
     body('author').exists().isString(),
-    body('isbn').exists().isString(),
+    body('isbn')
+      .exists()
+      .matches(/^(978|979)-\d{1,5}-\d{1,7}-\d{1,7}-\d$/),
     body('releaseDate').exists().isString(),
     body('pages').exists().isInt()
   ];

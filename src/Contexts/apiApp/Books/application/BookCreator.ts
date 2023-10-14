@@ -2,6 +2,9 @@ import { Book } from '../domain/Book';
 import { BookRepository } from '../domain/BookRepository';
 import { BookCreatorRequest } from './BookCreatorRequest';
 import { Uuid } from '../../../shared/domain/value-object/Uuid';
+import { BookTitle } from '../domain/BookTitle';
+import { ISBN } from '../domain/ISBN';
+import { BookAuthor } from '../domain/BookAuthor';
 
 export class BookCreator {
   private readonly repository: BookRepository;
@@ -13,9 +16,9 @@ export class BookCreator {
   async run(request: BookCreatorRequest): Promise<void> {
     const book = new Book({
       id: new Uuid(request.id),
-      title: request.title,
-      author: request.author,
-      isbn: request.isbn,
+      title: new BookTitle(request.title),
+      author: new BookAuthor(request.author),
+      isbn: new ISBN(request.isbn),
       releaseDate: request.releaseDate,
       pages: request.pages
     });
