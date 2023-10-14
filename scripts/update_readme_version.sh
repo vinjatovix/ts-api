@@ -11,33 +11,31 @@ fi
 # Obtain the current version
 CURRENT_VERSION=$(node -p "require('./package.json').version")
 
-# Obtain the new version without creating a git tag
-NEW_VERSION=$(npm --no-git-tag-version version "$RELEASE_TYPE")
+# Obtain the new version without creating a git tag and remove 'v' prefix
+NEW_VERSION=$(npm --no-git-tag-version version "$RELEASE_TYPE" | sed 's/^v//')
+
+echo "Current version: $CURRENT_VERSION"
 echo "New version: $NEW_VERSION"
 
 # Replace the version in README.md
-perl -i -pe "s/Version-$CURRENT_VERSION/Version-$NEW_VERSION/" README.md
+perl -i -pe "s/Version-v$CURRENT_VERSION/Version-v$NEW_VERSION/g" README.md
+
+# Repacke the version in the docker-compose.yml file
+perl -i -pe "s/ts-api:$CURRENT_VERSION/ts-api:$NEW_VERSION/g" docker-compose.yaml
 
 # Commit the changes
-git add README.md package.json package-lock.json
-git commit -m "chore: Prepare release $NEW_VERSION"
+git add .
+git commit -m "chore: Prepare release v$NEW_VERSION"
 
-# Create a git tag for the new version only if the commit was successful
-if [ $? -eq 0 ]; then
-  echo "Creating git tag $NEW_VERSION"
-  git tag -a "$NEW_VERSION" -m "Version $NEW_VERSION"
-else
-  echo "The commit failed, so no git tag was created."
+# Check if the commit was successful
+if [ $? -ne 0 ]; then
+  echo "Commit failed. Aborting tag creation and push."
+  exit 1
 fi
 
-# Push force the changes and the new tag on the current branch
+echo "Changes committed. Pushing to remote repository."
+
+# Push the changes
 git push --force-with-lease origin "$(git branch --show-current)"
-if [ $? -eq 0 ]; then
-  echo "Pushed the changes to the remote repository."
-  echo ""
-  echo "Several files have been updated: README.md, package.json and package-lock.json."
-  echo "A new git tag has been created: $NEW_VERSION."
-  git push origin "$NEW_VERSION"
-else
-  echo "The push failed."
-fi
+
+echo "Push completed successfully."
