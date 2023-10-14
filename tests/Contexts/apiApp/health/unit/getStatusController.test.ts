@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { GetStatusController } from '../../../../../../src/apps/apiApp/backend/controllers/health/GetStatusController';
+import { GetStatusController } from '../../../../../src/apps/apiApp/controllers/health/GetStatusController';
 
 describe('GetStatusController', () => {
   let controller: GetStatusController;

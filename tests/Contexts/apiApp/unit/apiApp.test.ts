@@ -1,5 +1,5 @@
-import { ApiApp } from '../../../../../src/apps/apiApp/backend/ApiApp';
-import { Server } from '../../../../../src/apps/apiApp/backend/server';
+import { ApiApp } from '../../../../src/apps/apiApp/ApiApp';
+import { Server } from '../../../../src/apps/apiApp/server';
 
 describe('ApiApp', () => {
   let apiApp: ApiApp;
