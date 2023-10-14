@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { body, param } from 'express-validator';
+import { body, checkExact, param } from 'express-validator';
 import container from '../../dependency-injection';
 import { PutBookController } from '../../controllers/Books/PutBookController';
 import { validateReqSchema } from '../shared';
@@ -15,7 +15,8 @@ export const register = (router: Router) => {
       .exists()
       .matches(/^(978|979)-\d{1,5}-\d{1,7}-\d{1,7}-\d$/),
     body('releaseDate').exists().isString(),
-    body('pages').exists().isInt()
+    body('pages').exists().isInt(),
+    checkExact()
   ];
 
   const controller: PutBookController = container.get(
