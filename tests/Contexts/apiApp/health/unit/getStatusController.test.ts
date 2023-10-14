@@ -16,6 +16,8 @@ describe('GetStatusController', () => {
   it('should send a status of 200 with the message "OK"', async () => {
     await controller.run({} as Request, mockResponse as Response);
     expect(mockResponse.status).toHaveBeenCalledWith(200);
-    expect(mockResponse.json).toHaveBeenCalledWith({ status: 'OK' });
+    expect(mockResponse.json).toHaveBeenCalledWith(
+      expect.objectContaining({ version: expect.any(String), status: 'OK' })
+    );
   });
 });

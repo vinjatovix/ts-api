@@ -6,7 +6,7 @@ Feature: Api Health Check
   Scenario: Performing a health check
     Given a GET request to "/api/v1/health/http"
     Then the response status code should be 200
-    Then the response body should be
+    Then the response body should contain
       """
       {
         "status": "OK"
