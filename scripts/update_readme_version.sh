@@ -24,8 +24,9 @@ perl -i -pe "s/Version-v$CURRENT_VERSION/Version-v$NEW_VERSION/g" README.md
 perl -i -pe "s/ts-api:$CURRENT_VERSION/ts-api:$NEW_VERSION/g" docker-compose.yaml
 
 # Commit the changes
+ISSUE=$(git branch --show-current | sed 's/^release\///')
 git add .
-git commit -m "chore: Prepare release v$NEW_VERSION"
+git commit -m "[$ISSUE] Prepare release v$NEW_VERSION"
 
 # Check if the commit was successful
 if [ $? -ne 0 ]; then
