@@ -1,7 +1,8 @@
 import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
 import request from 'supertest';
-import { ApiApp } from '../../../../../../src/apps/apiApp/backend/ApiApp';
+
 import chai from 'chai';
+import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
 
 const expect = chai.expect;
 let _request: request.Test;
