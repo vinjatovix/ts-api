@@ -51,4 +51,14 @@ export class Random {
 
     return new Date(date);
   }
+
+  public isbn(): string {
+    const prefix = this.arrayElement(['978', '979']);
+    const group1 = this.integer({ min: 0, max: 9 });
+    const group2 = this.integer({ min: 10, max: 99 });
+    const group3 = this.integer({ min: 100000, max: 999999 });
+    const group4 = this.integer({ min: 0, max: 9 });
+
+    return `${prefix}-${group1}-${group2}-${group3}-${group4}`;
+  }
 }

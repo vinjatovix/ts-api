@@ -1,10 +1,13 @@
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
+import { BookAuthor } from './BookAuthor';
+import { BookId } from './BookId';
+import { BookTitle } from './BookTitle';
+import { ISBN } from './ISBN';
 
 export class Book {
-  readonly id: Uuid;
-  readonly title: string;
-  readonly author: string;
-  readonly isbn: string;
+  readonly id: BookId;
+  readonly title: BookTitle;
+  readonly author: BookAuthor;
+  readonly isbn: ISBN;
   readonly releaseDate: string;
   readonly pages: number;
 
@@ -16,10 +19,10 @@ export class Book {
     releaseDate,
     pages
   }: {
-    id: Uuid;
-    title: string;
-    author: string;
-    isbn: string;
+    id: BookId;
+    title: BookTitle;
+    author: BookAuthor;
+    isbn: ISBN;
     releaseDate: string;
     pages: number;
   }) {
