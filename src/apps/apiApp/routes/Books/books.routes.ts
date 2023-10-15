@@ -1,13 +1,14 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import { body, checkExact, param } from 'express-validator';
 import container from '../../dependency-injection';
 import { PutBookController } from '../../controllers/Books/PutBookController';
 import { validateReqSchema } from '../shared';
+import { GetBookController } from '../../controllers/Books/GetBookController';
 
 const prefix = '/api/v1/Books';
 
 export const register = (router: Router) => {
-  const reqSchema = [
+  const createReqSchema = [
     param('id').exists().isUUID(),
     body('title').exists().isString(),
     body('author').exists().isString(),
@@ -23,16 +24,31 @@ export const register = (router: Router) => {
     checkExact()
   ];
 
-  const controller: PutBookController = container.get(
+  const getReqSchema = [param('id').exists().isUUID(), checkExact()];
+
+  const putController: PutBookController = container.get(
     'Apps.apiApp.controllers.Books.PutBookController'
+  );
+
+  const getController: GetBookController = container.get(
+    'Apps.apiApp.controllers.Books.GetBookController'
   );
 
   router.put(
     `${prefix}/:id`,
-    reqSchema,
+    createReqSchema,
     validateReqSchema,
-    (req: Request, res: Response) => {
-      controller.run(req, res);
+    (req: Request, res: Response, next: NextFunction) => {
+      putController.run(req, res, next);
+    }
+  );
+
+  router.get(
+    `${prefix}/:id`,
+    getReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      getController.run(req, res, next);
     }
   );
 };

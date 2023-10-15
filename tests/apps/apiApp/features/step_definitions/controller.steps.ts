@@ -20,9 +20,12 @@ Given('a GET request to {string}', (route: string) => {
   _request = request(app.httpServer).get(route);
 });
 
-Given('a PUT request to {string} with body', (route: string, body: string) => {
-  _request = request(app.httpServer).put(route).send(JSON.parse(body));
-});
+Given(
+  'a PUT request to {string} with body',
+  async (route: string, body: string) => {
+    _request = request(app.httpServer).put(route).send(JSON.parse(body));
+  }
+);
 
 Then('the response status code should be {int}', async (status: number) => {
   _response = await _request.expect(status);

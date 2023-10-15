@@ -13,7 +13,7 @@
     "build": "npm run build:clean && npm run build:tsc && npm run build:di",
     "build:clean": "rm -r dist; exit 0",
     "build:di": "find ./src -type f \\( -name '*.json' -o -name '*.yml' -o -name '*.yaml' -o -name '*.html' -o -name '*.png' -o -name '*.env' \\) -exec rsync --relative {} dist/ \\;",
-    "build:tsc": "tsc -p tsconfig.prod.json",
+    "build:tsc": "tsc -p tsconfig.prod.json --sourceMap false",
     "check-dependencies": "madge --circular ./src",
     "dev": "cross-env NODE_ENV=local ts-node-dev --ignore-watch node_modules ./src/apps/apiApp/start.ts",
     "docker": "npm run build && docker-compose build && docker-compose up",
@@ -23,7 +23,8 @@
     "start:local": "npm run build && cross-env NODE_ENV=local node ./dist/src/apps/apiApp/start.js",
     "pre-commit": "lint-staged",
     "prepare-release": "./scripts/update_readme_version.sh",
-    "test": "npm run test:unit && npm run test:features && npm run test:combined",
+    "test": "npm run test:unit && npm run test:features && npm run test:combined && npm run test:clean:repo",
+    "test:clean:repo": "rm -rf fileDb/*.repo; exit 0",
     "test:features": "nyc --reporter=lcov --reporter=text-summary cross-env NODE_ENV=test PORT=3377 cucumber-js -p apiApp",
     "test:unit": "cross-env NODE_ENV=test PORT=3378 jest --detectOpenHandles --forceExit --coverage",
     "test:combined": "nyc merge .nyc_output 'coverage/*.json' && nyc report --reporter=lcov --reporter=text-summary"
