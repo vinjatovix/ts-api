@@ -6,3 +6,7 @@ services:
   Apps.apiApp.controllers.Books.PutBookController:
     class: ../../controllers/Books/PutBookController
     arguments: ["@apiApp.Books.application.BookCreator"]
+
+  Apps.apiApp.controllers.Books.GetBookController:
+    class: ../../controllers/Books/GetBookController
+    arguments: ["@apiApp.Books.application.BookFinder"]

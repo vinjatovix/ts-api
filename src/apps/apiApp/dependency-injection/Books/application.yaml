@@ -4,6 +4,10 @@ services:
     class: ../../../../Contexts/apiApp/Books/application/BookCreator
     arguments: ['@apiApp.Books.domain.BookRepository']
 
+  apiApp.Books.application.BookFinder:
+    class: ../../../../Contexts/apiApp/Books/application/BookFinder
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
   apiApp.Books.domain.BookRepository:
     class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/FileBookRepository
     arguments: ['']

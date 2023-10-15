@@ -1,3 +1,4 @@
+import { apiErrorHandler } from './apiErrorHandler';
 import { validateReqSchema } from './validateReqSchema';
 
-export { validateReqSchema };
+export { apiErrorHandler, validateReqSchema };
