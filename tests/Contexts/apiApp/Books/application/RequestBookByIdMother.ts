@@ -1,19 +1,19 @@
-import { BookFinderRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookFinderRequest';
 import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
+import { RequestById } from '../../../../../src/Contexts/shared/application/RequestById';
 import { BookIdMother } from '../domain/BookIdMother';
 
-export class BookFinderRequestMother {
-  static create(id: BookId): BookFinderRequest {
+export class RequestBookByIdMother {
+  static create(id: BookId): RequestById {
     return {
       id: id.value
     };
   }
 
-  static random(): BookFinderRequest {
+  static random(): RequestById {
     return this.create(BookIdMother.random());
   }
 
-  static inexistentId(): BookFinderRequest {
+  static inexistentId(): RequestById {
     return {
       id: 'not-found'
     };

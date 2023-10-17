@@ -1,25 +1,26 @@
 import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
 import { BookTitle } from '../../../../../src/Contexts/apiApp/Books/domain/BookTitle';
 import { BookAuthor } from '../../../../../src/Contexts/apiApp/Books/domain/BookAuthor';
-import { ISBN } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
+import { Isbn } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
 import { BookIdMother } from './BookIdMother';
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
 import { BookTitleMother } from './BookTitleMother';
 import { BookAuthorMother } from './BookAuthorMother';
 import { ISBNMother } from './ISBNMother';
-import { random } from '../../../fixtures/shared';
 import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
 import { BookReleaseDateMother } from './BookReleaseDateMother';
+import { BookPages } from '../../../../../src/Contexts/apiApp/Books/domain/BookPages';
+import { BookPagesMother } from './BookPagesMother';
 
 export class BookMother {
   static create(
     id: BookId,
     title: BookTitle,
     author: BookAuthor,
-    isbn: ISBN,
+    isbn: Isbn,
     releaseDate: BookReleaseDate,
-    pages: number
+    pages: BookPages
   ) {
     return new Book({
       id,
@@ -38,7 +39,7 @@ export class BookMother {
       BookAuthorMother.create(command.author),
       ISBNMother.create(command.isbn),
       new BookReleaseDate(command.releaseDate),
-      command.pages
+      BookPagesMother.create(command.pages)
     );
   }
 
@@ -49,7 +50,7 @@ export class BookMother {
       BookAuthorMother.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
-      random.integer()
+      BookPagesMother.random()
     );
   }
 }

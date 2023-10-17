@@ -8,8 +8,7 @@ export class PutBookController implements Controller {
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
-      const { title, author, isbn, releaseDate, pages } = req.body;
+      const { id, title, author, isbn, releaseDate, pages } = req.body;
 
       await this.bookCreator.run({
         id,

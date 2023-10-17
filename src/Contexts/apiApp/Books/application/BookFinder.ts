@@ -1,6 +1,6 @@
+import { RequestById } from '../../../shared/application/RequestById';
 import { NotFoundError } from '../../../shared/domain/value-object/NotFoundError';
 import { BookRepository } from '../domain/BookRepository';
-import { BookFinderRequest } from './BookFinderRequest';
 import { BookResponse } from './BookResponse';
 
 export class BookFinder {
@@ -10,7 +10,7 @@ export class BookFinder {
     this.repository = repository;
   }
 
-  async run(request: BookFinderRequest): Promise<BookResponse> {
+  async run(request: RequestById): Promise<BookResponse> {
     const book = await this.repository.search(request.id);
 
     if (book === null) {
@@ -23,7 +23,7 @@ export class BookFinder {
       author: book.author.value,
       isbn: book.isbn.value,
       releaseDate: book.releaseDate.value,
-      pages: book.pages
+      pages: book.pages.value
     };
   }
 }

@@ -27,6 +27,10 @@ Given(
   }
 );
 
+Given('a DELETE request to {string}', (route: string) => {
+  _request = request(app.httpServer).delete(route);
+});
+
 Then('the response status code should be {int}', async (status: number) => {
   _response = await _request.expect(status);
 });

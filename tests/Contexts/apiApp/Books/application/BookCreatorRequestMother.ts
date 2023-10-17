@@ -1,12 +1,13 @@
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
 import { BookAuthor } from '../../../../../src/Contexts/apiApp/Books/domain/BookAuthor';
 import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
+import { BookPages } from '../../../../../src/Contexts/apiApp/Books/domain/BookPages';
 import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
 import { BookTitle } from '../../../../../src/Contexts/apiApp/Books/domain/BookTitle';
-import { ISBN } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
-import { random } from '../../../fixtures/shared';
+import { Isbn } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
 import { BookAuthorMother } from '../domain/BookAuthorMother';
 import { BookIdMother } from '../domain/BookIdMother';
+import { BookPagesMother } from '../domain/BookPagesMother';
 import { BookReleaseDateMother } from '../domain/BookReleaseDateMother';
 import { BookTitleMother } from '../domain/BookTitleMother';
 import { ISBNMother } from '../domain/ISBNMother';
@@ -16,9 +17,9 @@ export class BookCreatorRequestMother {
     id: BookId,
     title: BookTitle,
     author: BookAuthor,
-    isbn: ISBN,
+    isbn: Isbn,
     releaseDate: BookReleaseDate,
-    pages: number
+    pages: BookPages
   ): BookCreatorRequest {
     return {
       id: id.value,
@@ -26,7 +27,7 @@ export class BookCreatorRequestMother {
       author: author.value,
       isbn: isbn.value,
       releaseDate: releaseDate.value,
-      pages
+      pages: pages.value
     };
   }
 
@@ -37,7 +38,7 @@ export class BookCreatorRequestMother {
       BookAuthorMother.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
-      random.integer()
+      BookPagesMother.random()
     );
   }
 
@@ -46,7 +47,7 @@ export class BookCreatorRequestMother {
       ? BookIdMother.invalidValue()
       : BookIdMother.random().value;
     const title = keys.includes('title')
-      ? BookTitleMother.invalidValue()
+      ? (BookTitleMother.invalidValue() as string)
       : BookTitleMother.random().value;
     const author = keys.includes('author')
       ? BookAuthorMother.invalidValue()
@@ -57,7 +58,9 @@ export class BookCreatorRequestMother {
     const releaseDate = keys.includes('releaseDate')
       ? BookReleaseDateMother.invalidValue()
       : BookReleaseDateMother.random().value;
-    const pages = keys.includes('pages') ? NaN : random.integer();
+    const pages = keys.includes('pages')
+      ? (BookPagesMother.invalidType() as number)
+      : BookPagesMother.random().value;
 
     return {
       id,

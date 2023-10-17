@@ -3,9 +3,10 @@ import { BookRepository } from '../domain/BookRepository';
 import { BookCreatorRequest } from './BookCreatorRequest';
 import { Uuid } from '../../../shared/domain/value-object/Uuid';
 import { BookTitle } from '../domain/BookTitle';
-import { ISBN } from '../domain/ISBN';
+import { Isbn } from '../domain/ISBN';
 import { BookAuthor } from '../domain/BookAuthor';
 import { BookReleaseDate } from '../domain/BookReleaseDate';
+import { BookPages } from '../domain/BookPages';
 
 export class BookCreator {
   private readonly repository: BookRepository;
@@ -19,9 +20,9 @@ export class BookCreator {
       id: new Uuid(request.id),
       title: new BookTitle(request.title),
       author: new BookAuthor(request.author),
-      isbn: new ISBN(request.isbn),
+      isbn: new Isbn(request.isbn),
       releaseDate: new BookReleaseDate(request.releaseDate),
-      pages: request.pages
+      pages: new BookPages(request.pages)
     });
 
     return this.repository.save(book);
