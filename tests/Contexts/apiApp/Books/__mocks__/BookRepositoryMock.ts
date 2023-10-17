@@ -5,10 +5,12 @@ import { BookMother } from '../domain/BookMother';
 export class BookRepositoryMock implements BookRepository {
   private saveMock: jest.Mock;
   private searchMock: jest.Mock;
+  private removeMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
     this.searchMock = jest.fn();
+    this.removeMock = jest.fn();
   }
 
   async save(book: Book): Promise<void> {
@@ -31,5 +33,13 @@ export class BookRepositoryMock implements BookRepository {
 
   assertSearchHasBeenCalledWith(expected: string): void {
     expect(this.searchMock).toHaveBeenCalledWith(expected);
+  }
+
+  async remove(id: string): Promise<void> {
+    this.removeMock(id);
+  }
+
+  assertRemoveHasBeenCalledWith(expected: string): void {
+    expect(this.removeMock).toHaveBeenCalledWith(expected);
   }
 }

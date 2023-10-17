@@ -9,6 +9,7 @@ Feature: Get a specific book by id
       Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9071a" with body
       """
       {
+        "id": "9a6e0804-2bd0-4672-b79d-d97027f9071a",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",

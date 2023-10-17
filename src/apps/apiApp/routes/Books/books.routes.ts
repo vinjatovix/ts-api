@@ -4,12 +4,14 @@ import container from '../../dependency-injection';
 import { PutBookController } from '../../controllers/Books/PutBookController';
 import { validateReqSchema } from '../shared';
 import { GetBookController } from '../../controllers/Books/GetBookController';
+import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
 
 const prefix = '/api/v1/Books';
 
 export const register = (router: Router) => {
   const createReqSchema = [
     param('id').exists().isUUID(),
+    body('id').exists().isUUID(),
     body('title').exists().isString(),
     body('author').exists().isString(),
     body('isbn')
@@ -25,6 +27,7 @@ export const register = (router: Router) => {
   ];
 
   const getReqSchema = [param('id').exists().isUUID(), checkExact()];
+  const deleteReqSchema = [param('id').exists().isUUID(), checkExact()];
 
   const putController: PutBookController = container.get(
     'Apps.apiApp.controllers.Books.PutBookController'
@@ -32,6 +35,10 @@ export const register = (router: Router) => {
 
   const getController: GetBookController = container.get(
     'Apps.apiApp.controllers.Books.GetBookController'
+  );
+
+  const deleteController: DeleteBookController = container.get(
+    'Apps.apiApp.controllers.Books.DeleteBookController'
   );
 
   router.put(
@@ -49,6 +56,15 @@ export const register = (router: Router) => {
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       getController.run(req, res, next);
+    }
+  );
+
+  router.delete(
+    `${prefix}/:id`,
+    deleteReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      deleteController.run(req, res, next);
     }
   );
 };

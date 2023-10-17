@@ -7,6 +7,7 @@ Feature: Create a new book
     Given a PUT request to "/api/v1/Books/8a6e0804-2bd0-4672-b79d-d97027f9071a" with body
       """
       {
+        "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -35,6 +36,9 @@ Feature: Create a new book
         "errors": [
           {
             "id": "Invalid value at params. Value: 9a6e0804"
+          },
+          {
+            "id": "Invalid value at body. Value: undefined"
           },
           {
             "title": "Invalid value at body. Value: undefined"

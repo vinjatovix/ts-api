@@ -10,7 +10,11 @@ export class BookTitleMother {
     return this.create(random.word({ min: 1, max: 100 }));
   }
 
-  static invalidValue(): string {
-    return random.word({ min: 101 });
+  static invalidValue(): unknown {
+    return random.arrayElement([
+      random.word({ min: 101 }),
+      random.integer(),
+      random.boolean()
+    ]);
   }
 }

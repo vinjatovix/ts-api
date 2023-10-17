@@ -26,6 +26,14 @@ export class FileBookRepository implements BookRepository {
     }
   }
 
+  async remove(bookId: string): Promise<void> {
+    try {
+      await fs.promises.unlink(this.filePath(bookId));
+    } catch (error) {
+      return;
+    }
+  }
+
   private filePath(id: string): string {
     return `${this.FILE_PATH}.${id}.repo`;
   }

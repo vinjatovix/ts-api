@@ -3,6 +3,7 @@
 .vscode
 docker/data
 fileDb/*.repo
+doc/postman/environments/*.json
 # Logs
 logs
 *.log

@@ -1,16 +1,17 @@
 import { BookAuthor } from './BookAuthor';
 import { BookId } from './BookId';
+import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
-import { ISBN } from './ISBN';
+import { Isbn } from './ISBN';
 
 export class Book {
   readonly id: BookId;
   readonly title: BookTitle;
   readonly author: BookAuthor;
-  readonly isbn: ISBN;
+  readonly isbn: Isbn;
   readonly releaseDate: BookReleaseDate;
-  readonly pages: number;
+  readonly pages: BookPages;
 
   constructor({
     id,
@@ -23,9 +24,9 @@ export class Book {
     id: BookId;
     title: BookTitle;
     author: BookAuthor;
-    isbn: ISBN;
+    isbn: Isbn;
     releaseDate: BookReleaseDate;
-    pages: number;
+    pages: BookPages;
   }) {
     this.id = id;
     this.title = title;
@@ -33,5 +34,16 @@ export class Book {
     this.isbn = isbn;
     this.releaseDate = releaseDate;
     this.pages = pages;
+  }
+
+  asPrimitives() {
+    return {
+      id: this.id.value,
+      title: this.title.value,
+      author: this.author.value,
+      isbn: this.isbn.value,
+      releaseDate: this.releaseDate.value,
+      pages: this.pages.value
+    };
   }
 }
