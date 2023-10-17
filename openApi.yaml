@@ -30,6 +30,7 @@ paths:
               type: string
               example: |-
                 {
+                    "id": "{{$guid}}"
                     "title": "{{$randomWords}}",
                     "author": "{{$randomNamePrefix}} {{$randomLastName}}",
                     "isbn": "978-3-16-148410-0",
@@ -38,6 +39,7 @@ paths:
                 }
             example: |-
               {
+                  "id": "{{$guid}}"
                   "title": "{{$randomWords}}",
                   "author": "{{$randomNamePrefix}} {{$randomLastName}}",
                   "isbn": "978-3-16-148410-0",
@@ -344,6 +346,74 @@ paths:
                 isbn: 978-3-16-148410-0
                 releaseDate: 2023-10-15T22:00:21.845Z
                 pages: 576
+      deprecated: false
+    delete:
+      tags:
+        - Books
+      summary: Delete Book by ID
+      operationId: DeleteBookbyID
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{bookId}}'
+      responses:
+        '204':
+          description: Deleted
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:19:00 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content: {}
       deprecated: false
   /api/v1/health/http:
     get:
