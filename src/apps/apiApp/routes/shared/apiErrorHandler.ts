@@ -9,8 +9,6 @@ export const apiErrorHandler = (
   res: Response,
   _next: NextFunction
 ): void => {
-  console.log(err);
-
   let statusCode;
   let message = err.message;
 
