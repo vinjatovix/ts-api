@@ -116,7 +116,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"{{$randomWords}}\",\n    \"isbn\": \"{{$randomInt}}\",\n    \"releaseDate\": \"{{$randomWord}}\",\n    \"pages\": \"{{$randomWord}}\"\n}",
+									"raw": "{\n    \"title\": \"Cambridgeshire 1080p withdrawal Fresh Applications\",\n    \"isbn\": \"562\",\n    \"releaseDate\": \"Shoes\",\n    \"pages\": \"Ergonomic\"\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -124,10 +124,12 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/v1/Books/:id",
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"localhost"
 									],
+									"port": "3000",
 									"path": [
 										"api",
 										"v1",
@@ -137,7 +139,7 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": "{{$randomAbbreviation}}",
+											"value": "HTTP",
 											"description": "required"
 										}
 									]
@@ -146,7 +148,6 @@
 							"status": "Unprocessable Entity",
 							"code": 422,
 							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "html",
 							"header": [
 								{
 									"key": "Vary",
@@ -234,7 +235,6 @@
 							"status": "Bad Request",
 							"code": 400,
 							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "html",
 							"header": [
 								{
 									"key": "Vary",
@@ -322,7 +322,6 @@
 							"status": "Created",
 							"code": 201,
 							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "html",
 							"header": [
 								{
 									"key": "Vary",
@@ -363,6 +362,360 @@
 							],
 							"cookie": [],
 							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3cb0492a-44d3-4bbd-903f-ed2938d64a3f",
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"const statusCode = pm.response.code",
+									"if (statusCode === 201) {",
+									"    const path = pm.request.url.path",
+									"    const bookId = path[path.length - 1]",
+									"    pm.environment.set(\"bookId\", bookId);",
+									"}",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "d123ac96-0bce-4f55-8a6a-744f3f019440",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "c9579d42-8d2d-4cff-bee2-1294e2ab6c09",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{bookId}}\",\n    \"title\": \"{{$randomWords}}\",\n    \"author\": \"{{$randomNamePrefix}} {{$randomLastName}}\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"{{$isoTimestamp}}\",\n    \"pages\": {{$randomInt}}\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Books/:id/update",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Books",
+								":id",
+								"update"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{bookId}}",
+									"description": "required"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "93158fa2-ef09-4fc5-be2c-4c6dd27f1446",
+							"name": "422",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"multi-tasking Concrete Shoes Andorra\",\n    \"isbn\": \"8\",\n    \"releaseDate\": \"content\",\n    \"pages\": \"Monitored\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "JSON",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "263"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"107-1SWyRDyHUwHOAtJsyzyflhpva1k\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 15 Oct 2023 19:23:47 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        {\n            \"id\": \"Invalid value at params. Value: USB\"\n        },\n        {\n            \"author\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"isbn\": \"Invalid value at body. Value: 522\"\n        },\n        {\n            \"releaseDate\": \"Invalid value at body. Value: leading-edge\"\n        },\n        {\n            \"pages\": \"Invalid value at body. Value: Baht\"\n        }\n    ]\n}"
+						},
+						{
+							"id": "bf332900-edf4-46b3-bf81-ef6c05ed4ffe",
+							"name": "400",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"implementation indexing olive user-facing Dam\",\n    \"author\": \"Rerum maiores est harum. Qui explicabo provident dicta eligendi aliquid. Beatae quisquam distinctio dolor eos minima autem quia iure consequatur. Dolores fuga placeat sequi perspiciatis excepturi porro quia dolorem. Sed ratione facilis aut deserunt ut eos. Mollitia illum laborum cumque sed laudantium earum dolores.\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"2023-10-18T19:02:16.082Z\",\n    \"pages\": 480\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6c54a304-2e54-4970-a687-bd99e414c099",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "214"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o\""
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 15 Oct 2023 19:24:03 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"<BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters\"\n}"
+						},
+						{
+							"id": "d30c78e9-bbc7-45ad-8df5-4f0eb7ba379e",
+							"name": "200",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": \"\",\n    \"title\": \"Communications Swedish Silver\",\n    \"author\": \"Mrs. Hane\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"2023-10-18T19:02:20.948Z\",\n    \"pages\": 729\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/Books/:id/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id",
+										"update"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 18 Oct 2023 00:29:37 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								}
+							],
+							"cookie": []
 						}
 					]
 				},
@@ -409,7 +762,88 @@
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"id": "a88768bb-ddf3-49af-bf99-067c948b608b",
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "198"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"c6-ZYvmvufxbEk2kCqjdezpGfbhJUk\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 18 Oct 2023 19:00:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"3a887471-5a08-4633-8b14-812d09acaf01\",\n    \"title\": \"Michigan Won Florida Engineer Egyptian\",\n    \"author\": \"Miss Padberg\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"2023-10-18T19:00:23.534Z\",\n    \"pages\": 841\n}"
+						}
+					]
 				},
 				{
 					"name": "Delete Book by Id",
@@ -448,12 +882,79 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{$guid}}"
+									"value": "{{bookId}}"
 								}
 							]
 						}
 					},
-					"response": []
+					"response": [
+						{
+							"id": "8059b04c-c6f7-43c8-829b-969a8e1da8cf",
+							"name": "204",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 18 Oct 2023 19:01:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": []
+						}
+					]
 				}
 			],
 			"id": "61acc078-313a-47b5-9f11-d0d76f3bf41c"
@@ -505,10 +1006,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/health/http",
+									"raw": "http://localhost:3000/api/v1/health/http",
+									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"localhost"
 									],
+									"port": "3000",
 									"path": [
 										"api",
 										"v1",
@@ -520,7 +1023,6 @@
 							"status": "OK",
 							"code": 200,
 							"_postman_previewlanguage": "json",
-							"_postman_previewtype": "html",
 							"header": [
 								{
 									"key": "Vary",
