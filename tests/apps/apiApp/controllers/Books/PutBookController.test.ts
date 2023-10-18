@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
 import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application/BookCreator';
-import { PutBookController } from '../../../../../src/apps/apiApp/controllers/Books/PutBookController';
+import { PostBookController } from '../../../../../src/apps/apiApp/controllers/Books/PostBookController';
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/BookCreatorRequestMother';
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
 
@@ -10,7 +10,7 @@ jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookCreator');
 
 describe('PutBookController', () => {
   let bookCreator: BookCreator;
-  let controller: PutBookController;
+  let controller: PostBookController;
   let repository: BookRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -20,7 +20,7 @@ describe('PutBookController', () => {
   beforeEach(() => {
     repository = new BookRepositoryMock();
     bookCreator = new BookCreator(repository);
-    controller = new PutBookController(bookCreator);
+    controller = new PostBookController(bookCreator);
     expectedBook = BookCreatorRequestMother.random();
     req = {
       params: { id: expectedBook.id },

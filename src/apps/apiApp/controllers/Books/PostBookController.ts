@@ -1,8 +1,8 @@
 import httpStatus from 'http-status';
 import { BasePostPutBookController } from './BasePostPutBookController';
 
-export class PutBookController extends BasePostPutBookController {
+export class PostBookController extends BasePostPutBookController {
   protected status() {
-    return httpStatus.OK;
+    return httpStatus.CREATED;
   }
 }

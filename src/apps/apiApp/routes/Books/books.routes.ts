@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { body, checkExact, param } from 'express-validator';
 import container from '../../dependency-injection';
-import { PutBookController } from '../../controllers/Books/PutBookController';
+import { PostBookController } from '../../controllers/Books/PostBookController';
 import { validateReqSchema } from '../shared';
 import { GetBookController } from '../../controllers/Books/GetBookController';
 import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
@@ -9,7 +9,7 @@ import { DeleteBookController } from '../../controllers/Books/DeleteBookControll
 const prefix = '/api/v1/Books';
 
 export const register = (router: Router) => {
-  const createReqSchema = [
+  const postPutReqSchema = [
     param('id').exists().isUUID(),
     body('id').exists().isUUID(),
     body('title').exists().isString(),
@@ -29,12 +29,16 @@ export const register = (router: Router) => {
   const getReqSchema = [param('id').exists().isUUID(), checkExact()];
   const deleteReqSchema = [param('id').exists().isUUID(), checkExact()];
 
-  const putController: PutBookController = container.get(
-    'Apps.apiApp.controllers.Books.PutBookController'
+  const postController: PostBookController = container.get(
+    'Apps.apiApp.controllers.Books.PostBookController'
   );
 
   const getController: GetBookController = container.get(
     'Apps.apiApp.controllers.Books.GetBookController'
+  );
+
+  const putController: PostBookController = container.get(
+    'Apps.apiApp.controllers.Books.PutBookController'
   );
 
   const deleteController: DeleteBookController = container.get(
@@ -43,7 +47,16 @@ export const register = (router: Router) => {
 
   router.put(
     `${prefix}/:id`,
-    createReqSchema,
+    postPutReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      postController.run(req, res, next);
+    }
+  );
+
+  router.put(
+    `${prefix}/:id/update`,
+    postPutReqSchema,
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       putController.run(req, res, next);
