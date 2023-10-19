@@ -955,6 +955,116 @@
 							"cookie": []
 						}
 					]
+				},
+				{
+					"name": "All Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "eb9800a3-1e7c-4409-b131-8f6c7a2fc484",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"id": "165c36e4-d1a6-47d2-ac4b-445f649af1ad",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Books/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Books",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"id": "87fede9a-40d5-4452-810b-46d1e3bb4002",
+							"name": "200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{host}}/api/v1/Books/",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "559"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22f-dQ+2mBqRtWPckOWRs2wY61AO7+I\""
+								},
+								{
+									"key": "Date",
+									"value": "Wed, 18 Oct 2023 23:18:16 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": \"2ae9ab4d-9cf5-4977-8e17-d2ba9988a9ea\",\n        \"title\": \"Paradigm Soap neutral olive\",\n        \"author\": \"Ms. Wolff\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-18T23:18:08.793Z\",\n        \"pages\": 167\n    },\n    {\n        \"id\": \"6922e0ac-52be-47d1-b25e-32f5bbe60667\",\n        \"title\": \"Berkshire Cotton Garden Rubber Implementation\",\n        \"author\": \"Mrs. O'Hara\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-18T23:18:12.397Z\",\n        \"pages\": 198\n    },\n    {\n        \"id\": \"f2ca4db1-6798-4d49-a2f9-d80066881b6f\",\n        \"title\": \"Ball CSS\",\n        \"author\": \"Miss Witting\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-18T23:18:13.030Z\",\n        \"pages\": 42\n    }\n]"
+						}
+					]
 				}
 			],
 			"id": "61acc078-313a-47b5-9f11-d0d76f3bf41c"

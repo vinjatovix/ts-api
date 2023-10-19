@@ -7,6 +7,24 @@ servers:
   - url: https://dev-ts-api.1.ie-1.fl0.io
     variables: {}
 paths:
+  /api/v1/books:
+    get:
+      tags:
+        - Books
+      summary: Get All Books
+      operationId: GetAllBooks
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            schema:
+              $ref: '#/components/headers/Response-Headers'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
   /api/v1/Books/{id}:
     put:
       tags:
@@ -253,8 +271,8 @@ paths:
     get:
       tags:
         - Books
-      summary: Get Book by ID
-      operationId: GetBookbyID
+      summary: Get Book by Id
+      operationId: GetBookById
       parameters:
         - name: id
           in: path
@@ -419,8 +437,8 @@ paths:
     put:
       tags:
         - Books
-      summary: Create Book
-      operationId: CreateBook
+      summary: Update Book
+      operationId: UpdateBook
       parameters:
         - name: id
           in: path
@@ -741,6 +759,44 @@ paths:
                 status: OK
       deprecated: false
 components:
+  headers:
+    Response-Headers:
+      description: Headers for the response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Vary:
+                type: string
+                example: Origin
+              Access-Control-Allow-Credentials:
+                type: string
+                example: 'true'
+              X-XSS-Protection:
+                type: string
+                example: '0'
+              X-Content-Type-Options:
+                type: string
+                example: nosniff
+              X-Frame-Options:
+                type: string
+                example: DENY
+              Content-Length:
+                type: string
+                example: '33'
+              ETag:
+                type: string
+                example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
+              Date:
+                type: string
+                example: Sun, 15 Oct 2023 18:04:29 GMT
+              Connection:
+                type: string
+                example: keep-alive
+              Keep-Alive:
+                type: string
+                example: timeout=5
   schemas:
     Error:
       title: Error
@@ -802,6 +858,13 @@ components:
           type: string
         pages:
           type: number
+      example:
+        id: "b1d9b21-f695-4abd-910b-78c42204f1f9"
+        title: "Book title"
+        author: "Mr. Cont"
+        isbn: "978-3-16-148410-0"
+        releaseDate: "2023-10-15T22:00:21.845Z"
+        pages: 576     
 tags:
   - name: Books
   - name: Health
