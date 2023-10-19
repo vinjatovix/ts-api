@@ -1,11 +1,10 @@
 import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
 import request from 'supertest';
-
-import chai from 'chai';
+import { assert } from 'chai';
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
 
-const expect = chai.expect;
 let _request: request.Test;
+let _response: request.Response;
 let app: ApiApp;
 
 BeforeAll(async () => {
@@ -21,25 +20,41 @@ Given('a GET request to {string}', (route: string) => {
   _request = request(app.httpServer).get(route);
 });
 
+Given(
+  'a PUT request to {string} with body',
+  async (route: string, body: string) => {
+    _request = request(app.httpServer).put(route).send(JSON.parse(body));
+  }
+);
+
+Given('a DELETE request to {string}', (route: string) => {
+  _request = request(app.httpServer).delete(route);
+});
+
 Then('the response status code should be {int}', async (status: number) => {
-  const response = await _request;
-  expect(response.status).to.be.equal(status);
+  _response = await _request.expect(status);
 });
 
 Then('the response body should be', async (docString: string) => {
-  const response = await _request;
-  const expectedResponseBody = JSON.parse(docString);
-  expect(response.body).to.deep.equal(expectedResponseBody);
+  assert.deepStrictEqual(_response.body, JSON.parse(docString));
 });
 
 Then('the response body should contain', async (docString: string) => {
   const response = await _request;
   const expectedResponseBody = JSON.parse(docString);
-  expect(response.body).to.include(expectedResponseBody);
+  assert.include(response.body, expectedResponseBody);
 });
 
-Then('the response body should not be', async (docString: string) => {
-  const response = await _request;
-  const expectedResponseBody = JSON.parse(docString);
-  expect(response.body).to.not.deep.equal(expectedResponseBody);
+Then(
+  'the response body will be an array containing',
+  async (docString: string) => {
+    const response = await _request;
+    const expectedResponseBody = JSON.parse(docString);
+    assert.isArray(response.body);
+    assert.deepNestedInclude(response.body, expectedResponseBody);
+  }
+);
+
+Then('the response body should be empty', async () => {
+  assert.isEmpty(_response.body);
 });
