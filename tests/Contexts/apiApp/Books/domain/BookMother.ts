@@ -53,4 +53,13 @@ export class BookMother {
       BookPagesMother.random()
     );
   }
+
+  static randomList(length: number): Book[] {
+    const list: Book[] = [];
+    for (let i = 0; i < length; i++) {
+      list.push(this.random());
+    }
+
+    return list;
+  }
 }

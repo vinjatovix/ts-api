@@ -3,24 +3,24 @@ import { BookIdMother } from '../../domain/BookIdMother';
 import { BookMother } from '../../domain/BookMother';
 
 describe('FileBookRepository', () => {
-  describe('Create', () => {
+  describe('Save', () => {
     it('should save a book', async () => {
       const expectedBook = BookMother.random();
       const repository = new FileBookRepository();
 
       await repository.save(expectedBook);
 
-      const book = await repository.search(expectedBook.id.toString());
+      const book = await repository.find(expectedBook.id.value);
       expect(book).toEqual(expectedBook);
     });
   });
 
-  describe('Read', () => {
+  describe('Find', () => {
     it('should return null when the book is not found', async () => {
       const repository = new FileBookRepository();
       const notFoundId = BookIdMother.random().toString();
 
-      const book = await repository.search(notFoundId);
+      const book = await repository.find(notFoundId);
 
       expect(book).toBeNull();
     });
@@ -30,13 +30,13 @@ describe('FileBookRepository', () => {
       const repository = new FileBookRepository();
       await repository.save(expectedBook);
 
-      const book = await repository.search(expectedBook.id.toString());
+      const book = await repository.find(expectedBook.id.toString());
 
       expect(book).toEqual(expectedBook);
     });
   });
 
-  describe('Delete', () => {
+  describe('Remove', () => {
     it('should remove a book', async () => {
       const expectedBook = BookMother.random();
       const repository = new FileBookRepository();
@@ -44,7 +44,7 @@ describe('FileBookRepository', () => {
 
       await repository.remove(expectedBook.id.toString());
 
-      const book = await repository.search(expectedBook.id.toString());
+      const book = await repository.find(expectedBook.id.toString());
       expect(book).toBeNull();
     });
 
@@ -53,6 +53,18 @@ describe('FileBookRepository', () => {
       const notFoundId = BookIdMother.random().toString();
 
       await expect(repository.remove(notFoundId)).resolves.toBeUndefined();
+    });
+  });
+
+  describe('FindAll', () => {
+    it('should return a list of books', async () => {
+      const expectedBook = BookMother.random();
+      const repository = new FileBookRepository();
+      await repository.save(expectedBook);
+
+      const books = await repository.findAll();
+
+      expect(books).toEqual(expect.arrayContaining([expectedBook]));
     });
   });
 });
