@@ -45,6 +45,16 @@ Then('the response body should contain', async (docString: string) => {
   assert.include(response.body, expectedResponseBody);
 });
 
+Then(
+  'the response body will be an array containing',
+  async (docString: string) => {
+    const response = await _request;
+    const expectedResponseBody = JSON.parse(docString);
+    assert.isArray(response.body);
+    assert.deepNestedInclude(response.body, expectedResponseBody);
+  }
+);
+
 Then('the response body should be empty', async () => {
   assert.isEmpty(_response.body);
 });

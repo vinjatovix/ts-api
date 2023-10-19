@@ -5,6 +5,7 @@ import { PostBookController } from '../../controllers/Books/PostBookController';
 import { validateReqSchema } from '../shared';
 import { GetBookController } from '../../controllers/Books/GetBookController';
 import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
+import { GetAllBooksController } from '../../controllers/Books/GetAllBooksController';
 
 const prefix = '/api/v1/Books';
 
@@ -37,6 +38,10 @@ export const register = (router: Router) => {
     'Apps.apiApp.controllers.Books.GetBookController'
   );
 
+  const getAllController: GetAllBooksController = container.get(
+    'Apps.apiApp.controllers.Books.GetAllBooksController'
+  );
+
   const putController: PostBookController = container.get(
     'Apps.apiApp.controllers.Books.PutBookController'
   );
@@ -62,6 +67,10 @@ export const register = (router: Router) => {
       putController.run(req, res, next);
     }
   );
+
+  router.get(`${prefix}`, (req: Request, res: Response, next: NextFunction) => {
+    getAllController.run(req, res, next);
+  });
 
   router.get(
     `${prefix}/:id`,

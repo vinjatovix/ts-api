@@ -11,14 +11,14 @@ jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookFinder');
 describe('GetBookController', () => {
   let bookFinder: BookFinder;
   let controller: GetBookController;
-  let repository: BookRepositoryMock; // Agrega el repository
+  let repository: BookRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
-    repository = new BookRepositoryMock(); // Crea una instancia del BookRepositoryMock
-    bookFinder = new BookFinder(repository); // Pasa el repository a BookFinder
+    repository = new BookRepositoryMock();
+    bookFinder = new BookFinder(repository);
     controller = new GetBookController(bookFinder);
     req = { params: { id: '1' } };
     res = {

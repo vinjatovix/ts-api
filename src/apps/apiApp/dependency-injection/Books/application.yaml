@@ -8,6 +8,10 @@ services:
     class: ../../../../Contexts/apiApp/Books/application/BookFinder
     arguments: ['@apiApp.Books.domain.BookRepository']
 
+  apiApp.Books.application.AllBooksFinder:
+    class: ../../../../Contexts/apiApp/Books/application/AllBooksFinder
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
   apiApp.Books.application.BookRemover:
     class: ../../../../Contexts/apiApp/Books/application/BookRemover
     arguments: ['@apiApp.Books.domain.BookRepository']
