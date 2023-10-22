@@ -16,9 +16,6 @@ paths:
       responses:
         '200':
           description: Successful operation
-          headers:
-            schema:
-              $ref: '#/components/headers/Response-Headers'
           content:
             application/json:
               schema:
@@ -69,124 +66,48 @@ paths:
         '201':
           description: Created
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Access-Control-Allow-Credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            Date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:19:00 GMT
-            Connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            Keep-Alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
-            Content-Length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options: 
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'              
+              
+              
           content: {}
         '400':
           description: Bad Request
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Access-Control-Allow-Credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            Content-Length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '214'
-            ETag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o"
-            Date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:24:03 GMT
-            Connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            Keep-Alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options: 
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+            content-length:
+              $ref: '#/components/headers/content-length'          
           content:
             application/json:
               schema:
@@ -196,66 +117,27 @@ paths:
         '422':
           description: Unprocessable Entity
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Access-Control-Allow-Credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            Content-Length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '263'
-            ETag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"107-1SWyRDyHUwHOAtJsyzyflhpva1k"
-            Date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:23:47 GMT
-            Connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            Keep-Alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options: 
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+              
           content:
             application/json:
               schema:
@@ -286,66 +168,26 @@ paths:
         '200':
           description: Successful operation
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Access-Control-Allow-Credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            Content-Length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '33'
-            ETag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
-            Date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 18:04:29 GMT
-            Connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            Keep-Alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options: 
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
@@ -383,54 +225,22 @@ paths:
         '204':
           description: Deleted
           headers:
-            Vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            Access-Control-Allow-Credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            X-XSS-Protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            X-Content-Type-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            X-Frame-Options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            Date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:19:00 GMT
-            Connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            Keep-Alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options: 
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'         
           content: {}
       deprecated: false
   /api/v1/Books/{id}/update:
@@ -477,55 +287,55 @@ paths:
         '200':
           description: Created
           headers:
-            Vary:
+            vary:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Origin
-            Access-Control-Allow-Credentials:
+            access-control-allow-credentials:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: 'true'
-            X-XSS-Protection:
+            x-xss-protection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '0'
-            X-Content-Type-Options:
+            x-content-type-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: nosniff
-            X-Frame-Options:
+            x-frame-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: DENY
-            Date:
+            date:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Sun, 15 Oct 2023 19:19:00 GMT
-            Connection:
+            connection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: keep-alive
-            Keep-Alive:
+            keep-alive:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: timeout=5
-            Content-Length:
+            content-length:
               content:
                 text/plain:
                   schema:
@@ -535,61 +345,61 @@ paths:
         '400':
           description: Bad Request
           headers:
-            Vary:
+            vary:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Origin
-            Access-Control-Allow-Credentials:
+            access-control-allow-credentials:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: 'true'
-            X-XSS-Protection:
+            x-xss-protection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '0'
-            X-Content-Type-Options:
+            x-content-type-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: nosniff
-            X-Frame-Options:
+            x-frame-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: DENY
-            Content-Length:
+            content-length:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '214'
-            ETag:
+            etag:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: W/"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o"
-            Date:
+            date:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Sun, 15 Oct 2023 19:24:03 GMT
-            Connection:
+            connection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: keep-alive
-            Keep-Alive:
+            keep-alive:
               content:
                 text/plain:
                   schema:
@@ -604,61 +414,61 @@ paths:
         '422':
           description: Unprocessable Entity
           headers:
-            Vary:
+            vary:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Origin
-            Access-Control-Allow-Credentials:
+            access-control-allow-credentials:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: 'true'
-            X-XSS-Protection:
+            x-xss-protection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '0'
-            X-Content-Type-Options:
+            x-content-type-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: nosniff
-            X-Frame-Options:
+            x-frame-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: DENY
-            Content-Length:
+            content-length:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '263'
-            ETag:
+            etag:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: W/"107-1SWyRDyHUwHOAtJsyzyflhpva1k"
-            Date:
+            date:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Sun, 15 Oct 2023 19:23:47 GMT
-            Connection:
+            connection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: keep-alive
-            Keep-Alive:
+            keep-alive:
               content:
                 text/plain:
                   schema:
@@ -687,61 +497,61 @@ paths:
         '200':
           description: OK
           headers:
-            Vary:
+            vary:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Origin
-            Access-Control-Allow-Credentials:
+            access-control-allow-credentials:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: 'true'
-            X-XSS-Protection:
+            x-xss-protection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '0'
-            X-Content-Type-Options:
+            x-content-type-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: nosniff
-            X-Frame-Options:
+            x-frame-options:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: DENY
-            Content-Length:
+            content-length:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: '33'
-            ETag:
+            etag:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
-            Date:
+            date:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: Sun, 15 Oct 2023 18:04:29 GMT
-            Connection:
+            connection:
               content:
                 text/plain:
                   schema:
                     type: string
                   example: keep-alive
-            Keep-Alive:
+            keep-alive:
               content:
                 text/plain:
                   schema:
@@ -760,43 +570,53 @@ paths:
       deprecated: false
 components:
   headers:
-    Response-Headers:
-      description: Headers for the response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              Vary:
-                type: string
-                example: Origin
-              Access-Control-Allow-Credentials:
-                type: string
-                example: 'true'
-              X-XSS-Protection:
-                type: string
-                example: '0'
-              X-Content-Type-Options:
-                type: string
-                example: nosniff
-              X-Frame-Options:
-                type: string
-                example: DENY
-              Content-Length:
-                type: string
-                example: '33'
-              ETag:
-                type: string
-                example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
-              Date:
-                type: string
-                example: Sun, 15 Oct 2023 18:04:29 GMT
-              Connection:
-                type: string
-                example: keep-alive
-              Keep-Alive:
-                type: string
-                example: timeout=5
+    vary:
+      description: The vary header
+      schema:
+        type: string
+      example: Origin
+    access-control-allow-credentials:
+      description: The access-control-allow-credentials header
+      schema:
+        type: string
+      example: 'true'
+    x-xss-protection:
+      description: The x-xss-protection header
+      schema:
+        type: string
+      example: '0'
+    x-content-type-options:
+      description: The x-content-type-options header
+      schema:
+        type: string
+      example: nosniff
+    x-frame-options:
+      description: The x-frame-options header
+      schema:
+        type: string
+      example: DENY
+    date:
+      description: The Date header
+      schema:
+        type: string
+      example: Sun, 15 Oct 2023 19:19:00 GMT
+    content-length:
+      description: The content-length header
+      schema:
+        type: string
+      example: '0'
+    x-envoy-upstream-service-time:
+      description: The X-Envoy-Upstream-Service-Time header
+      schema:
+        type: string
+    server:
+      description: The Server header
+      schema:
+        type: string
+    etag:
+      description: The ETag header
+      schema:
+        type: string 
   schemas:
     Error:
       title: Error
