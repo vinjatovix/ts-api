@@ -1,8 +1,23 @@
 import { FileBookRepository } from '../../../../../../src/Contexts/apiApp/Books/infraestructure/persistence/FileBookRepository';
+import container from '../../../../../../src/apps/apiApp/dependency-injection';
+import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
 import { BookIdMother } from '../../domain/BookIdMother';
 import { BookMother } from '../../domain/BookMother';
 
+const environmentArranger: Promise<EnvironmentArranger> = container.get(
+  'apiApp.EnvironmentArranger'
+);
+
 describe('FileBookRepository', () => {
+  beforeEach(async () => {
+    await (await environmentArranger).arrange();
+  });
+
+  afterAll(async () => {
+    await (await environmentArranger).arrange();
+    await (await environmentArranger).close();
+  });
+
   describe('Save', () => {
     it('should save a book', async () => {
       const expectedBook = BookMother.random();
