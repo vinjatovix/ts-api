@@ -7,6 +7,12 @@ if [ -z "$RELEASE_TYPE" ]; then
   echo "You must provide a version type (major, minor, patch)."
   exit 1
 fi
+BRANCH=$(git branch --show-current)
+# if is not a release branch, abort
+if [[ $BRANCH != release/* ]]; then
+  echo "You must be in a release branch to run this script."
+  exit 1
+fi
 
 # Obtain the current version
 CURRENT_VERSION=$(node -p "require('./package.json').version")
@@ -22,6 +28,10 @@ perl -i -pe "s/Version-v$CURRENT_VERSION/Version-v$NEW_VERSION/g" README.md
 
 # Repacke the version in the docker-compose.yml file
 perl -i -pe "s/ts-api:$CURRENT_VERSION/ts-api:$NEW_VERSION/g" docker-compose.yaml
+
+# Replace the version in OpenAPI specification
+perl -i -pe "s/version: '$CURRENT_VERSION'/version: '$NEW_VERSION'/g" openApi.yaml
+
 
 # Commit the changes
 ISSUE=$(git branch --show-current | sed 's/^release\///')
