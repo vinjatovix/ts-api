@@ -1,17 +1,15 @@
-import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import errorHandler from 'errorhandler';
-import express, { Request, Response, NextFunction } from 'express';
+import express from 'express';
 import Router from 'express-promise-router';
 import helmet from 'helmet';
 import * as http from 'http';
-import httpStatus from 'http-status';
 import cors from 'cors';
 import { registerRoutes } from './routes';
+import { apiErrorHandler } from './routes/shared';
 
-dotenv.config();
 const corsOptions = {
-  origin: '*',
+  origin: process.env.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 };
@@ -39,12 +37,7 @@ export class Server {
 
     registerRoutes(router);
 
-    router.use(
-      (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
-        console.log(err);
-        res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
-      }
-    );
+    router.use(apiErrorHandler);
   }
 
   async listen(): Promise<void> {

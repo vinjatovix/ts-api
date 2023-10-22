@@ -1,0 +1,870 @@
+openapi: 3.0.0
+info:
+  title: ts-api
+  contact: {}
+  version: '1.2.2'
+servers:
+  - url: https://dev-ts-api.1.ie-1.fl0.io
+    variables: {}
+paths:
+  /api/v1/books:
+    get:
+      tags:
+        - Books
+      summary: Get All Books
+      operationId: GetAllBooks
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            schema:
+              $ref: '#/components/headers/Response-Headers'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Book'
+  /api/v1/Books/{id}:
+    put:
+      tags:
+        - Books
+      summary: Create Book
+      operationId: CreateBook
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: string
+              example: |-
+                {
+                    "id": "{{$guid}}"
+                    "title": "{{$randomWords}}",
+                    "author": "{{$randomNamePrefix}} {{$randomLastName}}",
+                    "isbn": "978-3-16-148410-0",
+                    "releaseDate": "{{$isoTimestamp}}",
+                    "pages": {{$randomInt}}
+                }
+            example: |-
+              {
+                  "id": "{{$guid}}"
+                  "title": "{{$randomWords}}",
+                  "author": "{{$randomNamePrefix}} {{$randomLastName}}",
+                  "isbn": "978-3-16-148410-0",
+                  "releaseDate": "{{$isoTimestamp}}",
+                  "pages": {{$randomInt}}
+              }
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:19:00 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+          content: {}
+        '400':
+          description: Bad Request
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '214'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:24:03 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '263'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"107-1SWyRDyHUwHOAtJsyzyflhpva1k"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:23:47 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/422'
+                  example:
+                    errors:
+                      - id: 'Invalid value at params. Value: USB'
+                      - author: 'Invalid value at body. Value: undefined'
+                      - isbn: 'Invalid value at body. Value: 522'
+                      - releaseDate: 'Invalid value at body. Value: leading-edge'
+                      - pages: 'Invalid value at body. Value: Baht'
+      deprecated: false
+    get:
+      tags:
+        - Books
+      summary: Get Book by Id
+      operationId: GetBookById
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{bookId}}'
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '33'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 18:04:29 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book' 
+                example:
+                  id: b1d9b21-f695-4abd-910b-78c42204f1f9
+                  title: Book title
+                  author: Mr. Cont
+                  isbn: 978-3-16-148410-0
+                  releaseDate: 2023-10-15T22:00:21.845Z
+                  pages: 576
+              example:
+                id: b1d9b21-f695-4abd-910b-78c42204f1f9
+                title: Book title
+                author: Mr. Cont
+                isbn: 978-3-16-148410-0
+                releaseDate: 2023-10-15T22:00:21.845Z
+                pages: 576
+      deprecated: false
+    delete:
+      tags:
+        - Books
+      summary: Delete Book by ID
+      operationId: DeleteBookbyID
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{bookId}}'
+      responses:
+        '204':
+          description: Deleted
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:19:00 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content: {}
+      deprecated: false
+  /api/v1/Books/{id}/update:
+    put:
+      tags:
+        - Books
+      summary: Update Book
+      operationId: UpdateBook
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              type: string
+              example: |-
+                {
+                    "id": "{{$guid}}"
+                    "title": "{{$randomWords}}",
+                    "author": "{{$randomNamePrefix}} {{$randomLastName}}",
+                    "isbn": "978-3-16-148410-0",
+                    "releaseDate": "{{$isoTimestamp}}",
+                    "pages": {{$randomInt}}
+                }
+            example: |-
+              {
+                  "id": "{{$guid}}"
+                  "title": "{{$randomWords}}",
+                  "author": "{{$randomNamePrefix}} {{$randomLastName}}",
+                  "isbn": "978-3-16-148410-0",
+                  "releaseDate": "{{$isoTimestamp}}",
+                  "pages": {{$randomInt}}
+              }
+        required: true
+      responses:
+        '200':
+          description: Created
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:19:00 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+          content: {}
+        '400':
+          description: Bad Request
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '214'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:24:03 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
+        '422':
+          description: Unprocessable Entity
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '263'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"107-1SWyRDyHUwHOAtJsyzyflhpva1k"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 19:23:47 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                  $ref: '#/components/schemas/422'
+                  example:
+                    errors:
+                      - id: 'Invalid value at params. Value: USB'
+                      - author: 'Invalid value at body. Value: undefined'
+                      - isbn: 'Invalid value at body. Value: 522'
+                      - releaseDate: 'Invalid value at body. Value: leading-edge'
+                      - pages: 'Invalid value at body. Value: Baht'
+      deprecated: false
+  /api/v1/health/http:
+    get:
+      tags:
+        - Health
+      summary: Api server
+      operationId: Apiserver
+      parameters: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            Vary:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Origin
+            Access-Control-Allow-Credentials:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: 'true'
+            X-XSS-Protection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+            X-Content-Type-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: nosniff
+            X-Frame-Options:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: DENY
+            Content-Length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '33'
+            ETag:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
+            Date:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: Sun, 15 Oct 2023 18:04:29 GMT
+            Connection:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: keep-alive
+            Keep-Alive:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: timeout=5
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Health'
+                example:
+                  version: 1.2.2
+                  status: OK
+              example:
+                version: 1.2.2
+                status: OK
+      deprecated: false
+components:
+  headers:
+    Response-Headers:
+      description: Headers for the response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              Vary:
+                type: string
+                example: Origin
+              Access-Control-Allow-Credentials:
+                type: string
+                example: 'true'
+              X-XSS-Protection:
+                type: string
+                example: '0'
+              X-Content-Type-Options:
+                type: string
+                example: nosniff
+              X-Frame-Options:
+                type: string
+                example: DENY
+              Content-Length:
+                type: string
+                example: '33'
+              ETag:
+                type: string
+                example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
+              Date:
+                type: string
+                example: Sun, 15 Oct 2023 18:04:29 GMT
+              Connection:
+                type: string
+                example: keep-alive
+              Keep-Alive:
+                type: string
+                example: timeout=5
+  schemas:
+    Error:
+      title: Error
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        id: 'Invalid value at params. Value: USB'
+    422:
+      title: validation error
+      required:
+        - errors
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+          description: ''
+      example:
+        errors:
+          - id: 'Invalid value at params. Value: USB'
+          - author: 'Invalid value at body. Value: undefined'
+          - isbn: 'Invalid value at body. Value: 522'
+          - releaseDate: 'Invalid value at body. Value: leading-edge'
+          - pages: 'Invalid value at body. Value: Baht'
+    400:
+      title: "400"
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
+    Health:
+      title: OK
+      type: object
+      properties:
+        version:
+          type: string
+        status:
+          type: string
+      example:
+        version: 1.2.2
+        status: OK
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        author:
+          type: string
+        isbn:
+          type: string
+        releaseDate:
+          type: string
+        pages:
+          type: number
+      example:
+        id: "b1d9b21-f695-4abd-910b-78c42204f1f9"
+        title: "Book title"
+        author: "Mr. Cont"
+        isbn: "978-3-16-148410-0"
+        releaseDate: "2023-10-15T22:00:21.845Z"
+        pages: 576     
+tags:
+  - name: Books
+  - name: Health

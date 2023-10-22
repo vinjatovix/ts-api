@@ -1,0 +1,31 @@
+services:
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
+  apiApp.Books.application.BookCreator:
+    class: ../../../../Contexts/apiApp/Books/application/BookCreator
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
+  apiApp.Books.application.BookFinder:
+    class: ../../../../Contexts/apiApp/Books/application/BookFinder
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
+  apiApp.Books.application.AllBooksFinder:
+    class: ../../../../Contexts/apiApp/Books/application/AllBooksFinder
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
+  apiApp.Books.application.BookRemover:
+    class: ../../../../Contexts/apiApp/Books/application/BookRemover
+    arguments: ['@apiApp.Books.domain.BookRepository']
+
+  apiApp.Books.domain.BookRepository:
+    class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/MongoBookRepository
+    arguments: ['@apiApp.MongoClient']
