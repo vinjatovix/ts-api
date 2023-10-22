@@ -29,7 +29,3 @@ services:
   apiApp.Books.domain.BookRepository:
     class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/MongoBookRepository
     arguments: ['@apiApp.MongoClient']
-
-  apiApp.EnvironmentArranger:
-    class: ../../../../../tests/Contexts/shared/infrastructure/mongo/MongoEnvironmentArranger
-    arguments: ['@apiApp.MongoClient']
