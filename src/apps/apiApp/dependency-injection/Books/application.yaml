@@ -1,5 +1,15 @@
 services:
-  # Context.module.layer.class
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
   apiApp.Books.application.BookCreator:
     class: ../../../../Contexts/apiApp/Books/application/BookCreator
     arguments: ['@apiApp.Books.domain.BookRepository']
@@ -17,6 +27,5 @@ services:
     arguments: ['@apiApp.Books.domain.BookRepository']
 
   apiApp.Books.domain.BookRepository:
-    class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/FileBookRepository
-    arguments: ['']
-
+    class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/MongoBookRepository
+    arguments: ['@apiApp.MongoClient']

@@ -31,14 +31,14 @@ describe('GetAllBooksController', () => {
       const books: Book[] = BookMother.randomList(3);
       jest
         .spyOn(allBooksFinder, 'run')
-        .mockResolvedValueOnce(books.map((book) => book.asPrimitives()));
+        .mockResolvedValueOnce(books.map((book) => book.toPrimitives()));
 
       await controller.run(req as Request, res as Response, next);
 
       expect(allBooksFinder.run).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith(
-        books.map((book) => book.asPrimitives())
+        books.map((book) => book.toPrimitives())
       );
     });
   });

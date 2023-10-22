@@ -31,13 +31,13 @@ describe('GetBookController', () => {
   describe('run', () => {
     it('should get a book and send 200 status', async () => {
       const book: Book = BookMother.random();
-      jest.spyOn(bookFinder, 'run').mockResolvedValueOnce(book.asPrimitives());
+      jest.spyOn(bookFinder, 'run').mockResolvedValueOnce(book.toPrimitives());
 
       await controller.run(req as Request, res as Response, next);
 
       expect(bookFinder.run).toHaveBeenCalledWith({ id: '1' });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
-      expect(res.send).toHaveBeenCalledWith(book.asPrimitives());
+      expect(res.send).toHaveBeenCalledWith(book.toPrimitives());
     });
 
     it('should call next with the error if book retrieval fails', async () => {

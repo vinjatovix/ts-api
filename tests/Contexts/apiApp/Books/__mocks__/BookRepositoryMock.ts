@@ -23,7 +23,7 @@ export class BookRepositoryMock implements BookRepository {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
 
-  async find(id: string): Promise<Book | null> {
+  async search(id: string): Promise<Book | null> {
     if (id === 'not-found') {
       this.findMock = jest.fn().mockReturnValue(null);
     } else {

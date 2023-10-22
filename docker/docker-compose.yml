@@ -1,0 +1,27 @@
+version: "3.7"
+
+services:
+  ts-api-mongo:
+    build:
+      context: ./mongo
+      dockerfile: Dockerfile_mongo
+    container_name: ts-api-mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ts_api_mongo_data:/data/db:delegated
+    environment:
+      MONGO_INITDB_DATABASE: ts-api
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootPassword
+      MONGO_USERNAME: localUser
+      MONGO_PASSWORD: localPassword
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 60s
+      start_period: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ts_api_mongo_data:

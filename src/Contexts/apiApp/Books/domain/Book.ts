@@ -1,3 +1,4 @@
+import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
 import { BookAuthor } from './BookAuthor';
 import { BookId } from './BookId';
 import { BookPages } from './BookPages';
@@ -5,7 +6,7 @@ import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { Isbn } from './ISBN';
 
-export class Book {
+export class Book extends AggregateRoot {
   readonly id: BookId;
   readonly title: BookTitle;
   readonly author: BookAuthor;
@@ -28,6 +29,7 @@ export class Book {
     releaseDate: BookReleaseDate;
     pages: BookPages;
   }) {
+    super();
     this.id = id;
     this.title = title;
     this.author = author;
@@ -36,7 +38,7 @@ export class Book {
     this.pages = pages;
   }
 
-  asPrimitives() {
+  toPrimitives() {
     return {
       id: this.id.value,
       title: this.title.value,
@@ -45,5 +47,30 @@ export class Book {
       releaseDate: this.releaseDate.value,
       pages: this.pages.value
     };
+  }
+
+  static fromPrimitives({
+    id,
+    title,
+    author,
+    isbn,
+    releaseDate,
+    pages
+  }: {
+    id: string;
+    title: string;
+    author: string;
+    isbn: string;
+    releaseDate: string;
+    pages: number;
+  }) {
+    return new Book({
+      id: new BookId(id),
+      title: new BookTitle(title),
+      author: new BookAuthor(author),
+      isbn: new Isbn(isbn),
+      releaseDate: new BookReleaseDate(releaseDate),
+      pages: new BookPages(pages)
+    });
   }
 }

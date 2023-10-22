@@ -26,7 +26,7 @@ export class BookCreatorRequestMother {
       title: title.value,
       author: author.value,
       isbn: isbn.value,
-      releaseDate: releaseDate.value,
+      releaseDate: releaseDate.value.toISOString(),
       pages: pages.value
     };
   }
@@ -57,7 +57,7 @@ export class BookCreatorRequestMother {
       : ISBNMother.random().value;
     const releaseDate = keys.includes('releaseDate')
       ? BookReleaseDateMother.invalidValue()
-      : BookReleaseDateMother.random().value;
+      : BookReleaseDateMother.random().value.toISOString();
     const pages = keys.includes('pages')
       ? (BookPagesMother.invalidType() as number)
       : BookPagesMother.random().value;

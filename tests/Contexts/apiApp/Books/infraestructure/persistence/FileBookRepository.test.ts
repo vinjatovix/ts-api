@@ -10,7 +10,7 @@ describe('FileBookRepository', () => {
 
       await repository.save(expectedBook);
 
-      const book = await repository.find(expectedBook.id.value);
+      const book = await repository.search(expectedBook.id.value);
       expect(book).toEqual(expectedBook);
     });
   });
@@ -20,7 +20,7 @@ describe('FileBookRepository', () => {
       const repository = new FileBookRepository();
       const notFoundId = BookIdMother.random().toString();
 
-      const book = await repository.find(notFoundId);
+      const book = await repository.search(notFoundId);
 
       expect(book).toBeNull();
     });
@@ -30,7 +30,7 @@ describe('FileBookRepository', () => {
       const repository = new FileBookRepository();
       await repository.save(expectedBook);
 
-      const book = await repository.find(expectedBook.id.toString());
+      const book = await repository.search(expectedBook.id.toString());
 
       expect(book).toEqual(expectedBook);
     });
@@ -44,7 +44,7 @@ describe('FileBookRepository', () => {
 
       await repository.remove(expectedBook.id.toString());
 
-      const book = await repository.find(expectedBook.id.toString());
+      const book = await repository.search(expectedBook.id.toString());
       expect(book).toBeNull();
     });
 

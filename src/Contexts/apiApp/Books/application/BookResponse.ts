@@ -3,6 +3,6 @@ export interface BookResponse {
   title: string;
   author: string;
   isbn: string;
-  releaseDate: string;
+  releaseDate: Date;
   pages: number;
 }

@@ -14,7 +14,7 @@ export class FileBookRepository implements BookRepository {
     );
   }
 
-  async find(bookId: string): Promise<Book | null> {
+  async search(bookId: string): Promise<Book | null> {
     try {
       const bookData = await fs.promises.readFile(this.filePath(bookId));
 
