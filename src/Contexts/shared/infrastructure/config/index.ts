@@ -3,7 +3,7 @@ import convict from 'convict';
 const apiAppConfig = convict({
   env: {
     doc: 'The application environment.',
-    format: ['production', 'development', 'test', 'local'],
+    format: ['production', 'dev', 'test', 'local'],
     default: 'local',
     env: 'NODE_ENV'
   },

@@ -1,2 +1,7 @@
 imports:
- - { resource: ./application.yaml }
+  - { resource: ./application.yaml }
+
+services:
+  apiApp.EnvironmentArranger:
+    class: ../../../../tests/Contexts/shared/infrastructure/mongo/MongoEnvironmentArranger
+    arguments: ['@apiApp.MongoClient']
