@@ -27,7 +27,7 @@ export class MongoClientFactory {
     config: MongoConfig
   ): Promise<MongoClient> {
     const connectionString = `${config.connection}://${config.username}:${config.password}@${config.url}/${config.db}`;
-    const client = new MongoClient(connectionString);
+    const client = new MongoClient(connectionString, { ignoreUndefined: true });
 
     await client.connect();
     console.log('MongoClient connected');
