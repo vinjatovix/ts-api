@@ -1,3 +1,4 @@
+import { envs } from '../../config/plugins/envs.plugin';
 import { Server } from './server';
 
 export class ApiApp {
@@ -5,8 +6,8 @@ export class ApiApp {
   host?: string;
 
   async start() {
-    const host: string = process.env.HOST ?? 'http://localhost';
-    const port: string = process.env.PORT ?? '0';
+    const host: string = envs.HOST;
+    const port: number = envs.PORT;
     this.host = host;
     this.server = new Server(host, port);
 
