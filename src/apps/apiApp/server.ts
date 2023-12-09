@@ -8,9 +8,10 @@ import cors from 'cors';
 import { registerRoutes } from './routes';
 import { apiErrorHandler } from './routes/shared';
 import { buildLogger } from '../../Contexts/shared/plugins/logger.plugin';
+import { envs } from '../../config/plugins/envs.plugin';
 
 const corsOptions = {
-  origin: process.env.ALLOWED_ORIGINS?.split(',') ?? [],
+  origin: envs.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 };
@@ -19,11 +20,11 @@ const logger = buildLogger('apiApp');
 
 export class Server {
   private express: express.Express;
-  private port: string;
+  private port: number;
   private host: string;
   private httpServer?: http.Server;
 
-  constructor(host: string, port: string) {
+  constructor(host: string, port: number) {
     this.port = port;
     this.host = host;
     this.express = express();

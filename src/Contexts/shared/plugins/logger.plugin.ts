@@ -2,6 +2,7 @@ import winston from 'winston';
 import 'winston-mongodb';
 import { MongoClientFactory } from '../infrastructure/persistence/mongo/MongoClientFactory';
 import { MongoConfigFactory } from '../infrastructure/persistence/mongo/MongoConfigFactory';
+import { envs } from '../../../config/plugins/envs.plugin';
 
 const { combine, timestamp, json } = winston.format;
 
@@ -17,7 +18,7 @@ const logger = winston.createLogger({
   ]
 });
 
-if (process.env.NODE_ENV !== 'test') {
+if (envs.NODE_ENV !== 'test') {
   const setupMongoLogger = async (logger: winston.Logger) => {
     const mongoClient = await MongoClientFactory.createClient(
       'logs',
@@ -40,7 +41,7 @@ if (process.env.NODE_ENV !== 'test') {
   setupMongoLogger(logger);
 }
 
-if (!['production', 'test'].includes(process.env.NODE_ENV as string)) {
+if (envs.NODE_ENV !== 'production') {
   logger.add(
     new winston.transports.Console({
       format: winston.format.combine(

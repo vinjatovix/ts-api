@@ -1,6 +1,7 @@
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  setupFiles: ['<rootDir>/setupTests.ts'],
+  testEnvironment: 'jest-environment-node',
   cacheDirectory: '.tmp/jestCache',
   collectCoverage: true,
   coverageDirectory: '<rootDir>/coverage',

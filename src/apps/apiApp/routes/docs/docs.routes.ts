@@ -2,18 +2,19 @@ import { Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { join } from 'path';
+import { envs } from '../../../../config/plugins/envs.plugin';
 
 const prefix = '/api/v1/Docs';
 
 export const register = (router: Router) => {
   const openApiPath = join(__dirname, '../../openApi.yaml');
   const openApiSpec = YAML.load(openApiPath);
-  const host = process.env.HOST;
+  const host = envs.HOST;
 
   if (openApiSpec.servers?.length) {
     const server = openApiSpec.servers[0];
     const serverUrl = host?.includes('localhost')
-      ? `${host}:${process.env.PORT}`
+      ? `${host}:${envs.PORT}`
       : `${host}`;
     server.url = serverUrl;
   }

@@ -1,8 +1,4 @@
-import dotenv from 'dotenv';
-
 import { ApiApp } from './ApiApp';
-
-dotenv.config();
 
 try {
   new ApiApp().start();
