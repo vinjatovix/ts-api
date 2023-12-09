@@ -2,7 +2,7 @@ import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/applicatio
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookCreatorRequestMother } from './BookCreatorRequestMother';
 import { BookMother } from '../domain/BookMother';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/value-object/InvalidArgumentError';
+import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
 
 describe('BookCreator', () => {
   let repository: BookRepositoryMock;

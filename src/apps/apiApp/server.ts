@@ -7,12 +7,15 @@ import * as http from 'http';
 import cors from 'cors';
 import { registerRoutes } from './routes';
 import { apiErrorHandler } from './routes/shared';
+import { buildLogger } from '../../Contexts/shared/plugins/logger.plugin';
 
 const corsOptions = {
   origin: process.env.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 };
+
+const logger = buildLogger('apiApp');
 
 export class Server {
   private express: express.Express;
@@ -48,7 +51,7 @@ export class Server {
           ? `${this.host}:${this.port}`
           : this.host;
         const message: string = `Backend App is running at ${host} in ${env} mode`;
-        console.log(message);
+        logger.info(message);
         resolve();
       });
     });

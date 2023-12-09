@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
 import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books/DeleteBookController';
-import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
@@ -17,7 +16,7 @@ describe('DeleteBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookRemover = new BookRemover(repository as unknown as BookRepository);
+    bookRemover = new BookRemover(repository);
     controller = new DeleteBookController(bookRemover);
     req = { params: { id: '1' } };
     res = {

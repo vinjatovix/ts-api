@@ -5,7 +5,7 @@ import { BookPages } from '../../../../../src/Contexts/apiApp/Books/domain/BookP
 import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
 import { BookTitle } from '../../../../../src/Contexts/apiApp/Books/domain/BookTitle';
 import { Isbn } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/value-object/InvalidArgumentError';
+import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
 import { random } from '../../../fixtures/shared';
 import { BookAuthorMother } from './BookAuthorMother';
 import { BookIdMother } from './BookIdMother';
