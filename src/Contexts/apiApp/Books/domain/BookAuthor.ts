@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../shared/domain/value-object/InvalidArgumentError';
+import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
 import { StringValueObject } from '../../../shared/domain/value-object/StringValueObject';
 
 export class BookAuthor extends StringValueObject {

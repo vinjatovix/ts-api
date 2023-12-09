@@ -1,4 +1,5 @@
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
+import { LogRepositoryMock } from '../../../shared/__mocks__/LogRepositoryMock';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookIdMother } from '../domain/BookIdMother';
 import { RequestBookByIdMother } from './RequestBookByIdMother';
@@ -6,10 +7,12 @@ import { RequestBookByIdMother } from './RequestBookByIdMother';
 describe('BookRemover', () => {
   let repository: BookRepositoryMock;
   let remover: BookRemover;
+  let logRepository: LogRepositoryMock;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    remover = new BookRemover(repository);
+    logRepository = new LogRepositoryMock();
+    remover = new BookRemover(repository, logRepository);
   });
 
   afterEach(() => {
