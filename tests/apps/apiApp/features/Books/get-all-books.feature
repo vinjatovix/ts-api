@@ -4,10 +4,10 @@ Feature: Get all books in the collection
 
   #preconditions for the scenario
   Background:
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-a97027f9071a" with body
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-a97027f9071c" with body
       """
       {
-        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -17,10 +17,10 @@ Feature: Get all books in the collection
       """
     Then the response status code should be 201
 
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-b97027f9071a" with body
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-b97027f9071d" with body
       """
       {
-        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071a",
+        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d",
         "title": "The Lord of the Rings 2",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148412-0",
@@ -36,7 +36,7 @@ Feature: Get all books in the collection
     Then the response body will be an array containing
       """
       {
-        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -47,7 +47,7 @@ Feature: Get all books in the collection
     Then the response body will be an array containing
       """
       {
-        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071a",
+        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d",
         "title": "The Lord of the Rings 2",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148412-0",

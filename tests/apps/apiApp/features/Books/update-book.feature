@@ -5,10 +5,10 @@ Feature: Create a new book
 
   # Preconditions for the scenario
   Background:
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9071a" with body
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
-        "id": "9a6e0804-2bd0-4685-b79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -19,10 +19,10 @@ Feature: Create a new book
     Then the response status code should be 201
 
   Scenario: A valid existing book
-    Given a PUT request to "/api/v1/Books/8a6e0804-2bd0-4685-b79d-d97027f9071a/update" with body
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a/update" with body
       """
       {
-        "id": "8a6e0804-2bd0-4685-b79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
         "title": "The Lord of the Rings for babies",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
