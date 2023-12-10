@@ -1,5 +1,5 @@
 import { RequestById } from '../../../shared/application/RequestById';
-import { NotFoundError } from '../../../shared/domain/value-object/NotFoundError';
+import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 import { BookRepository } from '../domain/BookRepository';
 import { BookResponse } from './BookResponse';
 

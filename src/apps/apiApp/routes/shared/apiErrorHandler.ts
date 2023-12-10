@@ -1,7 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
-import { NotFoundError } from '../../../../Contexts/shared/domain/value-object/NotFoundError';
-import { InvalidArgumentError } from '../../../../Contexts/shared/domain/value-object/InvalidArgumentError';
+import { NotFoundError } from '../../../../Contexts/shared/domain/errors/NotFoundError';
+import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
+
+import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
+
+const logger = buildLogger('apiErrorHandler');
 
 export const apiErrorHandler = (
   err: Error,
@@ -24,5 +28,6 @@ export const apiErrorHandler = (
       message = 'Internal Server Error';
   }
 
+  logger.error(message);
   res.status(statusCode).json({ message });
 };

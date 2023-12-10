@@ -5,7 +5,7 @@ docker/data
 fileDb/*.repo
 doc/postman/environments/*.json
 # Logs
-logs
+/logs
 *.log
 npm-debug.log*
 yarn-debug.log*

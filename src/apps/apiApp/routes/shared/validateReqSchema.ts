@@ -6,6 +6,9 @@ import {
   validationResult
 } from 'express-validator';
 import httpStatus from 'http-status';
+import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
+
+const logger = buildLogger('validateReqSchema');
 
 export const validateReqSchema = (
   req: Request,
@@ -76,6 +79,7 @@ export const validateReqSchema = (
       return acc;
     }, []);
 
+  logger.error(errors.map((error) => JSON.stringify(error)).join(','));
   res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
     errors
   });

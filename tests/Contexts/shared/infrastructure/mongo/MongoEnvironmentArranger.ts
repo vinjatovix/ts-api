@@ -11,7 +11,7 @@ export class MongoEnvironmentArranger extends EnvironmentArranger {
   }
 
   public async close(): Promise<void> {
-    return (await this.client()).close();
+    (await this.client()).close();
   }
 
   private async collections(): Promise<string[]> {

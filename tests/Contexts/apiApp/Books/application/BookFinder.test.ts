@@ -1,5 +1,5 @@
 import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application/BookFinder';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/value-object/NotFoundError';
+import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 import { RequestBookByIdMother } from './RequestBookByIdMother';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookIdMother } from '../domain/BookIdMother';

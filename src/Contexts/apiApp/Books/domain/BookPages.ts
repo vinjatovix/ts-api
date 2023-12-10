@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../shared/domain/value-object/InvalidArgumentError';
+import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
 import { NumberValueObject } from '../../../shared/domain/value-object/NumberValueObject';
 
 export class BookPages extends NumberValueObject {

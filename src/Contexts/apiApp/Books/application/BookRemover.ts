@@ -1,6 +1,8 @@
+import { buildLogger } from '../../../shared/plugins/logger.plugin';
 import { BookRepository } from '../domain/BookRepository';
 import { BookRemoverRequest } from './BookRemoverRequest';
 
+const logger = buildLogger('bookRemover');
 export class BookRemover {
   private readonly repository: BookRepository;
 
@@ -10,5 +12,6 @@ export class BookRemover {
 
   async run(request: BookRemoverRequest): Promise<void> {
     await this.repository.remove(request.id);
+    logger.info(`Removed Book: <${request.id}>`);
   }
 }
