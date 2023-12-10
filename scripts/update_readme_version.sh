@@ -7,12 +7,12 @@ if [ -z "$RELEASE_TYPE" ]; then
   echo "You must provide a version type (major, minor, patch)."
   exit 1
 fi
-BRANCH=$(git branch --show-current)
-# if is not a release branch, abort
-if [[ $BRANCH != release/* ]]; then
-  echo "You must be in a release branch to run this script."
-  exit 1
-fi
+# BRANCH=$(git branch --show-current)
+# # if is not a release branch, abort
+# if [[ $BRANCH != release/* ]]; then
+#   echo "You must be in a release branch to run this script."
+#   exit 1
+# fi
 
 # Obtain the current version
 CURRENT_VERSION=$(node -p "require('./package.json').version")
