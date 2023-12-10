@@ -9,7 +9,7 @@ if [ -z "$RELEASE_TYPE" ]; then
 fi
 BRANCH=$(git branch --show-current)
 # if is not a release branch, abort
-if [[ $BRANCH != release/* ]]; then
+if [ "$BRANCH" != "release/*" ]; then
   echo "You must be in a release branch to run this script."
   exit 1
 fi
@@ -30,8 +30,7 @@ perl -i -pe "s/Version-v$CURRENT_VERSION/Version-v$NEW_VERSION/g" README.md
 perl -i -pe "s/ts-api:$CURRENT_VERSION/ts-api:$NEW_VERSION/g" docker-compose.yaml
 
 # Replace the version in OpenAPI specification
-perl -i -pe "s/version: '$CURRENT_VERSION'/version: '$NEW_VERSION'/g" openApi.yaml
-
+perl -i -pe "s/version: '$CURRENT_VERSION'/version: '$NEW_VERSION'/g" ./src/apps/apiApp/openapi.yaml
 
 # Commit the changes
 ISSUE=$(git branch --show-current | sed 's/^release\///')
@@ -39,7 +38,7 @@ git add .
 git commit -m "[$ISSUE] Prepare release v$NEW_VERSION"
 
 # Check if the commit was successful
-if [ $? -ne 0 ]; then
+if ! mycmd; then
   echo "Commit failed. Aborting tag creation and push."
   exit 1
 fi
@@ -49,7 +48,7 @@ echo "Creating git tag v$NEW_VERSION"
 git tag -a "v$NEW_VERSION" -m "Version v$NEW_VERSION"
 
 # Check if the tag creation was successful
-if [ $? -ne 0 ]; then
+if ! mycmd; then
   echo "Tag creation failed. Aborting the push."
   exit 1
 fi
@@ -60,4 +59,3 @@ git push --force-with-lease origin "$(git branch --show-current)"
 git push origin "v$NEW_VERSION"
 
 echo "Push completed successfully."
-

@@ -5,20 +5,20 @@ services:
 
   Apps.apiApp.controllers.Books.PostBookController:
     class: ../../controllers/Books/PostBookController
-    arguments: ["@apiApp.Books.application.BookCreator"]
+    arguments: ['@apiApp.Books.application.BookCreator']
 
   Apps.apiApp.controllers.Books.GetBookController:
     class: ../../controllers/Books/GetBookController
-    arguments: ["@apiApp.Books.application.BookFinder"]
+    arguments: ['@apiApp.Books.application.BookFinder']
 
   Apps.apiApp.controllers.Books.GetAllBooksController:
     class: ../../controllers/Books/GetAllBooksController
-    arguments: ["@apiApp.Books.application.AllBooksFinder"]
+    arguments: ['@apiApp.Books.application.AllBooksFinder']
 
   Apps.apiApp.controllers.Books.PutBookController:
     class: ../../controllers/Books/PutBookController
-    arguments: ["@apiApp.Books.application.BookCreator"]
+    arguments: ['@apiApp.Books.application.BookUpdater']
 
   Apps.apiApp.controllers.Books.DeleteBookController:
     class: ../../controllers/Books/DeleteBookController
-    arguments: ["@apiApp.Books.application.BookRemover"]
+    arguments: ['@apiApp.Books.application.BookRemover']

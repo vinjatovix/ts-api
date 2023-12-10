@@ -4,7 +4,7 @@ Feature: Create a new book
   I want to create a new book
 
   Scenario: A valid non existing book
-    Given a PUT request to "/api/v1/Books/8a6e0804-2bd0-4672-b79d-d97027f9071a" with body
+    Given a POST request to "/api/v1/Books/" with body
       """
       {
         "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
@@ -19,7 +19,7 @@ Feature: Create a new book
     Then the response body should be empty
 
   Scenario: An ivalid non existing book
-    Given a PUT request to "/api/v1/Books/9a6e0804" with body
+    Given a POST request to "/api/v1/Books/" with body
       """
       {
         "author": 56,
@@ -34,9 +34,6 @@ Feature: Create a new book
       """
       {
         "errors": [
-          {
-            "id": "Invalid value at params. Value: 9a6e0804"
-          },
           {
             "id": "Invalid value at body. Value: undefined"
           },
@@ -59,5 +56,25 @@ Feature: Create a new book
             "fields": "Unknown field <extra> in <body> with value <property>"
           }
         ]
+      }
+      """
+
+  Scenario: A valid existing book
+    Given a POST request to "/api/v1/Books/" with body
+      """
+      {
+        "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
+        "title": "The Lord of the Rings",
+        "author": "J. R. R. Tolkien",
+        "isbn": "978-3-16-148410-0",
+        "releaseDate": "2023-10-10T23:21:50.508Z",
+        "pages": 1178
+      }
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "message": "Book <8a6e0804-2bd0-4672-b79d-d97027f9071a> already exists"
       }
       """

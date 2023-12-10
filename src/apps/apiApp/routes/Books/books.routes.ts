@@ -6,23 +6,30 @@ import { validateReqSchema } from '../shared';
 import { GetBookController } from '../../controllers/Books/GetBookController';
 import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
 import { GetAllBooksController } from '../../controllers/Books/GetAllBooksController';
+import { PutBookController } from '../../controllers/Books/PutBookController';
 
 const prefix = '/api/v1/Books';
 
 export const register = (router: Router) => {
-  const postPutReqSchema = [
+  const isbnRegex = /^(978|979)-\d{1,5}-\d{1,7}-\d{1,7}-\d$/;
+
+  const postReqSchema = [
+    body('id').exists().isUUID(),
+    body('title').exists().isString(),
+    body('author').exists().isString(),
+    body('isbn').exists().matches(isbnRegex),
+    body('releaseDate').exists().isISO8601().toDate(),
+    body('pages').exists().isInt(),
+    checkExact()
+  ];
+
+  const putReqSchema = [
     param('id').exists().isUUID(),
     body('id').exists().isUUID(),
     body('title').exists().isString(),
     body('author').exists().isString(),
-    body('isbn')
-      .exists()
-      .matches(/^(978|979)-\d{1,5}-\d{1,7}-\d{1,7}-\d$/),
-    body('releaseDate')
-      .exists()
-      .matches(
-        /^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d{3})?Z|(\d{2}-(0[1-9]|1[0-2])-\d{4})|(\d{4}-\d{2}-\d{2}))$/
-      ),
+    body('isbn').exists().matches(isbnRegex),
+    body('releaseDate').exists().isISO8601().toDate(),
     body('pages').exists().isInt(),
     checkExact()
   ];
@@ -42,7 +49,7 @@ export const register = (router: Router) => {
     'Apps.apiApp.controllers.Books.GetAllBooksController'
   );
 
-  const putController: PostBookController = container.get(
+  const putController: PutBookController = container.get(
     'Apps.apiApp.controllers.Books.PutBookController'
   );
 
@@ -50,9 +57,9 @@ export const register = (router: Router) => {
     'Apps.apiApp.controllers.Books.DeleteBookController'
   );
 
-  router.put(
-    `${prefix}/:id`,
-    postPutReqSchema,
+  router.post(
+    `${prefix}/`,
+    postReqSchema,
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       postController.run(req, res, next);
@@ -60,8 +67,8 @@ export const register = (router: Router) => {
   );
 
   router.put(
-    `${prefix}/:id/update`,
-    postPutReqSchema,
+    `${prefix}/:id`,
+    putReqSchema,
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       putController.run(req, res, next);
