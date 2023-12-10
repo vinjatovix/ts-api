@@ -1,16 +1,16 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
-import { BookUpdater } from '../../../../../src/Contexts/apiApp/Books/application/BookUpdater';
-import { PutBookController } from '../../../../../src/apps/apiApp/controllers/Books/PutBookController';
+import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application/BookCreator';
+import { PostBookController } from '../../../../../src/apps/apiApp/controllers/Books/PostBookController';
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/BookCreatorRequestMother';
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
 
-jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookUpdater');
+jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookCreator');
 
-describe('PutBookController', () => {
-  let bookUpdater: BookUpdater;
-  let controller: PutBookController;
+describe('PostBookController', () => {
+  let bookCreator: BookCreator;
+  let controller: PostBookController;
   let repository: BookRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -19,11 +19,10 @@ describe('PutBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookUpdater = new BookUpdater(repository);
-    controller = new PutBookController(bookUpdater);
+    bookCreator = new BookCreator(repository);
+    controller = new PostBookController(bookCreator);
     expectedBook = BookCreatorRequestMother.random();
     req = {
-      params: { id: expectedBook.id },
       body: expectedBook
     };
     res = {
@@ -34,17 +33,17 @@ describe('PutBookController', () => {
   });
 
   describe('run', () => {
-    it('should update a book and send 200 status', async () => {
+    it('should create a book and send 201 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookUpdater.run).toHaveBeenCalledWith(expectedBook);
-      expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
+      expect(bookCreator.run).toHaveBeenCalledWith(expectedBook);
+      expect(res.status).toHaveBeenCalledWith(httpStatus.CREATED);
       expect(res.send).toHaveBeenCalledWith();
     });
 
-    it('should call next with the error if book update fails', async () => {
-      const error = new Error('Book update failed');
-      jest.spyOn(bookUpdater, 'run').mockRejectedValueOnce(error);
+    it('should call next with the error if book creation fails', async () => {
+      const error = new Error('Book creation failed');
+      jest.spyOn(bookCreator, 'run').mockRejectedValueOnce(error);
 
       await controller.run(req as Request, res as Response, next);
 

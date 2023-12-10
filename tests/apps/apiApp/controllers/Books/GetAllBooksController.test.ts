@@ -41,5 +41,14 @@ describe('GetAllBooksController', () => {
         books.map((book) => book.toPrimitives())
       );
     });
+
+    it('should call next with the error if call fails', async () => {
+      const error = new Error('Book creation failed');
+      jest.spyOn(allBooksFinder, 'run').mockRejectedValueOnce(error);
+
+      await controller.run(req as Request, res as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });
