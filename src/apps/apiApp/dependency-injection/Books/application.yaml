@@ -4,8 +4,8 @@ services:
     arguments: []
 
   shared.Logs.LogRepository:
-    class: ../../../../Contexts/shared/Logs/infrastructure/persistence/LogFileSystemRepository
-    arguments: ['@shared.Logs.DataSource']
+    class: ../../../../Contexts/shared/Logs/infrastructure/persistence/LogMongoRepository
+    arguments: ['@apiApp.MongoClient']
 
   apiApp.MongoConfig:
     factory:
