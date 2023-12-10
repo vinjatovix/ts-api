@@ -8,7 +8,7 @@ export interface LogDocument {
   _id: string;
   message: string;
   level: string;
-  createdAt: string;
+  timestamp: string;
 }
 
 export class LogMongoRepository
@@ -28,7 +28,7 @@ export class LogMongoRepository
       Log.fromPrimitives({
         message: document.message,
         level: document.level,
-        createdAt: document.createdAt
+        timestamp: document.timestamp
       })
     );
   }

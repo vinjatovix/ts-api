@@ -6,24 +6,24 @@ import { Uuid } from '../../domain/value-object/Uuid';
 export class Log extends AggregateRoot {
   readonly id: string;
   readonly level: string;
-  readonly createdAt: Date;
+  readonly timestamp: Date;
   readonly message: string;
 
-  constructor(level: string, message: string, createdAt?: Date, id?: string) {
+  constructor(level: string, message: string, timestamp?: Date, id?: string) {
     super();
     this.id = id || Uuid.random();
     this.level = level;
     this.message = message;
-    this.createdAt = createdAt ?? new Date();
+    this.timestamp = timestamp ?? new Date();
     this.validate();
   }
 
   static fromString = (json: string): Log => {
-    const { level, message, createdAt, id } = JSON.parse(json);
+    const { level, message, timestamp, id } = JSON.parse(json);
     const log = Log.fromPrimitives({
       level,
       message,
-      createdAt: new Date(createdAt),
+      timestamp: new Date(timestamp),
       id
     });
 
@@ -34,14 +34,14 @@ export class Log extends AggregateRoot {
     id,
     level,
     message,
-    createdAt
+    timestamp
   }: {
     id?: string;
     level: string;
     message: string;
-    createdAt: string | Date;
+    timestamp: string | Date;
   }): Log => {
-    return new Log(level, message, new Date(createdAt), id);
+    return new Log(level, message, new Date(timestamp), id);
   };
 
   public toPrimitives(): Record<string, unknown> {
@@ -49,7 +49,7 @@ export class Log extends AggregateRoot {
       id: this.id,
       level: this.level,
       message: this.message,
-      createdAt: this.createdAt
+      timestamp: this.timestamp
     };
   }
 
@@ -57,7 +57,7 @@ export class Log extends AggregateRoot {
     return JSON.stringify({
       level: this.level,
       message: this.message,
-      createdAt: this.createdAt,
+      timestamp: this.timestamp,
       id: this.id
     });
   };
