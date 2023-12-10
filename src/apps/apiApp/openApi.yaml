@@ -12,7 +12,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/vinjatovix/ts-api/blob/develop/LICENSE.md
-  version: '1.3.0'
+  version: '1.4.0'
 servers:
   - url: HOST
     variables: {}
@@ -32,45 +32,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
-  /api/v1/Books/{id}:
-    put:
+
+    post:
       tags:
         - Books
       summary: Create Book
       operationId: CreateBook
-      parameters:
-        - name: id
-          in: path
-          description: required
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: '{{$guid}}'
+      parameters: []
       requestBody:
         description: ''
         content:
           application/json:
-            schema:
-              type: string
-              example: |-
-                {
-                    "id": "{{$guid}}"
-                    "title": "{{$randomWords}}",
-                    "author": "{{$randomNamePrefix}} {{$randomLastName}}",
-                    "isbn": "978-3-16-148410-0",
-                    "releaseDate": "{{$isoTimestamp}}",
-                    "pages": {{$randomInt}}
-                }
-            example: |-
-              {
-                  "id": "{{$guid}}"
-                  "title": "{{$randomWords}}",
-                  "author": "{{$randomNamePrefix}} {{$randomLastName}}",
-                  "isbn": "978-3-16-148410-0",
-                  "releaseDate": "{{$isoTimestamp}}",
-                  "pages": {{$randomInt}}
-              }
+            example:
+              id: '{{$guid}}'
+              title: '{{$randomWords}}'
+              author: '{{$randomNamePrefix}} {{$randomLastName}}'
+              isbn: '978-3-16-148410-0'
+              releaseDate: '{{$isoTimestamp}}'
+              pages: 1500
         required: true
       responses:
         '201':
@@ -94,7 +73,6 @@ paths:
               $ref: '#/components/headers/x-envoy-upstream-service-time'
             server:
               $ref: '#/components/headers/server'
-
 
           content: {}
         '400':
@@ -151,8 +129,9 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/422'
+                $ref: '#/components/schemas/422'
       deprecated: false
+  /api/v1/Books/{id}:
     get:
       tags:
         - Books
@@ -196,47 +175,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/Book'
       deprecated: false
-    delete:
-      tags:
-        - Books
-      summary: Delete Book by ID
-      operationId: DeleteBookbyID
-      parameters:
-        - name: id
-          in: path
-          description: required
-          required: true
-          style: simple
-          schema:
-            type: string
-            example: '{{bookId}}'
-      responses:
-        '204':
-          description: Deleted
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-          content: {}
-      deprecated: false
-  /api/v1/Books/{id}/update:
     put:
       tags:
         - Books
-      summary: Update Book
+      summary: Update Book by Id
       operationId: UpdateBook
       parameters:
         - name: id
@@ -251,26 +193,13 @@ paths:
         description: ''
         content:
           application/json:
-            schema:
-              type: string
-              example: |-
-                {
-                    "id": "{{$guid}}"
-                    "title": "{{$randomWords}}",
-                    "author": "{{$randomNamePrefix}} {{$randomLastName}}",
-                    "isbn": "978-3-16-148410-0",
-                    "releaseDate": "{{$isoTimestamp}}",
-                    "pages": {{$randomInt}}
-                }
-            example: |-
-              {
-                  "id": "{{$guid}}"
-                  "title": "{{$randomWords}}",
-                  "author": "{{$randomNamePrefix}} {{$randomLastName}}",
-                  "isbn": "978-3-16-148410-0",
-                  "releaseDate": "{{$isoTimestamp}}",
-                  "pages": {{$randomInt}}
-              }
+            example:
+              id: '{{$guid}}'
+              title: '{{$randomWords}}'
+              author: '{{$randomNamePrefix}} {{$randomLastName}}'
+              isbn: '978-3-16-148410-0'
+              releaseDate: '{{$isoTimestamp}}'
+              pages: 1500
         required: true
       responses:
         '200':
@@ -466,7 +395,43 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/422'
+                $ref: '#/components/schemas/422'
+      deprecated: false
+    delete:
+      tags:
+        - Books
+      summary: Delete Book by Id
+      operationId: DeleteBookById
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{bookId}}'
+      responses:
+        '204':
+          description: Deleted
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+          content: {}
       deprecated: false
   /api/v1/health/http:
     get:
@@ -634,7 +599,7 @@ components:
           - releaseDate: 'Invalid value at body. Value: leading-edge'
           - pages: 'Invalid value at body. Value: Baht'
     400:
-      title: "400"
+      title: '400'
       type: object
       properties:
         message:
@@ -668,11 +633,11 @@ components:
         pages:
           type: number
       example:
-        id: "b1d9b21-f695-4abd-910b-78c42204f1f9"
-        title: "Book title"
-        author: "Mr. Cont"
-        isbn: "978-3-16-148410-0"
-        releaseDate: "2023-10-15T22:00:21.845Z"
+        id: 'b1d9b21-f695-4abd-910b-78c42204f1f9'
+        title: 'Book title'
+        author: 'Mr. Cont'
+        isbn: '978-3-16-148410-0'
+        releaseDate: '2023-10-15T22:00:21.845Z'
         pages: 576
 tags:
   - name: Books

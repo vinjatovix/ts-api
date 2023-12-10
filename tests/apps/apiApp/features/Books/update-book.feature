@@ -3,9 +3,10 @@ Feature: Create a new book
   As a user with admin rights
   I want to create a new book
 
-  # Preconditions for the scenario
-  Background:
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+
+
+  Scenario: A valid existing book
+    Given a POST request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
@@ -18,8 +19,7 @@ Feature: Create a new book
       """
     Then the response status code should be 201
 
-  Scenario: A valid existing book
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a/update" with body
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
         "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
@@ -73,5 +73,25 @@ Feature: Create a new book
             "fields": "Unknown field <extra> in <body> with value <property>"
           }
         ]
+      }
+      """
+
+  Scenario: A non-existing book
+    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4675-b79d-d97027f9073b" with body
+      """
+      {
+        "id": "9a6e0804-2bd0-4675-b79d-d97027f9073b",
+        "title": "The Lord of the Rings for babies",
+        "author": "J. R. R. Tolkien",
+        "isbn": "978-3-16-148410-0",
+        "releaseDate": "2023-10-10T23:21:50.508Z",
+        "pages": 11
+      }
+      """
+    Then the response status code should be 404
+    Then the response body should be
+      """
+      {
+        "message": "Book <9a6e0804-2bd0-4675-b79d-d97027f9073b> not found"
       }
       """

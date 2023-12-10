@@ -8,11 +8,11 @@ import { BookAuthor } from '../domain/BookAuthor';
 import { BookReleaseDate } from '../domain/BookReleaseDate';
 import { BookPages } from '../domain/BookPages';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
+import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 
-const logger = buildLogger('bookCreator');
+const logger = buildLogger('bookUpdater');
 
-export class BookCreator {
+export class BookUpdater {
   private readonly repository: BookRepository;
 
   constructor(repository: BookRepository) {
@@ -22,8 +22,8 @@ export class BookCreator {
   async run(request: BookCreatorRequest): Promise<void> {
     const storedBook = await this.repository.search(request.id);
 
-    if (storedBook) {
-      throw new InvalidArgumentError(`Book <${request.id}> already exists`);
+    if (storedBook === null) {
+      throw new NotFoundError(`Book <${request.id}> not found`);
     }
 
     const book = new Book({
@@ -36,6 +36,6 @@ export class BookCreator {
     });
 
     await this.repository.save(book);
-    logger.info(`Created Book: <${book.id.value}>`);
+    logger.info(`Updated Book: <${book.id.value}>`);
   }
 }

@@ -4,7 +4,7 @@ Feature: Get all books in the collection
 
   #preconditions for the scenario
   Background:
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-a97027f9071c" with body
+    Given a POST request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
@@ -17,7 +17,7 @@ Feature: Get all books in the collection
       """
     Then the response status code should be 201
 
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-b97027f9071d" with body
+    Given a POST request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d",

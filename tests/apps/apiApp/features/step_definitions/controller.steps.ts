@@ -25,9 +25,16 @@ AfterAll(async () => {
   await app.stop();
 });
 
-Given('a GET request to {string}', (route: string) => {
+Given('a GET request to {string}', async (route: string) => {
   _request = request(app.httpServer).get(route);
 });
+
+Given(
+  'a POST request to {string} with body',
+  async (route: string, body: string) => {
+    _request = request(app.httpServer).post(route).send(JSON.parse(body));
+  }
+);
 
 Given(
   'a PUT request to {string} with body',
@@ -36,7 +43,7 @@ Given(
   }
 );
 
-Given('a DELETE request to {string}', (route: string) => {
+Given('a DELETE request to {string}', async (route: string) => {
   _request = request(app.httpServer).delete(route);
 });
 
