@@ -4,7 +4,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ts-api:1.3.0
+    image: ts-api:1.4.0
     container_name: ts-api
     ports:
       - "3000:3000"
