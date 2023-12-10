@@ -3,7 +3,6 @@ import httpStatus from 'http-status';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
 import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books/DeleteBookController';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
-import { LogRepositoryMock } from '../../../../Contexts/shared/__mocks__/LogRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
 
@@ -11,14 +10,14 @@ describe('DeleteBookController', () => {
   let bookRemover: BookRemover;
   let controller: DeleteBookController;
   let repository: BookRepositoryMock;
-  let logRepository: LogRepositoryMock;
+
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookRemover = new BookRemover(repository, logRepository);
+    bookRemover = new BookRemover(repository);
     controller = new DeleteBookController(bookRemover);
     req = { params: { id: '1' } };
     res = {

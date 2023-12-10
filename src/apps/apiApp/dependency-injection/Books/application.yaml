@@ -1,12 +1,4 @@
 services:
-  shared.Logs.DataSource:
-    class: ../../../../Contexts/shared/Logs/infrastructure/persistence/LogFileSystemDataSource
-    arguments: []
-
-  shared.Logs.LogRepository:
-    class: ../../../../Contexts/shared/Logs/infrastructure/persistence/LogMongoRepository
-    arguments: ['@apiApp.MongoClient']
-
   apiApp.MongoConfig:
     factory:
       class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
@@ -20,8 +12,7 @@ services:
 
   apiApp.Books.application.BookCreator:
     class: ../../../../Contexts/apiApp/Books/application/BookCreator
-    arguments:
-      ['@apiApp.Books.domain.BookRepository', '@shared.Logs.LogRepository']
+    arguments: ['@apiApp.Books.domain.BookRepository']
 
   apiApp.Books.application.BookFinder:
     class: ../../../../Contexts/apiApp/Books/application/BookFinder
@@ -33,10 +24,8 @@ services:
 
   apiApp.Books.application.BookRemover:
     class: ../../../../Contexts/apiApp/Books/application/BookRemover
-    arguments:
-      ['@apiApp.Books.domain.BookRepository', '@shared.Logs.LogRepository']
+    arguments: ['@apiApp.Books.domain.BookRepository']
 
   apiApp.Books.domain.BookRepository:
     class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/MongoBookRepository
     arguments: ['@apiApp.MongoClient']
-

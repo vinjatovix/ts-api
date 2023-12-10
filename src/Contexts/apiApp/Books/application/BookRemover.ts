@@ -1,22 +1,17 @@
-import { Log } from '../../../shared/Logs/domain/Log';
-import { LogLevel } from '../../../shared/Logs/domain/LogLevel';
-import { LogRepository } from '../../../shared/Logs/domain/LogRepository';
+import { buildLogger } from '../../../shared/plugins/logger.plugin';
 import { BookRepository } from '../domain/BookRepository';
 import { BookRemoverRequest } from './BookRemoverRequest';
 
+const logger = buildLogger('bookRemover');
 export class BookRemover {
   private readonly repository: BookRepository;
-  private readonly logRepository: LogRepository;
 
-  constructor(repository: BookRepository, logRepository: LogRepository) {
+  constructor(repository: BookRepository) {
     this.repository = repository;
-    this.logRepository = logRepository;
   }
 
   async run(request: BookRemoverRequest): Promise<void> {
     await this.repository.remove(request.id);
-    await this.logRepository.save(
-      new Log(LogLevel.INFO, `Removed Book: <${request.id}>`)
-    );
+    logger.info(`Removed Book: <${request.id}>`);
   }
 }

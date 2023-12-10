@@ -3,10 +3,9 @@ import httpStatus from 'http-status';
 import { NotFoundError } from '../../../../Contexts/shared/domain/errors/NotFoundError';
 import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
 
-import { LogFileSystemRepository } from '../../../../Contexts/shared/Logs/infrastructure/persistence/LogFileSystemRepository';
-import { LogFileSystemDataSource } from '../../../../Contexts/shared/Logs/infrastructure/persistence/LogFileSystemDataSource';
-import { Log } from '../../../../Contexts/shared/Logs/domain/Log';
-import { LogLevel } from '../../../../Contexts/shared/Logs/domain/LogLevel';
+import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
+
+const logger = buildLogger('apiErrorHandler');
 
 export const apiErrorHandler = async (
   err: Error,
@@ -16,24 +15,22 @@ export const apiErrorHandler = async (
 ): Promise<void> => {
   let statusCode;
   let message = err.message;
-  const logRepository = new LogFileSystemRepository(
-    new LogFileSystemDataSource()
-  );
 
   switch (true) {
     case err instanceof NotFoundError:
       statusCode = httpStatus.NOT_FOUND;
-      await logRepository.save(new Log(LogLevel.WARN, message));
+
       break;
     case err instanceof InvalidArgumentError:
       statusCode = httpStatus.BAD_REQUEST;
-      await logRepository.save(new Log(LogLevel.WARN, message));
+
       break;
     default:
       statusCode = httpStatus.INTERNAL_SERVER_ERROR;
-      await logRepository.save(new Log(LogLevel.ERROR, message));
+
       message = 'Internal Server Error';
   }
+  logger.error(message);
 
   res.status(statusCode).json({ message });
 };

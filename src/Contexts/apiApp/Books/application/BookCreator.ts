@@ -7,17 +7,15 @@ import { Isbn } from '../domain/ISBN';
 import { BookAuthor } from '../domain/BookAuthor';
 import { BookReleaseDate } from '../domain/BookReleaseDate';
 import { BookPages } from '../domain/BookPages';
-import { LogRepository } from '../../../shared/Logs/domain/LogRepository';
-import { Log } from '../../../shared/Logs/domain/Log';
-import { LogLevel } from '../../../shared/Logs/domain/LogLevel';
+import { buildLogger } from '../../../shared/plugins/logger.plugin';
+
+const logger = buildLogger('bookCreator');
 
 export class BookCreator {
   private readonly repository: BookRepository;
-  private readonly logRepository: LogRepository;
 
-  constructor(repository: BookRepository, logRepository: LogRepository) {
+  constructor(repository: BookRepository) {
     this.repository = repository;
-    this.logRepository = logRepository;
   }
 
   async run(request: BookCreatorRequest): Promise<void> {
@@ -31,8 +29,6 @@ export class BookCreator {
     });
 
     await this.repository.save(book);
-    await this.logRepository.save(
-      new Log(LogLevel.INFO, `Created Book: <${book.id.value}>`)
-    );
+    logger.info(`Created Book: <${book.id.value}>`);
   }
 }

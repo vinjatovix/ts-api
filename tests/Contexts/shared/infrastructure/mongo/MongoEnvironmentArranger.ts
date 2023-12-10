@@ -1,5 +1,8 @@
 import { MongoClient } from 'mongodb';
 import { EnvironmentArranger } from '../arranger/EnvironmentArranger';
+import { buildLogger } from '../../../../../src/Contexts/shared/plugins/logger.plugin';
+
+const logger = buildLogger('mongoEnvironmentArranger');
 
 export class MongoEnvironmentArranger extends EnvironmentArranger {
   constructor(private _client: Promise<MongoClient>) {
@@ -8,12 +11,12 @@ export class MongoEnvironmentArranger extends EnvironmentArranger {
 
   public async arrange(): Promise<void> {
     await this.cleanDatabase();
-    console.info('MongoDB database cleaned');
+    logger.info('MongoDB database cleaned');
   }
 
   public async close(): Promise<void> {
     (await this.client()).close();
-    console.info('MongoDB connection closed');
+    logger.info('MongoDB connection closed');
   }
 
   private async collections(): Promise<string[]> {

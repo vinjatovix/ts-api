@@ -3,17 +3,15 @@ import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookCreatorRequestMother } from './BookCreatorRequestMother';
 import { BookMother } from '../domain/BookMother';
 import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
-import { LogRepositoryMock } from '../../../shared/__mocks__/LogRepositoryMock';
 
 describe('BookCreator', () => {
   let repository: BookRepositoryMock;
   let creator: BookCreator;
-  let logRepository: LogRepositoryMock;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    logRepository = new LogRepositoryMock();
-    creator = new BookCreator(repository, logRepository);
+
+    creator = new BookCreator(repository);
   });
 
   it('should create a valid book', async () => {
