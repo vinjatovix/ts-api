@@ -2,7 +2,12 @@ import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
 import request from 'supertest';
 import { assert } from 'chai';
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
-import { MongoClientFactory } from '../../../../../src/Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory';
+import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
+import container from '../../../../../src/apps/apiApp/dependency-injection';
+
+const environmentArranger: Promise<EnvironmentArranger> = container.get(
+  'apiApp.EnvironmentArranger'
+);
 
 let _request: request.Test;
 let _response: request.Response;
@@ -11,10 +16,12 @@ let app: ApiApp;
 BeforeAll(async () => {
   app = new ApiApp();
   await app.start();
+  await (await environmentArranger).arrange();
 });
 
 AfterAll(async () => {
-  await MongoClientFactory.closeClient('apiApp');
+  await (await environmentArranger).arrange();
+  await (await environmentArranger).close();
   await app.stop();
 });
 

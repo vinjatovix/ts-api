@@ -6,10 +6,10 @@ Feature: Get a specific book by id
 
     # Preconditions for the scenario
     Background:
-      Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9071a" with body
+      Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9071e" with body
       """
       {
-        "id": "9a6e0804-2bd0-4672-b79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4672-b79d-d97027f9071e",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -20,12 +20,12 @@ Feature: Get a specific book by id
       Then the response status code should be 201
 
   Scenario: Get a specific existing book by id
-      Given a GET request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9071a"
+      Given a GET request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9071e"
       Then the response status code should be 200
       Then the response body should contain
       """
       {
-        "id": "9a6e0804-2bd0-4672-b79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4672-b79d-d97027f9071e",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -35,11 +35,11 @@ Feature: Get a specific book by id
       """
 
   Scenario: Get a specific book by id that does not exist
-    Given a GET request to "/api/v1/Books/8a6e0804-2bd0-4672-b79d-d97027f9071b"
+    Given a GET request to "/api/v1/Books/8a6e0804-2bd0-4672-b79d-d97027f9071f"
     Then the response status code should be 404
     Then the response body should contain
       """
       {
-        "message": "Book <8a6e0804-2bd0-4672-b79d-d97027f9071b> not found"
+        "message": "Book <8a6e0804-2bd0-4672-b79d-d97027f9071f> not found"
       }
       """
