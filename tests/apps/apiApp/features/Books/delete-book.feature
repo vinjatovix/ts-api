@@ -5,10 +5,10 @@ Feature: Delete a specific book
 
     # Preconditions for the scenario
     Background:
-      Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071a" with body
+      Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071b" with body
       """
       {
-        "id": "9a6e0804-2bd0-4673-b79d-d97027f9071a",
+        "id": "9a6e0804-2bd0-4673-b79d-d97027f9071b",
         "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
@@ -19,6 +19,6 @@ Feature: Delete a specific book
       Then the response status code should be 201
 
   Scenario: Delete a specific existing book by id
-    Given a DELETE request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071a"
+    Given a DELETE request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071b"
     Then the response status code should be 204
     Then the response body should be empty

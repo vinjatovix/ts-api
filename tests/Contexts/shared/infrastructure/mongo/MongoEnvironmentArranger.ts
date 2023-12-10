@@ -8,10 +8,12 @@ export class MongoEnvironmentArranger extends EnvironmentArranger {
 
   public async arrange(): Promise<void> {
     await this.cleanDatabase();
+    console.info('MongoDB database cleaned');
   }
 
   public async close(): Promise<void> {
-    return (await this.client()).close();
+    (await this.client()).close();
+    console.info('MongoDB connection closed');
   }
 
   private async collections(): Promise<string[]> {

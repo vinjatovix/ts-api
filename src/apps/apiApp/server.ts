@@ -48,7 +48,7 @@ export class Server {
           ? `${this.host}:${this.port}`
           : this.host;
         const message: string = `Backend App is running at ${host} in ${env} mode`;
-        console.log(message);
+        console.info(message);
         resolve();
       });
     });
