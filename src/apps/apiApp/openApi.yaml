@@ -1,4 +1,5 @@
 openapi: 3.0.3
+
 info:
   title: ts-api
   description: |-
@@ -13,9 +14,15 @@ info:
     name: MIT License
     url: https://github.com/vinjatovix/ts-api/blob/develop/LICENSE.md
   version: '1.4.0'
+
 servers:
   - url: HOST
     variables: {}
+
+tags:
+  - name: Books
+  - name: Health
+
 paths:
   /api/v1/Books:
     get:
@@ -32,8 +39,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Book'
-
     post:
+      deprecated: false
       tags:
         - Books
       summary: Create Book
@@ -73,7 +80,6 @@ paths:
               $ref: '#/components/headers/x-envoy-upstream-service-time'
             server:
               $ref: '#/components/headers/server'
-
           content: {}
         '400':
           description: Bad Request
@@ -101,38 +107,16 @@ paths:
               schema:
                 $ref: '#/components/schemas/400'
               example:
-                message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
-        '422':
-          description: Unprocessable Entity
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
+                errors:
+                  - id: 'Invalid value at params. Value: USB'
+                  - author: 'Invalid value at body. Value: undefined'
+                  - isbn: 'Invalid value at body. Value: 522'
+                  - releaseDate: 'Invalid value at body. Value: leading-edge'
+                  - pages: 'Invalid value at body. Value: Baht'
 
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/422'
-      deprecated: false
   /api/v1/Books/{id}:
     get:
+      deprecated: false
       tags:
         - Books
       summary: Get Book by Id
@@ -174,8 +158,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Book'
+    patch:
       deprecated: false
-    put:
       tags:
         - Books
       summary: Update Book by Id
@@ -194,65 +178,28 @@ paths:
         content:
           application/json:
             example:
-              id: '{{$guid}}'
-              title: '{{$randomWords}}'
-              author: '{{$randomNamePrefix}} {{$randomLastName}}'
-              isbn: '978-3-16-148410-0'
-              releaseDate: '{{$isoTimestamp}}'
               pages: 1500
         required: true
       responses:
         '200':
-          description: Created
+          description: Updated
           headers:
             vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
+              $ref: '#/components/headers/vary'
             access-control-allow-credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
+              $ref: '#/components/headers/access-control-allow-credentials'
             x-xss-protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
+              $ref: '#/components/headers/x-xss-protection'
             x-content-type-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
+              $ref: '#/components/headers/x-content-type-options'
             x-frame-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
+              $ref: '#/components/headers/x-frame-options'
             date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:19:00 GMT
+              $ref: '#/components/headers/date'
             connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
+              $ref: '#/components/headers/connection'
             keep-alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+              $ref: '#/components/headers/keep-alive'
             content-length:
               content:
                 text/plain:
@@ -264,140 +211,30 @@ paths:
           description: Bad Request
           headers:
             vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
+              $ref: '#/components/headers/vary'
             access-control-allow-credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
+              $ref: '#/components/headers/access-control-allow-credentials'
             x-xss-protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
+              $ref: '#/components/headers/x-xss-protection'
             x-content-type-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
+              $ref: '#/components/headers/x-content-type-options'
             x-frame-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            content-length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '214'
-            etag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"d6-UvcKv5g+ijEEpnLp3cngfhEGt+o"
+              $ref: '#/components/headers/x-frame-options'
             date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:24:03 GMT
+              $ref: '#/components/headers/date'
             connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
+              $ref: '#/components/headers/connection'
             keep-alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+              $ref: '#/components/headers/keep-alive'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/400'
               example:
-                message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
-        '422':
-          description: Unprocessable Entity
-          headers:
-            vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
-            access-control-allow-credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
-            x-xss-protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
-            x-content-type-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
-            x-frame-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
-            content-length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '263'
-            etag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"107-1SWyRDyHUwHOAtJsyzyflhpva1k"
-            date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 19:23:47 GMT
-            connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
-            keep-alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/422'
-      deprecated: false
+                errors:
+                  - message: 'Empty body is not allowed'
     delete:
+      deprecated: false
       tags:
         - Books
       summary: Delete Book by Id
@@ -432,9 +269,10 @@ paths:
             keep-alive:
               $ref: '#/components/headers/keep-alive'
           content: {}
-      deprecated: false
+
   /api/v1/health/http:
     get:
+      deprecated: false
       tags:
         - Health
       summary: Api server
@@ -445,73 +283,30 @@ paths:
           description: OK
           headers:
             vary:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Origin
+              $ref: '#/components/headers/vary'
             access-control-allow-credentials:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: 'true'
+              $ref: '#/components/headers/access-control-allow-credentials'
             x-xss-protection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
+              $ref: '#/components/headers/x-xss-protection'
             x-content-type-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: nosniff
+              $ref: '#/components/headers/x-content-type-options'
             x-frame-options:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: DENY
+              $ref: '#/components/headers/x-frame-options'
             content-length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '33'
+              $ref: '#/components/headers/content-length'
             etag:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: W/"21-Rei14saXbyNBzYa963Az8GGsDLs"
+              $ref: '#/components/headers/etag'
             date:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: Sun, 15 Oct 2023 18:04:29 GMT
+              $ref: '#/components/headers/date'
             connection:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: keep-alive
+              $ref: '#/components/headers/connection'
             keep-alive:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: timeout=5
+              $ref: '#/components/headers/keep-alive'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Health'
-              example:
-                version: 1.2.2
-                status: OK
-      deprecated: false
+
 components:
   headers:
     connection:
@@ -528,37 +323,37 @@ components:
       description: The vary header
       schema:
         type: string
-      example: Origin
+        example: Origin
     access-control-allow-credentials:
       description: The access-control-allow-credentials header
       schema:
         type: string
-      example: 'true'
+        example: 'true'
     x-xss-protection:
       description: The x-xss-protection header
       schema:
         type: string
-      example: '0'
+        example: '0'
     x-content-type-options:
       description: The x-content-type-options header
       schema:
         type: string
-      example: nosniff
+        example: nosniff
     x-frame-options:
       description: The x-frame-options header
       schema:
         type: string
-      example: DENY
+        example: DENY
     date:
       description: The Date header
       schema:
         type: string
-      example: Sun, 15 Oct 2023 19:19:00 GMT
+        example: Sun, 15 Oct 2023 19:19:00 GMT
     content-length:
       description: The content-length header
       schema:
         type: string
-      example: '0'
+        example: '0'
     x-envoy-upstream-service-time:
       description: The X-Envoy-Upstream-Service-Time header
       schema:
@@ -571,41 +366,32 @@ components:
       description: The ETag header
       schema:
         type: string
+
   schemas:
-    Error:
-      title: Error
-      type: object
-      properties:
-        message:
-          type: string
-      example:
-        id: 'Invalid value at params. Value: USB'
-    422:
-      title: validation error
-      required:
-        - errors
+    400:
+      title: '400'
       type: object
       properties:
         errors:
           type: array
           items:
-            $ref: '#/components/schemas/Error'
-          description: ''
+            type: object
+            properties:
+              author:
+                type: string
+              isbn:
+                type: string
+              releaseDate:
+                type: string
+              pages:
+                type: string
       example:
         errors:
-          - id: 'Invalid value at params. Value: USB'
           - author: 'Invalid value at body. Value: undefined'
           - isbn: 'Invalid value at body. Value: 522'
           - releaseDate: 'Invalid value at body. Value: leading-edge'
           - pages: 'Invalid value at body. Value: Baht'
-    400:
-      title: '400'
-      type: object
-      properties:
-        message:
-          type: string
-      example:
-        message: <BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters
+
     Health:
       title: OK
       type: object
@@ -615,7 +401,7 @@ components:
         status:
           type: string
       example:
-        version: 1.2.2
+        version: 1.4.0
         status: OK
     Book:
       type: object
@@ -639,6 +425,3 @@ components:
         isbn: '978-3-16-148410-0'
         releaseDate: '2023-10-15T22:00:21.845Z'
         pages: 576
-tags:
-  - name: Books
-  - name: Health
