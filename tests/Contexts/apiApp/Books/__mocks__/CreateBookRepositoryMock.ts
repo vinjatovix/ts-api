@@ -1,4 +1,5 @@
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
+import { BookPatch } from '../../../../../src/Contexts/apiApp/Books/domain/BookPatch';
 import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
 
 export class CreateBookRepositoryMock implements BookRepository {
@@ -28,10 +29,15 @@ export class CreateBookRepositoryMock implements BookRepository {
     expect(this.findMock).toHaveBeenCalledWith(expected);
   }
 
-  findAll(): Promise<Book[]> {
-    throw new Error('Method not implemented.');
+  async findAll(): Promise<Book[]> {
+    return [];
   }
-  remove(_bookId: string): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async update(_book: BookPatch): Promise<void> {
+    return;
+  }
+
+  async remove(_bookId: string): Promise<void> {
+    return;
   }
 }

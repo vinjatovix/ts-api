@@ -1,6 +1,8 @@
-import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
+import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
+
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
+
 import { BookMother } from '../../domain/BookMother';
 
 const repository: BookRepository = container.get(
@@ -26,6 +28,17 @@ describe('MongoBookRepository', () => {
       const book = BookMother.random();
 
       await repository.save(book);
+    });
+  });
+
+  describe('update', () => {
+    it('should update an existing book', async () => {
+      const book = BookMother.random();
+      await repository.save(book);
+
+      await repository.update(book);
+
+      expect(await repository.search(book.id.value)).toEqual(book);
     });
   });
 

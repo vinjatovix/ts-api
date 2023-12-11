@@ -79,8 +79,9 @@ export const validateReqSchema = (
       return acc;
     }, []);
 
-  logger.error(errors.map((error) => JSON.stringify(error)).join(','));
-  res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+  const errorMessages = errors.map((error) => JSON.stringify(error)).join(',');
+  logger.error(`${req.method} ${req.path} - [${errorMessages}]`);
+  res.status(httpStatus.BAD_REQUEST).json({
     errors
   });
 };

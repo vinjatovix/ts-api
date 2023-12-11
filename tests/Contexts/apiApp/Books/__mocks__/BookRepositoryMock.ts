@@ -1,15 +1,19 @@
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
+import { BookPatch } from '../../../../../src/Contexts/apiApp/Books/domain/BookPatch';
 import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
+
 import { BookMother } from '../domain/BookMother';
 
 export class BookRepositoryMock implements BookRepository {
   private saveMock: jest.Mock;
+  private updateMock: jest.Mock;
   private findMock: jest.Mock;
   private findAllMock: jest.Mock;
   private removeMock: jest.Mock;
 
   constructor() {
     this.saveMock = jest.fn();
+    this.updateMock = jest.fn();
     this.findMock = jest.fn();
     this.findAllMock = jest.fn();
     this.removeMock = jest.fn();
@@ -21,6 +25,14 @@ export class BookRepositoryMock implements BookRepository {
 
   assertSaveHasBeenCalledWith(expected: Book): void {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
+  }
+
+  async update(book: BookPatch): Promise<void> {
+    this.updateMock(book);
+  }
+
+  assertUpdateHasBeenCalledWith(expected: BookPatch): void {
+    expect(this.updateMock).toHaveBeenCalledWith(expected);
   }
 
   async search(id: string): Promise<Book | null> {

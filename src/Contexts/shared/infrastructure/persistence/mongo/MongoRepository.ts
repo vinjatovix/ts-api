@@ -29,6 +29,13 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     );
   }
 
+  protected async patch(aggregateRoot: T): Promise<void> {
+    const collection = await this.collection();
+    const { id, ...document } = aggregateRoot.toPrimitives();
+
+    await collection.updateOne({ _id: id }, { $set: document });
+  }
+
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
     await collection.deleteOne({ _id: id });
