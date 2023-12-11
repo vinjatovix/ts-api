@@ -1,15 +1,17 @@
-import { BookUpdater } from '../../../../../src/Contexts/apiApp/Books/application/BookUpdater';
+import { BookPatcher } from '../../../../../src/Contexts/apiApp/Books/application/BookPatcher';
+
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookMother } from '../domain/BookMother';
+
 import { BookCreatorRequestMother } from './BookCreatorRequestMother';
 
-describe('BookUpdated', () => {
+describe('BookPatcher', () => {
   let repository: BookRepositoryMock;
-  let updater: BookUpdater;
+  let updater: BookPatcher;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    updater = new BookUpdater(repository);
+    updater = new BookPatcher(repository);
   });
 
   it('should update a valid book', async () => {
@@ -18,6 +20,6 @@ describe('BookUpdated', () => {
 
     await updater.run(request);
 
-    repository.assertSaveHasBeenCalledWith(book);
+    repository.assertUpdateHasBeenCalledWith(book);
   });
 });

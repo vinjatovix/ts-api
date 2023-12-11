@@ -1,9 +1,11 @@
 import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
-import request from 'supertest';
 import { assert } from 'chai';
+import request from 'supertest';
+
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
-import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 import container from '../../../../../src/apps/apiApp/dependency-injection';
+
+import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -37,9 +39,9 @@ Given(
 );
 
 Given(
-  'a PUT request to {string} with body',
+  'a PATCH request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer).put(route).send(JSON.parse(body));
+    _request = request(app.httpServer).patch(route).send(JSON.parse(body));
   }
 );
 

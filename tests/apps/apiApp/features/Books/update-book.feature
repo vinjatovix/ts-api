@@ -19,11 +19,10 @@ Feature: Create a new book
       """
     Then the response status code should be 201
 
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
-        "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
-        "title": "The Lord of the Rings for babies",
+        "title": "The Lord of the Rings",
         "author": "J. R. R. Tolkien",
         "isbn": "978-3-16-148410-0",
         "releaseDate": "2023-10-10T23:21:50.508Z",
@@ -33,7 +32,34 @@ Feature: Create a new book
     Then the response status code should be 200
     Then the response body should be empty
 
-    Given a PUT request to "/api/v1/Books/9a6e0804" with body
+    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+      """
+      {
+        "pages": 11
+      }
+      """
+    Then the response status code should be 200
+    Then the response body should be empty
+
+    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+      """
+      {}
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "errors": [
+          {
+            "message": "Empty body is not allowed"
+          }
+        ]
+      }
+      """
+
+
+  Scenario: An unprocessable book
+    Given a PATCH request to "/api/v1/Books/9a6e0804" with body
       """
       {
         "author": 56,
@@ -43,19 +69,13 @@ Feature: Create a new book
         "extra": "property"
       }
       """
-    Then the response status code should be 422
+    Then the response status code should be 400
     Then the response body should be
       """
       {
         "errors": [
           {
             "id": "Invalid value at params. Value: 9a6e0804"
-          },
-          {
-            "id": "Invalid value at body. Value: undefined"
-          },
-          {
-            "title": "Invalid value at body. Value: undefined"
           },
           {
             "author": "Invalid value at body. Value: 56"
@@ -77,15 +97,10 @@ Feature: Create a new book
       """
 
   Scenario: A non-existing book
-    Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4675-b79d-d97027f9073b" with body
+    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4675-b79d-d97027f9073b" with body
       """
       {
-        "id": "9a6e0804-2bd0-4675-b79d-d97027f9073b",
-        "title": "The Lord of the Rings for babies",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148410-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 11
+        "pages": 666
       }
       """
     Then the response status code should be 404
