@@ -1,5 +1,7 @@
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
-import { BookRepository } from '../domain/BookRepository';
+
+import { BookRepository } from '../domain';
+
 import { BookRemoverRequest } from './BookRemoverRequest';
 
 const logger = buildLogger('bookRemover');

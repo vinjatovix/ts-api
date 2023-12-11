@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
-import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application/BookFinder';
-import { GetBookController } from '../../../../../src/apps/apiApp/controllers/Books/GetBookController';
-import { BookMother } from '../../../../Contexts/apiApp/Books/domain/BookMother';
+import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application';
+import { GetBookController } from '../../../../../src/apps/apiApp/controllers/Books';
+import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers/BookMother';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookFinder');

@@ -1,16 +1,21 @@
-import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
-import { BookAuthor } from '../../../../../src/Contexts/apiApp/Books/domain/BookAuthor';
-import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
-import { BookPages } from '../../../../../src/Contexts/apiApp/Books/domain/BookPages';
-import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
-import { BookTitle } from '../../../../../src/Contexts/apiApp/Books/domain/BookTitle';
-import { Isbn } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
-import { BookAuthorMother } from '../domain/BookAuthorMother';
-import { BookIdMother } from '../domain/BookIdMother';
-import { BookPagesMother } from '../domain/BookPagesMother';
-import { BookReleaseDateMother } from '../domain/BookReleaseDateMother';
-import { BookTitleMother } from '../domain/BookTitleMother';
-import { ISBNMother } from '../domain/ISBNMother';
+import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
+import {
+  BookAuthor,
+  BookId,
+  BookPages,
+  BookReleaseDate,
+  BookTitle,
+  Isbn
+} from '../../../../../../src/Contexts/apiApp/Books/domain';
+
+import {
+  BookAuthorMother,
+  BookIdMother,
+  BookPagesMother,
+  BookReleaseDateMother,
+  BookTitleMother,
+  ISBNMother
+} from '../../domain/mothers';
 
 export class BookCreatorRequestMother {
   static create(

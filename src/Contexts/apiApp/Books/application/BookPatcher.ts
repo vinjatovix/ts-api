@@ -1,9 +1,9 @@
 import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
 
-import { BookPatch } from '../domain/BookPatch';
+import { BookPatch, BookRepository } from '../domain';
+
 import { BookPatcherRequest } from './BookPatcherRequest';
-import { BookRepository } from '../domain/BookRepository';
 
 const logger = buildLogger('bookPatcher');
 
