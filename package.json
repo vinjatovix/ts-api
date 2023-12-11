@@ -6,8 +6,8 @@
   "description": "API/REST in TS",
   "homepage": "https://github.com/vinjatovix/ts-api#readme",
   "engines": {
-    "node": ">=18.2.1",
-    "npm": ">=8.19.2"
+    "node": ">=20.9.0",
+    "npm": ">=10.1.0"
   },
   "scripts": {
     "build": "npm run build:clean && npm run build:tsc && npm run build:di",

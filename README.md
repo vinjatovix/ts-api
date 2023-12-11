@@ -30,8 +30,8 @@ See [LICENSE](LICENSE.md) for details.
 # Installation
 ## Prerequisites
 
-- Node.js version >= 18.2.1
-- npm version >= 8.19.2
+- Node.js version >= 20.9.0
+- npm version >= 10.1.0
 
 A `.tool-versions` file is provided to easily work with [asdf](https://asdf-vm.com/)
 
