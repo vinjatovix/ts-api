@@ -1,7 +1,7 @@
-import { BookRepository } from '../../domain/BookRepository';
-import { Book } from '../../domain/Book';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 import { Nullable } from '../../../../shared/domain/Nullable';
+import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
+
+import { Book, BookPatch, BookRepository } from '../../domain';
 
 export interface BookDocument {
   _id: string;
@@ -13,11 +13,15 @@ export interface BookDocument {
 }
 
 export class MongoBookRepository
-  extends MongoRepository<Book>
+  extends MongoRepository<Book | BookPatch>
   implements BookRepository
 {
   public async save(book: Book): Promise<void> {
     return this.persist(book.id.value, book);
+  }
+
+  public async update(book: BookPatch): Promise<void> {
+    return this.patch(book);
   }
 
   public async remove(id: string): Promise<void> {

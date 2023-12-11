@@ -1,5 +1,6 @@
-import { BookAuthor } from '../../../../../src/Contexts/apiApp/Books/domain/BookAuthor';
-import { random } from '../../../fixtures/shared';
+import { BookAuthor } from '../../../../../../src/Contexts/apiApp/Books/domain';
+
+import { random } from '../../../../fixtures/shared';
 
 export class BookAuthorMother {
   static create(value: string) {

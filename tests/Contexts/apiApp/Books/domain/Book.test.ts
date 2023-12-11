@@ -1,45 +1,37 @@
-import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
-import { BookAuthor } from '../../../../../src/Contexts/apiApp/Books/domain/BookAuthor';
-import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
-import { BookPages } from '../../../../../src/Contexts/apiApp/Books/domain/BookPages';
-import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
-import { BookTitle } from '../../../../../src/Contexts/apiApp/Books/domain/BookTitle';
-import { Isbn } from '../../../../../src/Contexts/apiApp/Books/domain/ISBN';
+import {
+  Book,
+  BookAuthor,
+  BookId,
+  BookPages,
+  BookReleaseDate,
+  BookTitle,
+  Isbn
+} from '../../../../../src/Contexts/apiApp/Books/domain';
 import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
+
 import { random } from '../../../fixtures/shared';
-import { BookAuthorMother } from './BookAuthorMother';
-import { BookIdMother } from './BookIdMother';
-import { BookPagesMother } from './BookPagesMother';
-import { BookReleaseDateMother } from './BookReleaseDateMother';
-import { BookTitleMother } from './BookTitleMother';
-import { ISBNMother } from './ISBNMother';
 
-const BOOK_ID = BookIdMother.random();
-const TITLE = BookTitleMother.random();
-const AUTHOR = BookAuthorMother.random();
-const RELEASE_DATE = BookReleaseDateMother.random();
-const ISBN = ISBNMother.random();
-const PAGES = BookPagesMother.random();
-
-const BOOK_VALUES = {
-  id: BOOK_ID,
-  title: TITLE,
-  author: AUTHOR,
-  releaseDate: RELEASE_DATE,
-  isbn: ISBN,
-  pages: PAGES
-};
+import {
+  BookAuthorMother,
+  BookIdMother,
+  BookPagesMother,
+  BookReleaseDateMother,
+  BookTitleMother,
+  ISBNMother
+} from './mothers';
 
 describe('Book', () => {
   it('should create a valid book', () => {
-    expect(new Book(BOOK_VALUES)).toMatchObject({
-      id: BOOK_ID,
-      title: TITLE,
-      author: AUTHOR,
-      releaseDate: RELEASE_DATE,
-      isbn: ISBN,
-      pages: PAGES
-    });
+    const bookValueObjects = {
+      id: BookIdMother.random(),
+      title: BookTitleMother.random(),
+      author: BookAuthorMother.random(),
+      releaseDate: BookReleaseDateMother.random(),
+      pages: BookPagesMother.random(),
+      isbn: ISBNMother.random()
+    };
+
+    expect(new Book(bookValueObjects)).toMatchObject(bookValueObjects);
   });
 
   describe('Book Id', () => {

@@ -1,4 +1,5 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+
 import { BookAuthor } from './BookAuthor';
 import { BookId } from './BookId';
 import { BookPages } from './BookPages';

@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { body, checkExact, param } from 'express-validator';
-import container from '../../dependency-injection';
-import { PostBookController } from '../../controllers/Books/PostBookController';
-import { validateReqSchema } from '../shared';
-import { GetBookController } from '../../controllers/Books/GetBookController';
+
 import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
 import { GetAllBooksController } from '../../controllers/Books/GetAllBooksController';
-import { PutBookController } from '../../controllers/Books/PutBookController';
+import { GetBookController } from '../../controllers/Books/GetBookController';
+import { PatchBookController } from '../../controllers/Books/PatchBookController';
+import { PostBookController } from '../../controllers/Books/PostBookController';
+import container from '../../dependency-injection';
+
+import { validateBody, validateReqSchema } from '../shared';
 
 const prefix = '/api/v1/Books';
 
@@ -23,14 +25,13 @@ export const register = (router: Router) => {
     checkExact()
   ];
 
-  const putReqSchema = [
+  const patchReqSchema = [
     param('id').exists().isUUID(),
-    body('id').exists().isUUID(),
-    body('title').exists().isString(),
-    body('author').exists().isString(),
-    body('isbn').exists().matches(isbnRegex),
-    body('releaseDate').exists().isISO8601().toDate(),
-    body('pages').exists().isInt(),
+    body('title').optional().isString(),
+    body('author').optional().isString(),
+    body('isbn').optional().matches(isbnRegex),
+    body('releaseDate').optional().isISO8601().toDate(),
+    body('pages').optional().isInt(),
     checkExact()
   ];
 
@@ -49,8 +50,8 @@ export const register = (router: Router) => {
     'Apps.apiApp.controllers.Books.GetAllBooksController'
   );
 
-  const putController: PutBookController = container.get(
-    'Apps.apiApp.controllers.Books.PutBookController'
+  const patchController: PatchBookController = container.get(
+    'Apps.apiApp.controllers.Books.PatchBookController'
   );
 
   const deleteController: DeleteBookController = container.get(
@@ -66,12 +67,13 @@ export const register = (router: Router) => {
     }
   );
 
-  router.put(
+  router.patch(
     `${prefix}/:id`,
-    putReqSchema,
+    validateBody,
+    patchReqSchema,
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
-      putController.run(req, res, next);
+      patchController.run(req, res, next);
     }
   );
 

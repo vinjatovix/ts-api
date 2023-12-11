@@ -1,6 +1,6 @@
-import { BookId } from '../../../../../src/Contexts/apiApp/Books/domain/BookId';
-import { RequestById } from '../../../../../src/Contexts/shared/application/RequestById';
-import { BookIdMother } from '../domain/BookIdMother';
+import { BookId } from '../../../../../../src/Contexts/apiApp/Books/domain/BookId';
+import { RequestById } from '../../../../../../src/Contexts/shared/application/RequestById';
+import { BookIdMother } from '../../domain/mothers/BookIdMother';
 
 export class RequestBookByIdMother {
   static create(id: BookId): RequestById {

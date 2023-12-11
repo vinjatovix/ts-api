@@ -15,9 +15,9 @@ services:
     class: ../../controllers/Books/GetAllBooksController
     arguments: ['@apiApp.Books.application.AllBooksFinder']
 
-  Apps.apiApp.controllers.Books.PutBookController:
-    class: ../../controllers/Books/PutBookController
-    arguments: ['@apiApp.Books.application.BookUpdater']
+  Apps.apiApp.controllers.Books.PatchBookController:
+    class: ../../controllers/Books/PatchBookController
+    arguments: ['@apiApp.Books.application.BookPatcher']
 
   Apps.apiApp.controllers.Books.DeleteBookController:
     class: ../../controllers/Books/DeleteBookController

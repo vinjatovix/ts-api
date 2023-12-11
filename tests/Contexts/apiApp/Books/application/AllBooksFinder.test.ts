@@ -1,4 +1,4 @@
-import { AllBooksFinder } from '../../../../../src/Contexts/apiApp/Books/application/AllBooksFinder';
+import { AllBooksFinder } from '../../../../../src/Contexts/apiApp/Books/application';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 
 describe('AllBooksFinder', () => {

@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
-import { AllBooksFinder } from '../../../../../src/Contexts/apiApp/Books/application/AllBooksFinder';
+import { AllBooksFinder } from '../../../../../src/Contexts/apiApp/Books/application';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
-import { BookMother } from '../../../../Contexts/apiApp/Books/domain/BookMother';
-import { GetAllBooksController } from '../../../../../src/apps/apiApp/controllers/Books/GetAllBooksController';
+import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers/BookMother';
+import { GetAllBooksController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { Request, Response } from 'express';
 
 describe('GetAllBooksController', () => {

@@ -1,4 +1,5 @@
-import { BookRepository } from '../domain/BookRepository';
+import { BookRepository } from '../domain';
+
 import { BookResponse } from './BookResponse';
 
 export class AllBooksFinder {

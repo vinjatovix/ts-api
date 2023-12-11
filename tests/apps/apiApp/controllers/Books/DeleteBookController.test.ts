@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
-import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books/DeleteBookController';
+
+import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
+import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
+
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');

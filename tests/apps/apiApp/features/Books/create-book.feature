@@ -29,7 +29,7 @@ Feature: Create a new book
         "extra": "property"
       }
       """
-    Then the response status code should be 422
+    Then the response status code should be 400
     Then the response body should be
       """
       {

@@ -1,22 +1,19 @@
-import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
+import { BookPatcher } from '../../../../Contexts/apiApp/Books/application';
 import { Controller } from '../../shared/interfaces/Controller';
-import { BookUpdater } from '../../../../Contexts/apiApp/Books/application/BookUpdater';
 
-export class PutBookController implements Controller {
-  constructor(protected bookUpdater: BookUpdater) {}
+export class PatchBookController implements Controller {
+  constructor(protected bookPatcher: BookPatcher) {}
+
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
-      const { title, author, isbn, releaseDate, pages } = req.body;
+      const updates = req.body;
 
-      await this.bookUpdater.run({
+      await this.bookPatcher.run({
         id,
-        title,
-        author,
-        isbn,
-        releaseDate,
-        pages
+        ...updates
       });
 
       res.status(this.status()).send();

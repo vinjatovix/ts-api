@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { Controller } from '../../shared/interfaces/Controller';
-import { BookFinder } from '../../../../Contexts/apiApp/Books/application/BookFinder';
+import { BookFinder } from '../../../../Contexts/apiApp/Books/application';
 
 export class GetBookController implements Controller {
   constructor(private bookFinder: BookFinder) {}
