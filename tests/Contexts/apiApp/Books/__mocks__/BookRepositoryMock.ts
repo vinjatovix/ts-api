@@ -2,7 +2,7 @@ import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
 import { BookPatch } from '../../../../../src/Contexts/apiApp/Books/domain/BookPatch';
 import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
 
-import { BookMother } from '../domain/BookMother';
+import { BookMother } from '../domain/mothers/BookMother';
 
 export class BookRepositoryMock implements BookRepository {
   private saveMock: jest.Mock;

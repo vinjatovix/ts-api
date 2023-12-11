@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { BookPatcher } from '../../../../Contexts/apiApp/Books/application/BookPatcher';
+import { BookPatcher } from '../../../../Contexts/apiApp/Books/application';
 import { Controller } from '../../shared/interfaces/Controller';
 
 export class PatchBookController implements Controller {

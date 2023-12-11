@@ -1,5 +1,6 @@
-import { BookReleaseDate } from '../../../../../src/Contexts/apiApp/Books/domain/BookReleaseDate';
-import { random } from '../../../fixtures/shared';
+import { BookReleaseDate } from '../../../../../../src/Contexts/apiApp/Books/domain';
+
+import { random } from '../../../../fixtures/shared';
 
 export class BookReleaseDateMother {
   static create(value: string) {

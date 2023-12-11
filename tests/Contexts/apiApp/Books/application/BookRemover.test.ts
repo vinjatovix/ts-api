@@ -1,7 +1,7 @@
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
-import { BookIdMother } from '../domain/BookIdMother';
-import { RequestBookByIdMother } from './RequestBookByIdMother';
+import { BookIdMother } from '../domain/mothers/BookIdMother';
+import { RequestBookByIdMother } from './mothers/RequestBookByIdMother';
 
 describe('BookRemover', () => {
   let repository: BookRepositoryMock;

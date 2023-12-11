@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
 import { Controller } from '../../shared/interfaces/Controller';
-import { BookCreator } from '../../../../Contexts/apiApp/Books/application/BookCreator';
+import { BookCreator } from '../../../../Contexts/apiApp/Books/application';
 
 export class PostBookController implements Controller {
   constructor(protected bookCreator: BookCreator) {}

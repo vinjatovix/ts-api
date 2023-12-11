@@ -1,9 +1,9 @@
 import { BookPatcher } from '../../../../../src/Contexts/apiApp/Books/application/BookPatcher';
 
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
-import { BookMother } from '../domain/BookMother';
+import { BookMother } from '../domain/mothers/BookMother';
 
-import { BookCreatorRequestMother } from './BookCreatorRequestMother';
+import { BookCreatorRequestMother } from './mothers/BookCreatorRequestMother';
 
 describe('BookPatcher', () => {
   let repository: BookRepositoryMock;

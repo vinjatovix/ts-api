@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AllBooksFinder } from '../../../../Contexts/apiApp/Books/application/AllBooksFinder';
+import { AllBooksFinder } from '../../../../Contexts/apiApp/Books/application';
 import { Controller } from '../../shared/interfaces/Controller';
 import httpStatus from 'http-status';
 

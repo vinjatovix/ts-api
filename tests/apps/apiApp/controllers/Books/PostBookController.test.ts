@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+
+import {
+  BookCreator,
+  BookCreatorRequest
+} from '../../../../../src/Contexts/apiApp/Books/application';
+import { PostBookController } from '../../../../../src/apps/apiApp/controllers/Books';
+
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
-import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application/BookCreator';
-import { PostBookController } from '../../../../../src/apps/apiApp/controllers/Books/PostBookController';
-import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/BookCreatorRequestMother';
-import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/BookCreatorRequest';
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers/BookCreatorRequestMother';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookCreator');
 

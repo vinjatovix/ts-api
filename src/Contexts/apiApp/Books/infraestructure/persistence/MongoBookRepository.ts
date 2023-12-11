@@ -1,9 +1,7 @@
 import { Nullable } from '../../../../shared/domain/Nullable';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 
-import { Book } from '../../domain/Book';
-import { BookPatch } from '../../domain/BookPatch';
-import { BookRepository } from '../../domain/BookRepository';
+import { Book, BookPatch, BookRepository } from '../../domain';
 
 export interface BookDocument {
   _id: string;
