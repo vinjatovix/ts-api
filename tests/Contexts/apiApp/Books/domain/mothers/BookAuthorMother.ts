@@ -11,6 +11,6 @@ export class BookAuthorMother {
   }
 
   static invalidValue() {
-    return random.word({ min: 41 });
+    return random.word({ min: 41, max: 255 });
   }
 }

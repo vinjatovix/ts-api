@@ -43,7 +43,7 @@ export class Random {
     max = 256
   }: { min?: number; max?: number } = {}): string {
     return this.chance.word({
-      length: Math.floor(Math.random() * (max - min + 1)) + min
+      length: Math.floor(Math.random() * (max - min + 1) + min)
     });
   }
 
@@ -65,5 +65,9 @@ export class Random {
     const group4 = this.integer({ min: 0, max: 9 });
 
     return `${prefix}-${group1}-${group2}-${group3}-${group4}`;
+  }
+
+  public email(): string {
+    return this.chance.email();
   }
 }
