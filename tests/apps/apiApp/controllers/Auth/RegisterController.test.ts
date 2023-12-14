@@ -41,15 +41,7 @@ describe('RegisterController', () => {
       expect(res.send).toHaveBeenCalledWith();
     });
 
-    it("should fail if passwords don't match", async () => {
-      req = { body: { ...request, repeatPassword: 'differentPassword' } };
-
-      await controller.run(req as Request, res as Response, next);
-
-      expect(next).toHaveBeenCalledWith(expect.any(InvalidArgumentError));
-    });
-
-    it('should fail if user exists', async () => {
+    it('should fail if user email exists', async () => {
       repository = new UserRepositoryMock({ exists: true });
       service = new RegisterUser(repository, encrypter);
       controller = new RegisterController(service);

@@ -1,7 +1,6 @@
 import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
 import { Controller } from '../../shared/interfaces/Controller';
-import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
 import { RegisterUser } from '../../../../Contexts/apiApp/Auth/application';
 
 export class RegisterController implements Controller {
@@ -9,12 +8,8 @@ export class RegisterController implements Controller {
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, username, password, repeatPassword } = req.body;
-      if (password !== repeatPassword) {
-        throw new InvalidArgumentError('Passwords do not match');
-      }
-
-      await this.register.run({ email, password, username });
+      const { email, username, password } = req.body;
+      await this.register.run({ email, username, password });
 
       res.status(this.status()).send();
     } catch (error) {

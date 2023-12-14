@@ -3,6 +3,18 @@ services:
     class: ../../controllers/health/GetStatusController
     arguments: []
 
+  Apps.apiApp.controllers.Auth.LoginController:
+    class: ../../controllers/Auth/LoginController
+    arguments: ['@apiApp.Auth.application.LoginUser']
+
+  Apps.apiApp.controllers.Auth.RegisterController:
+    class: ../../controllers/Auth/RegisterController
+    arguments: ['@apiApp.Auth.application.RegisterUser']
+
+  Apps.apiApp.controllers.Auth.ValidateMailController:
+    class: ../../controllers/Auth/ValidateMailController
+    arguments: ['@apiApp.Auth.application.ValidateMail']
+
   Apps.apiApp.controllers.Books.PostBookController:
     class: ../../controllers/Books/PostBookController
     arguments: ['@apiApp.Books.application.BookCreator']

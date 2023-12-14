@@ -10,22 +10,22 @@ services:
       method: 'createClient'
     arguments: ['apiApp', '@apiApp.MongoConfig']
 
-  # plugin.Encrypter:
-  #   class: ../../../../Contexts/shared/plugins/CryptAdapter
-  #   arguments: []
-
   apiApp.Auth.domain.AuthRepository:
     class: ../../../../Contexts/apiApp/Auth/infrastructure/persistence/MongoAuthRepository
     arguments: ['@apiApp.MongoClient']
 
-  # apiApp.Auth.application.LoginUser:
-  #   class: ../../../../Contexts/apiApp/Auth/application/LoginUser
-  #   arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
+  plugin.Encrypter:
+    class: ../../../../Contexts/shared/plugins/CryptAdapter
+    arguments: []
 
-  # apiApp.Auth.application.RegisterUser:
-  #   class: ../../../../Contexts/apiApp/Auth/application/RegisterUser
-  #   arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
+  apiApp.Auth.application.LoginUser:
+    class: ../../../../Contexts/apiApp/Auth/application/LoginUser
+    arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
 
-  # apiApp.Auth.application.ValidateMail:
-  #   class: ../../../../Contexts/apiApp/Auth/application/ValidateMail
-  #   arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
+  apiApp.Auth.application.RegisterUser:
+    class: ../../../../Contexts/apiApp/Auth/application/RegisterUser
+    arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
+
+  apiApp.Auth.application.ValidateMail:
+    class: ../../../../Contexts/apiApp/Auth/application/ValidateMail
+    arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
