@@ -13,7 +13,7 @@ info:
   license:
     name: MIT License
     url: https://github.com/vinjatovix/ts-api/blob/develop/LICENSE.md
-  version: '1.4.0'
+  version: '1.5.0'
 
 servers:
   - url: HOST
@@ -582,7 +582,7 @@ components:
         status:
           type: string
       example:
-        version: 1.4.0
+        version: 1.5.0
         status: OK
 
     Book:
