@@ -7,15 +7,14 @@ module.exports = {
   coverageDirectory: '<rootDir>/coverage',
   collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
   watchPathIgnorePatterns: ['<rootDir>/test-report.json'],
-  reporters: ['default'],
   testResultsProcessor: 'jest-sonar-reporter',
-  coverageReporters: ['text', 'html', 'lcov', 'clover'],
+  coverageReporters: ['lcov'],
   coveragePathIgnorePatterns: [
     '/interfaces/',
     '/dist/',
     '/node_modules/',
     '/test/',
     '/start.ts',
-    '/server.ts',
+    '/server.ts'
   ]
 };
