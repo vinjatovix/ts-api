@@ -13,7 +13,7 @@ export class BookTitleMother {
 
   static invalidValue(): unknown {
     return random.arrayElement([
-      random.word({ min: 101 }),
+      random.word({ min: 101, max: 255 }),
       random.integer(),
       random.boolean()
     ]);

@@ -28,7 +28,12 @@ export const validateReqSchema = (
     error: FieldValidationError
   ): ValidationErrorInfo | null => {
     const errorInfoKey = error.path;
-    const errorInfoValue = `${error.msg} at ${error.location}. Value: ${error.value}`;
+    const hiddenFields = ['password', 'repeatPassword'];
+    const baseMessage = `${error.msg} at ${error.location}.`;
+    const errorInfoValue = hiddenFields.includes(errorInfoKey)
+      ? baseMessage
+      : `${baseMessage} Value: ${error.value}`;
+
     return { [errorInfoKey]: errorInfoValue };
   };
 

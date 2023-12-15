@@ -73,6 +73,10 @@ Then(
   }
 );
 
+Then('the response body should include an auth token', async () => {
+  assert.isNotEmpty(_response.body.token);
+});
+
 Then('the response body should be empty', async () => {
   assert.isEmpty(_response.body);
 });

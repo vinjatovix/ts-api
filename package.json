@@ -80,6 +80,7 @@
     "swagger-ui-express": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
+    "uuid": "^9.0.1",
     "uuid-validate": "^0.0.3",
     "winston": "^3.11.0",
     "winston-mongodb": "^5.1.1",

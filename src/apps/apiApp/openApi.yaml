@@ -20,10 +20,182 @@ servers:
     variables: {}
 
 tags:
+  - name: Auth
   - name: Books
   - name: Health
 
 paths:
+  /api/v1/Auth/register:
+    post:
+      deprecated: false
+      tags:
+        - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              username: '{{$randomNamePrefix}} {{$randomLastName}}'
+              email: '{{$randomEmail}}'
+              password: '{{$randomPassword}}'
+              repeatPassword: '{{$randomPassword}}'
+        required: true
+      responses:
+        '201':
+          description: Created
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content: {}
+
+  /api/v1/Auth/login:
+    post:
+      deprecated: false
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              email: '{{$randomEmail}}'
+              password: '{{$randomPassword}}'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+              example:
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKlHdEvuL4k5CBFlyNCCWjkAZbwC1x2AYQqNUhA"
+
+  /api/v1/Auth/validate/{token}:
+    get:
+      deprecated: false
+      tags:
+        - Auth
+      summary: Validate Token
+      operationId: ValidateToken
+      parameters:
+        - name: token
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$jwtToken}}'
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+              example:
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKl"
+        '401':
+          description: Unauthorized
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/401'
+              example:
+                message: 'Invalid token'
+
   /api/v1/Books:
     get:
       tags:
@@ -369,7 +541,7 @@ components:
 
   schemas:
     400:
-      title: '400'
+      title: 'Bad Request'
       type: object
       properties:
         errors:
@@ -392,8 +564,17 @@ components:
           - releaseDate: 'Invalid value at body. Value: leading-edge'
           - pages: 'Invalid value at body. Value: Baht'
 
+    401:
+      title: 'Unauthorized'
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: 'Invalid token'
+
     Health:
-      title: OK
+      title: "Health"
       type: object
       properties:
         version:
@@ -403,6 +584,7 @@ components:
       example:
         version: 1.4.0
         status: OK
+
     Book:
       type: object
       properties:
