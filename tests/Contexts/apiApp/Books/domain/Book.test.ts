@@ -60,7 +60,7 @@ describe('Book', () => {
     it('should throw an error when the title is longer than 100 characters', () => {
       let title;
       expect(() => {
-        title = new BookTitle(random.word({ min: 101 }));
+        title = new BookTitle(random.word({ min: 101, max: 255 }));
       }).toThrowError(InvalidArgumentError);
 
       expect(title).toBeUndefined();

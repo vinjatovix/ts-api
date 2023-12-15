@@ -2,12 +2,12 @@ import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/
 import {
   Book,
   BookAuthor,
-  BookId,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
 
 import { BookAuthorMother } from './BookAuthorMother';
 import { BookIdMother } from './BookIdMother';
@@ -18,7 +18,7 @@ import { ISBNMother } from './ISBNMother';
 
 export class BookMother {
   static create(
-    id: BookId,
+    id: Uuid,
     title: BookTitle,
     author: BookAuthor,
     isbn: Isbn,
