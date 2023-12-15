@@ -30,7 +30,7 @@ export class MongoClientFactory {
     const client = new MongoClient(connectionString, { ignoreUndefined: true });
 
     await client.connect();
-    console.log('MongoClient connected');
+    console.info('MongoClient connected');
 
     return client;
   }

@@ -1,13 +1,18 @@
-import { Book } from '../domain/Book';
-import { BookRepository } from '../domain/BookRepository';
-import { BookCreatorRequest } from './BookCreatorRequest';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-import { BookTitle } from '../domain/BookTitle';
-import { Isbn } from '../domain/ISBN';
-import { BookAuthor } from '../domain/BookAuthor';
-import { BookReleaseDate } from '../domain/BookReleaseDate';
-import { BookPages } from '../domain/BookPages';
+import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
+
+import {
+  Book,
+  BookAuthor,
+  BookId,
+  BookPages,
+  BookReleaseDate,
+  BookRepository,
+  BookTitle,
+  Isbn
+} from '../domain';
+
+import { BookCreatorRequest } from './BookCreatorRequest';
 
 const logger = buildLogger('bookCreator');
 
@@ -19,8 +24,14 @@ export class BookCreator {
   }
 
   async run(request: BookCreatorRequest): Promise<void> {
+    const storedBook = await this.repository.search(request.id);
+
+    if (storedBook) {
+      throw new InvalidArgumentError(`Book <${request.id}> already exists`);
+    }
+
     const book = new Book({
-      id: new Uuid(request.id),
+      id: new BookId(request.id),
       title: new BookTitle(request.title),
       author: new BookAuthor(request.author),
       isbn: new Isbn(request.isbn),

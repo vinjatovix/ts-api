@@ -1,4 +1,4 @@
-# ts-api [![Version](https://img.shields.io/badge/Version-v1.4.0-blue.svg)](https://semver.org)
+# ts-api [![Version](https://img.shields.io/badge/Version-v1.5.0-blue.svg)](https://semver.org)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vinjatovix_ts-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vinjatovix_ts-api)
 
 ## Quality report
@@ -30,8 +30,8 @@ See [LICENSE](LICENSE.md) for details.
 # Installation
 ## Prerequisites
 
-- Node.js version >= 18.2.1
-- npm version >= 8.19.2
+- Node.js version >= 20.9.0
+- npm version >= 10.1.0
 
 A `.tool-versions` file is provided to easily work with [asdf](https://asdf-vm.com/)
 

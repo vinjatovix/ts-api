@@ -5,7 +5,7 @@ Feature: Delete a specific book
 
     # Preconditions for the scenario
     Background:
-      Given a PUT request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071b" with body
+      Given a POST request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4673-b79d-d97027f9071b",

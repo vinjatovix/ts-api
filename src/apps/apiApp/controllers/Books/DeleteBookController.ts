@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { Controller } from '../../shared/interfaces/Controller';
-import { BookRemover } from '../../../../Contexts/apiApp/Books/application/BookRemover';
+import { BookRemover } from '../../../../Contexts/apiApp/Books/application';
 export class DeleteBookController implements Controller {
   constructor(private bookDeleter: BookRemover) {}
 

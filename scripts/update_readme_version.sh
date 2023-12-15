@@ -1,16 +1,23 @@
-#!/bin/sh
+#!/bin/bash
 
 RELEASE_TYPE=$1
 
+# Colores
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
 # Check if the release type is provided
 if [ -z "$RELEASE_TYPE" ]; then
-  echo "You must provide a version type (major, minor, patch)."
+  echo -e "${RED}You must provide a version type (major, minor, patch).${NC}"
   exit 1
 fi
+
 BRANCH=$(git branch --show-current)
+
 # if is not a release branch, abort
-if [[ $BRANCH != release/* ]]; then
-  echo "You must be in a release branch to run this script."
+if [[ ! "$BRANCH" =~ ^release/ ]]; then
+  echo -e "${RED}You must be in a release branch to run this script.${NC}"
   exit 1
 fi
 
@@ -20,18 +27,23 @@ CURRENT_VERSION=$(node -p "require('./package.json').version")
 # Obtain the new version without creating a git tag and remove 'v' prefix
 NEW_VERSION=$(npm --no-git-tag-version version "$RELEASE_TYPE" | sed 's/^v//')
 
-echo "Current version: $CURRENT_VERSION"
-echo "New version: $NEW_VERSION"
+echo -e "Current version: ${GREEN}$CURRENT_VERSION${NC}"
+echo -e "New version: ${GREEN}$NEW_VERSION${NC}"
+
+# Function to replace version in files
+replace_version() {
+  local file="$1"
+  sed -i "" -e "s/$CURRENT_VERSION/$NEW_VERSION/g" "$file"
+}
 
 # Replace the version in README.md
-perl -i -pe "s/Version-v$CURRENT_VERSION/Version-v$NEW_VERSION/g" README.md
+replace_version README.md
 
-# Repacke the version in the docker-compose.yml file
-perl -i -pe "s/ts-api:$CURRENT_VERSION/ts-api:$NEW_VERSION/g" docker-compose.yaml
+# Replace the version in docker-compose.yml
+replace_version docker-compose.yaml
 
 # Replace the version in OpenAPI specification
-perl -i -pe "s/version: '$CURRENT_VERSION'/version: '$NEW_VERSION'/g" openApi.yaml
-
+replace_version ./src/apps/apiApp/openapi.yaml
 
 # Commit the changes
 ISSUE=$(git branch --show-current | sed 's/^release\///')
@@ -40,24 +52,23 @@ git commit -m "[$ISSUE] Prepare release v$NEW_VERSION"
 
 # Check if the commit was successful
 if [ $? -ne 0 ]; then
-  echo "Commit failed. Aborting tag creation and push."
+  echo -e "${RED}Commit failed. Aborting tag creation and push.${NC}"
   exit 1
 fi
 
 # Create a git tag for the new version
-echo "Creating git tag v$NEW_VERSION"
+echo -e "Creating git tag ${GREEN}v$NEW_VERSION${NC}"
 git tag -a "v$NEW_VERSION" -m "Version v$NEW_VERSION"
 
 # Check if the tag creation was successful
 if [ $? -ne 0 ]; then
-  echo "Tag creation failed. Aborting the push."
+  echo -e "${RED}Tag creation failed. Aborting the push.${NC}"
   exit 1
 fi
 
 # Push the changes and the new tag
-echo "Pushing the changes and the new tag."
+echo -e "Pushing the changes and the new tag."
 git push --force-with-lease origin "$(git branch --show-current)"
 git push origin "v$NEW_VERSION"
 
-echo "Push completed successfully."
-
+echo -e "${GREEN}Push completed successfully.${NC}"

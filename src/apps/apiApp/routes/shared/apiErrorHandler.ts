@@ -4,6 +4,7 @@ import { NotFoundError } from '../../../../Contexts/shared/domain/errors/NotFoun
 import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
 
 import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
+import { AuthError } from '../../../../Contexts/shared/domain/errors/AuthError';
 
 const logger = buildLogger('apiErrorHandler');
 
@@ -16,7 +17,11 @@ export const apiErrorHandler = (
   let statusCode;
   let message = err.message;
 
+  // TODO: to avoid case explosion, we could use an custom error Factory, GH issue #121
   switch (true) {
+    case err instanceof AuthError:
+      statusCode = httpStatus.UNAUTHORIZED;
+      break;
     case err instanceof NotFoundError:
       statusCode = httpStatus.NOT_FOUND;
       break;
@@ -28,6 +33,11 @@ export const apiErrorHandler = (
       message = 'Internal Server Error';
   }
 
-  logger.error(message);
+  const stack =
+    statusCode === httpStatus.INTERNAL_SERVER_ERROR
+      ? `Stack: ${err.stack}`
+      : '';
+
+  logger.error(`Error: ${err.message}. ${stack}`);
   res.status(statusCode).json({ message });
 };

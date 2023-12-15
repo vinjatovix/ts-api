@@ -28,7 +28,12 @@ export const validateReqSchema = (
     error: FieldValidationError
   ): ValidationErrorInfo | null => {
     const errorInfoKey = error.path;
-    const errorInfoValue = `${error.msg} at ${error.location}. Value: ${error.value}`;
+    const hiddenFields = ['password', 'repeatPassword'];
+    const baseMessage = `${error.msg} at ${error.location}.`;
+    const errorInfoValue = hiddenFields.includes(errorInfoKey)
+      ? baseMessage
+      : `${baseMessage} Value: ${error.value}`;
+
     return { [errorInfoKey]: errorInfoValue };
   };
 
@@ -79,8 +84,9 @@ export const validateReqSchema = (
       return acc;
     }, []);
 
-  logger.error(errors.map((error) => JSON.stringify(error)).join(','));
-  res.status(httpStatus.UNPROCESSABLE_ENTITY).json({
+  const errorMessages = errors.map((error) => JSON.stringify(error)).join(',');
+  logger.error(`${req.method} ${req.path} - [${errorMessages}]`);
+  res.status(httpStatus.BAD_REQUEST).json({
     errors
   });
 };

@@ -1,6 +1,6 @@
-
 const common = [
-  '--require-module ts-node/register' // Load TypeScript module
+  '--require-module ts-node/register',
+  '--require setupTests.ts'
 ];
 
 const apiApp = [

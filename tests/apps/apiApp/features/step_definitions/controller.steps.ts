@@ -1,9 +1,11 @@
 import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
-import request from 'supertest';
 import { assert } from 'chai';
+import request from 'supertest';
+
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
-import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 import container from '../../../../../src/apps/apiApp/dependency-injection';
+
+import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -25,18 +27,25 @@ AfterAll(async () => {
   await app.stop();
 });
 
-Given('a GET request to {string}', (route: string) => {
+Given('a GET request to {string}', async (route: string) => {
   _request = request(app.httpServer).get(route);
 });
 
 Given(
-  'a PUT request to {string} with body',
+  'a POST request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer).put(route).send(JSON.parse(body));
+    _request = request(app.httpServer).post(route).send(JSON.parse(body));
   }
 );
 
-Given('a DELETE request to {string}', (route: string) => {
+Given(
+  'a PATCH request to {string} with body',
+  async (route: string, body: string) => {
+    _request = request(app.httpServer).patch(route).send(JSON.parse(body));
+  }
+);
+
+Given('a DELETE request to {string}', async (route: string) => {
   _request = request(app.httpServer).delete(route);
 });
 
@@ -63,6 +72,10 @@ Then(
     assert.deepNestedInclude(response.body, expectedResponseBody);
   }
 );
+
+Then('the response body should include an auth token', async () => {
+  assert.isNotEmpty(_response.body.token);
+});
 
 Then('the response body should be empty', async () => {
   assert.isEmpty(_response.body);
