@@ -26,13 +26,20 @@ export class MongoClientFactory {
   private static async createAndConnectClient(
     config: MongoConfig
   ): Promise<MongoClient> {
-    const connectionString = `${config.connection}://${config.username}:${config.password}@${config.url}/${config.db}`;
-    const client = new MongoClient(connectionString, { ignoreUndefined: true });
+    try {
+      const connectionString = `${config.connection}://${config.username}:${config.password}@${config.url}/${config.db}`;
+      const client = new MongoClient(connectionString, {
+        ignoreUndefined: true
+      });
 
-    await client.connect();
-    console.info('MongoClient connected');
+      await client.connect();
+      console.info('MongoClient connected');
 
-    return client;
+      return client;
+    } catch (error) {
+      console.error('MongoClient connection error', error);
+      return await MongoClientFactory.createAndConnectClient(config);
+    }
   }
 
   private static registerClient(
