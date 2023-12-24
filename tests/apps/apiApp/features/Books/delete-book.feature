@@ -3,9 +3,9 @@ Feature: Delete a specific book
   As an user of the API
   I want to delete a specific book by id
 
-    # Preconditions for the scenario
-    Background:
-      Given a POST request to "/api/v1/Books/" with body
+  # Preconditions for the scenario
+  Background:
+    Given a POST admin request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4673-b79d-d97027f9071b",
@@ -16,9 +16,9 @@ Feature: Delete a specific book
         "pages": 1178
       }
       """
-      Then the response status code should be 201
+    Then the response status code should be 201
 
   Scenario: Delete a specific existing book by id
-    Given a DELETE request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071b"
+    Given a DELETE admin request to "/api/v1/Books/9a6e0804-2bd0-4673-b79d-d97027f9071b"
     Then the response status code should be 204
     Then the response body should be empty

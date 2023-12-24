@@ -6,7 +6,7 @@ Feature: Get a specific book by id
 
   # Preconditions for the scenario
   Background:
-    Given a POST request to "/api/v1/Books/" with body
+    Given a POST admin request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4672-b79d-d97027f9074e",
@@ -20,7 +20,7 @@ Feature: Get a specific book by id
     Then the response status code should be 201
 
   Scenario: Get a specific existing book by id
-    Given a GET request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9074e"
+    Given an authenticated GET request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9074e"
     Then the response status code should be 200
     Then the response body should contain
       """
