@@ -60,6 +60,12 @@ describe('CryptAdapter', () => {
 
       expect(payload).toMatchObject(seed);
     });
+
+    it('should return null if token is invalid', async () => {
+      const payload = await cryptAdapter.verifyToken(random.word());
+
+      expect(payload).toBeNull();
+    });
   });
 
   describe('refreshToken', () => {
