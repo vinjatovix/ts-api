@@ -29,6 +29,6 @@ describe('BookFinder', () => {
   it('should throw an error when the book is not found', async () => {
     const request = RequestBookByIdMother.inexistentId();
 
-    await expect(finder.run(request)).rejects.toThrowError(NotFoundError);
+    await expect(finder.run(request)).rejects.toThrow(NotFoundError);
   });
 });

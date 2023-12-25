@@ -39,7 +39,7 @@ describe('Book', () => {
       let id;
       expect(() => {
         id = new BookId(BookIdMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(id).toBeUndefined();
     });
@@ -52,7 +52,7 @@ describe('Book', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         title = new BookTitle(BookTitleMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -61,7 +61,7 @@ describe('Book', () => {
       let title;
       expect(() => {
         title = new BookTitle(random.word({ min: 101, max: 255 }));
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -70,7 +70,7 @@ describe('Book', () => {
       let title;
       expect(() => {
         title = new BookTitle('');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -81,7 +81,7 @@ describe('Book', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         title = new BookTitle(null);
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -94,7 +94,7 @@ describe('Book', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         author = new BookAuthor(123);
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
@@ -103,7 +103,7 @@ describe('Book', () => {
       let author;
       expect(() => {
         author = new BookAuthor(BookAuthorMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
@@ -112,7 +112,7 @@ describe('Book', () => {
       let author;
       expect(() => {
         author = new BookAuthor('');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
@@ -123,7 +123,7 @@ describe('Book', () => {
       let releaseDate;
       expect(() => {
         releaseDate = new BookReleaseDate('invalid-date');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(releaseDate).toBeUndefined();
     });
@@ -134,7 +134,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('invalid-isbn');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(isbn).toBeUndefined();
     });
@@ -143,7 +143,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(isbn).toBeUndefined();
     });
@@ -156,7 +156,7 @@ describe('Book', () => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         pages = new BookPages(BookPagesMother.invalidType());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(pages).toBeUndefined();
     });
@@ -165,7 +165,7 @@ describe('Book', () => {
       let pages;
       expect(() => {
         pages = new BookPages(BookPagesMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(pages).toBeUndefined();
     });

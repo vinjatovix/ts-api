@@ -33,7 +33,7 @@ describe('BookCreator', () => {
       creator.run(request);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrowError(InvalidArgumentError);
+    }).toThrow(InvalidArgumentError);
   });
 
   it('should throw an error when the book author is invalid', async () => {
@@ -44,7 +44,7 @@ describe('BookCreator', () => {
       creator.run(request);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrowError(InvalidArgumentError);
+    }).toThrow(InvalidArgumentError);
   });
 
   it('should throw an error when the book isbn is not valid', async () => {
@@ -55,7 +55,7 @@ describe('BookCreator', () => {
       creator.run(request);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrowError(InvalidArgumentError);
+    }).toThrow(InvalidArgumentError);
   });
 
   it('should throw an error when the book release date is not valid', async () => {
@@ -66,6 +66,6 @@ describe('BookCreator', () => {
       creator.run(request);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrowError(InvalidArgumentError);
+    }).toThrow(InvalidArgumentError);
   });
 });

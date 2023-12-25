@@ -10,7 +10,7 @@ describe('UserRoles', () => {
 
   it('should throw an error if user roles are invalid', () => {
     const roles = [random.word()];
-    expect(() => UserRolesMother.create(roles)).toThrowError(
+    expect(() => UserRolesMother.create(roles)).toThrow(
       `<UserRoles> does not allow the value <${roles}>`
     );
   });
