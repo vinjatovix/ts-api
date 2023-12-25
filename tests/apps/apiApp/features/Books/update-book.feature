@@ -6,7 +6,7 @@ Feature: Create a new book
 
 
   Scenario: A valid existing book
-    Given a POST request to "/api/v1/Books/" with body
+    Given a POST admin request to "/api/v1/Books/" with body
       """
       {
         "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
@@ -19,7 +19,7 @@ Feature: Create a new book
       """
     Then the response status code should be 201
 
-    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
         "title": "The Lord of the Rings",
@@ -32,7 +32,7 @@ Feature: Create a new book
     Then the response status code should be 200
     Then the response body should be empty
 
-    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
         "pages": 11
@@ -41,7 +41,7 @@ Feature: Create a new book
     Then the response status code should be 200
     Then the response body should be empty
 
-    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {}
       """
@@ -59,7 +59,7 @@ Feature: Create a new book
 
 
   Scenario: An unprocessable book
-    Given a PATCH request to "/api/v1/Books/9a6e0804" with body
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804" with body
       """
       {
         "author": 56,
@@ -97,7 +97,7 @@ Feature: Create a new book
       """
 
   Scenario: A non-existing book
-    Given a PATCH request to "/api/v1/Books/9a6e0804-2bd0-4675-b79d-d97027f9073b" with body
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4675-b79d-d97027f9073b" with body
       """
       {
         "pages": 666

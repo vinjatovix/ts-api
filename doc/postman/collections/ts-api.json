@@ -1,12 +1,241 @@
 {
 	"info": {
-		"_postman_id": "78550744-b9a0-4303-a812-92980f2f5c30",
+		"_postman_id": "f3678fc0-a2c3-4a13-940c-912cf5bb48aa",
 		"name": "ts-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30268071",
-		"_collection_link": "https://vinjatovix.postman.co/workspace/vinjatovix-Workspace~59364019-9d51-4f17-8557-f17e428fa64b/collection/30268071-78550744-b9a0-4303-a812-92980f2f5c30?action=share&source=collection_link&creator=30268071"
+		"_collection_link": "https://vinjatovix.postman.co/workspace/vinjatovix-Workspace~59364019-9d51-4f17-8557-f17e428fa64b/collection/30268071-f3678fc0-a2c3-4a13-940c-912cf5bb48aa?action=share&source=collection_link&creator=30268071"
 	},
 	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"const timestamp = new Date().getTime();",
+									"const userName = \"user\" + timestamp;",
+									"const password = \"%aD3f3s.0%\"",
+									"",
+									"const email = userName + \"@test.com\";",
+									"",
+									"pm.environment.set(\"userName\", userName);",
+									"pm.environment.set(\"userEmail\", email);",
+									"pm.environment.set(\"userPassword\", password)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"{{userName}}\",\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"#aD3fe2.0%\",\n    \"repeatPassword\": \"#aD3fe2.0%\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Auth/register",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const userToken = pm.response.json().token",
+									"",
+									"if (userToken) {",
+									"    pm.environment.set(\"userToken\", userToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"{{userEmail}}\",\n    \"password\": \"#aD3fe2.0%\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "401",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"email\":\"{{$randomEmail}}\",\n    \"password\": \"{{$randomPassword}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/Auth/login",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"Auth",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Access-Control-Allow-Credentials",
+									"value": "true"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21-dBEoW0UmTF+EGUMaprEp9/8zNNA\""
+								},
+								{
+									"key": "Date",
+									"value": "Tue, 12 Dec 2023 00:21:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid credentials\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Validate Mail",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"const userToken = pm.response.json().token",
+									"",
+									"if (userToken) {",
+									"    pm.environment.set(\"userToken\", userToken);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Auth/validate/:token",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Auth",
+								"validate",
+								":token"
+							],
+							"variable": [
+								{
+									"key": "token",
+									"value": "{{userToken}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Books",
 			"item": [
@@ -87,19 +316,13 @@
 					},
 					"response": [
 						{
-							"name": "400 - Bad Request",
+							"name": "400",
 							"originalRequest": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
+								"method": "PUT",
+								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\n}",
+									"raw": "{\n    \"title\": \"{{$randomWords}}\",\n    \"author\": \"{{$randomLoremParagraph}}\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"{{$isoTimestamp}}\",\n    \"pages\": {{$randomInt}}\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -107,7 +330,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/v1/Books/",
+									"raw": "{{host}}/api/v1/Books/:id",
 									"host": [
 										"{{host}}"
 									],
@@ -115,7 +338,14 @@
 										"api",
 										"v1",
 										"Books",
-										""
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{$guid}}",
+											"description": "required"
+										}
 									]
 								}
 							},
@@ -124,23 +354,23 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
-									"key": "Vary",
+									"key": "vary",
 									"value": "Origin"
 								},
 								{
-									"key": "Access-Control-Allow-Credentials",
+									"key": "access-control-allow-credentials",
 									"value": "true"
 								},
 								{
-									"key": "X-XSS-Protection",
+									"key": "x-xss-protection",
 									"value": "0"
 								},
 								{
-									"key": "X-Content-Type-Options",
+									"key": "x-content-type-options",
 									"value": "nosniff"
 								},
 								{
-									"key": "X-Frame-Options",
+									"key": "x-frame-options",
 									"value": "DENY"
 								},
 								{
@@ -148,33 +378,29 @@
 									"value": "application/json; charset=utf-8"
 								},
 								{
-									"key": "Content-Length",
-									"value": "327"
+									"key": "content-length",
+									"value": "214"
 								},
 								{
-									"key": "ETag",
-									"value": "W/\"147-Uqx9YQqS9vxQrY/921w8mP4rYLA\""
+									"key": "date",
+									"value": "Sun, 15 Oct 2023 19:24:03 GMT"
 								},
 								{
-									"key": "Date",
-									"value": "Mon, 11 Dec 2023 20:11:50 GMT"
-								},
-								{
-									"key": "Connection",
+									"key": "connection",
 									"value": "keep-alive"
 								},
 								{
-									"key": "Keep-Alive",
+									"key": "keep-alive",
 									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"errors\": [\n        {\n            \"id\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"title\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"author\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"isbn\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"releaseDate\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"pages\": \"Invalid value at body. Value: undefined\"\n        }\n    ]\n}"
+							"body": "{\n    \"message\": \"<BookAuthor> <Beatae in delectus magnam dolorum enim praesentium dignissimos excepturi. Odit recusandae impedit. Unde nesciunt cumque nobis illo aut nihil voluptatem odio.> has more than 40 characters\"\n}"
 						},
 						{
-							"name": "201",
+							"name": "201 Create Book",
 							"originalRequest": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -192,7 +418,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/v1/Books/",
+									"raw": "{{host}}/api/v1/Books/:id",
 									"host": [
 										"{{host}}"
 									],
@@ -200,7 +426,14 @@
 										"api",
 										"v1",
 										"Books",
-										""
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{bookId}}",
+											"description": "required"
+										}
 									]
 								}
 							},
@@ -209,44 +442,136 @@
 							"_postman_previewlanguage": "plain",
 							"header": [
 								{
-									"key": "Vary",
+									"key": "vary",
 									"value": "Origin"
 								},
 								{
-									"key": "Access-Control-Allow-Credentials",
+									"key": "access-control-allow-credentials",
 									"value": "true"
 								},
 								{
-									"key": "X-XSS-Protection",
+									"key": "x-xss-protection",
 									"value": "0"
 								},
 								{
-									"key": "X-Content-Type-Options",
+									"key": "x-content-type-options",
 									"value": "nosniff"
 								},
 								{
-									"key": "X-Frame-Options",
+									"key": "x-frame-options",
 									"value": "DENY"
 								},
 								{
-									"key": "Date",
-									"value": "Mon, 11 Dec 2023 20:12:32 GMT"
+									"key": "date",
+									"value": "Sun, 22 Oct 2023 21:22:08 GMT"
 								},
 								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								},
-								{
-									"key": "Content-Length",
+									"key": "content-length",
 									"value": "0"
+								},
+								{
+									"key": "x-envoy-upstream-service-time",
+									"value": "76"
+								},
+								{
+									"key": "server",
+									"value": "envoy"
 								}
 							],
 							"cookie": [],
 							"body": null
+						},
+						{
+							"name": "422 Create Book",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"Cambridgeshire 1080p withdrawal Fresh Applications\",\n    \"isbn\": \"562\",\n    \"releaseDate\": \"Shoes\",\n    \"pages\": \"Ergonomic\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/api/v1/Books/:id",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"api",
+										"v1",
+										"Books",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{bookId}}",
+											"description": "required"
+										}
+									]
+								}
+							},
+							"status": "Unprocessable Entity",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "vary",
+									"value": "Origin"
+								},
+								{
+									"key": "access-control-allow-credentials",
+									"value": "true"
+								},
+								{
+									"key": "x-xss-protection",
+									"value": "0"
+								},
+								{
+									"key": "x-content-type-options",
+									"value": "nosniff"
+								},
+								{
+									"key": "x-frame-options",
+									"value": "DENY"
+								},
+								{
+									"key": "content-type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "content-length",
+									"value": "265"
+								},
+								{
+									"key": "etag",
+									"value": "W/\"109-ZTX09fa4Re8D4j59ZWnDD9eMBmE\""
+								},
+								{
+									"key": "date",
+									"value": "Sun, 22 Oct 2023 21:22:41 GMT"
+								},
+								{
+									"key": "x-envoy-upstream-service-time",
+									"value": "3"
+								},
+								{
+									"key": "server",
+									"value": "envoy"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"errors\": [\n        {\n            \"id\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"author\": \"Invalid value at body. Value: undefined\"\n        },\n        {\n            \"isbn\": \"Invalid value at body. Value: 562\"\n        },\n        {\n            \"releaseDate\": \"Invalid value at body. Value: Shoes\"\n        },\n        {\n            \"pages\": \"Invalid value at body. Value: Ergonomic\"\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -351,7 +676,7 @@
 									}
 								},
 								"url": {
-									"raw": "{{host}}/api/v1/Books/:id",
+									"raw": "{{host}}/api/v1/Books/:id/update",
 									"host": [
 										"{{host}}"
 									],
@@ -359,7 +684,8 @@
 										"api",
 										"v1",
 										"Books",
-										":id"
+										":id",
+										"update"
 									],
 									"variable": [
 										{
@@ -413,98 +739,6 @@
 							],
 							"cookie": [],
 							"body": null
-						},
-						{
-							"name": "400",
-							"originalRequest": {
-								"method": "PATCH",
-								"header": [
-									{
-										"key": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{host}}/api/v1/Books/:id",
-									"host": [
-										"{{host}}"
-									],
-									"path": [
-										"api",
-										"v1",
-										"Books",
-										":id"
-									],
-									"variable": [
-										{
-											"key": "id",
-											"value": "{{bookId}}",
-											"description": "required"
-										}
-									]
-								}
-							},
-							"status": "Bad Request",
-							"code": 400,
-							"_postman_previewlanguage": "json",
-							"header": [
-								{
-									"key": "Vary",
-									"value": "Origin"
-								},
-								{
-									"key": "Access-Control-Allow-Credentials",
-									"value": "true"
-								},
-								{
-									"key": "X-XSS-Protection",
-									"value": "0"
-								},
-								{
-									"key": "X-Content-Type-Options",
-									"value": "nosniff"
-								},
-								{
-									"key": "X-Frame-Options",
-									"value": "DENY"
-								},
-								{
-									"key": "Content-Type",
-									"value": "application/json; charset=utf-8"
-								},
-								{
-									"key": "Content-Length",
-									"value": "52"
-								},
-								{
-									"key": "ETag",
-									"value": "W/\"34-WYPaNNTEMe2TFB9Qv3t6oFEAc8E\""
-								},
-								{
-									"key": "Date",
-									"value": "Mon, 11 Dec 2023 20:13:41 GMT"
-								},
-								{
-									"key": "Connection",
-									"value": "keep-alive"
-								},
-								{
-									"key": "Keep-Alive",
-									"value": "timeout=5"
-								}
-							],
-							"cookie": [],
-							"body": "{\n    \"errors\": [\n        {\n            \"message\": \"Empty body is not allowed\"\n        }\n    ]\n}"
 						}
 					]
 				},
@@ -553,10 +787,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/Books/:id",
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"localhost"
 									],
+									"port": "3000",
 									"path": [
 										"api",
 										"v1",
@@ -566,7 +802,8 @@
 									"variable": [
 										{
 											"key": "id",
-											"value": ""
+											"value": "",
+											"description": "required"
 										}
 									]
 								}
@@ -673,10 +910,12 @@
 								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/Books/:id",
+									"raw": "http://localhost:3000/api/v1/Books/:id",
+									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"localhost"
 									],
+									"port": "3000",
 									"path": [
 										"api",
 										"v1",
@@ -880,10 +1119,12 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{host}}/api/v1/health/http",
+									"raw": "http://localhost:3000/api/v1/health/http",
+									"protocol": "http",
 									"host": [
-										"{{host}}"
+										"localhost"
 									],
+									"port": "3000",
 									"path": [
 										"api",
 										"v1",
@@ -897,23 +1138,23 @@
 							"_postman_previewlanguage": "json",
 							"header": [
 								{
-									"key": "Vary",
+									"key": "vary",
 									"value": "Origin"
 								},
 								{
-									"key": "Access-Control-Allow-Credentials",
+									"key": "access-control-allow-credentials",
 									"value": "true"
 								},
 								{
-									"key": "X-XSS-Protection",
+									"key": "x-xss-protection",
 									"value": "0"
 								},
 								{
-									"key": "X-Content-Type-Options",
+									"key": "x-content-type-options",
 									"value": "nosniff"
 								},
 								{
-									"key": "X-Frame-Options",
+									"key": "x-frame-options",
 									"value": "DENY"
 								},
 								{
@@ -921,28 +1162,28 @@
 									"value": "application/json; charset=utf-8"
 								},
 								{
-									"key": "Content-Length",
+									"key": "content-length",
 									"value": "33"
 								},
 								{
-									"key": "ETag",
-									"value": "W/\"21-9x4XyE9hg/2X1jGi8LTMUW8FKYc\""
+									"key": "etag",
+									"value": "W/\"21-Rei14saXbyNBzYa963Az8GGsDLs\""
 								},
 								{
-									"key": "Date",
-									"value": "Mon, 11 Dec 2023 21:26:05 GMT"
+									"key": "date",
+									"value": "Sun, 15 Oct 2023 18:04:29 GMT"
 								},
 								{
-									"key": "Connection",
+									"key": "connection",
 									"value": "keep-alive"
 								},
 								{
-									"key": "Keep-Alive",
+									"key": "keep-alive",
 									"value": "timeout=5"
 								}
 							],
 							"cookie": [],
-							"body": "{\n    \"version\": \"1.4.0\",\n    \"status\": \"OK\"\n}"
+							"body": "{\n    \"version\": \"1.2.2\",\n    \"status\": \"OK\"\n}"
 						}
 					]
 				}
