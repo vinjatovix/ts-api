@@ -17,7 +17,7 @@ export class BookPatcher {
     this.authorRepository = authorRepository;
   }
 
-  async run(request: BookPatcherRequest): Promise<void> {
+  async run(request: BookPatcherRequest, username: string): Promise<void> {
     const storedBook = await this.repository.search(request.id);
 
     if (storedBook === null) {
@@ -33,6 +33,6 @@ export class BookPatcher {
     const book = BookPatch.fromPrimitives(request);
 
     await this.repository.update(book);
-    logger.info(`Updated Book: <${book.id}>`);
+    logger.info(`Updated Book: <${book.id}> by <${username}>`);
   }
 }

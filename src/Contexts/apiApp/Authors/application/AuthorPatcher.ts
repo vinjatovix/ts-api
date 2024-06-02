@@ -14,7 +14,7 @@ export class AuthorPatcher {
     this.repository = repository;
   }
 
-  async run(request: AuthorPatcherRequest): Promise<void> {
+  async run(request: AuthorPatcherRequest, username: string): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
 
     if (storedAuthor === null) {
@@ -24,6 +24,6 @@ export class AuthorPatcher {
     const author = AuthorPatch.fromPrimitives(request);
 
     await this.repository.update(author);
-    logger.info(`Updated Author: <${author.id}>`);
+    logger.info(`Updated Author: <${author.id}> by <${username}>`);
   }
 }

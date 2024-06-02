@@ -1,15 +1,18 @@
 import { Request, Response } from 'express';
+import { PatchAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
 import {
   AuthorCreatorRequest,
   AuthorPatcher
 } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { PatchAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers/AuthorCreatorRequestMother';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Authors/application/AuthorPatcher'
 );
+
+const username = random.word();
 
 describe('PatchAuthorController', () => {
   let authorPatcher: AuthorPatcher;
@@ -31,7 +34,12 @@ describe('PatchAuthorController', () => {
     };
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn()
+      send: jest.fn(),
+      locals: {
+        user: {
+          username
+        }
+      }
     };
     next = jest.fn();
   });
@@ -40,7 +48,7 @@ describe('PatchAuthorController', () => {
     it('should update an author and send 200 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(authorPatcher.run).toHaveBeenCalledWith(expectedAuthor);
+      expect(authorPatcher.run).toHaveBeenCalledWith(expectedAuthor, username);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.send).toHaveBeenCalledWith();
     });

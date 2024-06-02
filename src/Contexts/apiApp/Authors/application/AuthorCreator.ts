@@ -15,7 +15,7 @@ export class AuthorCreator {
     this.repository = repository;
   }
 
-  async run(request: AuthorCreatorRequest): Promise<void> {
+  async run(request: AuthorCreatorRequest, username: string): Promise<void> {
     await this.validateDependencies(request);
 
     const author = new Author({
@@ -24,7 +24,7 @@ export class AuthorCreator {
     });
 
     await this.repository.save(author);
-    logger.info(`Created Author: <${author.id.value}>`);
+    logger.info(`Created Author: <${author.id.value}> by <${username}>`);
   }
 
   private async validateDependencies(
