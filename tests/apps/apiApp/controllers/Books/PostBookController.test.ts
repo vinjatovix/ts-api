@@ -9,6 +9,7 @@ import { PostBookController } from '../../../../../src/apps/apiApp/controllers/B
 
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers/BookCreatorRequestMother';
+import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookCreator');
 
@@ -16,6 +17,7 @@ describe('PostBookController', () => {
   let bookCreator: BookCreator;
   let controller: PostBookController;
   let repository: BookRepositoryMock;
+  let authorRepository: AuthorRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
@@ -23,7 +25,7 @@ describe('PostBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookCreator = new BookCreator(repository);
+    bookCreator = new BookCreator(repository, authorRepository);
     controller = new PostBookController(bookCreator);
     expectedBook = BookCreatorRequestMother.random();
     req = {

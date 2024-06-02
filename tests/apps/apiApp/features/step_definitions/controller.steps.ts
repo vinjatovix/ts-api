@@ -1,4 +1,10 @@
-import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
+import {
+  AfterAll,
+  BeforeAll,
+  Given,
+  Then,
+  DataTable
+} from '@cucumber/cucumber';
 import { assert } from 'chai';
 import request from 'supertest';
 
@@ -11,6 +17,16 @@ import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
 import { random } from '../../../../Contexts/fixtures/shared';
 
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
+import { API_PREFIXES } from '../../../../../src/apps/apiApp/routes/shared';
+import { KeyStringObject } from '../../../../../src/apps/apiApp/shared/interfaces/KeyStringObject';
+import {
+  AuthorCreatorRequest,
+  AuthorResponse
+} from '../../../../../src/Contexts/apiApp/Authors/application';
+import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application';
+import { BookResponse } from '../../../../../src/Contexts/apiApp/Books/application/BookResponse';
+
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
 );
@@ -22,6 +38,45 @@ let _response: request.Response;
 let app: ApiApp;
 let validAdminBearerToken: Nullable<string>;
 let validUserBearerToken: Nullable<string>;
+
+const getPayloadByEntity = async (
+  entity: string,
+  id: string
+): Promise<BookCreatorRequest | AuthorCreatorRequest | KeyStringObject> => {
+  if (entity === 'author') {
+    return { id, name: 'test author' };
+  }
+
+  if (entity === 'book') {
+    const bookRequest = BookCreatorRequestMother.random(id);
+    const dependencies = await _createDependenciesByEntity(entity);
+    return { ...bookRequest, ...dependencies };
+  }
+
+  return {};
+};
+
+const _createDependenciesByEntity = async (
+  entity: string
+): Promise<KeyStringObject> => {
+  switch (entity) {
+    case 'book':
+      return await _getBookDependencies();
+    default:
+      return {};
+  }
+};
+
+const _getBookDependencies = async (): Promise<{ author: string }> => {
+  const autor = await getPayloadByEntity('author', random.uuid());
+  _request = request(app.httpServer)
+    .post(API_PREFIXES.author)
+    .set('Authorization', `Bearer ${validAdminBearerToken}`)
+    .send(autor);
+  await _request.expect(201);
+
+  return { author: autor?.id };
+};
 
 BeforeAll(async () => {
   app = new ApiApp();
@@ -131,6 +186,18 @@ Given('a DELETE admin request to {string}', async (route: string) => {
     .set('Authorization', `Bearer ${validAdminBearerToken}`);
 });
 
+Given(
+  'an existing {string} with id {string}',
+  async (entity: string, id: string) => {
+    _request = request(app.httpServer)
+      .post(API_PREFIXES[entity])
+      .set('Authorization', `Bearer ${validAdminBearerToken}`)
+      .send(await getPayloadByEntity(entity, id));
+
+    await _request.expect(201);
+  }
+);
+
 Then('the response status code should be {int}', async (status: number) => {
   _response = await _request.expect(status);
 });
@@ -149,9 +216,46 @@ Then(
   'the response body will be an array containing',
   async (docString: string) => {
     const response = await _request;
-    const expectedResponseBody = JSON.parse(docString);
+    const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+      JSON.parse(docString);
     assert.isArray(response.body);
-    assert.deepNestedInclude(response.body, expectedResponseBody);
+    const matches = response.body.some(
+      (item: BookResponse | AuthorResponse) => {
+        const typedItem = item as BookResponse | AuthorResponse;
+
+        return Object.keys(expectedResponseBody).every((key) => {
+          const typedKey = key as keyof (BookResponse | AuthorResponse);
+          return typedItem[typedKey] === expectedResponseBody[typedKey];
+        });
+      }
+    );
+
+    assert.isTrue(
+      matches,
+      'Expected response body to include an item matching the expected response body'
+    );
+  }
+);
+
+Then('the response body will match', async (docString: string) => {
+  const response = await _request;
+  const expectedResponseBody = JSON.parse(docString);
+  assert.deepNestedInclude(response.body, expectedResponseBody);
+});
+
+Then(
+  'the response body should have the properties:',
+  async (dataTable: DataTable) => {
+    const response = await _request;
+    const expectedProperties = dataTable.raw().flat();
+
+    for (const key of expectedProperties) {
+      assert.property(
+        response.body,
+        key,
+        `Response should have property: ${key}`
+      );
+    }
   }
 );
 

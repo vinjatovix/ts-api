@@ -8,9 +8,9 @@ import {
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
 import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
 
 import { BookAuthorMother } from './BookAuthorMother';
-import { BookIdMother } from './BookIdMother';
 import { BookPagesMother } from './BookPagesMother';
 import { BookReleaseDateMother } from './BookReleaseDateMother';
 import { BookTitleMother } from './BookTitleMother';
@@ -37,7 +37,7 @@ export class BookMother {
 
   static from(command: BookCreatorRequest): Book {
     return this.create(
-      BookIdMother.create(command.id),
+      UuidMother.create(command.id),
       BookTitleMother.create(command.title),
       BookAuthorMother.create(command.author),
       ISBNMother.create(command.isbn),
@@ -46,9 +46,9 @@ export class BookMother {
     );
   }
 
-  static random(): Book {
+  static random(id?: string): Book {
     return this.create(
-      BookIdMother.random(),
+      id ? UuidMother.create(id) : UuidMother.random(),
       BookTitleMother.random(),
       BookAuthorMother.random(),
       ISBNMother.random(),
