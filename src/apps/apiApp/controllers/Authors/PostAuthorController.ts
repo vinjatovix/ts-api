@@ -9,11 +9,15 @@ export class PostAuthorController implements Controller {
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id, name } = req.body;
+      const username = res.locals.user.username;
 
-      await this.authorCreator.run({
-        id,
-        name
-      });
+      await this.authorCreator.run(
+        {
+          id,
+          name
+        },
+        username
+      );
 
       res.status(this.status()).send();
     } catch (error) {

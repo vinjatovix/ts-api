@@ -9,15 +9,19 @@ export class PostBookController implements Controller {
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id, title, author, isbn, releaseDate, pages } = req.body;
+      const username = res.locals.user.username;
 
-      await this.bookCreator.run({
-        id,
-        title,
-        author,
-        isbn,
-        releaseDate,
-        pages
-      });
+      await this.bookCreator.run(
+        {
+          id,
+          title,
+          author,
+          isbn,
+          releaseDate,
+          pages
+        },
+        username
+      );
 
       res.status(this.status()).send();
     } catch (error) {

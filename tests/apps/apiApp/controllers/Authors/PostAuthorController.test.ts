@@ -1,17 +1,19 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-
+import { PostAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import {
   AuthorCreator,
   AuthorCreatorRequest
 } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { PostAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
-import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers/AuthorCreatorRequestMother';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Authors/application/AuthorCreator'
 );
+
+const username = random.word();
 
 describe('PostAuthorController', () => {
   let authorCreator: AuthorCreator;
@@ -32,7 +34,12 @@ describe('PostAuthorController', () => {
     };
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn()
+      send: jest.fn(),
+      locals: {
+        user: {
+          username
+        }
+      }
     };
     next = jest.fn();
   });
@@ -41,7 +48,7 @@ describe('PostAuthorController', () => {
     it('should create an author and send 201 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(authorCreator.run).toHaveBeenCalledWith(expectedAuthor);
+      expect(authorCreator.run).toHaveBeenCalledWith(expectedAuthor, username);
       expect(res.status).toHaveBeenCalledWith(httpStatus.CREATED);
       expect(res.send).toHaveBeenCalledWith();
     });

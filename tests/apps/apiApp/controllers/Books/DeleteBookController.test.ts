@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-
 import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
-
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
+
+const username = random.word();
 
 describe('DeleteBookController', () => {
   let bookRemover: BookRemover;
@@ -23,7 +24,12 @@ describe('DeleteBookController', () => {
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn()
+      send: jest.fn(),
+      locals: {
+        user: {
+          username
+        }
+      }
     };
     next = jest.fn();
   });
@@ -32,7 +38,7 @@ describe('DeleteBookController', () => {
     it('should delete a book and send 204 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookRemover.run).toHaveBeenCalledWith({ id: '1' });
+      expect(bookRemover.run).toHaveBeenCalledWith({ id: '1' }, username);
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();
     });
