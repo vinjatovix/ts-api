@@ -1,8 +1,9 @@
 import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application/BookFinder';
 import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
-import { RequestBookByIdMother } from './mothers/RequestBookByIdMother';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
-import { BookIdMother } from '../domain/mothers/BookIdMother';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { BookCreatorRequestMother } from './mothers';
+import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
 
 describe('BookFinder', () => {
   let repository: BookRepositoryMock;
@@ -18,16 +19,15 @@ describe('BookFinder', () => {
   });
 
   it('should find a book', async () => {
-    const bookId = BookIdMother.random();
-    const request = RequestBookByIdMother.create(bookId);
+    const request = RequestByIdMother.create(UuidMother.random());
 
     await finder.run(request);
 
-    repository.assertSearchHasBeenCalledWith(bookId.value);
+    repository.assertSearchHasBeenCalledWith(request.id);
   });
 
   it('should throw an error when the book is not found', async () => {
-    const request = RequestBookByIdMother.inexistentId();
+    const request = BookCreatorRequestMother.inexistentId();
 
     await expect(finder.run(request)).rejects.toThrow(NotFoundError);
   });

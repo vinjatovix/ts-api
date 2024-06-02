@@ -2,6 +2,7 @@ import { Nullable } from '../../../../shared/domain/Nullable';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 
 import { Book, BookPatch, BookRepository } from '../../domain';
+import { BookByQuery } from '../../domain/BookByQuery';
 
 export interface BookDocument {
   _id: string;
@@ -47,6 +48,22 @@ export class MongoBookRepository
   public async findAll(): Promise<Book[]> {
     const collection = await this.collection();
     const documents = await collection.find<BookDocument>({}).toArray();
+
+    return documents.map((document) =>
+      Book.fromPrimitives({
+        id: document._id,
+        title: document.title,
+        author: document.author,
+        isbn: document.isbn,
+        releaseDate: document.releaseDate,
+        pages: document.pages
+      })
+    );
+  }
+
+  public async findByQuery(query: BookByQuery): Promise<Book[]> {
+    const collection = await this.collection();
+    const documents = await collection.find<BookDocument>(query).toArray();
 
     return documents.map((document) =>
       Book.fromPrimitives({

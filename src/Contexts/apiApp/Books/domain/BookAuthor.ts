@@ -12,14 +12,6 @@ export class BookAuthor extends StringValueObject {
     this.value = value.trim();
   }
 
-  private ensureType(value: string): void {
-    if (typeof value !== 'string') {
-      throw new InvalidArgumentError(
-        `<${this.constructor.name}> does not allow the value <${value}>`
-      );
-    }
-  }
-
   private ensureLength(value: string): void {
     const _value = value.trim();
     if (!_value.length) {

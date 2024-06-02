@@ -1,4 +1,5 @@
 import { Book } from './Book';
+import { BookByQuery } from './BookByQuery';
 import { BookPatch } from './BookPatch';
 
 export interface BookRepository {
@@ -11,4 +12,6 @@ export interface BookRepository {
   findAll(): Promise<Book[]>;
 
   remove(bookId: string): Promise<void>;
+
+  findByQuery(query: BookByQuery): Promise<Book[]>;
 }

@@ -1,8 +1,10 @@
 services:
+  # HEALTH
   Apps.apiApp.controllers.health.GetStatusController:
     class: ../../controllers/health/GetStatusController
     arguments: []
 
+  # AUTH
   Apps.apiApp.controllers.Auth.LoginController:
     class: ../../controllers/Auth/LoginController
     arguments: ['@apiApp.Auth.application.LoginUser']
@@ -15,6 +17,28 @@ services:
     class: ../../controllers/Auth/ValidateMailController
     arguments: ['@apiApp.Auth.application.ValidateMail']
 
+  # AUTHORS
+  Apps.apiApp.controllers.Authors.PostAuthorController:
+    class: ../../controllers/Authors/PostAuthorController
+    arguments: ['@apiApp.Authors.application.AuthorCreator']
+
+  Apps.apiApp.controllers.Authors.GetAuthorController:
+    class: ../../controllers/Authors/GetAuthorController
+    arguments: ['@apiApp.Authors.application.AuthorFinder']
+
+  Apps.apiApp.controllers.Authors.GetAllAuthorsController:
+    class: ../../controllers/Authors/GetAllAuthorsController
+    arguments: ['@apiApp.Authors.application.AllAuthorsFinder']
+
+  Apps.apiApp.controllers.Authors.PatchAuthorController:
+    class: ../../controllers/Authors/PatchAuthorController
+    arguments: ['@apiApp.Authors.application.AuthorPatcher']
+
+  Apps.apiApp.controllers.Authors.DeleteAuthorController:
+    class: ../../controllers/Authors/DeleteAuthorController
+    arguments: ['@apiApp.Authors.application.AuthorRemover']
+
+  # BOOKS
   Apps.apiApp.controllers.Books.PostBookController:
     class: ../../controllers/Books/PostBookController
     arguments: ['@apiApp.Books.application.BookCreator']
