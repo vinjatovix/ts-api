@@ -1,0 +1,39 @@
+services:
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
+  apiApp.Authors.domain.AuthorRepository:
+    class: ../../../../Contexts/apiApp/Authors/infrastructure/persistence/MongoAuthorRepository
+    arguments: ['@apiApp.MongoClient']
+
+  apiApp.Authors.application.AuthorCreator:
+    class: ../../../../Contexts/apiApp/Authors/application/AuthorCreator
+    arguments: ['@apiApp.Authors.domain.AuthorRepository']
+
+  apiApp.Authors.application.AuthorPatcher:
+    class: ../../../../Contexts/apiApp/Authors/application/AuthorPatcher
+    arguments: ['@apiApp.Authors.domain.AuthorRepository']
+
+  apiApp.Authors.application.AllAuthorsFinder:
+    class: ../../../../Contexts/apiApp/Authors/application/AllAuthorsFinder
+    arguments: ['@apiApp.Authors.domain.AuthorRepository']
+
+  apiApp.Authors.application.AuthorFinder:
+    class: ../../../../Contexts/apiApp/Authors/application/AuthorFinder
+    arguments: ['@apiApp.Authors.domain.AuthorRepository']
+
+  apiApp.Authors.application.AuthorRemover:
+    class: ../../../../Contexts/apiApp/Authors/application/AuthorRemover
+    arguments:
+      [
+        '@apiApp.Authors.domain.AuthorRepository',
+        '@apiApp.Books.domain.BookRepository'
+      ]

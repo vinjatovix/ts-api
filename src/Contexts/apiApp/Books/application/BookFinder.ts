@@ -16,7 +16,7 @@ export class BookFinder {
     const book = await this.repository.search(request.id);
 
     if (book === null) {
-      throw new NotFoundError(`Book <${request.id}> not found`);
+      throw new NotFoundError(`Book <${request.id}>`);
     }
 
     return {

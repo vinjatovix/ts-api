@@ -5,8 +5,9 @@ import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application
 import { GetBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers/BookMother';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
+import { random } from '../../../../Contexts/fixtures/shared';
 
-jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookFinder');
+const BOOK_UUID = random.uuid();
 
 describe('GetBookController', () => {
   let bookFinder: BookFinder;
@@ -20,7 +21,7 @@ describe('GetBookController', () => {
     repository = new BookRepositoryMock();
     bookFinder = new BookFinder(repository);
     controller = new GetBookController(bookFinder);
-    req = { params: { id: '1' } };
+    req = { params: { id: BOOK_UUID } };
     res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn()
@@ -35,7 +36,7 @@ describe('GetBookController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookFinder.run).toHaveBeenCalledWith({ id: '1' });
+      expect(bookFinder.run).toHaveBeenCalledWith({ id: BOOK_UUID });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith(book.toPrimitives());
     });

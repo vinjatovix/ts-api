@@ -7,7 +7,7 @@ export class BookAuthorMother {
     return new BookAuthor(value);
   }
   static random() {
-    return this.create(random.word({ min: 1, max: 40 }));
+    return this.create(random.uuid());
   }
 
   static invalidValue() {

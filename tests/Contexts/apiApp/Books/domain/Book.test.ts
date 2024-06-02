@@ -1,19 +1,19 @@
 import {
   Book,
   BookAuthor,
-  BookId,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../src/Contexts/apiApp/Books/domain';
 import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
 
 import { random } from '../../../fixtures/shared';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 
 import {
   BookAuthorMother,
-  BookIdMother,
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
@@ -23,7 +23,7 @@ import {
 describe('Book', () => {
   it('should create a valid book', () => {
     const bookValueObjects = {
-      id: BookIdMother.random(),
+      id: UuidMother.random(),
       title: BookTitleMother.random(),
       author: BookAuthorMother.random(),
       releaseDate: BookReleaseDateMother.random(),
@@ -38,7 +38,7 @@ describe('Book', () => {
     it('should throw an error when the id is not a valid uuid', () => {
       let id;
       expect(() => {
-        id = new BookId(BookIdMother.invalidValue());
+        id = new Uuid(UuidMother.invalidValue());
       }).toThrow(InvalidArgumentError);
 
       expect(id).toBeUndefined();
@@ -49,8 +49,7 @@ describe('Book', () => {
     it("should throw an error when the title isn't a valid string", () => {
       let title;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         title = new BookTitle(BookTitleMother.invalidValue());
       }).toThrow(InvalidArgumentError);
 
@@ -78,8 +77,7 @@ describe('Book', () => {
     it('should throw an error when the title is undefined or null', () => {
       let title;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         title = new BookTitle(null);
       }).toThrow(InvalidArgumentError);
 
@@ -91,8 +89,7 @@ describe('Book', () => {
     it("should throw an error when the author isn't a string", () => {
       let author;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         author = new BookAuthor(123);
       }).toThrow(InvalidArgumentError);
 
@@ -153,8 +150,7 @@ describe('Book', () => {
     it('should throw an error when the pages is not a valid type', () => {
       let pages;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         pages = new BookPages(BookPagesMother.invalidType());
       }).toThrow(InvalidArgumentError);
 

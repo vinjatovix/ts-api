@@ -1,14 +1,14 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+import { Uuid } from '../../../shared/domain/value-object/Uuid';
 
 import { BookAuthor } from './BookAuthor';
-import { BookId } from './BookId';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { Isbn } from './ISBN';
 
 export class BookPatch extends AggregateRoot {
-  readonly id: BookId;
+  readonly id: Uuid;
   readonly title?: BookTitle;
   readonly author?: BookAuthor;
   readonly isbn?: Isbn;
@@ -23,7 +23,7 @@ export class BookPatch extends AggregateRoot {
     releaseDate,
     pages
   }: {
-    id: BookId;
+    id: Uuid;
     title?: BookTitle;
     author?: BookAuthor;
     isbn?: Isbn;
@@ -66,7 +66,7 @@ export class BookPatch extends AggregateRoot {
     pages?: number;
   }): BookPatch {
     return new BookPatch({
-      id: new BookId(id),
+      id: new Uuid(id),
       ...(title && { title: new BookTitle(title) }),
       ...(author && { author: new BookAuthor(author) }),
       ...(isbn && { isbn: new Isbn(isbn) }),
