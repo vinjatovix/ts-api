@@ -1,8 +1,11 @@
 import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application';
+import { random } from '../../../fixtures/shared';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { BookRepositoryMock } from '../../Books/__mocks__/BookRepositoryMock';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
+
+const username = random.word();
 
 describe('AuthorRemover', () => {
   let repository: AuthorRepositoryMock;
@@ -23,7 +26,7 @@ describe('AuthorRemover', () => {
   it('should remove an author', async () => {
     const request = RequestByIdMother.create(UuidMother.random());
 
-    await remover.run(request);
+    await remover.run(request, username);
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
@@ -32,7 +35,7 @@ describe('AuthorRemover', () => {
     const request = RequestByIdMother.create(UuidMother.random());
     bookRepository.findByQueryMock.mockResolvedValue([{}]);
 
-    await expect(remover.run(request)).rejects.toThrow(
+    await expect(remover.run(request, username)).rejects.toThrow(
       `Author <${request.id}> has books`
     );
   });
@@ -40,6 +43,6 @@ describe('AuthorRemover', () => {
   it('should not throw an error when the author is not found', async () => {
     const request = RequestByIdMother.inexistentId();
 
-    await expect(remover.run(request)).resolves.toBeUndefined();
+    await expect(remover.run(request, username)).resolves.toBeUndefined();
   });
 });

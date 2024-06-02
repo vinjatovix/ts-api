@@ -15,7 +15,7 @@ export class AuthorRemover {
     this.bookRepository = bookRepository;
   }
 
-  async run(request: RequestById): Promise<void> {
+  async run(request: RequestById, username: string): Promise<void> {
     const books = await this.bookRepository.findByQuery({
       author: request.id
     });
@@ -23,6 +23,6 @@ export class AuthorRemover {
       throw new ConflictError(`Author <${request.id}> has books`);
     }
     await this.repository.remove(request.id);
-    logger.info(`Removed Author: <${request.id}>`);
+    logger.info(`Removed Author: <${request.id}> by <${username}>`);
   }
 }

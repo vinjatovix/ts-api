@@ -10,11 +10,15 @@ export class PatchBookController implements Controller {
     try {
       const { id } = req.params;
       const updates = req.body;
+      const username = res.locals.user.username;
 
-      await this.bookPatcher.run({
-        id,
-        ...updates
-      });
+      await this.bookPatcher.run(
+        {
+          id,
+          ...updates
+        },
+        username
+      );
 
       res.status(this.status()).send();
     } catch (error: unknown) {

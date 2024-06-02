@@ -27,7 +27,7 @@ export class BookCreator {
     this.authorRepository = authorRepository;
   }
 
-  async run(request: BookCreatorRequest): Promise<void> {
+  async run(request: BookCreatorRequest, username: string): Promise<void> {
     const storedBook = await this.repository.search(request.id);
 
     if (storedBook) {
@@ -48,6 +48,6 @@ export class BookCreator {
     });
 
     await this.repository.save(book);
-    logger.info(`Created Book: <${book.id.value}> `);
+    logger.info(`Created Book: <${book.id.value}> by <${username}>`);
   }
 }
