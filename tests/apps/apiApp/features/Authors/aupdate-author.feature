@@ -9,7 +9,7 @@ Feature: Update an existing author
     Given a PATCH admin request to "/api/v1/Authors/83231f74-6212-495f-b2ba-cd152a1aed5c" with body
       """
       {
-      "name": "New Name"
+        "name": "New Name"
       }
       """
     Then the response status code should be 200
@@ -23,11 +23,7 @@ Feature: Update an existing author
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "message": "Empty body is not allowed"
-          }
-        ]
+        "message": "Empty body is not allowed"
       }
       """
 

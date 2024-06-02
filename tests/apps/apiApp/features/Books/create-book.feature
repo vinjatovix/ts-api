@@ -34,29 +34,7 @@ Feature: Create a new book
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "id": "Invalid value at body. Value: undefined"
-          },
-          {
-            "title": "Invalid value at body. Value: undefined"
-          },
-          {
-            "author": "Invalid value at body. Value: 56"
-          },
-          {
-            "isbn": "Invalid value at body. Value: AAA-3-16-148410-0"
-          },
-          {
-            "releaseDate": "Invalid value at body. Value: AAAAA"
-          },
-          {
-            "pages": "Invalid value at body. Value: ad3f3210"
-          },
-          {
-            "fields": "Unknown field <extra> in <body> with value <property>"
-          }
-        ]
+        "message": "{ id : Invalid value at body. Value: undefined , title : Invalid value at body. Value: undefined , author : Invalid value at body. Value: 56 , isbn : Invalid value at body. Value: AAA-3-16-148410-0 , releaseDate : Invalid value at body. Value: AAAAA , pages : Invalid value at body. Value: ad3f3210 , fields : Unknown field <extra> in <body> with value <property> }"
       }
       """
 
