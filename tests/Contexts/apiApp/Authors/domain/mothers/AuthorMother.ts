@@ -3,7 +3,7 @@ import {
   Author,
   AuthorName
 } from '../../../../../../src/Contexts/apiApp/Authors/domain';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject/Uuid';
 import { AuthorNameMother } from './AuthorNameMother';
 
 export class AuthorMother {

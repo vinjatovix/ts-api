@@ -1,5 +1,5 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
+import { Uuid } from '../../../shared/domain/valueObject';
 import { AuthorName } from './AuthorName';
 
 export class Author extends AggregateRoot {

@@ -1,5 +1,5 @@
 import { AuthorRepository } from '../domain/';
-import { AuthorResponse } from './AuthorResponse';
+import { AuthorResponse } from './interfaces/AuthorResponse';
 
 export class AllAuthorsFinder {
   private readonly repository: AuthorRepository;

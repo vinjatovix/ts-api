@@ -23,5 +23,15 @@ Feature: Get a specific book by id
       | releaseDate |
       | pages       |
 
-
+    Given an authenticated GET request to "/api/v1/Books/9a6e0804-2bd0-4672-b79d-d97027f9074e?include=author"
+    Then the response status code should be 200
+    Then the response body should contain
+      """
+      {
+        "id": "9a6e0804-2bd0-4672-b79d-d97027f9074e",
+        "author": {
+          "name": "test author"
+        }
+      }
+      """
 

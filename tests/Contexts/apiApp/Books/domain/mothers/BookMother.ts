@@ -1,16 +1,13 @@
 import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
 import {
   Book,
-  BookAuthor,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
-
-import { BookAuthorMother } from './BookAuthorMother';
 import { BookPagesMother } from './BookPagesMother';
 import { BookReleaseDateMother } from './BookReleaseDateMother';
 import { BookTitleMother } from './BookTitleMother';
@@ -20,7 +17,7 @@ export class BookMother {
   static create(
     id: Uuid,
     title: BookTitle,
-    author: BookAuthor,
+    author: Uuid,
     isbn: Isbn,
     releaseDate: BookReleaseDate,
     pages: BookPages
@@ -39,7 +36,7 @@ export class BookMother {
     return this.create(
       UuidMother.create(command.id),
       BookTitleMother.create(command.title),
-      BookAuthorMother.create(command.author),
+      UuidMother.create(command.author),
       ISBNMother.create(command.isbn),
       new BookReleaseDate(command.releaseDate),
       BookPagesMother.create(command.pages)
@@ -50,7 +47,7 @@ export class BookMother {
     return this.create(
       id ? UuidMother.create(id) : UuidMother.random(),
       BookTitleMother.random(),
-      BookAuthorMother.random(),
+      Uuid.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
       BookPagesMother.random()

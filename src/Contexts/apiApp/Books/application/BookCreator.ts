@@ -1,19 +1,12 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
-import { AuthorRepository } from '../../Authors/domain';
-
 import {
-  Book,
-  BookAuthor,
-  BookPages,
-  BookReleaseDate,
-  BookRepository,
-  BookTitle,
-  Isbn
-} from '../domain';
-
+  InvalidArgumentError,
+  NotFoundError
+} from '../../../shared/domain/errors';
+import { Uuid } from '../../../shared/domain/valueObject';
+import { buildLogger } from '../../../shared/plugins';
+import { AuthorRepository } from '../../Authors/domain';
+import { Book, BookPages, BookReleaseDate, BookTitle, Isbn } from '../domain';
+import { BookRepository } from '../domain/interfaces';
 import { BookCreatorRequest } from './BookCreatorRequest';
 
 const logger = buildLogger('bookCreator');
@@ -33,6 +26,7 @@ export class BookCreator {
     if (storedBook) {
       throw new InvalidArgumentError(`Book <${request.id}> already exists`);
     }
+
     const author = await this.authorRepository.search(request.author);
     if (!author) {
       throw new NotFoundError(`Author <${request.author}>`);
@@ -41,7 +35,7 @@ export class BookCreator {
     const book = new Book({
       id: new Uuid(request.id),
       title: new BookTitle(request.title),
-      author: new BookAuthor(request.author),
+      author: new Uuid(request.author),
       isbn: new Isbn(request.isbn),
       releaseDate: new BookReleaseDate(request.releaseDate),
       pages: new BookPages(+request.pages)
