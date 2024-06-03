@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces/RequestOptions';
 import { Nullable } from '../../../../shared/domain/Nullable';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
@@ -39,7 +40,9 @@ export class MongoBookRepository
     const collection = await this.collection();
 
     if (Object.keys(options).length === 0) {
-      const document = await collection.findOne<BookDocument>({ _id: id });
+      const document = await collection.findOne<BookDocument>({
+        _id: id as unknown as ObjectId
+      });
 
       return document
         ? Book.fromPrimitives({
