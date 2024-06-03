@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 
 import { Author, AuthorRepository } from '../../domain';
@@ -25,7 +26,9 @@ export class MongoAuthorRepository
 
   public async search(id: string): Promise<Author | null> {
     const collection = await this.collection();
-    const document = await collection.findOne<AuthorDocument>({ _id: id });
+    const document = await collection.findOne<AuthorDocument>({
+      _id: id as unknown as ObjectId
+    });
 
     return document
       ? Author.fromPrimitives({
