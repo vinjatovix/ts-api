@@ -1,8 +1,9 @@
+import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces/RequestOptions';
 import { RequestById } from '../../../shared/application/RequestById';
+import { Nullable } from '../../../shared/domain/Nullable';
 import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
-
-import { BookRepository } from '../domain';
-
+import { Book, PopulatedBook } from '../domain';
+import { BookRepository } from '../domain/interfaces';
 import { BookResponse } from './BookResponse';
 
 export class BookFinder {
@@ -12,20 +13,17 @@ export class BookFinder {
     this.repository = repository;
   }
 
-  async run(request: RequestById): Promise<BookResponse> {
-    const book = await this.repository.search(request.id);
+  async run(
+    request: RequestById,
+    options: Partial<RequestOptions> = {}
+  ): Promise<Partial<BookResponse>> {
+    const book: Nullable<Partial<Book | PopulatedBook>> =
+      await this.repository.search(request.id, options);
 
-    if (book === null) {
-      throw new NotFoundError(`Book <${request.id}>`);
+    if (book instanceof Book || book instanceof PopulatedBook) {
+      return book.toPrimitives();
     }
 
-    return {
-      id: book.id.value,
-      title: book.title.value,
-      author: book.author.value,
-      isbn: book.isbn.value,
-      releaseDate: book.releaseDate.value,
-      pages: book.pages.value
-    };
+    throw new NotFoundError(`Book <${request.id}>`);
   }
 }

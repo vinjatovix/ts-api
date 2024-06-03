@@ -1,15 +1,19 @@
-import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
-import { BookByQuery } from '../../../../../src/Contexts/apiApp/Books/domain/BookByQuery';
-import { BookPatch } from '../../../../../src/Contexts/apiApp/Books/domain/BookPatch';
-import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/BookRepository';
-
+import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import {
+  Book,
+  BookPatch
+} from '../../../../../src/Contexts/apiApp/Books/domain';
+import {
+  BookByQuery,
+  BookRepository
+} from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { BookMother } from '../domain/mothers/BookMother';
 
 export class BookRepositoryMock implements BookRepository {
   protected saveMock: jest.Mock;
   private updateMock: jest.Mock;
   protected findMock: jest.Mock;
-  private findAllMock: jest.Mock;
+  public findAllMock: jest.Mock;
   private removeMock: jest.Mock;
   public findByQueryMock: jest.Mock;
 
@@ -52,15 +56,19 @@ export class BookRepositoryMock implements BookRepository {
     expect(this.findMock).toHaveBeenCalledWith(expected);
   }
 
-  async findAll(): Promise<Book[]> {
+  async findAll(options?: Partial<RequestOptions>): Promise<Book[]> {
     const bookList = BookMother.randomList(3);
     this.findAllMock = jest.fn().mockReturnValue(bookList);
 
-    return this.findAllMock();
+    return this.findAllMock(options);
   }
 
   assertSearchAllHasBeenCalled(): void {
     expect(this.findAllMock).toHaveBeenCalled();
+  }
+
+  assertSearchAllHasBeenCalledWith(options: Partial<RequestOptions>): void {
+    expect(this.findAllMock).toHaveBeenCalledWith(options);
   }
 
   async remove(id: string): Promise<void> {

@@ -1,18 +1,21 @@
-import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain/Username';
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { random } from '../../../fixtures/shared';
 
 describe('UserName', () => {
   it('should throw an error if user username is more than 20 chars long', () => {
-    const invalidUsername = random.word({ min: 21, max: 255 });
+    const invalidUsername = random.word({ min: Username.MAX_LENGTH + 1 });
     expect(() => new Username(invalidUsername)).toThrow(
-      '<Username> must be less than 20 characters long'
+      `<Username> <${invalidUsername}> has more than ${Username.MAX_LENGTH} characters`
     );
   });
 
   it('should throw an error if user username is less than 4 chars long', () => {
-    const invalidUsername = random.word({ min: 1, max: 3 });
+    const invalidUsername = random.word({
+      min: 1,
+      max: Username.MIN_LENGTH - 1
+    });
     expect(() => new Username(invalidUsername)).toThrow(
-      '<Username> must be at least 4 characters long'
+      `<Username> <${invalidUsername}> has less than ${Username.MIN_LENGTH} characters`
     );
   });
 });

@@ -1,8 +1,11 @@
-import { Email, User } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { UserPatch } from '../../../../../src/Contexts/apiApp/Auth/domain/UserPatch';
-import { UserRepository } from '../../../../../src/Contexts/apiApp/Auth/domain/UserRepository';
+import {
+  Email,
+  User,
+  UserPatch,
+  UserRepository
+} from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
+import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { UserMother } from '../domain/mothers/UserMother';
 
 export class UserRepositoryMock implements UserRepository {

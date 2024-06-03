@@ -1,5 +1,5 @@
 import { ValidateMail } from '../../../../../src/Contexts/apiApp/Auth/application';
-import { UserPatch } from '../../../../../src/Contexts/apiApp/Auth/domain/UserPatch';
+import { UserPatch } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { random } from '../../../fixtures/shared';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';

@@ -1,9 +1,9 @@
-import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/RegisterUserRequest';
+import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import {
   Email,
   Username
 } from '../../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
+import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../../fixtures/shared';
 import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
 
@@ -23,7 +23,9 @@ export class RegisterUserRequestMother {
   static random(): RegisterUserRequest {
     return this.create(
       EmailMother.random(),
-      new Username(random.word({ min: 4, max: 20 })),
+      new Username(
+        random.word({ min: Username.MIN_LENGTH, max: Username.MAX_LENGTH })
+      ),
       new StringValueObject('%aD3f3s.0%')
     );
   }

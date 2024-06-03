@@ -1,9 +1,8 @@
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
+import { NotFoundError } from '../../../shared/domain/errors';
+import { buildLogger } from '../../../shared/plugins';
 import { AuthorRepository } from '../../Authors/domain';
-
-import { BookPatch, BookRepository } from '../domain';
-
+import { BookPatch } from '../domain';
+import { BookRepository } from '../domain/interfaces';
 import { BookPatcherRequest } from './BookPatcherRequest';
 
 const logger = buildLogger('bookPatcher');
@@ -23,6 +22,7 @@ export class BookPatcher {
     if (storedBook === null) {
       throw new NotFoundError(`Book <${request.id}>`);
     }
+
     if (request.author) {
       const author = await this.authorRepository.search(request.author);
       if (!author) {

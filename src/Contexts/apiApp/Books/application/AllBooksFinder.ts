@@ -1,5 +1,6 @@
-import { BookRepository } from '../domain';
-
+import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces';
+import { Book, PopulatedBook } from '../domain';
+import { BookRepository } from '../domain/interfaces';
 import { BookResponse } from './BookResponse';
 
 export class AllBooksFinder {
@@ -9,16 +10,12 @@ export class AllBooksFinder {
     this.repository = repository;
   }
 
-  async run(): Promise<BookResponse[]> {
-    const books = await this.repository.findAll();
+  async run(
+    options: Partial<RequestOptions> = {}
+  ): Promise<Partial<BookResponse>[]> {
+    const books: (Book | PopulatedBook)[] =
+      await this.repository.findAll(options);
 
-    return books.map((book) => ({
-      id: book.id.value,
-      title: book.title.value,
-      author: book.author.value,
-      isbn: book.isbn.value,
-      releaseDate: book.releaseDate.value,
-      pages: book.pages.value
-    }));
+    return books.map((book) => book.toPrimitives());
   }
 }
