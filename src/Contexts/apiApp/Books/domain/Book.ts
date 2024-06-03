@@ -1,7 +1,5 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-
-import { BookAuthor } from './BookAuthor';
+import { Uuid } from '../../../shared/domain/valueObject';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
@@ -10,7 +8,7 @@ import { Isbn } from './ISBN';
 export class Book extends AggregateRoot {
   readonly id: Uuid;
   readonly title: BookTitle;
-  readonly author: BookAuthor;
+  readonly author: Uuid;
   readonly isbn: Isbn;
   readonly releaseDate: BookReleaseDate;
   readonly pages: BookPages;
@@ -25,7 +23,7 @@ export class Book extends AggregateRoot {
   }: {
     id: Uuid;
     title: BookTitle;
-    author: BookAuthor;
+    author: Uuid;
     isbn: Isbn;
     releaseDate: BookReleaseDate;
     pages: BookPages;
@@ -68,7 +66,7 @@ export class Book extends AggregateRoot {
     return new Book({
       id: new Uuid(id),
       title: new BookTitle(title),
-      author: new BookAuthor(author),
+      author: new Uuid(author),
       isbn: new Isbn(isbn),
       releaseDate: new BookReleaseDate(releaseDate),
       pages: new BookPages(pages)

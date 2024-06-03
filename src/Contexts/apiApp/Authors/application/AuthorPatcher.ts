@@ -1,9 +1,7 @@
 import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
-
 import { AuthorPatch, AuthorRepository } from '../domain';
-
-import { AuthorPatcherRequest } from './AuthorPatcherRequest';
+import { AuthorPatcherRequest } from './interfaces';
 
 const logger = buildLogger('authorPatcher');
 

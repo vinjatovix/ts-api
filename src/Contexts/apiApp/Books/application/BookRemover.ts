@@ -1,5 +1,5 @@
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
-import { BookRepository } from '../domain';
+import { buildLogger } from '../../../shared/plugins';
+import { BookRepository } from '../domain/interfaces';
 import { BookRemoverRequest } from './BookRemoverRequest';
 
 const logger = buildLogger('bookRemover');

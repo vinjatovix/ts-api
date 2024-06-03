@@ -1,4 +1,4 @@
-import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/RegisterUserRequest';
+import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import {
   User,
   Email,
@@ -6,8 +6,10 @@ import {
   Username,
   UserPatch
 } from '../../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import {
+  StringValueObject,
+  Uuid
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../../fixtures/shared';
 import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
 import { UserRolesMother } from './UserRolesMother';

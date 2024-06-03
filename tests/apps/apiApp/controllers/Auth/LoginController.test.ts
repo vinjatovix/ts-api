@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import {
-  LoginUser,
-  LoginUserRequest
-} from '../../../../../src/Contexts/apiApp/Auth/application';
 import { LoginController } from '../../../../../src/apps/apiApp/controllers/Auth';
+import { LoginUser } from '../../../../../src/Contexts/apiApp/Auth/application';
+import { LoginUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
+import { AuthError } from '../../../../../src/Contexts/shared/domain/errors/AuthError';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
 import { LoginUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers/LoginUserRequestMother';
-import { AuthError } from '../../../../../src/Contexts/shared/domain/errors/AuthError';
 
 describe('LoginController', () => {
   let repository: UserRepositoryMock;

@@ -3,7 +3,7 @@ import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 
 import { AuthorRepository } from '../domain';
 
-import { AuthorResponse } from './AuthorResponse';
+import { AuthorResponse } from './interfaces/AuthorResponse';
 
 export class AuthorFinder {
   private readonly repository: AuthorRepository;

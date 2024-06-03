@@ -1,6 +1,6 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-
+import { Uuid } from '../../../shared/domain/valueObject';
+import { AuthorPatcherRequest } from '../application/interfaces';
 import { AuthorName } from './AuthorName';
 
 export class AuthorPatch extends AggregateRoot {
@@ -13,14 +13,14 @@ export class AuthorPatch extends AggregateRoot {
     name && (this.name = name);
   }
 
-  toPrimitives() {
+  toPrimitives(): Record<string, string> {
     return {
       id: this.id.value,
       ...(this.name?.value && { name: this.name.value })
     };
   }
 
-  static fromPrimitives({ id, name }: { id: string; name?: string }) {
+  static fromPrimitives({ id, name }: AuthorPatcherRequest) {
     return new AuthorPatch({
       id: new Uuid(id),
       ...(name && { name: new AuthorName(name.trim()) })

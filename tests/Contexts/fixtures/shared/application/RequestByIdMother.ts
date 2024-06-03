@@ -1,5 +1,5 @@
 import { RequestById } from '../../../../../src/Contexts/shared/application/RequestById';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../domain/mothers/UuidMother';
 
 export class RequestByIdMother {

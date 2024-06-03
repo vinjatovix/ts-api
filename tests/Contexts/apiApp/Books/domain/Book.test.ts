@@ -1,19 +1,15 @@
 import {
   Book,
-  BookAuthor,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
-
+import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../fixtures/shared';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
-
 import {
-  BookAuthorMother,
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
@@ -25,7 +21,7 @@ describe('Book', () => {
     const bookValueObjects = {
       id: UuidMother.random(),
       title: BookTitleMother.random(),
-      author: BookAuthorMother.random(),
+      author: UuidMother.random(),
       releaseDate: BookReleaseDateMother.random(),
       pages: BookPagesMother.random(),
       isbn: ISBNMother.random()
@@ -59,7 +55,7 @@ describe('Book', () => {
     it('should throw an error when the title is longer than 100 characters', () => {
       let title;
       expect(() => {
-        title = new BookTitle(random.word({ min: 101, max: 255 }));
+        title = new BookTitle(random.word({ min: BookTitle.MAX_LENGTH + 1 }));
       }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
@@ -90,16 +86,16 @@ describe('Book', () => {
       let author;
       expect(() => {
         // @ts-expect-error Testing purposes
-        author = new BookAuthor(123);
+        author = new Uuid(123);
       }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
 
-    it('should throw an error when the author is longer than 40 characters', () => {
+    it('should throw an error when the author is not a valid Uuid', () => {
       let author;
       expect(() => {
-        author = new BookAuthor(BookAuthorMother.invalidValue());
+        author = new Uuid(UuidMother.invalidValue());
       }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
@@ -108,7 +104,7 @@ describe('Book', () => {
     it('should throw an error when the author is empty', () => {
       let author;
       expect(() => {
-        author = new BookAuthor('');
+        author = new Uuid('');
       }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
