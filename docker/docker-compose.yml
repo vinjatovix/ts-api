@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   ts-api-mongo:
@@ -9,6 +9,7 @@ services:
     ports:
       - 27017:27017
     volumes:
+      - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/init.js:ro
       - ts_api_mongo_data:/data/db:delegated
     environment:
       MONGO_INITDB_DATABASE: ts-api
@@ -17,11 +18,20 @@ services:
       MONGO_USERNAME: localUser
       MONGO_PASSWORD: localPassword
     healthcheck:
-      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
-      interval: 60s
+      test: |
+        if echo "rs.initiate({_id:'rs0',members:[{_id:0,host:'localhost:27017'}]}).ok" | mongosh -u root -p rootPassword --quiet | grep -q 1; then
+          exit 0
+        elif echo "rs.status().ok" | mongosh -u root -p rootPassword --quiet | grep -q 1; then
+          exit 0
+        else
+          exit 1
+        fi
+      interval: 10s
       start_period: 30s
       timeout: 10s
       retries: 3
+    command:
+      ['--replSet', 'rs0', '--bind_ip_all', '--keyFile', '/data/replica.key']
 
 volumes:
   ts_api_mongo_data:
