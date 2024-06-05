@@ -3,6 +3,7 @@ import {
   NotFoundError
 } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
+import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
 import { AuthorRepository } from '../../Authors/domain';
 import { Book, BookPages, BookReleaseDate, BookTitle, Isbn } from '../domain';
@@ -21,16 +22,7 @@ export class BookCreator {
   }
 
   async run(request: BookCreatorRequest, username: string): Promise<void> {
-    const storedBook = await this.repository.search(request.id);
-
-    if (storedBook) {
-      throw new InvalidArgumentError(`Book <${request.id}> already exists`);
-    }
-
-    const author = await this.authorRepository.search(request.author);
-    if (!author) {
-      throw new NotFoundError(`Author <${request.author}>`);
-    }
+    await this.validateDependencies(request);
 
     const book = new Book({
       id: new Uuid(request.id),
@@ -38,10 +30,29 @@ export class BookCreator {
       author: new Uuid(request.author),
       isbn: new Isbn(request.isbn),
       releaseDate: new BookReleaseDate(request.releaseDate),
-      pages: new BookPages(+request.pages)
+      pages: new BookPages(+request.pages),
+      metadata: new Metadata({
+        createdAt: new Date(),
+        createdBy: username,
+        updatedAt: new Date(),
+        updatedBy: username
+      })
     });
 
     await this.repository.save(book);
     logger.info(`Created Book: <${book.id.value}> by <${username}>`);
+  }
+
+  private async validateDependencies(
+    request: BookCreatorRequest
+  ): Promise<void> {
+    const storedBook = await this.repository.search(request.id);
+    if (storedBook) {
+      throw new InvalidArgumentError(`Book <${request.id}> already exists`);
+    }
+    const author = await this.authorRepository.search(request.author);
+    if (!author) {
+      throw new NotFoundError(`Author <${request.author}>`);
+    }
   }
 }

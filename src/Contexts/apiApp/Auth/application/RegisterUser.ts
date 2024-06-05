@@ -1,5 +1,6 @@
 import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
 import { StringValueObject, Uuid } from '../../../shared/domain/valueObject';
+import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { EncrypterTool, buildLogger } from '../../../shared/plugins';
 import { User, Email, UserRepository, UserRoles, Username } from '../domain';
 import { RegisterUserRequest } from './interfaces/RegisterUserRequest';
@@ -22,6 +23,7 @@ export class RegisterUser {
     }
 
     const encryptedPassword = this.encrypter.hash(password);
+    const date = new Date();
 
     const user = new User({
       id: Uuid.random(),
@@ -29,7 +31,13 @@ export class RegisterUser {
       username: new Username(username),
       password: new StringValueObject(encryptedPassword),
       emailValidated: false,
-      roles: new UserRoles(['user'])
+      roles: new UserRoles(['user']),
+      metadata: new Metadata({
+        createdAt: date,
+        createdBy: username,
+        updatedAt: date,
+        updatedBy: username
+      })
     });
 
     await this.repository.save(user);

@@ -1,4 +1,5 @@
 import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Book,
   BookPatch
@@ -34,12 +35,12 @@ export class BookRepositoryMock implements BookRepository {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
 
-  async update(book: BookPatch): Promise<void> {
-    this.updateMock(book);
+  async update(book: BookPatch, user: Username): Promise<void> {
+    this.updateMock(book, user);
   }
 
-  assertUpdateHasBeenCalledWith(expected: BookPatch): void {
-    expect(this.updateMock).toHaveBeenCalledWith(expected);
+  assertUpdateHasBeenCalledWith(expected: BookPatch, user: Username): void {
+    expect(this.updateMock).toHaveBeenCalledWith(expected, user);
   }
 
   async search(id: string): Promise<Book | null> {

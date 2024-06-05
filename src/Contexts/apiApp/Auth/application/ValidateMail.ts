@@ -32,7 +32,7 @@ export class ValidateMail {
       emailValidated: true
     });
 
-    await this.repository.update(userToPatch);
+    await this.repository.update(userToPatch, storedUser.username);
     logger.info(`User <${storedUser.username.value}> validated email`);
 
     return this.encrypter.refreshToken(token);

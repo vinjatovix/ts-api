@@ -3,11 +3,12 @@ import { Book } from '../Book';
 import { BookByQuery } from './BookByQuery';
 import { BookPatch } from '../BookPatch';
 import { PopulatedBook } from '../PopulatedBook';
+import { Username } from '../../../Auth/domain';
 
 export interface BookRepository {
   save(book: Book): Promise<void>;
 
-  update(book: BookPatch): Promise<void>;
+  update(book: BookPatch, user: Username): Promise<void>;
 
   search(
     bookId: string,

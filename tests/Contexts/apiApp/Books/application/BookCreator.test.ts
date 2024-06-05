@@ -3,13 +3,14 @@ import {
   InvalidArgumentError,
   NotFoundError
 } from '../../../../../src/Contexts/shared/domain/errors';
-import { random } from '../../../fixtures/shared';
+
+import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
 import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock';
 import { BookMother } from '../domain/mothers';
 import { BookCreatorRequestMother } from './mothers';
 
-const username = random.word();
+const username = UserMother.random().username.value;
 
 describe('BookCreator', () => {
   let repository: CreateBookRepositoryMock;
@@ -24,17 +25,24 @@ describe('BookCreator', () => {
 
   it('should create a valid book', async () => {
     const request = BookCreatorRequestMother.random();
-    const book = BookMother.from(request);
+    const book = BookMother.from(request, username);
 
     await creator.run(request, username);
 
-    repository.assertSaveHasBeenCalledWith(book);
+    repository.assertSaveHasBeenCalledWith(
+      expect.objectContaining({
+        ...book,
+        metadata: expect.objectContaining({
+          createdBy: username
+        })
+      })
+    );
   });
 
   it('should throw an error when the book title is invalid', async () => {
     expect(() => {
       const request = BookCreatorRequestMother.invalidValue(['title']);
-      const book = BookMother.from(request);
+      const book = BookMother.from(request, username);
 
       creator.run(request, username);
 
@@ -45,7 +53,7 @@ describe('BookCreator', () => {
   it('should throw an error when the book author is invalid', async () => {
     expect(() => {
       const request = BookCreatorRequestMother.invalidValue(['author']);
-      const book = BookMother.from(request);
+      const book = BookMother.from(request, username);
 
       creator.run(request, username);
 
@@ -63,7 +71,7 @@ describe('BookCreator', () => {
   it('should throw an error when the book isbn is not valid', async () => {
     expect(() => {
       const request = BookCreatorRequestMother.invalidValue(['isbn']);
-      const book = BookMother.from(request);
+      const book = BookMother.from(request, username);
 
       creator.run(request, username);
 
@@ -74,7 +82,7 @@ describe('BookCreator', () => {
   it('should throw an error when the book release date is not valid', async () => {
     expect(() => {
       const request = BookCreatorRequestMother.invalidValue(['releaseDate']);
-      const book = BookMother.from(request);
+      const book = BookMother.from(request, username);
 
       creator.run(request, username);
 
