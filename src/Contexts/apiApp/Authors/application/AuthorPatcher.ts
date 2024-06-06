@@ -1,5 +1,6 @@
 import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
+import { Username } from '../../Auth/domain';
 import { AuthorPatch, AuthorRepository } from '../domain';
 import { AuthorPatcherRequest } from './interfaces';
 
@@ -21,7 +22,7 @@ export class AuthorPatcher {
 
     const author = AuthorPatch.fromPrimitives(request);
 
-    await this.repository.update(author);
+    await this.repository.update(author, new Username(username));
     logger.info(`Updated Author: <${author.id}> by <${username}>`);
   }
 }

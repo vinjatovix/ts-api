@@ -1,7 +1,8 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
 import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
-import { BookMother } from '../../domain/mothers';
+import { UserMother } from '../../../Auth/domain/mothers';
+import { BookMother, BookTitleMother } from '../../domain/mothers';
 
 const repository: BookRepository = container.get(
   'apiApp.Books.domain.BookRepository'
@@ -10,6 +11,8 @@ const repository: BookRepository = container.get(
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
 );
+
+const username = UserMother.random().username;
 
 describe('MongoBookRepository', () => {
   beforeEach(async () => {
@@ -33,10 +36,17 @@ describe('MongoBookRepository', () => {
     it('should update an existing book', async () => {
       const book = BookMother.random();
       await repository.save(book);
+      const updatedBook = {
+        id: book.id,
+        title: BookTitleMother.random(),
+        toPrimitives: jest.fn()
+      };
 
-      await repository.update(book);
+      await repository.update(updatedBook, username);
 
-      expect(await repository.search(book.id.value)).toEqual(book);
+      expect(await repository.search(book.id.value)).toMatchObject({
+        metadata: { updatedBy: username.value }
+      });
     });
   });
 

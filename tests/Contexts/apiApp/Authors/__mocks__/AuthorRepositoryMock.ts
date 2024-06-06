@@ -1,3 +1,4 @@
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Author,
   AuthorPatch,
@@ -28,12 +29,12 @@ export class AuthorRepositoryMock implements AuthorRepository {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
   }
 
-  async update(author: AuthorPatch): Promise<void> {
-    this.updateMock(author);
+  async update(author: AuthorPatch, user: Username): Promise<void> {
+    this.updateMock(author, user);
   }
 
-  assertUpdateHasBeenCalledWith(expected: AuthorPatch): void {
-    expect(this.updateMock).toHaveBeenCalledWith(expected);
+  assertUpdateHasBeenCalledWith(expected: AuthorPatch, user: Username): void {
+    expect(this.updateMock).toHaveBeenCalledWith(expected, user);
   }
 
   async search(authorId: string): Promise<Author | null> {

@@ -1,11 +1,12 @@
 import { AuthorCreator } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { ConflictError } from '../../../../../src/Contexts/shared/domain/errors/ConflictError';
-import { random } from '../../../fixtures/shared';
+import { UserMother } from '../../Auth/domain/mothers';
+
 import { CreateAuthorRepositoryMock } from '../__mocks__/CreateAuthorRepositoryMock';
 import { AuthorMother } from '../domain/mothers/AuthorMother';
 import { AuthorCreatorRequestMother } from './mothers/AuthorCreatorRequestMother';
 
-const username = random.word();
+const username = UserMother.random().username.value;
 
 describe('AuthorCreator', () => {
   let repository: CreateAuthorRepositoryMock;
@@ -22,7 +23,14 @@ describe('AuthorCreator', () => {
 
     await creator.run(request, username);
 
-    repository.assertSaveHasBeenCalledWith(author);
+    repository.assertSaveHasBeenCalledWith(
+      expect.objectContaining({
+        ...author,
+        metadata: expect.objectContaining({
+          createdBy: username
+        })
+      })
+    );
   });
 
   it('should throw an error when the author already exists', async () => {

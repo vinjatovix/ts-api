@@ -2,10 +2,13 @@ import { ObjectId } from 'mongodb';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 
 import { Author, AuthorRepository } from '../../domain';
+import { Username } from '../../../Auth/domain';
+import { MetadataType } from '../../../../shared/application/MetadataType';
 
 export interface AuthorDocument {
   _id: string;
   name: string;
+  metadata: MetadataType;
 }
 
 export class MongoAuthorRepository
@@ -16,8 +19,8 @@ export class MongoAuthorRepository
     return this.persist(author.id.value, author);
   }
 
-  public async update(author: Author): Promise<void> {
-    return this.persist(author.id.value, author);
+  public async update(author: Author, username: Username): Promise<void> {
+    return this.persist(author.id.value, author, username);
   }
 
   public async remove(id: string): Promise<void> {
@@ -33,7 +36,8 @@ export class MongoAuthorRepository
     return document
       ? Author.fromPrimitives({
           id: document._id,
-          name: document.name
+          name: document.name,
+          metadata: document.metadata
         })
       : null;
   }
@@ -45,7 +49,8 @@ export class MongoAuthorRepository
     return documents.map((document) =>
       Author.fromPrimitives({
         id: document._id,
-        name: document.name
+        name: document.name,
+        metadata: document.metadata
       })
     );
   }

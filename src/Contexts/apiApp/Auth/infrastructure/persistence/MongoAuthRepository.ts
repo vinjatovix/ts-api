@@ -1,8 +1,9 @@
 import { MongoClient } from 'mongodb';
 import { Nullable } from '../../../../shared/domain/Nullable';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
-import { User, UserRepository } from '../../domain';
+import { User, UserRepository, Username } from '../../domain';
 import { UserPatch } from '../../domain/UserPatch';
+import { MetadataType } from '../../../../shared/application/MetadataType';
 
 export interface AuthDocument {
   _id: string;
@@ -11,6 +12,7 @@ export interface AuthDocument {
   password: string;
   emailValidated: boolean;
   roles: string[];
+  metadata: MetadataType;
 }
 
 export class MongoAuthRepository
@@ -29,8 +31,8 @@ export class MongoAuthRepository
     return this.persist(user.id.value, user);
   }
 
-  async update(user: UserPatch): Promise<void> {
-    return this.patch(user);
+  async update(user: UserPatch, username: Username): Promise<void> {
+    return this.persist(user.id.value, user, username);
   }
 
   async search(email: string): Promise<Nullable<User>> {
@@ -44,7 +46,8 @@ export class MongoAuthRepository
           username: document.username,
           password: document.password,
           emailValidated: document.emailValidated,
-          roles: document.roles
+          roles: document.roles,
+          metadata: document.metadata
         })
       : null;
   }
