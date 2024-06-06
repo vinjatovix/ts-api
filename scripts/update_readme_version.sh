@@ -22,13 +22,12 @@ if [[ ! "$BRANCH" =~ ^release/ ]]; then
 fi
 
 # Obtain the current version
-CURRENT_VERSION=$(node -p "require('./package.json').version")
+CURRENT_VERSION=$(git describe --tags --abbrev=0 | sed 's/^v//')
+NEW_VERSION=$(node -p "require('./package.json').version")
 
-# Obtain the new version without creating a git tag and remove 'v' prefix
-NEW_VERSION=$(npm --no-git-tag-version version "$RELEASE_TYPE" | sed 's/^v//')
-
-echo -e "Current version: ${GREEN}$CURRENT_VERSION${NC}"
-echo -e "New version: ${GREEN}$NEW_VERSION${NC}"
+echo -e "Last tag: ${GREEN}$CURRENT_VERSION${NC}"
+echo -e "New release: ${GREEN}$NEW_VERSION${NC}"
+# NEW_VERSION=$(npm --no-git-tag-version version "$RELEASE_TYPE" | sed 's/^v//')
 
 # Function to replace version in files
 replace_version() {
