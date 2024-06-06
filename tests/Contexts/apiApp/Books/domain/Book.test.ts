@@ -1,34 +1,40 @@
 import {
   Book,
-  BookAuthor,
-  BookId,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
-
+import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { random } from '../../../fixtures/shared';
-
+import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UserMother } from '../../Auth/domain/mothers';
 import {
-  BookAuthorMother,
-  BookIdMother,
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
   ISBNMother
 } from './mothers';
 
+const user = UserMother.random().username.value;
+
 describe('Book', () => {
   it('should create a valid book', () => {
     const bookValueObjects = {
-      id: BookIdMother.random(),
+      id: UuidMother.random(),
       title: BookTitleMother.random(),
-      author: BookAuthorMother.random(),
+      author: UuidMother.random(),
       releaseDate: BookReleaseDateMother.random(),
       pages: BookPagesMother.random(),
-      isbn: ISBNMother.random()
+      isbn: ISBNMother.random(),
+      metadata: new Metadata({
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: user,
+        updatedBy: user
+      })
     };
 
     expect(new Book(bookValueObjects)).toMatchObject(bookValueObjects);
@@ -38,8 +44,8 @@ describe('Book', () => {
     it('should throw an error when the id is not a valid uuid', () => {
       let id;
       expect(() => {
-        id = new BookId(BookIdMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+        id = new Uuid(UuidMother.invalidValue());
+      }).toThrow(InvalidArgumentError);
 
       expect(id).toBeUndefined();
     });
@@ -49,10 +55,9 @@ describe('Book', () => {
     it("should throw an error when the title isn't a valid string", () => {
       let title;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         title = new BookTitle(BookTitleMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -60,8 +65,8 @@ describe('Book', () => {
     it('should throw an error when the title is longer than 100 characters', () => {
       let title;
       expect(() => {
-        title = new BookTitle(random.word({ min: 101, max: 255 }));
-      }).toThrowError(InvalidArgumentError);
+        title = new BookTitle(random.word({ min: BookTitle.MAX_LENGTH + 1 }));
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -70,7 +75,7 @@ describe('Book', () => {
       let title;
       expect(() => {
         title = new BookTitle('');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -78,10 +83,9 @@ describe('Book', () => {
     it('should throw an error when the title is undefined or null', () => {
       let title;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         title = new BookTitle(null);
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(title).toBeUndefined();
     });
@@ -91,19 +95,18 @@ describe('Book', () => {
     it("should throw an error when the author isn't a string", () => {
       let author;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        author = new BookAuthor(123);
-      }).toThrowError(InvalidArgumentError);
+        // @ts-expect-error Testing purposes
+        author = new Uuid(123);
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
 
-    it('should throw an error when the author is longer than 40 characters', () => {
+    it('should throw an error when the author is not a valid Uuid', () => {
       let author;
       expect(() => {
-        author = new BookAuthor(BookAuthorMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+        author = new Uuid(UuidMother.invalidValue());
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
@@ -111,8 +114,8 @@ describe('Book', () => {
     it('should throw an error when the author is empty', () => {
       let author;
       expect(() => {
-        author = new BookAuthor('');
-      }).toThrowError(InvalidArgumentError);
+        author = new Uuid('');
+      }).toThrow(InvalidArgumentError);
 
       expect(author).toBeUndefined();
     });
@@ -123,7 +126,7 @@ describe('Book', () => {
       let releaseDate;
       expect(() => {
         releaseDate = new BookReleaseDate('invalid-date');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(releaseDate).toBeUndefined();
     });
@@ -134,7 +137,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('invalid-isbn');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(isbn).toBeUndefined();
     });
@@ -143,7 +146,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('');
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(isbn).toBeUndefined();
     });
@@ -153,10 +156,9 @@ describe('Book', () => {
     it('should throw an error when the pages is not a valid type', () => {
       let pages;
       expect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
+        // @ts-expect-error Testing purposes
         pages = new BookPages(BookPagesMother.invalidType());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(pages).toBeUndefined();
     });
@@ -165,7 +167,7 @@ describe('Book', () => {
       let pages;
       expect(() => {
         pages = new BookPages(BookPagesMother.invalidValue());
-      }).toThrowError(InvalidArgumentError);
+      }).toThrow(InvalidArgumentError);
 
       expect(pages).toBeUndefined();
     });

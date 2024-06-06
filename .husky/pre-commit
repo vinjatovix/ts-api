@@ -1,4 +1,15 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
+LAST_TAG=$(git describe --tags --abbrev=0)
+
+CURRENT_VERSION=$(node -p "require('./package.json').version")
+
+if [ "$LAST_TAG" = "v$CURRENT_VERSION" ]; then
+  npm --no-git-tag-version version minor
+  git add package.json package-lock.json
+
+  echo "Bumped version to $(node -p "require('./package.json').version")"
+fi
+
 npm run pre-commit

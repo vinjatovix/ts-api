@@ -1,7 +1,10 @@
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application/BookRemover';
+import { random } from '../../../fixtures/shared';
+import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
-import { BookIdMother } from '../domain/mothers/BookIdMother';
-import { RequestBookByIdMother } from './mothers/RequestBookByIdMother';
+
+const username = random.word();
 
 describe('BookRemover', () => {
   let repository: BookRepositoryMock;
@@ -17,17 +20,16 @@ describe('BookRemover', () => {
   });
 
   it('should remove a book', async () => {
-    const bookId = BookIdMother.random();
-    const request = RequestBookByIdMother.create(bookId);
+    const request = RequestByIdMother.create(UuidMother.random());
 
-    await remover.run(request);
+    await remover.run(request, username);
 
-    repository.assertRemoveHasBeenCalledWith(bookId.value);
+    repository.assertRemoveHasBeenCalledWith(request.id);
   });
 
   it('should not throw an error when the book is not found', async () => {
-    const request = RequestBookByIdMother.inexistentId();
+    const request = RequestByIdMother.inexistentId();
 
-    await expect(remover.run(request)).resolves.toBeUndefined();
+    await expect(remover.run(request, username)).resolves.toBeUndefined();
   });
 });

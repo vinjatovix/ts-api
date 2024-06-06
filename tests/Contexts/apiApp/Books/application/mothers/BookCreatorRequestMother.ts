@@ -1,16 +1,14 @@
 import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
 import {
-  BookAuthor,
-  BookId,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
 
 import {
-  BookAuthorMother,
-  BookIdMother,
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
@@ -19,9 +17,9 @@ import {
 
 export class BookCreatorRequestMother {
   static create(
-    id: BookId,
+    id: Uuid,
     title: BookTitle,
-    author: BookAuthor,
+    author: Uuid,
     isbn: Isbn,
     releaseDate: BookReleaseDate,
     pages: BookPages
@@ -36,11 +34,11 @@ export class BookCreatorRequestMother {
     };
   }
 
-  static random(): BookCreatorRequest {
+  static random(id?: string): BookCreatorRequest {
     return this.create(
-      BookIdMother.random(),
+      id ? UuidMother.create(id) : UuidMother.random(),
       BookTitleMother.random(),
-      BookAuthorMother.random(),
+      UuidMother.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
       BookPagesMother.random()
@@ -49,14 +47,14 @@ export class BookCreatorRequestMother {
 
   static invalidValue(keys: string[]): BookCreatorRequest {
     const id = keys.includes('id')
-      ? BookIdMother.invalidValue()
-      : BookIdMother.random().value;
+      ? UuidMother.invalidValue()
+      : UuidMother.random().value;
     const title = keys.includes('title')
       ? (BookTitleMother.invalidValue() as string)
       : BookTitleMother.random().value;
     const author = keys.includes('author')
-      ? BookAuthorMother.invalidValue()
-      : BookAuthorMother.random().value;
+      ? UuidMother.invalidValue()
+      : UuidMother.random().value;
     const isbn = keys.includes('isbn')
       ? ISBNMother.invalidValue()
       : ISBNMother.random().value;
@@ -74,6 +72,13 @@ export class BookCreatorRequestMother {
       isbn,
       releaseDate,
       pages
+    };
+  }
+
+  static inexistentId(): BookCreatorRequest {
+    return {
+      ...this.random(),
+      id: 'not-found'
     };
   }
 }

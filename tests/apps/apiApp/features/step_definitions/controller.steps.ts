@@ -1,15 +1,31 @@
-import { AfterAll, BeforeAll, Given, Then } from '@cucumber/cucumber';
+import {
+  AfterAll,
+  BeforeAll,
+  Given,
+  Then,
+  DataTable
+} from '@cucumber/cucumber';
 import { assert } from 'chai';
 import request from 'supertest';
-
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
+import { API_PREFIXES } from '../../../../../src/apps/apiApp/routes/shared';
+import { StringsMap } from '../../../../../src/apps/apiApp/shared/interfaces';
 import container from '../../../../../src/apps/apiApp/dependency-injection';
-
-import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
-import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins/EncrypterTool';
+import {
+  AuthorCreatorRequest,
+  AuthorResponse
+} from '../../../../../src/Contexts/apiApp/Authors/application';
+import {
+  BookCreatorRequest,
+  BookResponse
+} from '../../../../../src/Contexts/apiApp/Books/application';
 import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
+import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -23,6 +39,71 @@ let app: ApiApp;
 let validAdminBearerToken: Nullable<string>;
 let validUserBearerToken: Nullable<string>;
 
+const getPayloadByEntity = async (
+  entity: string,
+  id: string
+): Promise<BookCreatorRequest | AuthorCreatorRequest | StringsMap> => {
+  if (entity === 'author') {
+    return { id, name: 'test author' };
+  }
+
+  if (entity === 'book') {
+    const bookRequest = BookCreatorRequestMother.random(id);
+    const dependencies = await _createDependenciesByEntity(entity);
+    return { ...bookRequest, ...dependencies };
+  }
+
+  return {};
+};
+
+const _createDependenciesByEntity = async (
+  entity: string
+): Promise<StringsMap> => {
+  switch (entity) {
+    case 'book':
+      return await _getBookDependencies();
+    default:
+      return {};
+  }
+};
+
+const _getBookDependencies = async (): Promise<{ author: string }> => {
+  const autor = await getPayloadByEntity('author', Uuid.random().value);
+  _request = request(app.httpServer)
+    .post(API_PREFIXES.author)
+    .set('Authorization', `Bearer ${validAdminBearerToken}`)
+    .send(autor);
+  await _request.expect(201);
+
+  return { author: autor?.id };
+};
+
+const compareResponseObject = <T>(
+  responseObj: T,
+  expectedObj: Partial<T>
+): boolean => {
+  return Object.entries(expectedObj).every(([key, value]) => {
+    if (Object.prototype.hasOwnProperty.call(responseObj, key)) {
+      if (typeof value === 'object' && value !== null) {
+        return Object.entries(value).every(
+          ([subKey, subValue]: [string, unknown]) => {
+            const typedSubKey = subKey as keyof typeof value;
+            return (
+              (responseObj[key as keyof T] as Record<string, unknown>)[
+                typedSubKey
+              ] === subValue
+            );
+          }
+        );
+      } else {
+        return responseObj[key as keyof T] === value;
+      }
+    } else {
+      return false;
+    }
+  });
+};
+
 BeforeAll(async () => {
   app = new ApiApp();
   await app.start();
@@ -30,13 +111,13 @@ BeforeAll(async () => {
   validAdminBearerToken = await encrypter.generateToken({
     id: Uuid.random().value,
     email: 'admin@tsapi.com',
-    username: random.word(),
+    username: UserMother.random().username.value,
     roles: ['admin']
   });
   validUserBearerToken = await encrypter.generateToken({
     id: Uuid.random().value,
     email: 'user@tsapi.com',
-    username: random.word(),
+    username: UserMother.random().username.value,
     roles: ['user']
   });
 });
@@ -131,6 +212,18 @@ Given('a DELETE admin request to {string}', async (route: string) => {
     .set('Authorization', `Bearer ${validAdminBearerToken}`);
 });
 
+Given(
+  'an existing {string} with id {string}',
+  async (entity: string, id: string) => {
+    _request = request(app.httpServer)
+      .post(API_PREFIXES[entity])
+      .set('Authorization', `Bearer ${validAdminBearerToken}`)
+      .send(await getPayloadByEntity(entity, id));
+
+    await _request.expect(201);
+  }
+);
+
 Then('the response status code should be {int}', async (status: number) => {
   _response = await _request.expect(status);
 });
@@ -141,17 +234,58 @@ Then('the response body should be', async (docString: string) => {
 
 Then('the response body should contain', async (docString: string) => {
   const response = await _request;
-  const expectedResponseBody = JSON.parse(docString);
-  assert.include(response.body, expectedResponseBody);
+  const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+    JSON.parse(docString);
+
+  const matches = compareResponseObject(response.body, expectedResponseBody);
+
+  assert.isTrue(
+    matches,
+    'Expected response body to match the expected response body'
+  );
 });
 
 Then(
   'the response body will be an array containing',
   async (docString: string) => {
     const response = await _request;
-    const expectedResponseBody = JSON.parse(docString);
+    const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+      JSON.parse(docString);
     assert.isArray(response.body);
-    assert.deepNestedInclude(response.body, expectedResponseBody);
+
+    const matches = response.body.some(
+      (item: BookResponse | AuthorResponse) => {
+        const typedItem = item as BookResponse | AuthorResponse;
+        return compareResponseObject(typedItem, expectedResponseBody);
+      }
+    );
+
+    assert.isTrue(
+      matches,
+      'Expected response body to include an item matching the expected response body'
+    );
+  }
+);
+
+Then('the response body will match', async (docString: string) => {
+  const response = await _request;
+  const expectedResponseBody = JSON.parse(docString);
+  assert.deepNestedInclude(response.body, expectedResponseBody);
+});
+
+Then(
+  'the response body should have the properties:',
+  async (dataTable: DataTable) => {
+    const response = await _request;
+    const expectedProperties = dataTable.raw().flat();
+
+    for (const key of expectedProperties) {
+      assert.property(
+        response.body,
+        key,
+        `Response should have property: ${key}`
+      );
+    }
   }
 );
 

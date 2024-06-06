@@ -4,7 +4,7 @@ import {
   UserRoles,
   Username
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
+import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
 import { RegisterUserRequestMother } from './mothers/RegisterUserRequestMother';
@@ -44,6 +44,6 @@ describe('RegisterUser', () => {
 
     expect(async () => {
       await registerUser.run(request);
-    }).rejects.toThrowError(`User <${request.email}> already exists`);
+    }).rejects.toThrow(`User <${request.email}> already exists`);
   });
 });

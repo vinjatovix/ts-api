@@ -1,21 +1,24 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-
 import { PatchBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import {
   BookCreatorRequest,
   BookPatcher
 } from '../../../../../src/Contexts/apiApp/Books/application';
-
+import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookPatcher');
+
+const username = random.word;
 
 describe('PatchBookController', () => {
   let bookPatcher: BookPatcher;
   let controller: PatchBookController;
   let repository: BookRepositoryMock;
+  let authorRepository: AuthorRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
@@ -23,7 +26,7 @@ describe('PatchBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookPatcher = new BookPatcher(repository);
+    bookPatcher = new BookPatcher(repository, authorRepository);
     controller = new PatchBookController(bookPatcher);
     expectedBook = BookCreatorRequestMother.random();
     req = {
@@ -32,7 +35,12 @@ describe('PatchBookController', () => {
     };
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn()
+      send: jest.fn(),
+      locals: {
+        user: {
+          username
+        }
+      }
     };
     next = jest.fn();
   });
@@ -41,7 +49,7 @@ describe('PatchBookController', () => {
     it('should update a book and send 200 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookPatcher.run).toHaveBeenCalledWith(expectedBook);
+      expect(bookPatcher.run).toHaveBeenCalledWith(expectedBook, username);
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });

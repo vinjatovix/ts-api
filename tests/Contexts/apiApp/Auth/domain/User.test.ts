@@ -1,4 +1,5 @@
 import { User } from '../../../../../src/Contexts/apiApp/Auth/domain';
+import { MetadataType } from '../../../../../src/Contexts/shared/application/MetadataType';
 import { UserMother } from './mothers/UserMother';
 
 describe('User', () => {
@@ -40,6 +41,7 @@ describe('User', () => {
         password: string;
         emailValidated: boolean;
         roles: string[];
+        metadata: MetadataType;
       }
     );
 

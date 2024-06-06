@@ -1,5 +1,5 @@
 import { ValidateMail } from '../../../../../src/Contexts/apiApp/Auth/application';
-import { UserPatch } from '../../../../../src/Contexts/apiApp/Auth/domain/UserPatch';
+import { UserPatch } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { random } from '../../../fixtures/shared';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
@@ -31,7 +31,7 @@ describe('ValidateMail', () => {
     service = new ValidateMail(repository, encrypter);
     const token = random.word({ min: 6, max: 255 });
 
-    await expect(service.run({ token })).rejects.toThrowError('Invalid token');
+    await expect(service.run({ token })).rejects.toThrow('Invalid token');
   });
 
   it('should throw an error if the user is not found', async () => {
@@ -39,6 +39,6 @@ describe('ValidateMail', () => {
     service = new ValidateMail(repository, encrypter);
     const token = random.word({ min: 6, max: 255 });
 
-    await expect(service.run({ token })).rejects.toThrowError('Invalid token');
+    await expect(service.run({ token })).rejects.toThrow('Invalid token');
   });
 });

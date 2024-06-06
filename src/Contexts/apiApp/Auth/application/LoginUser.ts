@@ -5,7 +5,7 @@ import { buildLogger } from '../../../shared/plugins/logger.plugin';
 
 import { UserRepository } from '../domain';
 
-import { LoginUserRequest } from './LoginUserRequest';
+import { LoginUserRequest } from './interfaces/LoginUserRequest';
 
 const logger = buildLogger('loginUser');
 

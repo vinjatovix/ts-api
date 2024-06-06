@@ -9,7 +9,7 @@ import { registerRoutes } from './routes';
 import { apiErrorHandler } from './routes/shared';
 import { buildLogger } from '../../Contexts/shared/plugins/logger.plugin';
 import { envs } from '../../config/plugins/envs.plugin';
-
+import migrations from '../../../migrations';
 const corsOptions = {
   origin: envs.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -25,6 +25,7 @@ export class Server {
   private httpServer?: http.Server;
 
   constructor(host: string, port: number) {
+    migrations.up();
     this.port = port;
     this.host = host;
     this.express = express();

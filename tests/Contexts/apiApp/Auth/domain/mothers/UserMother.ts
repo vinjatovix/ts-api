@@ -1,4 +1,4 @@
-import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/RegisterUserRequest';
+import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import {
   User,
   Email,
@@ -6,8 +6,11 @@ import {
   Username,
   UserPatch
 } from '../../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import {
+  StringValueObject,
+  Uuid
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { random } from '../../../../fixtures/shared';
 import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
 import { UserRolesMother } from './UserRolesMother';
@@ -19,7 +22,8 @@ export class UserMother {
     username,
     password,
     emailValidated,
-    roles
+    roles,
+    metadata
   }: {
     id?: Uuid;
     email?: Email;
@@ -27,16 +31,26 @@ export class UserMother {
     password?: StringValueObject;
     emailValidated?: boolean;
     roles?: UserRoles;
+    metadata?: Metadata;
   } = {}): User {
+    const user = username ?? new Username(random.word({ min: 4, max: 20 }));
     return new User({
       id: id ?? Uuid.random(),
       email: email ?? EmailMother.random(),
-      username: username ?? new Username(random.word({ min: 4, max: 20 })),
+      username: user,
       password: password ?? new StringValueObject(random.word()),
       emailValidated: emailValidated ?? random.boolean(),
       roles:
         roles ??
-        UserRolesMother.create([`${random.arrayElement(['admin', 'user'])}`])
+        UserRolesMother.create([`${random.arrayElement(['admin', 'user'])}`]),
+      metadata:
+        metadata ??
+        new Metadata({
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          createdBy: user.value,
+          updatedBy: user.value
+        })
     });
   }
 

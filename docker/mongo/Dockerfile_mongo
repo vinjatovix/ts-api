@@ -1,3 +1,4 @@
-FROM mongo:5.0.0
-RUN apt-get update && apt-get install -y curl iputils-ping
-COPY ./mongo-init.js /docker-entrypoint-initdb.d/
+FROM mongo:7.0.11
+RUN openssl rand --base64 768 > /data/replica.key
+RUN chmod 400 /data/replica.key
+RUN chown 999:999 /data/replica.key
