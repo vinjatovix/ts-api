@@ -7,7 +7,7 @@ PASSWORD=$2
 # Required variables
 DOCKER_NAME=ts-api-mongo
 DUMP_USER=tsApiDev
-DUMP_DB=ts-api-dev
+DUMP_DB=ts-api
 RESTORE_HOST=localhost
 RESTORE_PORT=27017
 RESTORE_USER=root
@@ -42,6 +42,13 @@ fi
 docker exec -it "$DOCKER_NAME" mongodump --uri="mongodb+srv://$DUMP_USER:$PASSWORD@$HOST" --db "$DUMP_DB" --out "/data/dump/$ENV_DUMP"
 print "                 $ENV_DUMP dump completed"
 sleep 1
+
+print "      Dropping existing collections in local database $DUMP_DB"
+docker exec -it "$DOCKER_NAME" mongosh --host "$RESTORE_HOST" --port "$RESTORE_PORT" --username "$RESTORE_USER" --password "$RESTORE_PASSWORD" --eval "use $DUMP_DB" --eval "db.dropDatabase()"
+
+sleep 1
+
+print "        Restoring $ENV_DUMP dump to local database $DUMP_DB"
 
 docker exec -it "$DOCKER_NAME" mongorestore --host "$RESTORE_HOST" --port "$RESTORE_PORT" --username "$RESTORE_USER" --password "$RESTORE_PASSWORD" --drop "/data/dump/$ENV_DUMP"
 

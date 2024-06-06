@@ -7,6 +7,9 @@ import { Book, BookPatch } from '../../domain';
 import { BookRepository } from '../../domain/interfaces';
 import { BookByQuery } from '../../domain/interfaces/BookByQuery';
 import { PopulatedBook } from '../../domain/PopulatedBook';
+import { MetadataType } from '../../../../shared/application/MetadataType';
+import { Username } from '../../../Auth/domain';
+import { Metadata } from '../../../../shared/domain/valueObject/Metadata';
 
 export interface BookDocument {
   _id: string;
@@ -15,6 +18,7 @@ export interface BookDocument {
   isbn: string;
   releaseDate: string;
   pages: number;
+  metadata: MetadataType;
 }
 
 export class MongoBookRepository
@@ -25,8 +29,8 @@ export class MongoBookRepository
     return this.persist(book.id.value, book);
   }
 
-  public async update(book: BookPatch): Promise<void> {
-    return this.patch(book);
+  public async update(book: BookPatch, username: Username): Promise<void> {
+    return this.persist(book.id.value, book, username);
   }
 
   public async remove(id: string): Promise<void> {
@@ -51,7 +55,8 @@ export class MongoBookRepository
             author: document.author,
             isbn: document.isbn,
             releaseDate: document.releaseDate,
-            pages: document.pages
+            pages: document.pages,
+            metadata: document.metadata
           })
         : null;
     }
@@ -74,12 +79,14 @@ export class MongoBookRepository
           ...(documents[0].author && {
             author: {
               id: documents[0].author[0]?._id,
-              name: documents[0].author[0]?.name
+              name: documents[0].author[0]?.name,
+              metadata: documents[0].author[0]?.metadata
             }
           }),
           isbn: documents[0]?.isbn,
           releaseDate: documents[0].releaseDate,
-          pages: documents[0].pages
+          pages: documents[0].pages,
+          metadata: Metadata.fromPrimitives(documents[0].metadata)
         })
       : null;
   }
@@ -120,16 +127,18 @@ export class MongoBookRepository
         const isNestedField = field.includes('.');
 
         if (!isNestedField) {
-          acc[`${field}._id`] = 1;
+          acc[field] = 1;
         } else {
           const parentField = field.split('.')[0];
           const parentFieldIdKey = `${parentField}._id`;
+          const parentFieldMetadataKey = `${parentField}.metadata`;
           acc[parentFieldIdKey] = 1;
+          acc[parentFieldMetadataKey] = 1;
         }
 
         return acc;
       },
-      { _id: 1 }
+      { _id: 1, metadata: 1 }
     );
   }
 
@@ -147,7 +156,8 @@ export class MongoBookRepository
           author: document.author,
           isbn: document.isbn,
           releaseDate: document.releaseDate,
-          pages: document.pages
+          pages: document.pages,
+          metadata: Metadata.fromPrimitives(document.metadata)
         })
       );
     }
@@ -163,21 +173,25 @@ export class MongoBookRepository
 
     const documents = await collection.aggregate(pipeline).toArray();
 
-    return documents.map((document) =>
-      PopulatedBook.fromPrimitives({
+    return documents.map((document) => {
+      const author = document.author[0];
+
+      return PopulatedBook.fromPrimitives({
         id: document._id,
         title: document.title,
-        ...(document.author && {
-          author: {
-            id: document.author[0]?._id,
-            name: document.author[0]?.name
-          }
-        }),
         isbn: document.isbn,
         releaseDate: document.releaseDate,
-        pages: document.pages
-      })
-    );
+        pages: document.pages,
+        metadata: document.metadata,
+        ...(author && {
+          author: {
+            id: author._id,
+            name: author.name,
+            metadata: author.metadata
+          }
+        })
+      });
+    });
   }
 
   public async findByQuery(query: BookByQuery): Promise<Book[]> {
@@ -191,7 +205,8 @@ export class MongoBookRepository
         author: document.author,
         isbn: document.isbn,
         releaseDate: document.releaseDate,
-        pages: document.pages
+        pages: document.pages,
+        metadata: document.metadata
       })
     );
   }

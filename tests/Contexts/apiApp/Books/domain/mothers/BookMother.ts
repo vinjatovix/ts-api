@@ -7,11 +7,21 @@ import {
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
 import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
+import { UserMother } from '../../../Auth/domain/mothers';
 import { BookPagesMother } from './BookPagesMother';
 import { BookReleaseDateMother } from './BookReleaseDateMother';
 import { BookTitleMother } from './BookTitleMother';
 import { ISBNMother } from './ISBNMother';
+
+const user = UserMother.random().username.value;
+const metadata = new Metadata({
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  createdBy: user,
+  updatedBy: user
+});
 
 export class BookMother {
   static create(
@@ -20,7 +30,8 @@ export class BookMother {
     author: Uuid,
     isbn: Isbn,
     releaseDate: BookReleaseDate,
-    pages: BookPages
+    pages: BookPages,
+    metadata: Metadata
   ) {
     return new Book({
       id,
@@ -28,18 +39,25 @@ export class BookMother {
       author,
       isbn,
       releaseDate,
-      pages
+      pages,
+      metadata
     });
   }
 
-  static from(command: BookCreatorRequest): Book {
+  static from(command: BookCreatorRequest, username: string): Book {
     return this.create(
       UuidMother.create(command.id),
       BookTitleMother.create(command.title),
       UuidMother.create(command.author),
       ISBNMother.create(command.isbn),
       new BookReleaseDate(command.releaseDate),
-      BookPagesMother.create(command.pages)
+      BookPagesMother.create(command.pages),
+      new Metadata({
+        createdAt: new Date(),
+        createdBy: username,
+        updatedAt: new Date(),
+        updatedBy: username
+      })
     );
   }
 
@@ -50,7 +68,8 @@ export class BookMother {
       Uuid.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
-      BookPagesMother.random()
+      BookPagesMother.random(),
+      metadata
     );
   }
 

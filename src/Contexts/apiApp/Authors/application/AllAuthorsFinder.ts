@@ -13,7 +13,8 @@ export class AllAuthorsFinder {
 
     return authors.map((author) => ({
       id: author.id.value,
-      name: author.name.value
+      name: author.name.value,
+      metadata: author.metadata.toPrimitives()
     }));
   }
 }

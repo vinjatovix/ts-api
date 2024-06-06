@@ -7,14 +7,18 @@ import {
 } from '../../../../../src/Contexts/apiApp/Books/domain';
 import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { random } from '../../../fixtures/shared';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UserMother } from '../../Auth/domain/mothers';
 import {
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
   ISBNMother
 } from './mothers';
+
+const user = UserMother.random().username.value;
 
 describe('Book', () => {
   it('should create a valid book', () => {
@@ -24,7 +28,13 @@ describe('Book', () => {
       author: UuidMother.random(),
       releaseDate: BookReleaseDateMother.random(),
       pages: BookPagesMother.random(),
-      isbn: ISBNMother.random()
+      isbn: ISBNMother.random(),
+      metadata: new Metadata({
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        createdBy: user,
+        updatedBy: user
+      })
     };
 
     expect(new Book(bookValueObjects)).toMatchObject(bookValueObjects);

@@ -4,12 +4,12 @@ Feature: Update an existing book
 
   Scenario: A valid existing book
     Given an existing "book" with id "9a6e0804-2bd0-4685-b79d-d97027f9073a"
-    Given an existing "author" with id "8a6e0804-2bd1-4672-b79d-d97027f9071b"
+    Given an existing "author" with id "345f46b4-8035-44a2-937b-3a133072c8f4"
 
     Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
-        "author": "8a6e0804-2bd1-4672-b79d-d97027f9071b"
+        "author": "345f46b4-8035-44a2-937b-3a133072c8f4"
       }
       """
     Then the response status code should be 200
