@@ -21,6 +21,7 @@ servers:
 
 tags:
   - name: Auth
+  - name: Authors
   - name: Books
   - name: Health
 
@@ -196,6 +197,282 @@ paths:
               example:
                 message: 'Invalid token'
 
+  /api/v1/Authors:
+    get:
+      tags:
+        - Authors
+      summary: Get all  authors
+      operationId: GetAllAuthors
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+
+    post:
+      deprecated: false
+      tags:
+        - Authors
+      summary: Create Author
+      operationId: CreateAuthor
+      security:
+        - bearerAuth: []
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              id: '{{$guid}}'
+              name: '{{$randomWords}}'
+        required: true
+
+      responses:
+        '201':
+          description: Created
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content: {}
+
+        '400':
+          description: Bad Request
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+            content-length:
+              $ref: '#/components/headers/content-length'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - id: 'Invalid value at params. Value: USB'
+                  - name: 'Invalid value at body. Value: undefined'
+
+  /api/v1/Authors/{id}:
+    get:
+      tags:
+        - Authors
+      summary: Get Author by id
+      operationId: GetAuthorById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{authorId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            content-length:
+              $ref: '#/components/headers/content-length'
+            etag:
+              $ref: '#/components/headers/etag'
+            x-envoy-upstream-service-time:
+              $ref: '#/components/headers/x-envoy-upstream-service-time'
+            server:
+              $ref: '#/components/headers/server'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+    patch:
+      deprecated: false
+      tags:
+        - Authors
+      summary: Update Author by Id
+      operationId: UpdateAuthor
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              name: "Sempere"
+        required: true
+      responses:
+        '200':
+          description: Updated
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+            content-length:
+              content:
+                text/plain:
+                  schema:
+                    type: string
+                  example: '0'
+          content: {}
+        '400':
+          description: Bad Request
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - message: 'Empty body is not allowed'
+    delete:
+      deprecated: false
+      tags:
+        - Authors
+      summary: Delete Author by Id
+      operationId: DeleteAuthorById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{authorId}}'
+      responses:
+        '204':
+          description: Deleted
+          headers:
+            vary:
+              $ref: '#/components/headers/vary'
+            access-control-allow-credentials:
+              $ref: '#/components/headers/access-control-allow-credentials'
+            x-xss-protection:
+              $ref: '#/components/headers/x-xss-protection'
+            x-content-type-options:
+              $ref: '#/components/headers/x-content-type-options'
+            x-frame-options:
+              $ref: '#/components/headers/x-frame-options'
+            date:
+              $ref: '#/components/headers/date'
+            connection:
+              $ref: '#/components/headers/connection'
+            keep-alive:
+              $ref: '#/components/headers/keep-alive'
+          content: {}
+
   /api/v1/Books:
     get:
       tags:
@@ -204,6 +481,19 @@ paths:
       operationId: GetAllBooks
       security:
         - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: Successful operation
@@ -308,6 +598,18 @@ paths:
           schema:
             type: string
             example: '{{bookId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
       responses:
         '200':
           description: Successful operation
@@ -595,6 +897,17 @@ components:
         version: 2.0.0
         status: OK
 
+    Author:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+
+
     Book:
       type: object
       properties:
@@ -610,13 +923,41 @@ components:
           type: string
         pages:
           type: number
+        metadata:
+          $ref: '#/components/schemas/Metadata'
       example:
         id: 'b1d9b21-f695-4abd-910b-78c42204f1f9'
         title: 'Book title'
-        author: 'Mr. Cont'
+        author: '51ad86d3-a782-4222-b96e-c1999cd7e2c9'
         isbn: '978-3-16-148410-0'
         releaseDate: '2023-10-15T22:00:21.845Z'
         pages: 576
+        metadata:
+          createdAt: "2023-10-15T22:00:21.845Z"
+          createdBy: "admin"
+          updatedAt: "2023-10-15T22:00:21.845Z"
+          updatedBy: "admin"
+
+    Metadata:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+        updatedAt:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+      example:
+        metadata:
+          createdAt: "2023-10-15T22:00:21.845Z"
+          createdBy: "admin"
+          updatedAt: "2023-10-15T22:00:21.845Z"
+          updatedBy: "admin"
+
 
   securitySchemes:
     bearerAuth:
