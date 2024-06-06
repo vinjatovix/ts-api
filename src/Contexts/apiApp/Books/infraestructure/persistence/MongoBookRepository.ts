@@ -127,7 +127,7 @@ export class MongoBookRepository
         const isNestedField = field.includes('.');
 
         if (!isNestedField) {
-          acc[`${field}._id`] = 1;
+          acc[field] = 1;
         } else {
           const parentField = field.split('.')[0];
           const parentFieldIdKey = `${parentField}._id`;
