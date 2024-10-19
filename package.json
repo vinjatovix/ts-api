@@ -68,7 +68,7 @@
     "dotenv": "^16.4.5",
     "env-var": "^7.5.0",
     "errorhandler": "^1.5.1",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "express-promise-router": "^4.1.1",
     "express-validator": "^7.1.0",
     "glob": "^10.4.1",
