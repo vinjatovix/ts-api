@@ -26,6 +26,7 @@ describe('PatchBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
+    authorRepository = new AuthorRepositoryMock();
     bookPatcher = new BookPatcher(repository, authorRepository);
     controller = new PatchBookController(bookPatcher);
     expectedBook = BookCreatorRequestMother.random();
