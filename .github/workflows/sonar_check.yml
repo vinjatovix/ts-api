@@ -22,6 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       - name: Run mongo docker
         run: |
           npm run docker:mongo
