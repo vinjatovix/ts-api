@@ -26,6 +26,7 @@ describe('PostBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
+    authorRepository = new AuthorRepositoryMock();
     bookCreator = new BookCreator(repository, authorRepository);
     controller = new PostBookController(bookCreator);
     expectedBook = BookCreatorRequestMother.random();
