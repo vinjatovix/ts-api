@@ -1,13 +1,16 @@
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { CharacterByQuery } from '../../../../../src/Contexts/apiApp/Characters/application';
 import {
   Character,
   PopulatedCharacter
 } from '../../../../../src/Contexts/apiApp/Characters/domain';
+import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain/CharacterPatch';
 import { CharacterRepository } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
 import { CharacterMother } from '../domain/mothers';
 
 export class CharacterRepositoryMock implements CharacterRepository {
   protected saveMock: jest.Mock;
+  private updateMock: jest.Mock;
   public findByQueryMock: jest.Mock;
   public findAllMock: jest.Mock;
   protected findMock: jest.Mock;
@@ -16,6 +19,7 @@ export class CharacterRepositoryMock implements CharacterRepository {
   constructor({ find = false }: { find: boolean } = { find: false }) {
     this.isCharacterFindable = find;
     this.saveMock = jest.fn();
+    this.updateMock = jest.fn();
     this.findByQueryMock = jest.fn().mockImplementation(() => {
       return this.isCharacterFindable ? [CharacterMother.random()] : [];
     });
@@ -31,6 +35,17 @@ export class CharacterRepositoryMock implements CharacterRepository {
 
   assertSaveHasBeenCalledWith(expected: Character): void {
     expect(this.saveMock).toHaveBeenCalledWith(expected);
+  }
+
+  async update(character: CharacterPatch, user: Username): Promise<void> {
+    this.updateMock(character, user);
+  }
+
+  assertUpdateHasBeenCalledWith(
+    expected: CharacterPatch,
+    user: Username
+  ): void {
+    expect(this.updateMock).toHaveBeenCalledWith(expected, user);
   }
 
   async findByQuery(query: CharacterByQuery): Promise<Character[]> {

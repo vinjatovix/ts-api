@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import {
-  PostCharacterController,
   GetAllCharactersController,
-  GetCharacterController
+  GetCharacterController,
+  PatchCharacterController,
+  PostCharacterController
 } from '../../controllers/Characters';
 import container from '../../dependency-injection';
 import {
@@ -13,7 +14,7 @@ import {
   includeAndFilter
 } from '../shared/middlewares/';
 import { API_PREFIXES } from '../shared';
-import { postReqSchema } from './reqSchemas';
+import { postReqSchema, patchReqSchema } from './reqSchemas';
 
 const prefix = API_PREFIXES.character;
 
@@ -28,6 +29,10 @@ export const register = (router: Router) => {
 
   const getController: GetCharacterController = container.get(
     GetCharacterController.containerId
+  );
+
+  const patchController: PatchCharacterController = container.get(
+    PatchCharacterController.containerId
   );
 
   router.post(
@@ -57,6 +62,18 @@ export const register = (router: Router) => {
     includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getController.run(req, res, next);
+    }
+  );
+
+  router.patch(
+    `${prefix}/:id`,
+    auth,
+    isAdmin,
+    validateBody,
+    patchReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      patchController.run(req, res, next);
     }
   );
 };
