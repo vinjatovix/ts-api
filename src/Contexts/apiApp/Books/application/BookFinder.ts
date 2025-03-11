@@ -1,4 +1,4 @@
-import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces/RequestOptions';
+import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces';
 import { RequestById } from '../../../shared/application/interfaces';
 import { createError } from '../../../shared/domain/errors';
 import { Book, PopulatedBook } from '../domain';

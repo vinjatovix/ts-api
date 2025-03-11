@@ -3,3 +3,4 @@ imports:
   - { resource: ./Auth/application.yaml }
   - { resource: ./Books/application.yaml }
   - { resource: ./Authors/application.yaml }
+  - { resource: ./Characters/application.yaml }

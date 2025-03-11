@@ -58,3 +58,24 @@ services:
   Apps.apiApp.controllers.Books.DeleteBookController:
     class: ../../controllers/Books/DeleteBookController
     arguments: ['@apiApp.Books.application.BookRemover']
+
+  # CHARACTERS
+  Apps.apiApp.controllers.Characters.PostCharacterController:
+    class: ../../controllers/Characters/PostCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterCreator']
+
+  Apps.apiApp.controllers.Characters.GetAllCharactersController:
+    class: ../../controllers/Characters/GetAllCharactersController
+    arguments: ['@apiApp.Characters.application.AllCharactersFinder']
+
+  Apps.apiApp.controllers.Characters.GetCharacterController:
+    class: ../../controllers/Characters/GetCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterFinder']
+
+  Apps.apiApp.controllers.Characters.PatchCharacterController:
+    class: ../../controllers/Characters/PatchCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterPatcher']
+
+  Apps.apiApp.controllers.Characters.DeleteCharacterController:
+    class: ../../controllers/Characters/DeleteCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterRemover']
