@@ -25,3 +25,7 @@ services:
   apiApp.Characters.application.AllCharactersFinder:
     class: ../../../../Contexts/apiApp/Characters/application/AllCharactersFinder
     arguments: ['@apiApp.Characters.domain.CharacterRepository']
+
+  apiApp.Characters.application.CharacterFinder:
+    class: ../../../../Contexts/apiApp/Characters/application/CharacterFinder
+    arguments: ['@apiApp.Characters.domain.CharacterRepository']
