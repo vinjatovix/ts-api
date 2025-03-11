@@ -75,3 +75,7 @@ services:
   Apps.apiApp.controllers.Characters.PatchCharacterController:
     class: ../../controllers/Characters/PatchCharacterController
     arguments: ['@apiApp.Characters.application.CharacterPatcher']
+
+  Apps.apiApp.controllers.Characters.DeleteCharacterController:
+    class: ../../controllers/Characters/DeleteCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterRemover']

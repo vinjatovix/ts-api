@@ -116,4 +116,8 @@ export class MongoCharacterRepository
       .aggregate(pipeline)
       .toArray()) as PopulatedCharacterType[];
   }
+
+  public async remove(id: string): Promise<void> {
+    return this.delete(id);
+  }
 }
