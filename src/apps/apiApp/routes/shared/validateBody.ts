@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
+import { createError } from '../../../../Contexts/shared/domain/errors/AppErrorFactory';
 
 export const validateBody = (
   req: Request,
@@ -10,5 +10,5 @@ export const validateBody = (
     return next();
   }
 
-  throw new InvalidArgumentError('Empty body is not allowed');
+  throw createError.invalidArgument('Empty body is not allowed');
 };

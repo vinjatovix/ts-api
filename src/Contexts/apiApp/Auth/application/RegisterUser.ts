@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
+import { createError } from '../../../shared/domain/errors';
 import { StringValueObject, Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { EncrypterTool, buildLogger } from '../../../shared/plugins';
@@ -19,7 +19,7 @@ export class RegisterUser {
   async run({ password, username, email }: RegisterUserRequest): Promise<void> {
     const storedUser = await this.repository.search(email);
     if (storedUser) {
-      throw new InvalidArgumentError(`User <${email}> already exists`);
+      throw createError.invalidArgument(`User <${email}> already exists`);
     }
 
     const encryptedPassword = this.encrypter.hash(password);
