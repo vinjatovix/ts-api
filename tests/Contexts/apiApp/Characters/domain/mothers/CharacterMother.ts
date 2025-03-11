@@ -63,4 +63,13 @@ export class CharacterMother {
       book: UuidMother.random()
     });
   }
+
+  static randomList(length: number): Character[] {
+    const list: Character[] = [];
+    for (let i = 0; i < length; i++) {
+      list.push(this.random());
+    }
+
+    return list;
+  }
 }
