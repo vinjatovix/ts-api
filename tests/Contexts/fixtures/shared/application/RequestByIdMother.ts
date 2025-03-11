@@ -12,10 +12,4 @@ export class RequestByIdMother {
   static random(): RequestById {
     return this.create(UuidMother.random());
   }
-
-  static inexistentId(): RequestById {
-    return {
-      id: 'not-found'
-    };
-  }
 }

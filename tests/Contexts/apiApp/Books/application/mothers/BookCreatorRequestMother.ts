@@ -74,11 +74,4 @@ export class BookCreatorRequestMother {
       pages
     };
   }
-
-  static inexistentId(): BookCreatorRequest {
-    return {
-      ...this.random(),
-      id: 'not-found'
-    };
-  }
 }
