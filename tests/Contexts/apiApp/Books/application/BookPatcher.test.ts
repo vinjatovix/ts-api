@@ -6,6 +6,7 @@ import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookCreatorRequestMother } from './mothers/BookCreatorRequestMother';
 
 const username = UserMother.random().username;
+const DEFAULT_REQUEST = BookCreatorRequestMother.random();
 
 describe('BookPatcher', () => {
   let repository: BookRepositoryMock;
@@ -13,8 +14,8 @@ describe('BookPatcher', () => {
   let updater: BookPatcher;
 
   beforeEach(() => {
-    repository = new BookRepositoryMock();
-    authorRepository = new AuthorRepositoryMock();
+    repository = new BookRepositoryMock({ find: true });
+    authorRepository = new AuthorRepositoryMock({ find: true });
     updater = new BookPatcher(repository, authorRepository);
   });
 
@@ -23,10 +24,9 @@ describe('BookPatcher', () => {
   });
 
   it('should update a valid book', async () => {
-    const request = BookCreatorRequestMother.random();
-    const bookPatch = BookPatch.fromPrimitives(request);
+    const bookPatch = BookPatch.fromPrimitives(DEFAULT_REQUEST);
 
-    await updater.run(request, username.value);
+    await updater.run(DEFAULT_REQUEST, username.value);
 
     repository.assertUpdateHasBeenCalledWith(
       expect.objectContaining(bookPatch),
@@ -34,11 +34,18 @@ describe('BookPatcher', () => {
     );
   });
 
-  it('should throw an error when the author is not found', async () => {
-    const request = BookCreatorRequestMother.random();
-    request.author = 'not-found';
+  it('should throw an error when the book is not found', async () => {
+    repository.setFindable(false);
 
-    await expect(updater.run(request, username.value)).rejects.toThrow(
+    await expect(updater.run(DEFAULT_REQUEST, username.value)).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
+    );
+  });
+
+  it('should throw an error when the author is not found', async () => {
+    authorRepository.setFindable(false);
+
+    await expect(updater.run(DEFAULT_REQUEST, username.value)).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })
     );
   });

@@ -12,11 +12,15 @@ export class AuthorRepositoryMock implements AuthorRepository {
   public searchMock: jest.Mock;
   private findAllMock: jest.Mock;
   private removeMock: jest.Mock;
+  private isAuthorFindable: boolean;
 
-  constructor() {
+  constructor({ find }: { find: boolean } = { find: false }) {
+    this.isAuthorFindable = find;
     this.saveMock = jest.fn();
     this.updateMock = jest.fn();
-    this.searchMock = jest.fn();
+    this.searchMock = jest.fn().mockImplementation(() => {
+      return this.isAuthorFindable ? AuthorMother.random() : null;
+    });
     this.findAllMock = jest.fn();
     this.removeMock = jest.fn();
   }
@@ -38,14 +42,6 @@ export class AuthorRepositoryMock implements AuthorRepository {
   }
 
   async search(authorId: string): Promise<Author | null> {
-    if (authorId === 'not-found') {
-      this.searchMock = jest.fn().mockReturnValue(null);
-    } else {
-      this.searchMock = jest
-        .fn()
-        .mockReturnValue(AuthorMother.random(authorId));
-    }
-
     return this.searchMock(authorId);
   }
 
@@ -70,5 +66,9 @@ export class AuthorRepositoryMock implements AuthorRepository {
 
   assertRemoveHasBeenCalledWith(expected: string): void {
     expect(this.removeMock).toHaveBeenCalledWith(expected);
+  }
+
+  setFindable(findable: boolean): void {
+    this.isAuthorFindable = findable;
   }
 }

@@ -32,11 +32,4 @@ export class AuthorCreatorRequestMother {
       name
     };
   }
-
-  static inexistentId(): AuthorCreatorRequest {
-    return {
-      id: 'not-found',
-      name: AuthorNameMother.random().value
-    };
-  }
 }

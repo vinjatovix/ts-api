@@ -1,15 +1,17 @@
 import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application/BookFinder';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
-import { BookCreatorRequestMother } from './mothers';
-import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
+
+const request = {
+  id: UuidMother.random().value
+};
 
 describe('BookFinder', () => {
   let repository: BookRepositoryMock;
   let finder: BookFinder;
 
   beforeEach(() => {
-    repository = new BookRepositoryMock();
+    repository = new BookRepositoryMock({ find: true });
     finder = new BookFinder(repository);
   });
 
@@ -18,15 +20,13 @@ describe('BookFinder', () => {
   });
 
   it('should find a book', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
-
     await finder.run(request);
 
     repository.assertSearchHasBeenCalledWith(request.id);
   });
 
   it('should throw an error when the book is not found', async () => {
-    const request = BookCreatorRequestMother.inexistentId();
+    repository.setFindable(false);
 
     await expect(finder.run(request)).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })

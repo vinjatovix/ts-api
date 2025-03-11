@@ -19,6 +19,7 @@ describe('BookCreator', () => {
   });
 
   it('should create a valid book', async () => {
+    authorRepository.setFindable(true);
     const request = BookCreatorRequestMother.random();
     const book = BookMother.from(request, username);
 
@@ -57,8 +58,8 @@ describe('BookCreator', () => {
   });
 
   it('should throw an error when the book author is not found', async () => {
+    repository.setFindable(false);
     const request = BookCreatorRequestMother.random();
-    request.author = 'not-found';
 
     await expect(creator.run(request, username)).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })
