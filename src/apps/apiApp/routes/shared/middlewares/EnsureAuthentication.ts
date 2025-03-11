@@ -2,8 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import {
   CryptAdapter,
   EncrypterTool
-} from '../../../../Contexts/shared/plugins';
-import { createError } from '../../../../Contexts/shared/domain/errors/AppErrorFactory';
+} from '../../../../../Contexts/shared/plugins';
+import { createError } from '../../../../../Contexts/shared/domain/errors/AppErrorFactory';
 
 const encrypter: EncrypterTool = new CryptAdapter();
 export class EnsureAuthentication {

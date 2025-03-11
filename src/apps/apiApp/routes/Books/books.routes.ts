@@ -5,13 +5,7 @@ import { GetBookController } from '../../controllers/Books/GetBookController';
 import { PatchBookController } from '../../controllers/Books/PatchBookController';
 import { PostBookController } from '../../controllers/Books/PostBookController';
 import container from '../../dependency-injection';
-import {
-  API_PREFIXES,
-  auth,
-  isAdmin,
-  validateBody,
-  validateReqSchema
-} from '../shared';
+import { API_PREFIXES } from '../shared';
 import {
   deleteReqSchema,
   getReqSchema,
@@ -20,29 +14,21 @@ import {
 } from './reqSchemas';
 
 import { includeAndFilter } from '../shared/middlewares/includeAndFilter';
+import {
+  auth,
+  isAdmin,
+  validateBody,
+  validateReqSchema
+} from '../shared/middlewares';
 
 const prefix = API_PREFIXES.book;
 
 export const register = (router: Router) => {
-  const postController: PostBookController = container.get(
-    'Apps.apiApp.controllers.Books.PostBookController'
-  );
-
-  const getController: GetBookController = container.get(
-    'Apps.apiApp.controllers.Books.GetBookController'
-  );
-
-  const getAllController: GetAllBooksController = container.get(
-    'Apps.apiApp.controllers.Books.GetAllBooksController'
-  );
-
-  const patchController: PatchBookController = container.get(
-    'Apps.apiApp.controllers.Books.PatchBookController'
-  );
-
-  const deleteController: DeleteBookController = container.get(
-    'Apps.apiApp.controllers.Books.DeleteBookController'
-  );
+  const postController = container.get(PostBookController.containerId);
+  const getController = container.get(GetBookController.containerId);
+  const getAllController = container.get(GetAllBooksController.containerId);
+  const patchController = container.get(PatchBookController.containerId);
+  const deleteController = container.get(DeleteBookController.containerId);
 
   router.post(
     `${prefix}/`,

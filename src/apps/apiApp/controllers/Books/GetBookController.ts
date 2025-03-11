@@ -5,17 +5,28 @@ import { getOptions } from '../shared/getOptions';
 import { Controller, RequestOptions } from '../../shared/interfaces';
 
 export class GetBookController implements Controller {
-  constructor(private bookFinder: BookFinder) {}
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Books.GetBookController';
+
+  constructor(private readonly service: BookFinder) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
       const options: Partial<RequestOptions> = getOptions(req);
-      const book = await this.bookFinder.run({ id }, options);
+      const book = await this.service.run({ id }, options);
 
-      res.status(httpStatus.OK).send(book);
+      res.status(this.status()).send(book);
     } catch (error: unknown) {
       next(error);
     }
+  }
+
+  private status() {
+    return httpStatus.OK;
+  }
+
+  public static get containerId() {
+    return GetBookController._containerId;
   }
 }
