@@ -1,7 +1,7 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
+import { createError } from '../../../shared/domain/errors';
 
 export class UserRoles {
-  private static validRoles = ['admin', 'user'];
+  private static readonly validRoles = ['admin', 'user'];
   readonly value: string[];
 
   constructor(value: string[]) {
@@ -12,7 +12,7 @@ export class UserRoles {
   private ensureRoles(value: string[]): void {
     value.forEach((role) => {
       if (!UserRoles.validRoles.includes(role)) {
-        throw new InvalidArgumentError(
+        throw createError.invalidArgument(
           `<${this.constructor.name}> does not allow the value <${role}>`
         );
       }

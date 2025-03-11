@@ -36,7 +36,7 @@ describe('AuthorRemover', () => {
     bookRepository.findByQueryMock.mockResolvedValue([{}]);
 
     await expect(remover.run(request, username)).rejects.toThrow(
-      `Author <${request.id}> has books`
+      `Author <${request.id}> has associated books`
     );
   });
 

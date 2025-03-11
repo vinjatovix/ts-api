@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../shared/domain/errors';
+import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
 import { Username } from '../../Auth/domain';
 import { AuthorRepository } from '../../Authors/domain';
@@ -20,14 +20,14 @@ export class BookPatcher {
   async run(request: BookPatcherRequest, username: string): Promise<void> {
     const storedBook = await this.repository.search(request.id);
 
-    if (storedBook === null) {
-      throw new NotFoundError(`Book <${request.id}>`);
+    if (!storedBook) {
+      throw createError.notFound(`Book <${request.id}>`);
     }
 
     if (request.author) {
       const author = await this.authorRepository.search(request.author);
       if (!author) {
-        throw new NotFoundError(`Author <${request.author}>`);
+        throw createError.notFound(`Author <${request.author}>`);
       }
     }
 

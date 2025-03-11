@@ -1,5 +1,4 @@
 import { AuthorFinder } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
@@ -29,6 +28,8 @@ describe('AuthorFinder', () => {
   it('should throw an error when the author is not found', async () => {
     const request = AuthorCreatorRequestMother.inexistentId();
 
-    await expect(finder.run(request)).rejects.toThrow(NotFoundError);
+    await expect(finder.run(request)).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
+    );
   });
 });
