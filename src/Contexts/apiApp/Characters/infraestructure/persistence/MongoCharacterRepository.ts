@@ -1,5 +1,7 @@
+import { ObjectId } from 'bson';
 import { Collection } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
+import { Nullable } from '../../../../shared/domain/Nullable';
 import {
   MongoRepository,
   AggregateBuilder
@@ -54,6 +56,27 @@ export class MongoCharacterRepository
     return documents.map((document) =>
       CharacterMapper.toPopulatedDomain(document)
     );
+  }
+
+  public async search(
+    id: string,
+    options: Partial<RequestOptions> = {}
+  ): Promise<Nullable<Character | PopulatedCharacter>> {
+    const collection = await this.collection();
+
+    if (!Object.keys(options).length) {
+      const document = await collection.findOne<CharacterType>({
+        _id: id as unknown as ObjectId
+      });
+
+      return document ? CharacterMapper.toDomain(document) : null;
+    }
+
+    const documents = await this.fetch({ collection, options });
+
+    return documents.length > 0
+      ? CharacterMapper.toPopulatedDomain(documents[0])
+      : null;
   }
 
   protected collectionName(): string {
