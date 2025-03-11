@@ -1,4 +1,4 @@
-import { RequestById } from '../../../../../src/Contexts/shared/application/interfaces/RequestById';
+import { RequestById } from '../../../../../src/Contexts/shared/application/interfaces';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../domain/mothers/UuidMother';
 

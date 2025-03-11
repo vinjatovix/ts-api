@@ -1,4 +1,4 @@
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import { Metadata } from '../../../shared/domain/valueObject';
 import { Book, PopulatedBook } from '../domain';
 import { BookType, PopulatedBookType } from './types';
 

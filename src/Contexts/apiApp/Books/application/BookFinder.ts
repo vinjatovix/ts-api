@@ -1,31 +1,24 @@
 import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces/RequestOptions';
 import { RequestById } from '../../../shared/application/interfaces';
 import { createError } from '../../../shared/domain/errors';
-
-import { Nullable } from '../../../shared/domain/Nullable';
-
 import { Book, PopulatedBook } from '../domain';
-import { BookRepository } from '../domain/interfaces';
-import { BookResponse } from './BookResponse';
+import { BookPrimitives, BookRepository } from '../domain/interfaces';
 
 export class BookFinder {
-  private readonly repository: BookRepository;
-
-  constructor(repository: BookRepository) {
-    this.repository = repository;
-  }
+  constructor(private readonly repository: BookRepository) {}
 
   async run(
-    request: RequestById,
+    { id }: RequestById,
     options: Partial<RequestOptions> = {}
-  ): Promise<Partial<BookResponse>> {
-    const book: Nullable<Partial<Book | PopulatedBook>> =
-      await this.repository.search(request.id, options);
+  ): Promise<Partial<BookPrimitives>> {
+    const book = (await this.repository.search(id, options)) as
+      | Book
+      | PopulatedBook;
 
-    if (book instanceof Book || book instanceof PopulatedBook) {
-      return book.toPrimitives();
+    if (!book) {
+      throw createError.notFound(`Book <${id}>`);
     }
 
-    throw createError.notFound(`Book <${request.id}>`);
+    return book.toPrimitives();
   }
 }
