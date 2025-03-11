@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import {
+  DeleteCharacterController,
   GetAllCharactersController,
   GetCharacterController,
   PatchCharacterController,
@@ -14,7 +15,7 @@ import {
   includeAndFilter
 } from '../shared/middlewares/';
 import { API_PREFIXES } from '../shared';
-import { postReqSchema, patchReqSchema } from './reqSchemas';
+import { postReqSchema, patchReqSchema, deleteReqSchema } from './reqSchemas';
 
 const prefix = API_PREFIXES.character;
 
@@ -33,6 +34,10 @@ export const register = (router: Router) => {
 
   const patchController: PatchCharacterController = container.get(
     PatchCharacterController.containerId
+  );
+
+  const deleteController: DeleteCharacterController = container.get(
+    DeleteCharacterController.containerId
   );
 
   router.post(
@@ -74,6 +79,17 @@ export const register = (router: Router) => {
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       patchController.run(req, res, next);
+    }
+  );
+
+  router.delete(
+    `${prefix}/:id`,
+    auth,
+    isAdmin,
+    deleteReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      deleteController.run(req, res, next);
     }
   );
 };

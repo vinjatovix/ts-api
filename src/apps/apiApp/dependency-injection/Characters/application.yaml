@@ -37,3 +37,7 @@ services:
   apiApp.Characters.application.CharacterFinder:
     class: ../../../../Contexts/apiApp/Characters/application/CharacterFinder
     arguments: ['@apiApp.Characters.domain.CharacterRepository']
+
+  apiApp.Characters.application.CharacterRemover:
+    class: ../../../../Contexts/apiApp/Characters/application/CharacterRemover
+    arguments: ['@apiApp.Characters.domain.CharacterRepository']
