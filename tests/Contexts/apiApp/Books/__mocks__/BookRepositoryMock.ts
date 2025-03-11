@@ -17,14 +17,20 @@ export class BookRepositoryMock implements BookRepository {
   public findAllMock: jest.Mock;
   private removeMock: jest.Mock;
   public findByQueryMock: jest.Mock;
+  private isBookFindable: boolean;
 
-  constructor() {
+  constructor({ find }: { find: boolean } = { find: false }) {
+    this.isBookFindable = find;
     this.saveMock = jest.fn();
     this.updateMock = jest.fn();
-    this.findMock = jest.fn();
+    this.findMock = jest.fn().mockImplementation(() => {
+      return this.isBookFindable ? BookMother.random() : null;
+    });
     this.findAllMock = jest.fn();
     this.removeMock = jest.fn();
-    this.findByQueryMock = jest.fn();
+    this.findByQueryMock = jest.fn().mockImplementation(() => {
+      return this.isBookFindable ? [BookMother.random()] : [];
+    });
   }
 
   async save(book: Book): Promise<void> {
@@ -44,12 +50,6 @@ export class BookRepositoryMock implements BookRepository {
   }
 
   async search(id: string): Promise<Book | null> {
-    if (id === 'not-found') {
-      this.findMock = jest.fn().mockReturnValue(null);
-    } else {
-      this.findMock = jest.fn().mockReturnValue(BookMother.random());
-    }
-
     return this.findMock(id);
   }
 
@@ -86,5 +86,9 @@ export class BookRepositoryMock implements BookRepository {
 
   assertFindByQueryHasBeenCalledWith(expected: BookByQuery): void {
     expect(this.findByQueryMock).toHaveBeenCalledWith(expected);
+  }
+
+  setFindable(findable: boolean): void {
+    this.isBookFindable = findable;
   }
 }
