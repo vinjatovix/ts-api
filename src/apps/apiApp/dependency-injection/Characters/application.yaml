@@ -21,3 +21,7 @@ services:
         '@apiApp.Characters.domain.CharacterRepository',
         '@apiApp.Books.domain.BookRepository'
       ]
+
+  apiApp.Characters.application.AllCharactersFinder:
+    class: ../../../../Contexts/apiApp/Characters/application/AllCharactersFinder
+    arguments: ['@apiApp.Characters.domain.CharacterRepository']
