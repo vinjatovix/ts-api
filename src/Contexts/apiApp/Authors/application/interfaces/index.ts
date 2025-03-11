@@ -1,3 +1,3 @@
 export * from './AuthorCreatorRequest';
 export * from './AuthorPatcherRequest';
-export * from './AuthorResponse';
+export * from './AuthorPrimitives';

@@ -1,7 +1,7 @@
 import { ObjectId } from 'mongodb';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
 
-import { Author, AuthorRepository } from '../../domain';
+import { Author, AuthorPatch, AuthorRepository } from '../../domain';
 import { Username } from '../../../Auth/domain';
 import { MetadataType } from '../../../../shared/application/MetadataType';
 
@@ -19,8 +19,8 @@ export class MongoAuthorRepository
     return this.persist(author.id.value, author);
   }
 
-  public async update(author: Author, username: Username): Promise<void> {
-    return this.persist(author.id.value, author, username);
+  public async update(author: AuthorPatch, username: Username): Promise<void> {
+    return this.persist(author.id.value, author as Author, username);
   }
 
   public async remove(id: string): Promise<void> {

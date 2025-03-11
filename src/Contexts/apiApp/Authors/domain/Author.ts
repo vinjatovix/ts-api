@@ -1,12 +1,12 @@
 import { MetadataType } from '../../../shared/application/MetadataType';
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import { Nullable } from '../../../shared/domain/Nullable';
+import { Uuid, Metadata } from '../../../shared/domain/valueObject';
 import { AuthorName } from './AuthorName';
 
 export class Author extends AggregateRoot {
   readonly id: Uuid;
-  readonly name: AuthorName;
+  readonly name: Nullable<AuthorName>;
   readonly metadata: Metadata;
 
   constructor({
@@ -15,7 +15,7 @@ export class Author extends AggregateRoot {
     metadata
   }: {
     id: Uuid;
-    name: AuthorName;
+    name: Nullable<AuthorName>;
     metadata: Metadata;
   }) {
     super();
@@ -27,7 +27,7 @@ export class Author extends AggregateRoot {
   toPrimitives() {
     return {
       id: this.id.value,
-      name: this.name.value,
+      name: this.name?.value,
       metadata: this.metadata.toPrimitives()
     };
   }
@@ -38,12 +38,12 @@ export class Author extends AggregateRoot {
     metadata
   }: {
     id: string;
-    name: string;
+    name?: string;
     metadata: MetadataType;
   }) {
     return new Author({
       id: new Uuid(id),
-      name: new AuthorName(name),
+      name: name ? new AuthorName(name) : null,
       metadata: Metadata.fromPrimitives(metadata)
     });
   }
