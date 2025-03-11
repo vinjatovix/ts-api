@@ -41,4 +41,20 @@ describe('MongoCharacterRepository', () => {
       );
     });
   });
+
+  describe('search', () => {
+    it('should return an existing character', async () => {
+      const character = CharacterMother.random();
+
+      await repository.save(character);
+
+      expect(await repository.search(character.id.value)).toEqual(character);
+    });
+
+    it('should not return a non existing character', async () => {
+      expect(
+        await repository.search(CharacterMother.random().id.value)
+      ).toBeNull();
+    });
+  });
 });

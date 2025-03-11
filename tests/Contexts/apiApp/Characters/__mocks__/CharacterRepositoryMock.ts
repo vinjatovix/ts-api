@@ -1,5 +1,8 @@
 import { CharacterByQuery } from '../../../../../src/Contexts/apiApp/Characters/application';
-import { Character } from '../../../../../src/Contexts/apiApp/Characters/domain';
+import {
+  Character,
+  PopulatedCharacter
+} from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { CharacterRepository } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
 import { CharacterMother } from '../domain/mothers';
 
@@ -7,6 +10,7 @@ export class CharacterRepositoryMock implements CharacterRepository {
   protected saveMock: jest.Mock;
   public findByQueryMock: jest.Mock;
   public findAllMock: jest.Mock;
+  protected findMock: jest.Mock;
   private isCharacterFindable: boolean;
 
   constructor({ find = false }: { find: boolean } = { find: false }) {
@@ -16,6 +20,9 @@ export class CharacterRepositoryMock implements CharacterRepository {
       return this.isCharacterFindable ? [CharacterMother.random()] : [];
     });
     this.findAllMock = jest.fn().mockReturnValue([CharacterMother.random()]);
+    this.findMock = jest.fn().mockImplementation(() => {
+      return this.isCharacterFindable ? CharacterMother.random() : null;
+    });
   }
 
   async save(character: Character): Promise<void> {
@@ -44,5 +51,15 @@ export class CharacterRepositoryMock implements CharacterRepository {
 
   assertFindAllHasBeenCalled(): void {
     expect(this.findAllMock).toHaveBeenCalled();
+  }
+
+  async search(
+    id: string
+  ): Promise<Partial<Character | PopulatedCharacter> | null> {
+    return this.findMock(id);
+  }
+
+  assertSearchHasBeenCalledWith(expected: string): void {
+    expect(this.findMock).toHaveBeenCalledWith(expected);
   }
 }
