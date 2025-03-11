@@ -1,20 +1,24 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import { Nullable } from '../../../shared/domain/Nullable';
+import { Uuid, Metadata } from '../../../shared/domain/valueObject';
+import { BookBase } from './BookBase';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
+import { BookPrimitives } from './interfaces';
 import { Isbn } from './ISBN';
 
-export class Book extends AggregateRoot {
-  readonly id: Uuid;
-  readonly title: BookTitle;
-  readonly author: Uuid;
-  readonly isbn: Isbn;
-  readonly releaseDate: BookReleaseDate;
-  readonly pages: BookPages;
-  readonly metadata: Metadata;
+interface BookProps {
+  id: Uuid;
+  title: Nullable<BookTitle>;
+  author: Nullable<Uuid>;
+  isbn: Nullable<Isbn>;
+  releaseDate: Nullable<BookReleaseDate>;
+  pages: Nullable<BookPages>;
+  metadata: Metadata;
+}
+
+export class Book extends BookBase {
+  readonly author: Nullable<Uuid>;
 
   constructor({
     id,
@@ -24,38 +28,28 @@ export class Book extends AggregateRoot {
     releaseDate,
     pages,
     metadata
-  }: {
-    id: Uuid;
-    title: BookTitle;
-    author: Uuid;
-    isbn: Isbn;
-    releaseDate: BookReleaseDate;
-    pages: BookPages;
-    metadata: Metadata;
-  }) {
-    super();
-    this.id = id;
-    this.title = title;
+  }: BookProps) {
+    super({
+      id,
+      title,
+      isbn,
+      releaseDate,
+      pages,
+      metadata
+    });
     this.author = author;
-    this.isbn = isbn;
-    this.releaseDate = releaseDate;
-    this.pages = pages;
-    this.metadata = metadata;
   }
 
-  toPrimitives() {
-    return {
-      id: this.id.value,
-      title: this.title.value,
-      author: this.author.value,
-      isbn: this.isbn.value,
-      releaseDate: this.releaseDate.value,
-      pages: this.pages.value,
-      metadata: this.metadata.toPrimitives()
+  toPrimitives(): BookPrimitives {
+    const primitives = {
+      ...super.toPrimitives(),
+      author: this.author?.value
     };
+
+    return primitives;
   }
 
-  static fromPrimitives({
+  static readonly fromPrimitives = ({
     id,
     title,
     author,
@@ -63,23 +57,14 @@ export class Book extends AggregateRoot {
     releaseDate,
     pages,
     metadata
-  }: {
-    id: string;
-    title: string;
-    author: string;
-    isbn: string;
-    releaseDate: string;
-    pages: number;
-    metadata: MetadataType;
-  }) {
-    return new Book({
+  }: BookPrimitives): Book =>
+    new Book({
       id: new Uuid(id),
-      title: new BookTitle(title),
-      author: new Uuid(author),
-      isbn: new Isbn(isbn),
-      releaseDate: new BookReleaseDate(releaseDate),
-      pages: new BookPages(pages),
+      title: title ? new BookTitle(title) : null,
+      author: author ? new Uuid(author as string) : null,
+      isbn: isbn ? new Isbn(isbn) : null,
+      releaseDate: releaseDate ? new BookReleaseDate(releaseDate) : null,
+      pages: pages ? new BookPages(pages) : null,
       metadata: Metadata.fromPrimitives(metadata)
     });
-  }
 }

@@ -42,7 +42,7 @@ describe('PopulatedBook', () => {
       id: populatedBookValueObjects.id.value,
       title: populatedBookValueObjects.title.value,
       isbn: populatedBookValueObjects.isbn.value,
-      releaseDate: populatedBookValueObjects.releaseDate.value,
+      releaseDate: populatedBookValueObjects.releaseDate.value.toISOString(),
       pages: populatedBookValueObjects.pages.value,
       metadata: populatedBookValueObjects.metadata.toPrimitives(),
       author: populatedBookValueObjects.author.toPrimitives()
