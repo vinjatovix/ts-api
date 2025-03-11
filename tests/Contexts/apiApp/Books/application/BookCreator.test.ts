@@ -1,9 +1,4 @@
 import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application';
-import {
-  InvalidArgumentError,
-  NotFoundError
-} from '../../../../../src/Contexts/shared/domain/errors';
-
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
 import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock';
@@ -47,7 +42,7 @@ describe('BookCreator', () => {
       creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book author is invalid', async () => {
@@ -58,14 +53,16 @@ describe('BookCreator', () => {
       creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book author is not found', async () => {
     const request = BookCreatorRequestMother.random();
     request.author = 'not-found';
 
-    await expect(creator.run(request, username)).rejects.toThrow(NotFoundError);
+    await expect(creator.run(request, username)).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
+    );
   });
 
   it('should throw an error when the book isbn is not valid', async () => {
@@ -76,7 +73,7 @@ describe('BookCreator', () => {
       creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book release date is not valid', async () => {
@@ -87,6 +84,6 @@ describe('BookCreator', () => {
       creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 });

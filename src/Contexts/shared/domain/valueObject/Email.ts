@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../errors/InvalidArgumentError';
+import { createError } from '../errors';
 
 export class Email {
   private readonly emailRegex = /^[a-zA-Z0-9._-]+@[a-z0-9.-]+\.[a-z]{2,6}$/;
@@ -17,13 +17,13 @@ export class Email {
 
   private ensureLength(value: string): string {
     if (value.length < this.minLength) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> must be at least ${this.minLength} characters long`
       );
     }
 
     if (value.length > this.maxLength) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> must be less than ${this.maxLength} characters long`
       );
     }
@@ -34,7 +34,7 @@ export class Email {
   private ensureDomainsBlacklist(value: string): string {
     const domain = value.split('@')[1];
     if (this.domainsBlacklist.includes(domain)) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> does not allow the domain <${value}>`
       );
     }
@@ -43,7 +43,7 @@ export class Email {
 
   private ensureIsEmailAddress(value: string): string {
     if (!this.emailRegex.test(value)) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> does not allow the value <${value}>`
       );
     }

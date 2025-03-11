@@ -1,5 +1,5 @@
-import { RequestById } from '../../../shared/application/RequestById';
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
+import { RequestById } from '../../../shared/application/interfaces';
+import { createError } from '../../../shared/domain/errors';
 
 import { AuthorRepository } from '../domain';
 
@@ -16,7 +16,7 @@ export class AuthorFinder {
     const author = await this.repository.search(request.id);
 
     if (!author) {
-      throw new NotFoundError(`Author <${request.id}>`);
+      throw createError.notFound(`Author <${request.id}>`);
     }
 
     return {

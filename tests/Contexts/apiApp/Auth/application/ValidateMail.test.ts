@@ -31,7 +31,10 @@ describe('ValidateMail', () => {
     service = new ValidateMail(repository, encrypter);
     const token = random.word({ min: 6, max: 255 });
 
-    await expect(service.run({ token })).rejects.toThrow('Invalid token');
+    await expect(service.run({ token })).rejects.toThrow({
+      name: 'AuthError',
+      message: 'Invalid token'
+    });
   });
 
   it('should throw an error if the user is not found', async () => {
@@ -39,6 +42,9 @@ describe('ValidateMail', () => {
     service = new ValidateMail(repository, encrypter);
     const token = random.word({ min: 6, max: 255 });
 
-    await expect(service.run({ token })).rejects.toThrow('Invalid token');
+    await expect(service.run({ token })).rejects.toThrow({
+      name: 'AuthError',
+      message: 'Invalid token'
+    });
   });
 });

@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import { EncrypterTool } from '../../../../Contexts/shared/plugins/EncrypterTool';
-import { CryptAdapter } from '../../../../Contexts/shared/plugins/CryptAdapter';
-import { AuthError } from '../../../../Contexts/shared/domain/errors/AuthError';
+import {
+  CryptAdapter,
+  EncrypterTool
+} from '../../../../Contexts/shared/plugins';
+import { createError } from '../../../../Contexts/shared/domain/errors/AppErrorFactory';
 
 const encrypter: EncrypterTool = new CryptAdapter();
 export class EnsureAuthentication {
@@ -13,12 +15,12 @@ export class EnsureAuthentication {
     try {
       const token: string = req.headers.authorization ?? '';
       if (!token.startsWith('Bearer ')) {
-        throw new AuthError('Invalid token');
+        throw createError.auth('Invalid token');
       }
 
       const userData = await encrypter.verifyToken(token.split(' ')[1]);
       if (!userData) {
-        throw new AuthError('Invalid token');
+        throw createError.auth('Invalid token');
       }
 
       res.locals.user = userData;
@@ -35,7 +37,7 @@ export class EnsureAuthentication {
   ): void {
     const userData = res.locals.user.roles;
     if (!userData.includes('admin')) {
-      throw new AuthError('Invalid role');
+      throw createError.auth('Invalid role');
     }
 
     return next();
