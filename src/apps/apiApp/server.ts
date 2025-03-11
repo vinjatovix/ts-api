@@ -6,7 +6,7 @@ import helmet from 'helmet';
 import * as http from 'http';
 import cors from 'cors';
 import { registerRoutes } from './routes';
-import { apiErrorHandler } from './routes/shared';
+import { apiErrorHandler } from './routes/shared/middlewares';
 import { buildLogger } from '../../Contexts/shared/plugins/logger.plugin';
 import { envs } from '../../config/plugins/envs.plugin';
 import migrations from '../../../migrations';
@@ -20,8 +20,8 @@ const logger = buildLogger('apiApp');
 
 export class Server {
   private express: express.Express;
-  private port: number;
-  private host: string;
+  private readonly port: number;
+  private readonly host: string;
   private httpServer?: http.Server;
 
   constructor(host: string, port: number) {
