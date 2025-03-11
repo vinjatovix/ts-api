@@ -4,6 +4,7 @@ import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
 
@@ -13,13 +14,15 @@ describe('DeleteBookController', () => {
   let bookRemover: BookRemover;
   let controller: DeleteBookController;
   let repository: BookRepositoryMock;
+  let characterRepository: CharacterRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookRemover = new BookRemover(repository);
+    characterRepository = new CharacterRepositoryMock();
+    bookRemover = new BookRemover(repository, characterRepository);
     controller = new DeleteBookController(bookRemover);
     req = { params: { id: '1' } };
     res = {
@@ -32,6 +35,10 @@ describe('DeleteBookController', () => {
       }
     };
     next = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
   describe('run', () => {

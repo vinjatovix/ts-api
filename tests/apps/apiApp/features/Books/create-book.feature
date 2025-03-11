@@ -43,7 +43,7 @@ Feature: Create a new book
       """
       {
         "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
-        "title": "The Lord of the Rings",
+        "title": "The same id with other name",
         "author": "8a6e0804-2bd0-4672-b79d-d97027f9071b",
         "isbn": "978-3-16-148410-0",
         "releaseDate": "2023-10-10T23:21:50.508Z",
@@ -55,6 +55,27 @@ Feature: Create a new book
       """
       {
         "message": "Book <8a6e0804-2bd0-4672-b79d-d97027f9071a> already exists"
+      }
+      """
+
+
+  Scenario: A valid duplicated book
+    Given a POST admin request to "/api/v1/Books/" with body
+      """
+      {
+        "id": "5dfc469b-2c0c-406d-953e-98b588c57eab",
+        "title": "The Lord of the Rings",
+        "author": "8a6e0804-2bd0-4672-b79d-d97027f9071b",
+        "isbn": "978-3-16-148410-0",
+        "releaseDate": "2023-10-10T23:21:50.508Z",
+        "pages": 1178
+      }
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "message": "Duplicate document with {\"title\":\"The Lord of the Rings\",\"author\":\"8a6e0804-2bd0-4672-b79d-d97027f9071b\"}"
       }
       """
 
