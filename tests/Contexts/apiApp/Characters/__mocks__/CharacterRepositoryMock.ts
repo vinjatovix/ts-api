@@ -6,6 +6,7 @@ import { CharacterMother } from '../domain/mothers';
 export class CharacterRepositoryMock implements CharacterRepository {
   protected saveMock: jest.Mock;
   public findByQueryMock: jest.Mock;
+  public findAllMock: jest.Mock;
   private isCharacterFindable: boolean;
 
   constructor({ find = false }: { find: boolean } = { find: false }) {
@@ -14,6 +15,7 @@ export class CharacterRepositoryMock implements CharacterRepository {
     this.findByQueryMock = jest.fn().mockImplementation(() => {
       return this.isCharacterFindable ? [CharacterMother.random()] : [];
     });
+    this.findAllMock = jest.fn().mockReturnValue([CharacterMother.random()]);
   }
 
   async save(character: Character): Promise<void> {
@@ -34,5 +36,13 @@ export class CharacterRepositoryMock implements CharacterRepository {
 
   setFindable(findable: boolean): void {
     this.isCharacterFindable = findable;
+  }
+
+  async findAll(): Promise<Character[]> {
+    return this.findAllMock();
+  }
+
+  assertFindAllHasBeenCalled(): void {
+    expect(this.findAllMock).toHaveBeenCalled();
   }
 }
