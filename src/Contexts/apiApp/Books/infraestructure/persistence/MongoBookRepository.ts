@@ -118,7 +118,7 @@ export class MongoBookRepository
     id?: string;
     options: Partial<RequestOptions>;
   }): Promise<PopulatedBookType[]> {
-    const aggregateBuilder = new AggregateBuilder<PopulatedBookType>();
+    const aggregateBuilder = new AggregateBuilder();
     const pipeline = aggregateBuilder.buildPipeline(id ?? '', options);
 
     return (await collection
