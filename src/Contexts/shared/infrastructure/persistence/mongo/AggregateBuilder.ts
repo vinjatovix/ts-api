@@ -1,113 +1,111 @@
-import { ObjectId } from 'bson';
-import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { Entity } from './Entity';
+export class AggregateBuilder {
+  buildPipeline(
+    id: string,
+    {
+      include = [],
+      fields = [],
+      list = []
+    }: { include?: string[]; fields?: string[]; list?: string[] }
+  ): Record<string, unknown>[] {
+    const pipeline: Record<string, unknown>[] = [];
 
-export class AggregateBuilder<_T extends Entity> {
-  public buildPipeline(id: string, options: Partial<RequestOptions>) {
-    const pipeline: object[] = [];
+    const filteredFields = fields.filter((field) => !include.includes(field));
 
-    if (id) {
-      pipeline.push({ $match: this.getMatchCondition(id) });
-    }
-
-    pipeline.push(...this.getPopulateOptions(options.include ?? []));
-    pipeline.push(
-      ...this.getFieldsProjection(options.fields ?? [], options.include ?? [])
-    );
+    if (id) this.addMatchStage(pipeline, id);
+    if (include.length) this.addLookupAndUnwind(pipeline, include);
+    if (filteredFields.length)
+      this.addProjectStage(pipeline, filteredFields, include);
+    if (list.length) this.addGroupStages(pipeline, list, filteredFields);
 
     return pipeline;
   }
 
-  private getMatchCondition(id: string) {
-    return ObjectId.isValid(id) ? { _id: new ObjectId(id) } : { _id: id };
+  private addMatchStage(pipeline: Record<string, unknown>[], id: string): void {
+    pipeline.push({ $match: { _id: id } });
   }
 
-  private getPopulateOptions(include: string[]) {
-    return include.flatMap((includeField) =>
-      this.createLookupChain(includeField.split('.'))
-    );
-  }
+  private addLookupAndUnwind(
+    pipeline: Record<string, unknown>[],
+    include: string[]
+  ): void {
+    const includedFields = new Set<string>();
 
-  private createLookupChain(pathParts: string[]) {
-    const lookups: object[] = [];
-    let currentField = pathParts[0];
-    let fromCollection = `${currentField}s`;
+    for (const path of include) {
+      const parts = path.split('.');
+      let localField = parts[0];
+      let from = this.getCollectionName(localField);
+      let as = localField;
 
-    pathParts.forEach((_, index) => {
-      lookups.push({
-        $lookup: {
-          from: fromCollection,
-          localField: currentField,
-          foreignField: '_id',
-          as: currentField
+      for (let i = 0; i < parts.length; i++) {
+        if (i > 0) {
+          from = this.getCollectionName(parts[i]);
+          localField = parts.slice(0, i + 1).join('.');
+          as = localField;
         }
-      });
 
-      lookups.push({
-        $unwind: {
-          path: `$${currentField}`,
-          preserveNullAndEmptyArrays: true
+        if (!includedFields.has(as)) {
+          pipeline.push({
+            $lookup: { from, localField, foreignField: '_id', as }
+          });
+          pipeline.push({
+            $unwind: { path: `$${as}`, preserveNullAndEmptyArrays: true }
+          });
+
+          includedFields.add(as);
         }
-      });
-
-      if (index < pathParts.length - 1) {
-        currentField = `${currentField}.${pathParts[index + 1]}`;
-        fromCollection = `${pathParts[index + 1]}s`;
       }
-    });
-
-    return lookups;
-  }
-  private getFieldsProjection(fields: string[], include: string[]) {
-    const includedFields = include.map((field) => field.split('.'));
-
-    const adjustedFields = fields.map((field) => {
-      const fieldParts = field.split('.');
-
-      const matchingInclude = includedFields.find((inc) => {
-        return (
-          inc.slice(0, fieldParts.length).join('.') === fieldParts.join('.')
-        );
-      });
-
-      if (matchingInclude) {
-        return matchingInclude.join('.');
-      }
-
-      return field;
-    });
-
-    const idsToInclude = this.getRelatedCollectionIdsToInclude(include);
-
-    return adjustedFields.length || include.length
-      ? [
-          {
-            $project: {
-              ...idsToInclude,
-              ...Object.fromEntries(adjustedFields.map((field) => [field, 1]))
-            }
-          }
-        ]
-      : [];
+    }
   }
 
-  private getRelatedCollectionIdsToInclude(include: string[]) {
-    return Object.fromEntries(
-      include
-        .flatMap((field) => {
-          const pathParts = field.split('.');
-          return pathParts.length > 1
-            ? [
-                [field, 1],
-                [`${pathParts[0]}._id`, 1],
-                [`${pathParts[0]}.metadata`, 1]
-              ]
-            : [[field, 1]];
-        })
-        .concat([
-          ['_id', 1],
-          ['metadata', 1]
-        ])
-    );
+  private addProjectStage(
+    pipeline: Record<string, unknown>[],
+    fields: string[],
+    include: string[]
+  ): void {
+    const projectStage: Record<string, number> = { _id: 1, metadata: 1 };
+
+    for (const field of fields) {
+      projectStage[field] = 1;
+    }
+
+    for (const path of include) {
+      projectStage[`${path}._id`] = 1;
+      projectStage[`${path}.metadata`] = 1;
+
+      const subPaths = path.split('.');
+      for (let i = 1; i < subPaths.length; i++) {
+        const parentPath = subPaths.slice(0, i).join('.');
+        projectStage[`${parentPath}._id`] = 1;
+        projectStage[`${parentPath}.metadata`] = 1;
+      }
+    }
+
+    pipeline.push({ $project: projectStage });
+  }
+
+  private addGroupStages(
+    pipeline: Record<string, unknown>[],
+    list: string[],
+    fields: string[]
+  ): void {
+    for (const listField of list) {
+      const groupStage: Record<string, unknown> = {
+        _id: '$_id',
+        metadata: { $first: '$metadata' },
+        [listField]: { $push: `$${listField}` }
+      };
+
+      for (const field of fields) {
+        if (!field.startsWith(listField)) {
+          groupStage[field] = { $first: `$${field}` };
+        }
+      }
+
+      pipeline.push({ $group: groupStage });
+    }
+  }
+
+  private getCollectionName(field: string): string {
+    return field.endsWith('s') ? field : `${field}s`;
   }
 }

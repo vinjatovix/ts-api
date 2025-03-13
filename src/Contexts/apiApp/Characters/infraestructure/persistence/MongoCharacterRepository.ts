@@ -102,7 +102,7 @@ export class MongoCharacterRepository
     id?: string;
     options: Partial<RequestOptions>;
   }): Promise<PopulatedCharacterType[]> {
-    const aggregateBuilder = new AggregateBuilder<PopulatedCharacterType>();
+    const aggregateBuilder = new AggregateBuilder();
     const pipeline = aggregateBuilder.buildPipeline(id ?? '', options);
 
     return (await collection
