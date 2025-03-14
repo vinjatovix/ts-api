@@ -19,7 +19,7 @@ export class AuthorNameMother {
         return this.invalidType();
       default:
         return random.arrayElement([
-          random.word({ min: 21, max: 255 }),
+          random.word({ min: AuthorName.MAX_LENGTH + 1, max: 255 }),
           random.integer(),
           random.boolean()
         ]);
@@ -27,7 +27,7 @@ export class AuthorNameMother {
   }
 
   static exceedMaxLength() {
-    return random.word({ min: 21, max: 255 });
+    return random.word({ min: AuthorName.MAX_LENGTH + 1, max: 255 });
   }
 
   static exceedMinLength() {
