@@ -26,7 +26,9 @@ export class BookRepositoryMock implements BookRepository {
     this.findMock = jest.fn().mockImplementation(() => {
       return this.isBookFindable ? BookMother.random() : null;
     });
-    this.findAllMock = jest.fn();
+    this.findAllMock = jest.fn().mockImplementation(() => {
+      return this.isBookFindable ? BookMother.randomList(3) : [];
+    });
     this.removeMock = jest.fn();
     this.findByQueryMock = jest.fn().mockImplementation(() => {
       return this.isBookFindable ? [BookMother.random()] : [];
@@ -58,9 +60,6 @@ export class BookRepositoryMock implements BookRepository {
   }
 
   async findAll(options?: Partial<RequestOptions>): Promise<Book[]> {
-    const bookList = BookMother.randomList(3);
-    this.findAllMock = jest.fn().mockReturnValue(bookList);
-
     return this.findAllMock(options);
   }
 
