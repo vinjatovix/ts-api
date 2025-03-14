@@ -116,7 +116,7 @@
     "lcov-result-merger": "^5.0.1",
     "lint-staged": "15.4.3",
     "madge": "^8.0.0",
-    "newman": "^6.1.2",
+    "newman": "^6.2.0",
     "nyc": "^15.1.0",
     "prettier": "^3.5.3",
     "supertest": "^7.0.0",
