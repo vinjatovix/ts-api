@@ -88,3 +88,7 @@ services:
   Apps.apiApp.controllers.Scenes.GetAllScenesController:
     class: ../../controllers/Scenes/GetAllScenesController
     arguments: ['@apiApp.Scenes.application.AllScenesFinder']
+
+  Apps.apiApp.controllers.Scenes.GetSceneController:
+    class: ../../controllers/Scenes/GetSceneController
+    arguments: ['@apiApp.Scenes.application.SceneFinder']
