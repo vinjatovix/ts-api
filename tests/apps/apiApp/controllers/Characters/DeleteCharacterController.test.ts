@@ -4,6 +4,7 @@ import { random } from '../../../../Contexts/fixtures/shared';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterRemover'
@@ -16,13 +17,15 @@ describe('DeleteCharacterController', () => {
   let service: CharacterRemover;
   let controller: DeleteCharacterController;
   let repository: CharacterRepositoryMock;
+  let sceneRepository: SceneRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
     repository = new CharacterRepositoryMock();
-    service = new CharacterRemover(repository);
+    sceneRepository = new SceneRepositoryMock();
+    service = new CharacterRemover(repository, sceneRepository);
     controller = new DeleteCharacterController(service);
     req = { params: { id } };
     res = {

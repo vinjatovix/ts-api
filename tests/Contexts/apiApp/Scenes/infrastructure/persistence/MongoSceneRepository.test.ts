@@ -1,7 +1,8 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
 import { CharacterRepository } from '../../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
+import { SceneByQuery } from '../../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
+import { ScenePatch } from '../../../../../../src/Contexts/apiApp/Scenes/domain';
 import { SceneRepository } from '../../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
-import { ScenePatch } from '../../../../../../src/Contexts/apiApp/Scenes/domain/ScenePatch';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../../Auth/domain/mothers';
 import { CharacterMother } from '../../../Characters/domain/mothers';
@@ -151,6 +152,21 @@ describe('MongoSceneRepository', () => {
       expect(foundScene).toMatchObject({
         metadata: { updatedBy: username.value }
       });
+    });
+  });
+
+  describe('findByQuery', () => {
+    it('should return scenes by query', async () => {
+      const character = CharacterMother.random();
+      await characterRepository.save(character);
+      const scene = SceneMother.random({ characters: [character.id] });
+      await repository.save(scene);
+
+      const query: SceneByQuery = { characters: [character.id.value] };
+
+      const scenes = await repository.findByQuery(query);
+
+      expect(scenes).toEqual([scene]);
     });
   });
 });

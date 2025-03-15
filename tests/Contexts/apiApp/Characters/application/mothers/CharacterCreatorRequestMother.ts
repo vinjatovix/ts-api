@@ -1,4 +1,4 @@
-import { CharacterCreatorRequest } from '../../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterCreatorRequest } from '../../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { CharacterName } from '../../../../../../src/Contexts/apiApp/Characters/domain';
 import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
