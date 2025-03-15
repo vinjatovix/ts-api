@@ -79,3 +79,8 @@ services:
   Apps.apiApp.controllers.Characters.DeleteCharacterController:
     class: ../../controllers/Characters/DeleteCharacterController
     arguments: ['@apiApp.Characters.application.CharacterRemover']
+
+  # SCENES
+  Apps.apiApp.controllers.Scenes.PostSceneController:
+    class: ../../controllers/Scenes/PostSceneController
+    arguments: ['@apiApp.Scenes.application.SceneCreator']
