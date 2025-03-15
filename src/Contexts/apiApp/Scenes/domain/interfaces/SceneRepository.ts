@@ -8,4 +8,9 @@ export interface SceneRepository {
   findAll(
     options?: Partial<RequestOptions>
   ): Promise<Scene[] | PopulatedScene[]>;
+
+  search(
+    id: string,
+    options?: Partial<RequestOptions>
+  ): Promise<Partial<Scene | PopulatedScene> | null>;
 }
