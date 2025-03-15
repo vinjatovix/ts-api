@@ -5,9 +5,9 @@ import {
 import { random } from '../../../fixtures/shared';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
-import { BookRepositoryMock } from '../../Books/__mocks__';
+import { BookRepositoryMock } from '../../Books/__mocks__/BookRepositoryMock';
+import { CreateCharacterRepositoryMock } from '../__mocks__/CreateCharacterRepositoryMock';
 import { CharacterMother, CharacterNameMother } from '../domain/mothers';
-import { CreateCharacterRepositoryMock } from '../__mocks__';
 
 const username = UserMother.random().username.value;
 const DEFAULT_REQUEST = {
@@ -18,19 +18,19 @@ const DEFAULT_REQUEST = {
 
 describe('CharacterCreator', () => {
   let repository: CreateCharacterRepositoryMock;
-  let creator: CharacterCreator;
   let bookRepository: BookRepositoryMock;
+  let service: CharacterCreator;
 
   beforeEach(() => {
     repository = new CreateCharacterRepositoryMock();
     bookRepository = new BookRepositoryMock({ find: true });
-    creator = new CharacterCreator(repository, bookRepository);
+    service = new CharacterCreator(repository, bookRepository);
   });
 
   it('should create a valid Character', async () => {
     const character = CharacterMother.from(DEFAULT_REQUEST, username);
 
-    await creator.run(DEFAULT_REQUEST, username);
+    await service.run(DEFAULT_REQUEST, username);
 
     repository.assertSaveHasBeenCalledWith(
       expect.objectContaining({
@@ -46,7 +46,7 @@ describe('CharacterCreator', () => {
   it('should throw InvalidArgumentError when the character book is not found', async () => {
     bookRepository.setFindable(false);
 
-    await expect(creator.run(DEFAULT_REQUEST, username)).rejects.toThrow(
+    await expect(service.run(DEFAULT_REQUEST, username)).rejects.toThrow(
       expect.objectContaining({ name: 'InvalidArgumentError' })
     );
   });
@@ -59,7 +59,7 @@ describe('CharacterCreator', () => {
         id
       } as unknown as CharacterCreatorRequest;
 
-      await expect(creator.run(request, username)).rejects.toThrow(
+      await expect(service.run(request, username)).rejects.toThrow(
         expect.objectContaining({ name: 'InvalidArgumentError' })
       );
     }
@@ -73,7 +73,7 @@ describe('CharacterCreator', () => {
         book
       } as unknown as CharacterCreatorRequest;
 
-      await expect(creator.run(request, username)).rejects.toThrow(
+      await expect(service.run(request, username)).rejects.toThrow(
         expect.objectContaining({ name: 'InvalidArgumentError' })
       );
     }
@@ -82,7 +82,7 @@ describe('CharacterCreator', () => {
   it('should fail if character does exist', async () => {
     repository.setFindable(true);
 
-    await expect(creator.run(DEFAULT_REQUEST, username)).rejects.toThrow(
+    await expect(service.run(DEFAULT_REQUEST, username)).rejects.toThrow(
       expect.objectContaining({ name: 'InvalidArgumentError' })
     );
   });
