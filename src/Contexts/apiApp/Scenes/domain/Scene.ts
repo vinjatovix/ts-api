@@ -6,7 +6,7 @@ import { ScenePrimitives } from './interfaces';
 
 export interface SceneProps {
   id: Uuid;
-  description?: Nullable<SceneCircumstance>;
+  description: Nullable<SceneCircumstance>;
   characters: Nullable<Uuid[]>;
   metadata: Metadata;
 }
