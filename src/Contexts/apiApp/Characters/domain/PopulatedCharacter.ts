@@ -1,26 +1,15 @@
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
 import { Book, PopulatedBook } from '../../Books/domain';
 import { CharacterName } from './CharacterName';
-import { CharacterBase } from './CharacterBase';
+import { CharacterBase, CharacterProps } from './CharacterBase';
 import { Nullable } from '../../../shared/domain/Nullable';
 import { CharacterPrimitives } from './interfaces';
 import { BookMapper } from '../../Books/infraestructure/BookMapper';
-import { BookType } from '../../Books/infraestructure/types';
 
 export class PopulatedCharacter extends CharacterBase {
   readonly book: Nullable<Book | PopulatedBook>;
 
-  constructor({
-    id,
-    name,
-    book,
-    metadata
-  }: {
-    id: Uuid;
-    metadata: Metadata;
-    name?: Nullable<CharacterName>;
-    book?: Nullable<Book | PopulatedBook>;
-  }) {
+  constructor({ id, name, book, metadata }: CharacterProps) {
     super({
       id,
       name,
@@ -45,7 +34,7 @@ export class PopulatedCharacter extends CharacterBase {
     name,
     book
   }: CharacterPrimitives): PopulatedCharacter {
-    const bookInstance = BookMapper.map(book as unknown as BookType);
+    const bookInstance = BookMapper.map(book);
 
     return new this({
       id: new Uuid(id),
