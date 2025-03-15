@@ -23,4 +23,26 @@ export class CharacterMapper {
       metadata: document.metadata
     });
   }
+
+  static map(character: PopulatedCharacterType | CharacterType | null) {
+    if (!character) {
+      return null;
+    }
+
+    if (typeof character === 'string') {
+      return character;
+    }
+
+    if (this.isPopulated(character)) {
+      return this.toPopulatedDomain(character);
+    }
+
+    return this.toDomain(character);
+  }
+
+  static isPopulated(
+    document: CharacterType | PopulatedCharacterType
+  ): document is PopulatedCharacterType {
+    return typeof document.book === 'object' && '_id' in document.book;
+  }
 }
