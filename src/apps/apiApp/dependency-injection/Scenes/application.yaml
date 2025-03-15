@@ -1,0 +1,23 @@
+services:
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
+  apiApp.Scenes.domain.SceneRepository:
+    class: ../../../../Contexts/apiApp/Scenes/infrastructure/persistence/MongoSceneRepository
+    arguments: ['@apiApp.MongoClient']
+
+  apiApp.Scenes.application.SceneCreator:
+    class: ../../../../Contexts/apiApp/Scenes/application/SceneCreator
+    arguments:
+      [
+        '@apiApp.Scenes.domain.SceneRepository',
+        '@apiApp.Characters.domain.CharacterRepository'
+      ]
