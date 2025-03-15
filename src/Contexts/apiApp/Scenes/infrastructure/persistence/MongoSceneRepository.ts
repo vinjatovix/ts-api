@@ -74,6 +74,10 @@ export class MongoSceneRepository
     return await this.persist(scene.id.value, scene, username);
   }
 
+  public async remove(id: string): Promise<void> {
+    return await this.delete(id);
+  }
+
   async findByQuery(query: SceneByQuery): Promise<Scene[]> {
     const filter: { [key: string]: { $in: string[] } } = {};
 
