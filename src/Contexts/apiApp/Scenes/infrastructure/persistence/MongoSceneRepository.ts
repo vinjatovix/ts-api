@@ -28,6 +28,12 @@ export class MongoSceneRepository
 
       return documents.map(SceneMapper.toDomain);
     }
+    if (options.include) {
+      const { include } = options;
+      if (include.some((i) => i.includes('characters'))) {
+        options.list = ['characters'];
+      }
+    }
     const documents = await this.fetch<PopulatedSceneType>({ options });
 
     return documents.map(SceneMapper.toPopulatedDomain);
