@@ -1,5 +1,6 @@
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Username } from '../../../Auth/domain';
+import { SceneByQuery } from '../../application/interfaces/SceneByQuery';
 import { PopulatedScene } from '../PopulatedScene';
 import { Scene } from '../Scene';
 import { ScenePatch } from '../ScenePatch';
@@ -17,4 +18,6 @@ export interface SceneRepository {
   ): Promise<Partial<Scene | PopulatedScene> | null>;
 
   update(scene: ScenePatch, user: Username): Promise<void>;
+
+  findByQuery(query: SceneByQuery): Promise<Scene[]>;
 }
