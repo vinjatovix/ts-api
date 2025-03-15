@@ -155,6 +155,20 @@ describe('MongoSceneRepository', () => {
     });
   });
 
+  describe('remove', () => {
+    it('should remove a scene', async () => {
+      const scene = SceneMother.random();
+      await repository.save(scene);
+      const exists = await repository.search(scene.id.value);
+      expect(exists).toEqual(scene);
+
+      await repository.remove(scene.id.value);
+
+      const notFoundScene = await repository.search(scene.id.value);
+      expect(notFoundScene).toBeNull();
+    });
+  });
+
   describe('findByQuery', () => {
     it('should return scenes by query', async () => {
       const character = CharacterMother.random();
