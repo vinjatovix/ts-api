@@ -79,3 +79,24 @@ services:
   Apps.apiApp.controllers.Characters.DeleteCharacterController:
     class: ../../controllers/Characters/DeleteCharacterController
     arguments: ['@apiApp.Characters.application.CharacterRemover']
+
+  # SCENES
+  Apps.apiApp.controllers.Scenes.PostSceneController:
+    class: ../../controllers/Scenes/PostSceneController
+    arguments: ['@apiApp.Scenes.application.SceneCreator']
+
+  Apps.apiApp.controllers.Scenes.GetAllScenesController:
+    class: ../../controllers/Scenes/GetAllScenesController
+    arguments: ['@apiApp.Scenes.application.AllScenesFinder']
+
+  Apps.apiApp.controllers.Scenes.GetSceneController:
+    class: ../../controllers/Scenes/GetSceneController
+    arguments: ['@apiApp.Scenes.application.SceneFinder']
+
+  Apps.apiApp.controllers.Scenes.PatchSceneController:
+    class: ../../controllers/Scenes/PatchSceneController
+    arguments: ['@apiApp.Scenes.application.ScenePatcher']
+
+  Apps.apiApp.controllers.Scenes.DeleteSceneController:
+    class: ../../controllers/Scenes/DeleteSceneController
+    arguments: ['@apiApp.Scenes.application.SceneRemover']

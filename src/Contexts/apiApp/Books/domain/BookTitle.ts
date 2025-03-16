@@ -1,4 +1,4 @@
-import { StringValueObject } from '../../../shared/domain/valueObject/StringValueObject';
+import { StringValueObject } from '../../../shared/domain/valueObject';
 
 export class BookTitle extends StringValueObject {
   static readonly MIN_LENGTH = 1;

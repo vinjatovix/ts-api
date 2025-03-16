@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Controller } from '../../shared/interfaces/Controller';
+import { Controller } from '../../shared/interfaces';
 import { version } from '../../../../../package.json';
 
 export class GetStatusController implements Controller {

@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { GetAllCharactersController } from '../../../../../src/apps/apiApp/controllers/Characters';
-import { AllCharactersFinder } from '../../../../../src/Contexts/apiApp/Characters/application/AllCharactersFinder';
+import { AllCharactersFinder } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { Character } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { CharacterMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';

@@ -1,7 +1,8 @@
 import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
 import { Username } from '../../Auth/domain';
-import { AuthorPatch, AuthorRepository } from '../domain';
+import { AuthorPatch } from '../domain';
+import { AuthorRepository } from '../domain/interfaces';
 import { AuthorPatcherRequest } from './interfaces';
 
 const logger = buildLogger('authorPatcher');

@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { PostAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
-import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { AuthorCreator } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
-import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers/AuthorCreatorRequestMother';
+import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
+import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock(

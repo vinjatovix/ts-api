@@ -1,20 +1,25 @@
 import winston from 'winston';
 import 'winston-mongodb';
-import { MongoClientFactory } from '../infrastructure/persistence/mongo/MongoClientFactory';
-import { MongoConfigFactory } from '../infrastructure/persistence/mongo/MongoConfigFactory';
+import {
+  MongoConfigFactory,
+  MongoClientFactory
+} from '../infrastructure/persistence/mongo';
 import { envs } from '../../../config/plugins/envs.plugin';
 
 const { combine, timestamp, json } = winston.format;
+
+const DIRECTORY = 'logs';
+const FILENAME = `${DIRECTORY}/error-logs.log`;
 
 const logger = winston.createLogger({
   level: 'info',
   format: combine(timestamp(), json()),
   transports: [
     new winston.transports.File({
-      filename: 'logs/error-logs.log',
+      filename: FILENAME,
       level: 'error'
     }),
-    new winston.transports.File({ filename: 'logs/info-logs.log' })
+    new winston.transports.File({ filename: FILENAME })
   ]
 });
 
@@ -27,7 +32,7 @@ if (envs.NODE_ENV !== 'test') {
 
     const transportOptions = {
       db: Promise.resolve(mongoClient),
-      collection: 'logs',
+      collection: DIRECTORY,
       format: combine(timestamp(), json())
     };
 

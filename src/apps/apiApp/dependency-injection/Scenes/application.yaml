@@ -1,0 +1,43 @@
+services:
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
+  apiApp.Scenes.domain.SceneRepository:
+    class: ../../../../Contexts/apiApp/Scenes/infrastructure/persistence/MongoSceneRepository
+    arguments: ['@apiApp.MongoClient']
+
+  apiApp.Scenes.application.SceneCreator:
+    class: ../../../../Contexts/apiApp/Scenes/application/SceneCreator
+    arguments:
+      [
+        '@apiApp.Scenes.domain.SceneRepository',
+        '@apiApp.Characters.domain.CharacterRepository'
+      ]
+
+  apiApp.Scenes.application.AllScenesFinder:
+    class: ../../../../Contexts/apiApp/Scenes/application/AllScenesFinder
+    arguments: ['@apiApp.Scenes.domain.SceneRepository']
+
+  apiApp.Scenes.application.SceneFinder:
+    class: ../../../../Contexts/apiApp/Scenes/application/SceneFinder
+    arguments: ['@apiApp.Scenes.domain.SceneRepository']
+
+  apiApp.Scenes.application.ScenePatcher:
+    class: ../../../../Contexts/apiApp/Scenes/application/ScenePatcher
+    arguments:
+      [
+        '@apiApp.Scenes.domain.SceneRepository',
+        '@apiApp.Characters.domain.CharacterRepository'
+      ]
+
+  apiApp.Scenes.application.SceneRemover:
+    class: ../../../../Contexts/apiApp/Scenes/application/SceneRemover
+    arguments: ['@apiApp.Scenes.domain.SceneRepository']

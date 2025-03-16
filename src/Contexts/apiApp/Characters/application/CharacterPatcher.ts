@@ -1,16 +1,11 @@
 import { hasValuesChanges } from '../../../shared/application/utils';
+import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
 import { Username } from '../../Auth/domain';
 import { BookRepository } from '../../Books/domain/interfaces';
 import { CharacterRepository } from '../domain/interfaces';
 import { CharacterPatch } from '../domain/CharacterPatch';
-import { createError } from '../../../shared/domain/errors';
-
-export interface CharacterPatcherRequest {
-  id: string;
-  book?: string;
-  name?: string;
-}
+import { CharacterPatcherRequest } from './interfaces';
 
 const logger = buildLogger('characterPatcher');
 

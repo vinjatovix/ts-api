@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { AggregateBuilder } from '../../../../shared/infrastructure/persistence/mongo/AggregateBuilder';
-import { Entity } from './Entity';
+import { AggregateBuilder } from '../../../../shared/infrastructure/persistence/mongo';
+import { Entity } from './types';
 
 export class MongoFetchService {
   public static async fetch<T extends Entity>({

@@ -1,7 +1,9 @@
 import { LoginUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
-import { Email } from '../../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/valueObject';
-import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
+import {
+  Email,
+  StringValueObject
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { EmailMother } from '../../../../shared/domain/mothers';
 
 export class LoginUserRequestMother {
   static create(email: Email, password: StringValueObject): LoginUserRequest {

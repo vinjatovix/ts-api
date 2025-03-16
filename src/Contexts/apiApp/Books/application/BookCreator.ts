@@ -2,10 +2,10 @@ import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
-import { AuthorRepository } from '../../Authors/domain';
+import { AuthorRepository } from '../../Authors/domain/interfaces';
 import { Book, BookPages, BookReleaseDate, BookTitle, Isbn } from '../domain';
 import { BookRepository } from '../domain/interfaces';
-import { BookCreatorRequest } from './BookCreatorRequest';
+import { BookCreatorRequest } from './interfaces';
 
 const logger = buildLogger('bookCreator');
 

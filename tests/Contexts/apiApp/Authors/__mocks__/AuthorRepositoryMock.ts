@@ -1,27 +1,29 @@
 import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Author,
-  AuthorPatch,
-  AuthorRepository
+  AuthorPatch
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { AuthorMother } from '../domain/mothers/AuthorMother';
+import { AuthorRepository } from '../../../../../src/Contexts/apiApp/Authors/domain/interfaces';
+import { AuthorMother } from '../domain/mothers';
 
 export class AuthorRepositoryMock implements AuthorRepository {
-  private saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  public searchMock: jest.Mock;
-  private findAllMock: jest.Mock;
-  private removeMock: jest.Mock;
-  private isAuthorFindable: boolean;
+  private readonly saveMock: jest.Mock;
+  private readonly updateMock: jest.Mock;
+  private readonly searchMock: jest.Mock;
+  private readonly findAllMock: jest.Mock;
+  private readonly removeMock: jest.Mock;
+  private isFindable: boolean;
 
   constructor({ find }: { find: boolean } = { find: false }) {
-    this.isAuthorFindable = find;
+    this.isFindable = find;
     this.saveMock = jest.fn();
     this.updateMock = jest.fn();
     this.searchMock = jest.fn().mockImplementation(() => {
-      return this.isAuthorFindable ? AuthorMother.random() : null;
+      return this.isFindable ? AuthorMother.random() : null;
     });
-    this.findAllMock = jest.fn();
+    this.findAllMock = jest.fn().mockImplementation(() => {
+      return this.isFindable ? AuthorMother.randomList(3) : [];
+    });
     this.removeMock = jest.fn();
   }
 
@@ -50,9 +52,6 @@ export class AuthorRepositoryMock implements AuthorRepository {
   }
 
   async findAll(): Promise<Author[]> {
-    const authorList = AuthorMother.randomList(3);
-    this.findAllMock = jest.fn().mockReturnValue(authorList);
-
     return this.findAllMock();
   }
 
@@ -69,6 +68,6 @@ export class AuthorRepositoryMock implements AuthorRepository {
   }
 
   setFindable(findable: boolean): void {
-    this.isAuthorFindable = findable;
+    this.isFindable = findable;
   }
 }

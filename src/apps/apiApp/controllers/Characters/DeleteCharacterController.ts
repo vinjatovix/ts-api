@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { CharacterRemover } from '../../../../Contexts/apiApp/Characters/application';
 import { Controller } from '../../shared/interfaces';
-import { CharacterRemover } from '../../../../Contexts/apiApp/Characters/application/CharacterRemover';
 
 export class DeleteCharacterController implements Controller {
   private static readonly _containerId =

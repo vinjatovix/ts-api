@@ -1,18 +1,20 @@
 import {
-  Email,
   User,
-  UserPatch,
-  UserRepository
+  UserPatch
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
-import { UserMother } from '../domain/mothers/UserMother';
+import { UserRepository } from '../../../../../src/Contexts/apiApp/Auth/domain/interfaces';
+import { Nullable } from '../../../../../src/Contexts/shared/domain/types';
+import {
+  Email,
+  StringValueObject
+} from '../../../../../src/Contexts/shared/domain/valueObject';
+import { UserMother } from '../domain/mothers';
 
 export class UserRepositoryMock implements UserRepository {
-  private saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  private findMock: jest.Mock;
-  private password: StringValueObject = new StringValueObject(
+  private readonly saveMock: jest.Mock;
+  private readonly updateMock: jest.Mock;
+  private readonly findMock: jest.Mock;
+  private readonly password: StringValueObject = new StringValueObject(
     '$2a$12$mZgfH4D7z4dZcZHDKyogqOOnEWS6XHLdczPJktzD88djpvlr3Bq1C'
   );
 
