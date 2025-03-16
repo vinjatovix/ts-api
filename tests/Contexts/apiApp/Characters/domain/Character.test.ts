@@ -4,7 +4,7 @@ import {
 } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../fixtures/shared';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
 import { CharacterMother, CharacterNameMother } from './mothers';
 

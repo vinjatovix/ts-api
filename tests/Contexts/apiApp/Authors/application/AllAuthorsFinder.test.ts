@@ -3,10 +3,10 @@ import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 
 describe('AllAuthorsFinder', () => {
   let repository: AuthorRepositoryMock;
-  let finder: AllAuthorsFinder;
+  let service: AllAuthorsFinder;
   beforeEach(() => {
     repository = new AuthorRepositoryMock();
-    finder = new AllAuthorsFinder(repository);
+    service = new AllAuthorsFinder(repository);
   });
 
   afterEach(() => {
@@ -14,7 +14,7 @@ describe('AllAuthorsFinder', () => {
   });
 
   it('should find all authors', async () => {
-    await finder.run();
+    await service.run();
 
     repository.assertFindAllHasBeenCalled();
   });

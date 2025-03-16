@@ -1,4 +1,4 @@
-import { MetadataType } from '../../../../shared/application/MetadataType';
+import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
 import { BookPrimitives } from '../../../Books/domain/interfaces';
 
 export interface CharacterPrimitives extends Record<string, unknown> {

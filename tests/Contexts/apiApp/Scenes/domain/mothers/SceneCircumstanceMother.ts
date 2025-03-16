@@ -1,4 +1,4 @@
-import { SceneCircumstance } from '../../../../../../src/Contexts/apiApp/Scenes/domain/SceneCircumstance';
+import { SceneCircumstance } from '../../../../../../src/Contexts/apiApp/Scenes/domain';
 import { random } from '../../../../fixtures/shared';
 
 export class SceneCircumstanceMother {

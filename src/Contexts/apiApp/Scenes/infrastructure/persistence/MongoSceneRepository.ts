@@ -1,17 +1,26 @@
 import { ObjectId } from 'bson';
+import { MongoClient } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
 import { Username } from '../../../Auth/domain';
 import { SceneByQuery } from '../../application/interfaces';
 import { Scene, ScenePatch, PopulatedScene } from '../../domain';
 import { SceneRepository } from '../../domain/interfaces';
+import { SceneMapper } from '../SceneMapper';
 import { PopulatedSceneType, SceneType } from '../types/';
-import { SceneMapper } from './SceneMapper';
 
 export class MongoSceneRepository
   extends MongoRepository<Scene | ScenePatch>
   implements SceneRepository
 {
+  constructor(
+    client: Promise<MongoClient>,
+    private readonly mapper: SceneMapper
+  ) {
+    super(client);
+    this.mapper = new SceneMapper();
+  }
+
   protected collectionName(): string {
     return 'scenes';
   }
@@ -34,7 +43,7 @@ export class MongoSceneRepository
     if (!Object.keys(options).length) {
       const collection = await this.collection();
       const documents = await collection.find<SceneType>({}).toArray();
-      return documents.map(SceneMapper.toDomain);
+      return documents.map(this.mapper.toDomain);
     }
 
     const processedOptions = this.processIncludeOptions(options);
@@ -43,8 +52,8 @@ export class MongoSceneRepository
     });
 
     return processedOptions.include
-      ? documents.map(SceneMapper.toPopulatedDomain)
-      : documents.map(SceneMapper.toDomain);
+      ? documents.map(this.mapper.toPopulatedDomain)
+      : documents.map(this.mapper.toDomain);
   }
 
   public async search(
@@ -56,7 +65,7 @@ export class MongoSceneRepository
       const document = await collection.findOne<SceneType>({
         _id: id as unknown as ObjectId
       });
-      return document ? SceneMapper.toDomain(document) : null;
+      return document ? this.mapper.toDomain(document) : null;
     }
 
     const processedOptions = this.processIncludeOptions(options);
@@ -65,9 +74,7 @@ export class MongoSceneRepository
       options: processedOptions
     });
 
-    return documents.length
-      ? SceneMapper.toPopulatedDomain(documents[0])
-      : null;
+    return documents.length ? this.mapper.map(documents[0]) : null;
   }
 
   public async update(scene: ScenePatch, username: Username): Promise<void> {
@@ -88,6 +95,6 @@ export class MongoSceneRepository
     const collection = await this.collection();
     const documents = await collection.find<SceneType>(filter).toArray();
 
-    return documents.map(SceneMapper.toDomain);
+    return documents.map(this.mapper.toDomain);
   }
 }

@@ -1,10 +1,10 @@
-import httpStatus from 'http-status';
-import { AllAuthorsFinder } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { Author } from '../../../../../src/Contexts/apiApp/Authors/domain/Author';
-import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
-import { AuthorMother } from '../../../../Contexts/apiApp/Authors/domain/mothers/AuthorMother';
-import { GetAllAuthorsController } from '../../../../../src/apps/apiApp/controllers/Authors';
 import { Request, Response } from 'express';
+import httpStatus from 'http-status';
+import { GetAllAuthorsController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { AllAuthorsFinder } from '../../../../../src/Contexts/apiApp/Authors/application';
+import { Author } from '../../../../../src/Contexts/apiApp/Authors/domain';
+import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
+import { AuthorMother } from '../../../../Contexts/apiApp/Authors/domain/mothers';
 
 describe('GetAllAuthorsController', () => {
   let allAuthorsFinder: AllAuthorsFinder;

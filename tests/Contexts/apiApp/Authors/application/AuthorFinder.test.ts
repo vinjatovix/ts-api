@@ -1,15 +1,15 @@
 import { AuthorFinder } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 
 describe('AuthorFinder', () => {
   let repository: AuthorRepositoryMock;
-  let finder: AuthorFinder;
+  let service: AuthorFinder;
 
   beforeEach(() => {
     repository = new AuthorRepositoryMock({ find: true });
-    finder = new AuthorFinder(repository);
+    service = new AuthorFinder(repository);
   });
 
   afterEach(() => {
@@ -19,7 +19,7 @@ describe('AuthorFinder', () => {
   it('should find an author', async () => {
     const request = RequestByIdMother.create(UuidMother.random());
 
-    await finder.run(request);
+    await service.run(request);
 
     repository.assertSearchHasBeenCalledWith(request.id);
   });
@@ -28,7 +28,7 @@ describe('AuthorFinder', () => {
     repository.setFindable(false);
     const request = RequestByIdMother.create(UuidMother.random());
 
-    await expect(finder.run(request)).rejects.toThrow(
+    await expect(service.run(request)).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })
     );
   });

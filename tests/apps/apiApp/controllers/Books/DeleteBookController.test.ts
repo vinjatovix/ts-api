@@ -3,15 +3,15 @@ import httpStatus from 'http-status';
 import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
-import { random } from '../../../../Contexts/fixtures/shared';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
 
 const username = random.word();
 
 describe('DeleteBookController', () => {
-  let bookRemover: BookRemover;
+  let service: BookRemover;
   let controller: DeleteBookController;
   let repository: BookRepositoryMock;
   let characterRepository: CharacterRepositoryMock;
@@ -22,8 +22,8 @@ describe('DeleteBookController', () => {
   beforeEach(() => {
     repository = new BookRepositoryMock();
     characterRepository = new CharacterRepositoryMock();
-    bookRemover = new BookRemover(repository, characterRepository);
-    controller = new DeleteBookController(bookRemover);
+    service = new BookRemover(repository, characterRepository);
+    controller = new DeleteBookController(service);
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -45,14 +45,14 @@ describe('DeleteBookController', () => {
     it('should delete a book and send 204 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookRemover.run).toHaveBeenCalledWith({ id: '1' }, username);
+      expect(service.run).toHaveBeenCalledWith({ id: '1' }, username);
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();
     });
 
     it('should call next with the error if deletion fails', async () => {
       const error = new Error('Deletion failed');
-      jest.spyOn(bookRemover, 'run').mockRejectedValueOnce(error);
+      jest.spyOn(service, 'run').mockRejectedValueOnce(error);
 
       await controller.run(req as Request, res as Response, next);
 

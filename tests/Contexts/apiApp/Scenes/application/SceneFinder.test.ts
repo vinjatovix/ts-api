@@ -1,4 +1,4 @@
-import { SceneFinder } from '../../../../../src/Contexts/apiApp/Scenes/application/SceneFinder';
+import { SceneFinder } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { SceneRepositoryMock } from '../__mocks__/SceneRepositoryMock';
 

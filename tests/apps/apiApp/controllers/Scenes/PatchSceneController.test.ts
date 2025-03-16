@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { PatchSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes/PatchSceneController';
+import httpStatus from 'http-status';
+import { PatchSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
-import { ScenePatcher } from '../../../../../src/Contexts/apiApp/Scenes/application/ScenePatcher';
+import { ScenePatcher } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
@@ -45,7 +46,7 @@ describe('PatchSceneController', () => {
       await controller.run(req as Request, res as Response, next);
 
       expect(service.run).toHaveBeenCalledWith(expectedScene, username);
-      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });
 

@@ -1,4 +1,4 @@
-import { ScenePatch } from '../../../../../src/Contexts/apiApp/Scenes/domain/ScenePatch';
+import { ScenePatch } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { SceneCircumstanceMother } from './mothers';
 

@@ -1,37 +1,19 @@
-import { Nullable } from '../../../shared/domain/Nullable';
+import { createError } from '../../../shared/domain/errors';
+import { Nullable } from '../../../shared/domain/types';
 import { Metadata, Uuid } from '../../../shared/domain/valueObject';
 import { Author } from '../../Authors/domain';
-import { BookBase, BookBaseProps } from './BookBase';
+import { BookBase } from './BookBase';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
-import { BookPrimitives } from './interfaces';
 import { Isbn } from './ISBN';
-
-interface PopulatedBookProps extends BookBaseProps {
-  author?: Author;
-}
+import { BookPrimitives, PopulatedBookProps } from './interfaces';
 
 export class PopulatedBook extends BookBase {
   readonly author: Nullable<Author>;
 
-  constructor({
-    id,
-    title,
-    author,
-    isbn,
-    releaseDate,
-    pages,
-    metadata
-  }: PopulatedBookProps) {
-    super({
-      id,
-      title,
-      isbn,
-      releaseDate,
-      pages,
-      metadata
-    });
+  constructor({ author, ...props }: PopulatedBookProps) {
+    super(props);
     this.author = author || null;
   }
 
@@ -51,7 +33,11 @@ export class PopulatedBook extends BookBase {
     releaseDate,
     pages
   }: BookPrimitives) {
-    const isAuthorValid = author && typeof author === 'object' && author.id;
+    if (!author || typeof author === 'string') {
+      throw createError.invalidArgument(
+        `Cannot create a populated book without a valid author`
+      );
+    }
 
     return new PopulatedBook({
       id: new Uuid(id),
@@ -60,13 +46,11 @@ export class PopulatedBook extends BookBase {
       isbn: isbn ? new Isbn(isbn) : undefined,
       releaseDate: releaseDate ? new BookReleaseDate(releaseDate) : undefined,
       pages: pages ? new BookPages(pages) : undefined,
-      author: isAuthorValid
-        ? Author.fromPrimitives({
-            id: author.id,
-            name: author.name ?? undefined,
-            metadata: author.metadata
-          })
-        : undefined
+      author: Author.fromPrimitives({
+        id: author.id,
+        name: author.name ?? undefined,
+        metadata: author.metadata
+      })
     });
   }
 }

@@ -1,4 +1,4 @@
-import { Nullable } from '../../../shared/domain/Nullable';
+import { Nullable } from '../../../shared/domain/types';
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
 import { SceneBase } from './SceneBase';
 import { SceneCircumstance } from './SceneCircumstance';

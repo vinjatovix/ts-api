@@ -1,10 +1,10 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Nullable } from '../../../shared/domain/Nullable';
+import { AggregateRoot } from '../../../shared/domain';
+import { Nullable } from '../../../shared/domain/types';
+import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/types';
 import { Metadata, Uuid } from '../../../shared/domain/valueObject';
 import { Character, PopulatedCharacter } from '../../Characters/domain';
-import { ScenePrimitives } from './interfaces';
 import { SceneCircumstance } from './SceneCircumstance';
+import { ScenePrimitives } from './interfaces';
 
 export interface SceneProps {
   id: Uuid;

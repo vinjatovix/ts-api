@@ -83,7 +83,7 @@ describe('MongoSceneRepository', () => {
       });
 
       expect(foundScene).toMatchObject({
-        _id: scene.id.value,
+        id: scene.id,
         metadata: scene.metadata,
         description: scene.description
       });
@@ -101,7 +101,7 @@ describe('MongoSceneRepository', () => {
       });
 
       expect(doc).toMatchObject({
-        _id: scene.id.value,
+        id: scene.id,
         metadata: scene.metadata,
         characters: [
           expect.objectContaining({ id: character.id, name: character.name })
@@ -121,7 +121,7 @@ describe('MongoSceneRepository', () => {
       });
 
       expect(doc).toMatchObject({
-        _id: scene.id.value,
+        id: scene.id,
         metadata: scene.metadata,
         description: scene.description,
         characters: [expect.objectContaining({ id: character.id })]

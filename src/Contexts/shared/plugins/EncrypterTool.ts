@@ -1,4 +1,4 @@
-import { Nullable } from '../domain/Nullable';
+import { Nullable } from '../domain/types';
 
 export interface EncrypterTool {
   hash(value: string): string;

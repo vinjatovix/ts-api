@@ -1,6 +1,6 @@
 import { User } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { MetadataType } from '../../../../../src/Contexts/shared/application/MetadataType';
-import { UserMother } from './mothers/UserMother';
+import { MetadataType } from '../../../../../src/Contexts/shared/infrastructure/persistence/mongo/types';
+import { UserMother } from './mothers';
 
 describe('User', () => {
   it('should create a valid user', () => {

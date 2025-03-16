@@ -1,4 +1,4 @@
-import { Email } from '../../../../../src/Contexts/apiApp/Auth/domain';
+import { Email } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../fixtures/shared';
 
 export class EmailMother {
