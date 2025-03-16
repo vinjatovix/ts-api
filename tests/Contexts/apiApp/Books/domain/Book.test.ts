@@ -5,10 +5,12 @@ import {
   BookTitle,
   Isbn
 } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
-import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
+import {
+  Uuid,
+  Metadata
+} from '../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../fixtures/shared';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
 import {
   BookPagesMother,

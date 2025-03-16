@@ -1,7 +1,7 @@
 import { LoginUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
-import { LoginUserRequestMother } from './mothers/LoginUserRequestMother';
+import { LoginUserRequestMother } from './mothers';
 
 describe('LoginUser', () => {
   let encrypter: CryptAdapterMock;

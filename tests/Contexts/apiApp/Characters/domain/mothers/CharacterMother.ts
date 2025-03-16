@@ -1,4 +1,4 @@
-import { CharacterCreatorRequest } from '../../../../../../src/Contexts/apiApp/Characters/application/interfaces/CharacterCreatorRequest';
+import { CharacterCreatorRequest } from '../../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import {
   Uuid,
   Metadata

@@ -6,7 +6,9 @@ import { PopulatedScene } from '../domain/PopulatedScene';
 export class AllScenesFinder {
   constructor(private readonly repository: SceneRepository) {}
 
-  async run(options: Partial<RequestOptions> = {}): Promise<ScenePrimitives[]> {
+  async run(
+    options: Partial<RequestOptions> = {}
+  ): Promise<Partial<ScenePrimitives>[]> {
     const scenes: Array<Scene | PopulatedScene> =
       await this.repository.findAll(options);
 

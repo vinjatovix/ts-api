@@ -1,6 +1,6 @@
-import { MetadataType } from '../../../../shared/application/MetadataType';
+import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
 import { CharacterPrimitives } from '../../../Characters/domain/interfaces';
-import { CharacterType } from '../../../Characters/infraestructure/types';
+import { CharacterType } from '../../../Characters/infrastructure/types';
 
 export interface ScenePrimitives extends Record<string, unknown> {
   id: string;

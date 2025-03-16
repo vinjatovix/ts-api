@@ -1,8 +1,7 @@
-import { Nullable } from '../../../shared/domain/Nullable';
 import { createError } from '../../../shared/domain/errors';
-import { EncrypterTool } from '../../../shared/plugins/EncrypterTool';
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
-import { UserRepository } from '../domain';
+import { Nullable } from '../../../shared/domain/types';
+import { buildLogger, EncrypterTool } from '../../../shared/plugins';
+import { UserRepository } from '../domain/interfaces';
 import { LoginUserRequest } from './interfaces/';
 
 const logger = buildLogger('loginUser');

@@ -2,9 +2,9 @@ import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { CharacterByQuery } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import {
   Character,
+  CharacterPatch,
   PopulatedCharacter
 } from '../../../../../src/Contexts/apiApp/Characters/domain';
-import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain/CharacterPatch';
 import { CharacterRepository } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
 import { CharacterMother } from '../domain/mothers';
 
@@ -13,20 +13,20 @@ export class CharacterRepositoryMock implements CharacterRepository {
   private readonly updateMock: jest.Mock;
   private readonly findByQueryMock: jest.Mock;
   private readonly findAllMock: jest.Mock;
-  protected findMock: jest.Mock;
+  private readonly findMock: jest.Mock;
   private readonly removeMock: jest.Mock;
-  private isCharacterFindable: boolean;
+  private isFindable: boolean;
 
   constructor({ find = false }: { find: boolean } = { find: false }) {
-    this.isCharacterFindable = find;
+    this.isFindable = find;
     this.saveMock = jest.fn();
     this.updateMock = jest.fn();
     this.findByQueryMock = jest.fn().mockImplementation(() => {
-      return this.isCharacterFindable ? [CharacterMother.random()] : [];
+      return this.isFindable ? [CharacterMother.random()] : [];
     });
     this.findAllMock = jest.fn().mockReturnValue([CharacterMother.random()]);
     this.findMock = jest.fn().mockImplementation(() => {
-      return this.isCharacterFindable ? CharacterMother.random() : null;
+      return this.isFindable ? CharacterMother.random() : null;
     });
     this.removeMock = jest.fn();
   }
@@ -59,7 +59,7 @@ export class CharacterRepositoryMock implements CharacterRepository {
   }
 
   setFindable(findable: boolean): void {
-    this.isCharacterFindable = findable;
+    this.isFindable = findable;
   }
 
   async findAll(): Promise<Character[]> {

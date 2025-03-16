@@ -1,8 +1,8 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { EncrypterTool } from './EncrypterTool';
 import { sign, verify } from 'jsonwebtoken';
-import { envs } from '../../../config/plugins/envs.plugin';
-import { Nullable } from '../domain/Nullable';
+import { envs } from '../../../config/plugins';
+import { Nullable } from '../domain/types';
 
 const JWT_SECRET = envs.JWT_SECRET;
 const SALT_ROUNDS = 12;

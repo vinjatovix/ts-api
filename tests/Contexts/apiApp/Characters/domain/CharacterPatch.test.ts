@@ -1,4 +1,4 @@
-import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain/CharacterPatch';
+import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { CharacterNameMother } from './mothers';
 

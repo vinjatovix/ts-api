@@ -9,9 +9,9 @@ import { SceneRepository } from '../../../../../src/Contexts/apiApp/Scenes/domai
 import { SceneMother } from '../domain/mothers';
 
 export class SceneRepositoryMock implements SceneRepository {
-  protected saveMock: jest.Mock;
+  private readonly saveMock: jest.Mock;
   private readonly findAllMock: jest.Mock;
-  protected findMock: jest.Mock;
+  private readonly findMock: jest.Mock;
   private readonly updateMock: jest.Mock;
   private readonly findByQueryMock: jest.Mock;
   private readonly removeMock: jest.Mock;

@@ -1,6 +1,5 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
-import { UserRepository } from '../../../../../../src/Contexts/apiApp/Auth/domain/UserRepository';
-
+import { UserRepository } from '../../../../../../src/Contexts/apiApp/Auth/domain/interfaces';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../domain/mothers';
 

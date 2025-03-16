@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { DeleteAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
-import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application/AuthorRemover';
+import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';

@@ -1,20 +1,12 @@
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Nullable } from '../../../shared/domain/Nullable';
+import { AggregateRoot } from '../../../shared/domain/';
+import { Nullable } from '../../../shared/domain/types';
 import { Metadata, Uuid } from '../../../shared/domain/valueObject';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { BookPrimitives } from './interfaces';
+import { BookBaseProps } from './interfaces/BookBaseProps';
 import { Isbn } from './ISBN';
-
-export interface BookBaseProps {
-  id: Uuid;
-  title?: Nullable<BookTitle>;
-  releaseDate?: Nullable<BookReleaseDate>;
-  pages?: Nullable<BookPages>;
-  isbn?: Nullable<Isbn>;
-  metadata: Metadata;
-}
 
 export class BookBase extends AggregateRoot {
   readonly id: Uuid;

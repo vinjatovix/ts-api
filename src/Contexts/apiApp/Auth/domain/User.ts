@@ -1,11 +1,11 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+import { AggregateRoot } from '../../../shared/domain';
 import {
   Email,
+  Metadata,
   StringValueObject,
   Uuid
 } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/types';
 import { UserRoles } from './UserRoles';
 import { Username } from './Username';
 

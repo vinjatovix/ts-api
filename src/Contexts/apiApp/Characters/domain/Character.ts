@@ -1,5 +1,5 @@
-import { Nullable } from '../../../shared/domain/Nullable';
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
+import { Nullable } from '../../../shared/domain/types';
 import { CharacterBase } from './CharacterBase';
 import { CharacterName } from './CharacterName';
 import { CharacterPrimitives } from './interfaces';

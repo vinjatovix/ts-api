@@ -1,5 +1,5 @@
-import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
+import httpStatus from 'http-status';
 import { CharacterCreator } from '../../../../Contexts/apiApp/Characters/application';
 import { Controller } from '../../shared/interfaces';
 

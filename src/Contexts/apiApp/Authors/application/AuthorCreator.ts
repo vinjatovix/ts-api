@@ -2,8 +2,9 @@ import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
-import { Author, AuthorName, AuthorRepository } from '../domain';
-import { AuthorCreatorRequest } from './interfaces/AuthorCreatorRequest';
+import { Author, AuthorName } from '../domain';
+import { AuthorRepository } from '../domain/interfaces';
+import { AuthorCreatorRequest } from './interfaces';
 
 const logger = buildLogger('authorCreator');
 

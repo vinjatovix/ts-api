@@ -1,5 +1,4 @@
-import { AuthorRepository } from '../domain/';
-import { AuthorPrimitives } from './interfaces';
+import { AuthorPrimitives, AuthorRepository } from '../domain/interfaces';
 
 export class AllAuthorsFinder {
   private readonly repository: AuthorRepository;

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { BookRemover } from '../../../../Contexts/apiApp/Books/application';
-import { Controller } from '../../shared/interfaces/Controller';
+import { Controller } from '../../shared/interfaces';
 
 export class DeleteBookController implements Controller {
   private static readonly _containerId =

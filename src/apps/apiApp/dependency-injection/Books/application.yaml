@@ -10,9 +10,13 @@ services:
       method: 'createClient'
     arguments: ['apiApp', '@apiApp.MongoConfig']
 
+  apiApp.Books.infrastructure.BookMapper:
+    class: ../../../../Contexts/apiApp/Books/infrastructure/BookMapper
+
   apiApp.Books.domain.BookRepository:
-    class: ../../../../Contexts/apiApp/Books/infraestructure/persistence/MongoBookRepository
-    arguments: ['@apiApp.MongoClient']
+    class: ../../../../Contexts/apiApp/Books/infrastructure/persistence/MongoBookRepository
+    arguments:
+      ['@apiApp.MongoClient', '@apiApp.Books.infrastructure.BookMapper']
 
   apiApp.Books.application.BookCreator:
     class: ../../../../Contexts/apiApp/Books/application/BookCreator

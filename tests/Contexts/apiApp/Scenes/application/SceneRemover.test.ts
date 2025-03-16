@@ -1,4 +1,4 @@
-import { SceneRemover } from '../../../../../src/Contexts/apiApp/Scenes/application/SceneRemover';
+import { SceneRemover } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';

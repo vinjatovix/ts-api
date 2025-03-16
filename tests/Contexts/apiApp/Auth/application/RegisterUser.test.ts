@@ -1,13 +1,15 @@
 import { RegisterUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import {
-  Email,
   UserRoles,
   Username
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
+import {
+  Email,
+  StringValueObject
+} from '../../../../../src/Contexts/shared/domain/valueObject';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
-import { RegisterUserRequestMother } from './mothers/RegisterUserRequestMother';
+import { RegisterUserRequestMother } from './mothers';
 
 describe('RegisterUser', () => {
   let encrypter: CryptAdapterMock;
