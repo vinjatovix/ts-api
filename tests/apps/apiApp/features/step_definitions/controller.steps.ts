@@ -30,6 +30,7 @@ import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/ap
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
 import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
+import { App } from 'supertest/types';
 
 type EntityPrimitives =
   | BookPrimitives
@@ -46,6 +47,7 @@ const encrypter: EncrypterTool = container.get('plugin.Encrypter');
 let _request: request.Test;
 let _response: request.Response;
 let app: ApiApp;
+let httpServer: App; // Agregar esta variable global
 let validAdminBearerToken: Nullable<string>;
 let validUserBearerToken: Nullable<string>;
 
@@ -110,7 +112,7 @@ const _createDependenciesByEntity = async (
 
 const _getBookDependencies = async (): Promise<{ author: string }> => {
   const autor = await getPayloadByEntity('author', Uuid.random().value);
-  _request = request(app.httpServer)
+  _request = request(httpServer)
     .post(API_PREFIXES.author)
     .set('Authorization', `Bearer ${validAdminBearerToken}`)
     .send(autor);
@@ -121,7 +123,7 @@ const _getBookDependencies = async (): Promise<{ author: string }> => {
 
 const _getCharacterDependencies = async (): Promise<{ book: string }> => {
   const book = await getPayloadByEntity('book', Uuid.random().value);
-  _request = request(app.httpServer)
+  _request = request(httpServer)
     .post(API_PREFIXES.book)
     .set('Authorization', `Bearer ${validAdminBearerToken}`)
     .send(book);
@@ -133,7 +135,7 @@ const _getCharacterDependencies = async (): Promise<{ book: string }> => {
 
 const _getSceneDependencies = async (): Promise<{ character: string }> => {
   const character = await getPayloadByEntity('character', Uuid.random().value);
-  _request = request(app.httpServer)
+  _request = request(httpServer)
     .post(API_PREFIXES.character)
     .set('Authorization', `Bearer ${validAdminBearerToken}`)
     .send(character);
@@ -172,6 +174,10 @@ const compareResponseObject = <T>(
 BeforeAll(async () => {
   app = new ApiApp();
   await app.start();
+  if (!app.httpServer) {
+    throw new Error('httpServer no available');
+  }
+  httpServer = app.httpServer;
   await (await environmentArranger).arrange();
   validAdminBearerToken = await encrypter.generateToken({
     id: Uuid.random().value,
@@ -194,11 +200,11 @@ AfterAll(async () => {
 });
 
 Given('a GET request to {string}', async (route: string) => {
-  _request = request(app.httpServer).get(route);
+  _request = request(httpServer).get(route);
 });
 
 Given('an authenticated GET request to {string}', async (route: string) => {
-  _request = request(app.httpServer)
+  _request = request(httpServer)
     .get(route)
     .set('Authorization', `Bearer ${validUserBearerToken}`);
 });
@@ -206,14 +212,14 @@ Given('an authenticated GET request to {string}', async (route: string) => {
 Given(
   'a POST request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer).post(route).send(JSON.parse(body));
+    _request = request(httpServer).post(route).send(JSON.parse(body));
   }
 );
 
 Given(
   'a POST admin request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .post(route)
       .set('Authorization', `Bearer ${validAdminBearerToken}`)
       .send(JSON.parse(body));
@@ -223,7 +229,7 @@ Given(
 Given(
   'a POST user request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .post(route)
       .set('Authorization', `Bearer ${validUserBearerToken}`)
       .send(JSON.parse(body));
@@ -233,7 +239,7 @@ Given(
 Given(
   'an invalid token POST request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .post(route)
       .set('Authorization', `${random.word()}`)
       .send(JSON.parse(body));
@@ -243,7 +249,7 @@ Given(
 Given(
   'a nullish token POST request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .post(route)
       .set('Authorization', `Bearer ${random.word()}`)
       .send(JSON.parse(body));
@@ -253,14 +259,14 @@ Given(
 Given(
   'a PATCH request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer).patch(route).send(JSON.parse(body));
+    _request = request(httpServer).patch(route).send(JSON.parse(body));
   }
 );
 
 Given(
   'a PATCH admin request to {string} with body',
   async (route: string, body: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .patch(route)
       .set('Authorization', `Bearer ${validAdminBearerToken}`)
       .send(JSON.parse(body));
@@ -268,11 +274,11 @@ Given(
 );
 
 Given('a DELETE request to {string}', async (route: string) => {
-  _request = request(app.httpServer).delete(route);
+  _request = request(httpServer).delete(route);
 });
 
 Given('a DELETE admin request to {string}', async (route: string) => {
-  _request = request(app.httpServer)
+  _request = request(httpServer)
     .delete(route)
     .set('Authorization', `Bearer ${validAdminBearerToken}`);
 });
@@ -280,7 +286,7 @@ Given('a DELETE admin request to {string}', async (route: string) => {
 Given(
   'an existing {string} with id {string}',
   async (entity: string, id: string) => {
-    _request = request(app.httpServer)
+    _request = request(httpServer)
       .post(API_PREFIXES[entity])
       .set('Authorization', `Bearer ${validAdminBearerToken}`)
       .send(await getPayloadByEntity(entity, id));
