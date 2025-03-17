@@ -18,7 +18,7 @@ describe('RegisterUser', () => {
 
   beforeEach(() => {
     encrypter = new CryptAdapterMock({ login: false });
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock({ find: false });
     registerUser = new RegisterUser(repository, encrypter);
   });
 
@@ -41,7 +41,7 @@ describe('RegisterUser', () => {
 
   it('should throw an error when the user already exists', async () => {
     const request = RegisterUserRequestMother.random();
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     registerUser = new RegisterUser(repository, encrypter);
 
     expect(async () => {

@@ -16,19 +16,36 @@ export class SceneRepositoryMock implements SceneRepository {
   private readonly findByQueryMock: jest.Mock;
   private readonly removeMock: jest.Mock;
   private isFindable: boolean;
+  private readonly storage: Scene[];
 
   constructor({ find }: { find: boolean } = { find: false }) {
     this.isFindable = find;
+    this.storage = [SceneMother.random()];
     this.saveMock = jest.fn();
     this.findAllMock = jest.fn().mockImplementation(() => {
-      return this.isFindable ? [SceneMother.random()] : [];
+      return this.isFindable ? this.storage : [];
     });
-    this.findMock = jest.fn().mockImplementation(() => {
-      return this.isFindable ? SceneMother.random() : null;
+    this.findMock = jest.fn().mockImplementation((id) => {
+      const foundItem = this.storage.find((scene) => scene.id.value === id);
+
+      return this.isFindable && !foundItem ? this.storage[0] : foundItem;
     });
     this.updateMock = jest.fn();
-    this.findByQueryMock = jest.fn().mockImplementation(() => {
-      return this.isFindable ? [SceneMother.random()] : [];
+    this.findByQueryMock = jest.fn().mockImplementation((query, _options) => {
+      if (this.isFindable) {
+        return this.storage;
+      }
+      return this.storage.filter((scene) => {
+        if (query.characters) {
+          return scene?.characters?.some((character) =>
+            query.characters?.includes(character.value)
+          );
+        }
+        if (query.id) {
+          return scene.id === query.id;
+        }
+        return true;
+      });
     });
     this.removeMock = jest.fn();
   }
@@ -87,11 +104,21 @@ export class SceneRepositoryMock implements SceneRepository {
     expect(this.removeMock).toHaveBeenCalledWith(expected);
   }
 
-  async findByQuery(query: SceneByQuery): Promise<Scene[]> {
-    return this.findByQueryMock(query);
+  async findByQuery(
+    query: SceneByQuery,
+    options: RequestOptions
+  ): Promise<Scene[]> {
+    return this.findByQueryMock(query, options);
   }
 
-  assertFindByQueryHasBeenCalledWith(expected: SceneByQuery): void {
-    expect(this.findByQueryMock).toHaveBeenCalledWith(expected);
+  assertFindByQueryHasBeenCalledWith(
+    expected: SceneByQuery,
+    options: RequestOptions
+  ): void {
+    expect(this.findByQueryMock).toHaveBeenCalledWith(expected, options);
+  }
+
+  addToStorage(scene: Scene): void {
+    this.storage.push(scene);
   }
 }

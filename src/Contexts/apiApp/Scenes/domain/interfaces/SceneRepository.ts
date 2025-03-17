@@ -21,5 +21,5 @@ export interface SceneRepository {
 
   remove(id: string): Promise<void>;
 
-  findByQuery(query: SceneByQuery): Promise<Scene[]>;
+  findByQuery(query: SceneByQuery, options?: RequestOptions): Promise<Scene[]>;
 }
