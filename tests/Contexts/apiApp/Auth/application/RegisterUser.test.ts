@@ -5,7 +5,8 @@ import {
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Email,
-  StringValueObject
+  StringValueObject,
+  Uuid
 } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
@@ -30,6 +31,7 @@ describe('RegisterUser', () => {
     repository.assertSearchHasBeenCalledWith(request.email);
     repository.assertSaveHasBeenCalledWith(
       expect.objectContaining({
+        id: expect.any(Uuid),
         email: expect.any(Email),
         username: expect.any(Username),
         password: expect.any(StringValueObject),

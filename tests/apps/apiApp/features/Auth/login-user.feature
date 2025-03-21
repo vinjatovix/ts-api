@@ -8,6 +8,7 @@ Feature: Login
     Given a POST request to "/api/v1/Auth/register" with body
       """
       {
+        "id": "f4529c3f-c474-4386-ac48-ce769f1c86ea",
         "username": "login1",
         "email": "login@aa.com",
         "password": "#aD3fe2.0%",
