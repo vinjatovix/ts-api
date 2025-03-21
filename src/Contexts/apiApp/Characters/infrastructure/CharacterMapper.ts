@@ -16,7 +16,7 @@ export class CharacterMapper extends BaseEntityMapper<
   toDomain(document: CharacterType): Character {
     const primitives = BaseMapper.mapNestedId(
       document
-    ) as unknown as CharacterPrimitives;
+    ) as unknown as CharacterPrimitives & { book?: string | null };
 
     return Character.fromPrimitives(primitives);
   }

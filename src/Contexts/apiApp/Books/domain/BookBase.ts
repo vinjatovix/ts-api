@@ -48,4 +48,22 @@ export class BookBase extends AggregateRoot {
 
     return primitives;
   }
+
+  static fromPrimitives({
+    id,
+    metadata,
+    title,
+    releaseDate,
+    pages,
+    isbn
+  }: BookPrimitives): BookBase {
+    return new this({
+      id: new Uuid(id),
+      metadata: Metadata.fromPrimitives(metadata),
+      title: title ? new BookTitle(title) : null,
+      releaseDate: releaseDate ? new BookReleaseDate(releaseDate) : null,
+      pages: pages ? new BookPages(pages) : null,
+      isbn: isbn ? new Isbn(isbn) : null
+    });
+  }
 }
