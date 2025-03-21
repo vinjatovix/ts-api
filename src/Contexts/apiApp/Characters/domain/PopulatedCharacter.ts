@@ -1,8 +1,6 @@
 import { createError } from '../../../shared/domain/errors';
-import { Uuid, Metadata } from '../../../shared/domain/valueObject';
 import { Book, PopulatedBook } from '../../Books/domain';
 import { BookMapper } from '../../Books/infrastructure';
-import { CharacterName } from './CharacterName';
 import { CharacterBase, CharacterProps } from './CharacterBase';
 import { CharacterPrimitives } from './interfaces';
 
@@ -24,7 +22,7 @@ export class PopulatedCharacter extends CharacterBase {
   toPrimitives() {
     const primitives = super.toPrimitives();
 
-    if (this.book instanceof PopulatedBook || this.book instanceof Book) {
+    if (this.book) {
       primitives.book = this.book.toPrimitives();
     }
 
@@ -45,9 +43,7 @@ export class PopulatedCharacter extends CharacterBase {
     const bookInstance = new BookMapper().map(book);
 
     return new this({
-      id: new Uuid(id),
-      metadata: Metadata.fromPrimitives(metadata),
-      name: name ? new CharacterName(name) : undefined,
+      ...super.fromPrimitives({ id, name, metadata }),
       book: bookInstance
     });
   }

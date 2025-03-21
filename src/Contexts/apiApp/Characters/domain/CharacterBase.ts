@@ -5,6 +5,7 @@ import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/t
 import { Book, PopulatedBook } from '../../Books/domain';
 import { CharacterName } from './CharacterName';
 import { CharacterPrimitives } from './interfaces';
+import { createError } from '../../../shared/domain/errors';
 
 export interface CharacterProps {
   id: Uuid;
@@ -51,7 +52,10 @@ export class CharacterBase extends AggregateRoot {
   }: CharacterBasePrimitives): CharacterBase {
     const validId = new Uuid(id);
     const validMetadata = Metadata.fromPrimitives(metadata);
-    const validName = name ? new CharacterName(name) : null;
+    if (name && typeof name !== 'string') {
+      throw createError.invalidArgument('Character name must be a string');
+    }
+    const validName = typeof name === 'string' ? new CharacterName(name) : null;
 
     return new this({
       id: validId,
