@@ -1,4 +1,4 @@
-export interface AuthorCreatorRequest {
+export interface AuthorCreatorRequest extends Record<string, unknown> {
   id: string;
   name: string;
 }

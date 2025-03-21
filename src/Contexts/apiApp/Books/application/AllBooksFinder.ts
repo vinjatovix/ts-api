@@ -9,9 +9,7 @@ export class AllBooksFinder {
     this.repository = repository;
   }
 
-  async run(
-    options: Partial<RequestOptions> = {}
-  ): Promise<Partial<BookPrimitives>[]> {
+  async run(options: Partial<RequestOptions> = {}): Promise<BookPrimitives[]> {
     const books: (Book | PopulatedBook)[] =
       await this.repository.findAll(options);
 

@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { API_PREFIXES } from '../shared';
 import container from '../../dependency-injection';
-import { PostSceneController } from '../../controllers/Scenes/PostSceneController';
 import {
   auth,
   includeAndFilter,
@@ -10,19 +9,48 @@ import {
   validateReqSchema
 } from '../shared/middlewares';
 import { patchReqSchema, postReqSchema } from './reqSchemas';
-import { GetAllScenesController } from '../../controllers/Scenes/GetAllScenesController';
-import { GetSceneController } from '../../controllers/Scenes/GetSceneController';
-import { PatchSceneController } from '../../controllers/Scenes/PatchSceneController';
-import { DeleteSceneController } from '../../controllers/Scenes/DeleteSceneController';
+import { GetController } from '../../controllers/shared/GetController';
+import {
+  AllScenesFinder,
+  SceneCreator,
+  SceneFinder,
+  ScenePatcher,
+  SceneRemover
+} from '../../../../Contexts/apiApp/Scenes/application';
+import { ScenePrimitives } from '../../../../Contexts/apiApp/Scenes/domain/interfaces';
+import { RequestOptions } from '../../shared/interfaces';
+import { GetAllController } from '../../controllers/shared/GetAllController';
+import { PostController } from '../../controllers/shared/PostController';
+import {
+  SceneCreatorRequest,
+  ScenePatcherRequest
+} from '../../../../Contexts/apiApp/Scenes/application/interfaces';
+import { DeleteController } from '../../controllers/shared/DeleteController';
+import { PatchController } from '../../controllers/shared/PatchController';
 
 const prefix = API_PREFIXES.scene;
 
 export const register = (router: Router) => {
-  const postController = container.get(PostSceneController.containerId);
-  const getAllController = container.get(GetAllScenesController.containerId);
-  const getController = container.get(GetSceneController.containerId);
-  const patchController = container.get(PatchSceneController.containerId);
-  const deleteController = container.get(DeleteSceneController.containerId);
+  const postController: PostController<SceneCreator, SceneCreatorRequest> =
+    container.get('Apps.apiApp.controllers.Scenes.PostSceneController');
+
+  const getAllController: GetAllController<
+    AllScenesFinder,
+    Partial<RequestOptions>,
+    ScenePrimitives[]
+  > = container.get('Apps.apiApp.controllers.Scenes.GetAllScenesController');
+
+  const getController: GetController<
+    SceneFinder,
+    Partial<RequestOptions>,
+    ScenePrimitives
+  > = container.get('Apps.apiApp.controllers.Scenes.GetSceneController');
+
+  const patchController: PatchController<ScenePatcher, ScenePatcherRequest> =
+    container.get('Apps.apiApp.controllers.Scenes.PatchSceneController');
+  const deleteController: DeleteController<SceneRemover> = container.get(
+    'Apps.apiApp.controllers.Scenes.DeleteSceneController'
+  );
 
   router.post(
     `${prefix}/`,

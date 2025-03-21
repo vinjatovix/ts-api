@@ -1,14 +1,21 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { GetAllBooksController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { AllBooksFinder } from '../../../../../src/Contexts/apiApp/Books/application';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers';
+import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
+import { createGetAllBooksController } from '../../../../../src/apps/apiApp/controllers/Books';
+import { GetAllController } from '../../../../../src/apps/apiApp/controllers/shared/GetAllController';
 
 describe('GetAllBooksController', () => {
   let service: AllBooksFinder;
-  let controller: GetAllBooksController;
+  let controller: GetAllController<
+    AllBooksFinder,
+    Partial<RequestOptions>,
+    BookPrimitives[]
+  >;
   let repository: BookRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -17,7 +24,11 @@ describe('GetAllBooksController', () => {
   beforeEach(() => {
     repository = new BookRepositoryMock();
     service = new AllBooksFinder(repository);
-    controller = new GetAllBooksController(service);
+    controller = createGetAllBooksController(service) as GetAllController<
+      AllBooksFinder,
+      Partial<RequestOptions>,
+      BookPrimitives[]
+    >;
     req = { query: {} };
     res = {
       status: jest.fn().mockReturnThis(),
