@@ -14,8 +14,8 @@ interface CharacterProps {
 export class Character extends CharacterBase {
   readonly book: Nullable<Uuid>;
 
-  constructor({ id, name, book, metadata }: CharacterProps) {
-    super({ id, name, metadata });
+  constructor({ book, ...props }: CharacterProps) {
+    super(props);
     this.book = book;
   }
 
@@ -29,17 +29,11 @@ export class Character extends CharacterBase {
   }
 
   static readonly fromPrimitives = ({
-    id,
-    name,
     book,
-    metadata
-  }: CharacterPrimitives): Character =>
+    ...primitives
+  }: CharacterPrimitives & { book?: string | null }): Character =>
     new Character({
-      id: new Uuid(id),
-      name:
-        name !== null && name !== undefined ? new CharacterName(name) : null,
-      book:
-        book !== null && book !== undefined ? new Uuid(book as string) : null,
-      metadata: Metadata.fromPrimitives(metadata)
+      ...super.fromPrimitives(primitives),
+      book: typeof book === 'string' ? new Uuid(book) : null
     });
 }

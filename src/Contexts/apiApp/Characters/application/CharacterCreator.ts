@@ -16,14 +16,11 @@ export class CharacterCreator {
     this.repository = repository;
     this.bookRepository = bookRepository;
   }
-
   async run(request: CharacterCreatorRequest, username: string): Promise<void> {
     await this.validateDependencies(request);
 
     const character = Character.fromPrimitives({
-      id: request.id,
-      name: request.name,
-      book: request.book,
+      ...request,
       metadata: new Metadata({
         createdAt: new Date(),
         createdBy: username,
@@ -51,6 +48,9 @@ export class CharacterCreator {
   }
 
   private async validateBookExistence(book: string) {
+    if (typeof book !== 'string') {
+      throw createError.invalidArgument('Book must be a valid Uuid');
+    }
     const storedBook = await this.bookRepository.search(book);
     if (!storedBook) {
       throw createError.invalidArgument(`Book <${book}> does not exist`);
