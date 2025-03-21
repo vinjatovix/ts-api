@@ -7,6 +7,7 @@ export const loginReqSchema = [
 ];
 
 export const registerReqSchema = [
+  body('id').exists().isUUID(),
   body('email').exists().isEmail(),
   body('username').exists().isString(),
   body('password').exists().isStrongPassword(),
