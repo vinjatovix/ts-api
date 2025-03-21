@@ -16,7 +16,7 @@ export class SceneMapper extends BaseEntityMapper<
   toDomain(document: SceneType): Scene {
     const primitives = BaseMapper.mapNestedId(
       document
-    ) as unknown as ScenePrimitives;
+    ) as unknown as ScenePrimitives & { characters: string[] };
 
     return Scene.fromPrimitives(primitives);
   }
