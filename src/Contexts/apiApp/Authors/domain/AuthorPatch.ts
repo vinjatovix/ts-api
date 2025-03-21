@@ -1,6 +1,6 @@
 import { AggregateRoot } from '../../../shared/domain';
 import { Uuid } from '../../../shared/domain/valueObject';
-import { AuthorPatcherRequest } from '../application/interfaces';
+import { AuthorCreatorRequest } from '../application/interfaces';
 import { AuthorName } from './AuthorName';
 import { AuthorPatchProps } from './interfaces';
 
@@ -21,7 +21,7 @@ export class AuthorPatch extends AggregateRoot {
     };
   }
 
-  static fromPrimitives({ id, name }: AuthorPatcherRequest): AuthorPatch {
+  static fromPrimitives({ id, name }: AuthorCreatorRequest): AuthorPatch {
     return new AuthorPatch({
       id: new Uuid(id),
       name: new AuthorName(name.trim())

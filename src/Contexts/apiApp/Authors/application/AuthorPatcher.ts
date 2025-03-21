@@ -3,7 +3,7 @@ import { buildLogger } from '../../../shared/plugins/logger.plugin';
 import { Username } from '../../Auth/domain';
 import { AuthorPatch } from '../domain';
 import { AuthorRepository } from '../domain/interfaces';
-import { AuthorPatcherRequest } from './interfaces';
+import { AuthorCreatorRequest } from './interfaces';
 
 const logger = buildLogger('authorPatcher');
 
@@ -14,7 +14,7 @@ export class AuthorPatcher {
     this.repository = repository;
   }
 
-  async run(request: AuthorPatcherRequest, username: string): Promise<void> {
+  async run(request: AuthorCreatorRequest, username: string): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
 
     if (storedAuthor === null) {

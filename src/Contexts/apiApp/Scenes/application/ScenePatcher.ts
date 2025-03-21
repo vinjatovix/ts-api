@@ -5,12 +5,7 @@ import { Username } from '../../Auth/domain';
 import { CharacterRepository } from '../../Characters/domain/interfaces';
 import { SceneRepository } from '../domain/interfaces';
 import { ScenePatch } from '../domain/ScenePatch';
-
-export interface ScenePatcherRequest {
-  id: string;
-  description?: string;
-  characters?: string[];
-}
+import { ScenePatcherRequest } from './interfaces';
 
 const logger = buildLogger('scenePatcher');
 

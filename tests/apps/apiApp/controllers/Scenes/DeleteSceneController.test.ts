@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { DeleteSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 import { SceneRemover } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
+import { createDeleteSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 
 jest.mock('../../../../../src/Contexts/apiApp/Scenes/application/SceneRemover');
 
@@ -11,7 +12,7 @@ const username = random.word();
 
 describe('DeleteSceneController', () => {
   let service: SceneRemover;
-  let controller: DeleteSceneController;
+  let controller: DeleteController<SceneRemover>;
   let repository: SceneRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -20,7 +21,9 @@ describe('DeleteSceneController', () => {
   beforeEach(() => {
     repository = new SceneRepositoryMock();
     service = new SceneRemover(repository);
-    controller = new DeleteSceneController(service);
+    controller = createDeleteSceneController(
+      service
+    ) as DeleteController<SceneRemover>;
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
