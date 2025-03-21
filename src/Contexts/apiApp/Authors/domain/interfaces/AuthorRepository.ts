@@ -1,3 +1,4 @@
+import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Username } from '../../../Auth/domain';
 import { Author } from '../Author';
 import { AuthorPatch } from '../AuthorPatch';
@@ -9,7 +10,7 @@ export interface AuthorRepository {
 
   search(authorId: string): Promise<Author | null>;
 
-  findAll(): Promise<Author[]>;
+  findAll(options?: Partial<RequestOptions>): Promise<Author[]>;
 
   remove(authorId: string): Promise<void>;
 }

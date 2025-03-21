@@ -21,7 +21,7 @@ describe('LoginController', () => {
   const spyService = jest.spyOn(LoginUser.prototype, 'run');
 
   beforeEach(() => {
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     encrypter = new CryptAdapterMock({ login: true, token: true });
     service = new LoginUser(repository, encrypter);
     controller = new LoginController(service);

@@ -15,7 +15,7 @@ describe('CharacterRemover', () => {
 
   beforeEach(() => {
     repository = new CharacterRepositoryMock({ find: true });
-    sceneRepository = new SceneRepositoryMock();
+    sceneRepository = new SceneRepositoryMock({ find: false });
     service = new CharacterRemover(repository, sceneRepository);
   });
 
