@@ -63,7 +63,7 @@ describe('CharacterCreator', () => {
     }
   );
 
-  test.each(['', random.word(), random.integer(), random.boolean(), {}, []])(
+  test.each(['', random.word(), random.integer(), true, {}, []])(
     'should throw an InvalidArgumentError when book is not valid (book: %p)',
     async (book) => {
       const request = {
