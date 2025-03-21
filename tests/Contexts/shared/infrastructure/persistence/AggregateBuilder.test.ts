@@ -272,6 +272,20 @@ describe('AggregateBuilder', () => {
         }
       },
       {
+        $group: {
+          _id: '$_id',
+          characters: {
+            $push: '$characters'
+          },
+          metadata: {
+            $first: '$metadata'
+          },
+          description: {
+            $first: '$description'
+          }
+        }
+      },
+      {
         $project: {
           _id: 1,
           metadata: 1,
@@ -286,25 +300,214 @@ describe('AggregateBuilder', () => {
           'characters.book.author.metadata': 1,
           'characters.book.author.name': 1
         }
-      },
-      {
-        $group: {
-          _id: '$_id',
-          characters: {
-            $push: '$characters'
-          },
-          metadata: {
-            $first: '$metadata'
-          },
-          description: {
-            $first: '$description'
-          }
-        }
       }
     ];
 
     const aggregateBuilder = new AggregateBuilder();
     const pipeline = aggregateBuilder.buildPipeline('', options);
+    expect(pipeline).toEqual(expectedOutput);
+  });
+
+  it('should return the pipeline for full filtered characterBuilding request', () => {
+    const _id = '1f17da80-b7c1-4032-bacb-57eaa9dcd1c4';
+    const include = [
+      'character.book.author',
+      'scene.characters',
+      'actor',
+      'relationshipCircumstances.character'
+    ];
+    const fields = [
+      'previousCircumstances',
+      'sceneCircumstances',
+      'center',
+      'relationshipCircumstances.circumstance',
+      'scene.description'
+    ];
+    const list = ['scene.characters'];
+    const avoidLookup = ['relationshipCircumstances'];
+    const unwind = ['relationshipCircumstances'];
+    const avoidUnwind = ['scene.characters'];
+    const options = {
+      include,
+      fields,
+      list,
+      avoidLookup,
+      unwind,
+      avoidUnwind
+    };
+    const expectedOutput = [
+      {
+        $match: {
+          _id: '1f17da80-b7c1-4032-bacb-57eaa9dcd1c4'
+        }
+      },
+      {
+        $lookup: {
+          as: 'character',
+          foreignField: '_id',
+          from: 'characters',
+          localField: 'character'
+        }
+      },
+      {
+        $unwind: {
+          path: '$character',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          as: 'character.book',
+          foreignField: '_id',
+          from: 'books',
+          localField: 'character.book'
+        }
+      },
+      {
+        $unwind: {
+          path: '$character.book',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          as: 'character.book.author',
+          foreignField: '_id',
+          from: 'authors',
+          localField: 'character.book.author'
+        }
+      },
+      {
+        $unwind: {
+          path: '$character.book.author',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          from: 'scenes',
+          localField: 'scene',
+          foreignField: '_id',
+          as: 'scene'
+        }
+      },
+      {
+        $unwind: {
+          path: '$scene',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          as: 'scene.characters',
+          foreignField: '_id',
+          from: 'characters',
+          localField: 'scene.characters'
+        }
+      },
+      {
+        $lookup: {
+          as: 'actor',
+          foreignField: '_id',
+          from: 'users',
+          localField: 'actor'
+        }
+      },
+      {
+        $unwind: {
+          path: '$actor',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $unwind: {
+          path: '$relationshipCircumstances',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $lookup: {
+          as: 'relationshipCircumstances.character',
+          foreignField: '_id',
+          from: 'characters',
+          localField: 'relationshipCircumstances.character'
+        }
+      },
+      {
+        $unwind: {
+          path: '$relationshipCircumstances.character',
+          preserveNullAndEmptyArrays: true
+        }
+      },
+      {
+        $group: {
+          _id: '$_id',
+          scene: {
+            $first: {
+              _id: '$scene._id',
+              description: '$scene.description',
+              metadata: '$scene.metadata',
+              characters: '$scene.characters'
+            }
+          },
+          character: {
+            $first: '$character'
+          },
+          metadata: {
+            $first: '$metadata'
+          },
+          actor: {
+            $first: '$actor'
+          },
+          previousCircumstances: {
+            $first: '$previousCircumstances'
+          },
+          sceneCircumstances: {
+            $first: '$sceneCircumstances'
+          },
+          relationshipCircumstances: {
+            $push: {
+              character: '$relationshipCircumstances.character',
+              circumstance: '$relationshipCircumstances.circumstance'
+            }
+          },
+          center: {
+            $first: '$center'
+          }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          'actor._id': 1,
+          'actor.metadata': 1,
+          center: 1,
+          'character._id': 1,
+          'character.book._id': 1,
+          'character.book.author._id': 1,
+          'character.book.author.metadata': 1,
+          'character.book.metadata': 1,
+          'character.metadata': 1,
+          metadata: 1,
+          previousCircumstances: 1,
+          'relationshipCircumstances._id': 1,
+          'relationshipCircumstances.character._id': 1,
+          'relationshipCircumstances.character.metadata': 1,
+          'relationshipCircumstances.circumstance': 1,
+          'relationshipCircumstances.metadata': 1,
+          'scene._id': 1,
+          'scene.characters._id': 1,
+          'scene.characters.metadata': 1,
+          'scene.description': 1,
+          'scene.metadata': 1,
+          sceneCircumstances: 1
+        }
+      }
+    ];
+
+    const aggregateBuilder = new AggregateBuilder();
+    const pipeline = aggregateBuilder.buildPipeline(_id, options);
+
     expect(pipeline).toEqual(expectedOutput);
   });
 });
