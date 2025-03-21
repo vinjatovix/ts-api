@@ -1,11 +1,4 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import {
-  DeleteCharacterController,
-  GetAllCharactersController,
-  GetCharacterController,
-  PatchCharacterController,
-  PostCharacterController
-} from '../../controllers/Characters';
 import container from '../../dependency-injection';
 import {
   auth,
@@ -16,28 +9,60 @@ import {
 } from '../shared/middlewares/';
 import { API_PREFIXES } from '../shared';
 import { postReqSchema, patchReqSchema, deleteReqSchema } from './reqSchemas';
+import { GetAllController } from '../../controllers/shared/GetAllController';
+import { RequestOptions } from '../../shared/interfaces';
+import { CharacterPrimitives } from '../../../../Contexts/apiApp/Characters/domain/interfaces';
+import {
+  AllCharactersFinder,
+  CharacterCreator,
+  CharacterFinder,
+  CharacterPatcher,
+  CharacterRemover
+} from '../../../../Contexts/apiApp/Characters/application';
+import { GetController } from '../../controllers/shared/GetController';
+import { PostController } from '../../controllers/shared/PostController';
+import {
+  CharacterCreatorRequest,
+  CharacterPatcherRequest
+} from '../../../../Contexts/apiApp/Characters/application/interfaces';
+import { DeleteController } from '../../controllers/shared/DeleteController';
+import { PatchController } from '../../controllers/shared/PatchController';
 
 const prefix = API_PREFIXES.character;
 
 export const register = (router: Router) => {
-  const postController: PostCharacterController = container.get(
-    PostCharacterController.containerId
+  const postController: PostController<
+    CharacterCreator,
+    CharacterCreatorRequest
+  > = container.get(
+    'Apps.apiApp.controllers.Characters.PostCharacterController'
   );
 
-  const getAllController: GetAllCharactersController = container.get(
-    GetAllCharactersController.containerId
+  const getAllController: GetAllController<
+    AllCharactersFinder,
+    Partial<RequestOptions>,
+    CharacterPrimitives[]
+  > = container.get(
+    'Apps.apiApp.controllers.Characters.GetAllCharactersController'
   );
 
-  const getController: GetCharacterController = container.get(
-    GetCharacterController.containerId
+  const getController: GetController<
+    CharacterFinder,
+    Partial<RequestOptions>,
+    CharacterPrimitives
+  > = container.get(
+    'Apps.apiApp.controllers.Characters.GetCharacterController'
   );
 
-  const patchController: PatchCharacterController = container.get(
-    PatchCharacterController.containerId
+  const patchController: PatchController<
+    CharacterPatcher,
+    CharacterPatcherRequest
+  > = container.get(
+    'Apps.apiApp.controllers.Characters.PatchCharacterController'
   );
 
-  const deleteController: DeleteCharacterController = container.get(
-    DeleteCharacterController.containerId
+  const deleteController: DeleteController<CharacterRemover> = container.get(
+    'Apps.apiApp.controllers.Characters.DeleteCharacterController'
   );
 
   router.post(

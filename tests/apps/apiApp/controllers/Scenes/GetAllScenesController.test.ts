@@ -1,14 +1,21 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { GetAllScenesController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 import { AllScenesFinder } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { SceneMother } from '../../../../Contexts/apiApp/Scenes/domain/mothers';
+import { GetAllController } from '../../../../../src/apps/apiApp/controllers/shared/GetAllController';
+import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
+import { createGetAllScenesController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 
 describe('GetAllScenesController', () => {
   let repository: SceneRepositoryMock;
   let service: AllScenesFinder;
-  let controller: GetAllScenesController;
+  let controller: GetAllController<
+    AllScenesFinder,
+    Partial<RequestOptions>,
+    ScenePrimitives[]
+  >;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
@@ -16,7 +23,11 @@ describe('GetAllScenesController', () => {
   beforeEach(() => {
     repository = new SceneRepositoryMock();
     service = new AllScenesFinder(repository);
-    controller = new GetAllScenesController(service);
+    controller = createGetAllScenesController(service) as GetAllController<
+      AllScenesFinder,
+      Partial<RequestOptions>,
+      ScenePrimitives[]
+    >;
     req = { query: {} };
     res = {
       status: jest.fn().mockReturnThis(),

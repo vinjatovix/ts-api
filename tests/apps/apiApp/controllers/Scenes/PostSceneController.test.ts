@@ -1,19 +1,20 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { PostSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 import { SceneCreator } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
+import { PostController } from '../../../../../src/apps/apiApp/controllers/shared/PostController';
+import { createPostSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
 
 jest.mock('../../../../../src/Contexts/apiApp/Scenes/application/SceneCreator');
 
 const username = UserMother.random().username.value;
 describe('PostSceneController', () => {
   let service: SceneCreator;
-  let controller: PostSceneController;
+  let controller: PostController<SceneCreator, SceneCreatorRequest>;
   let repository: SceneRepositoryMock;
   let characterRepository: CharacterRepositoryMock;
   let req: Partial<Request>;
@@ -25,7 +26,10 @@ describe('PostSceneController', () => {
     repository = new SceneRepositoryMock();
     characterRepository = new CharacterRepositoryMock({ find: true });
     service = new SceneCreator(repository, characterRepository);
-    controller = new PostSceneController(service);
+    controller = createPostSceneController(service) as PostController<
+      SceneCreator,
+      SceneCreatorRequest
+    >;
     expectedScene = SceneCreatorRequestMother.random();
     req = {
       body: expectedScene

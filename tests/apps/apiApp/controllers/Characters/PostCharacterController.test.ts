@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { PostCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 import { CharacterCreator } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
@@ -8,6 +7,8 @@ import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/
 import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { UuidMother } from '../../../../Contexts/fixtures/shared/domain/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { PostController } from '../../../../../src/apps/apiApp/controllers/shared/PostController';
+import { createPostCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterCreator'
@@ -17,7 +18,7 @@ const username = random.word();
 
 describe('PostCharacterController', () => {
   let characterCreator: CharacterCreator;
-  let controller: PostCharacterController;
+  let controller: PostController<CharacterCreator, CharacterCreatorRequest>;
   let repository: CharacterRepositoryMock;
   let bookRepository: BookRepositoryMock;
   let req: Partial<Request>;
@@ -29,7 +30,9 @@ describe('PostCharacterController', () => {
     repository = new CharacterRepositoryMock();
     bookRepository = new BookRepositoryMock({ find: true });
     characterCreator = new CharacterCreator(repository, bookRepository);
-    controller = new PostCharacterController(characterCreator);
+    controller = createPostCharacterController(
+      characterCreator
+    ) as PostController<CharacterCreator, CharacterCreatorRequest>;
     expectedCharacter = {
       id: UuidMother.random().value,
       name: CharacterNameMother.random().value,
