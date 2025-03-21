@@ -11,8 +11,8 @@ export class RegisterController implements Controller {
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, username, password } = req.body;
-      await this.register.run({ email, username, password });
+      const { id, email, username, password } = req.body;
+      await this.register.run({ id, email, username, password });
 
       res.status(this.status()).send();
     } catch (error) {

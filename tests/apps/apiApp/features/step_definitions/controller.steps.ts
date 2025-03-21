@@ -31,6 +31,8 @@ import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/a
 import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 import { App } from 'supertest/types';
+import { RegisterUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers';
+import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 
 type EntityPrimitives =
   | BookPrimitives
@@ -55,12 +57,18 @@ const getPayloadByEntity = async (
   entity: string,
   id: string
 ): Promise<
+  | RegisterUserRequest
   | BookCreatorRequest
   | AuthorCreatorRequest
   | CharacterCreatorRequest
   | SceneCreatorRequest
   | StringsMap
 > => {
+  if (entity === 'actor') {
+    const actor = RegisterUserRequestMother.random(id);
+
+    return { ...actor, repeatPassword: actor.password };
+  }
   if (entity === 'author') {
     return { id, name: 'test author' };
   }
@@ -286,8 +294,14 @@ Given('a DELETE admin request to {string}', async (route: string) => {
 Given(
   'an existing {string} with id {string}',
   async (entity: string, id: string) => {
+    const entityKey = entity === 'actor' ? 'auth' : entity;
+    const prefix =
+      entityKey === 'auth'
+        ? `${API_PREFIXES[entityKey]}/register`
+        : API_PREFIXES[entityKey];
+
     _request = request(httpServer)
-      .post(API_PREFIXES[entity])
+      .post(prefix)
       .set('Authorization', `Bearer ${validAdminBearerToken}`)
       .send(await getPayloadByEntity(entity, id));
 

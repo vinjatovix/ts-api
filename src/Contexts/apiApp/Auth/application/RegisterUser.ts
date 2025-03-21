@@ -21,7 +21,12 @@ export class RegisterUser {
     this.encrypter = encrypter;
   }
 
-  async run({ password, username, email }: RegisterUserRequest): Promise<void> {
+  async run({
+    password,
+    username,
+    email,
+    id
+  }: RegisterUserRequest): Promise<void> {
     const storedUser = await this.repository.search(email);
     if (storedUser) {
       throw createError.invalidArgument(`User <${email}> already exists`);
@@ -31,7 +36,7 @@ export class RegisterUser {
     const date = new Date();
 
     const user = new User({
-      id: Uuid.random(),
+      id: new Uuid(id),
       email: new Email(email),
       username: new Username(username),
       password: new StringValueObject(encryptedPassword),
