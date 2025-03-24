@@ -4,6 +4,7 @@ import { MongoRepository } from '../../../../shared/infrastructure/persistence/m
 import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
 import { User, UserPatch, Username } from '../../domain';
 import { UserRepository } from '../../domain/interfaces';
+import { Uuid } from '../../../../shared/domain/valueObject';
 
 export interface AuthDocument {
   _id: string;
@@ -51,7 +52,7 @@ export class MongoAuthRepository
   async findByQuery(query: {
     id?: string;
     username?: string;
-  }): Promise<{ id: string; username: string }[]> {
+  }): Promise<Partial<User>[]> {
     const filter = {
       _id: query.id as unknown as ObjectId,
       username: query.username
@@ -61,6 +62,9 @@ export class MongoAuthRepository
       .find<AuthDocument>(filter, { projection: { password: 0 } })
       .toArray();
 
-    return documents.map((doc) => ({ id: doc._id, username: doc.username }));
+    return documents.map((doc) => ({
+      id: new Uuid(doc._id),
+      username: new Username(doc.username)
+    }));
   }
 }
