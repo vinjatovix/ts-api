@@ -1,10 +1,11 @@
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+import { AggregateRoot } from '../../../shared/domain';
 import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { Isbn } from './ISBN';
+import { BookPatchProps } from './interfaces';
 
 export class BookPatch extends AggregateRoot {
   readonly id: Uuid;
@@ -14,21 +15,7 @@ export class BookPatch extends AggregateRoot {
   readonly releaseDate?: BookReleaseDate;
   readonly pages?: BookPages;
 
-  constructor({
-    id,
-    title,
-    author,
-    isbn,
-    releaseDate,
-    pages
-  }: {
-    id: Uuid;
-    title?: BookTitle;
-    author?: Uuid;
-    isbn?: Isbn;
-    releaseDate?: BookReleaseDate;
-    pages?: BookPages;
-  }) {
+  constructor({ id, title, author, isbn, releaseDate, pages }: BookPatchProps) {
     super();
     this.id = id;
     title && (this.title = title);

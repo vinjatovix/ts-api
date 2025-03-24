@@ -1,3 +1,3 @@
-import { DateValueObject } from '../../../shared/domain/valueObject/DateValueObject';
+import { DateValueObject } from '../../../shared/domain/valueObject';
 
 export class BookReleaseDate extends DateValueObject {}

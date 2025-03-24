@@ -1,4 +1,4 @@
-import { CryptAdapter } from '../../../../src/Contexts/shared/plugins/CryptAdapter';
+import { CryptAdapter } from '../../../../src/Contexts/shared/plugins';
 import { random } from '../../fixtures/shared';
 
 describe('CryptAdapter', () => {

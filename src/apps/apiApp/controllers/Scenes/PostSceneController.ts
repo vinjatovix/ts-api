@@ -1,8 +1,7 @@
-import httpStatus from 'http-status';
 import { NextFunction, Request, Response } from 'express';
-import { SceneCreator } from '../../../../Contexts/apiApp/Scenes/application/SceneCreator';
+import httpStatus from 'http-status';
+import { SceneCreator } from '../../../../Contexts/apiApp/Scenes/application';
 import { Controller } from '../../shared/interfaces';
-import { SceneCreatorRequest } from '../../../../Contexts/apiApp/Scenes/application/interfaces';
 
 export class PostSceneController implements Controller {
   private static readonly _containerId =
@@ -13,7 +12,8 @@ export class PostSceneController implements Controller {
     try {
       const username = res.locals.user.username;
 
-      await this.service.run(req.body as SceneCreatorRequest, username);
+      await this.service.run(req.body, username);
+
       res.status(this.status()).send();
     } catch (error) {
       next(error);

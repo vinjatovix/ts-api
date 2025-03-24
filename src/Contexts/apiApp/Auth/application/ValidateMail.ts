@@ -1,7 +1,8 @@
 import { createError } from '../../../shared/domain/errors';
-import { Nullable } from '../../../shared/domain/Nullable';
+import { Nullable } from '../../../shared/domain/types';
 import { buildLogger, EncrypterTool } from '../../../shared/plugins';
-import { UserPatch, UserRepository } from '../domain';
+import { UserPatch } from '../domain';
+import { UserRepository } from '../domain/interfaces';
 
 const logger = buildLogger('validateMail');
 

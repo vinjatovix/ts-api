@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
-import { PostSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes/PostSceneController';
-import { SceneCreator } from '../../../../../src/Contexts/apiApp/Scenes/application/SceneCreator';
+import httpStatus from 'http-status';
+import { PostSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
+import { SceneCreator } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
-import httpStatus from 'http-status';
 
 jest.mock('../../../../../src/Contexts/apiApp/Scenes/application/SceneCreator');
 

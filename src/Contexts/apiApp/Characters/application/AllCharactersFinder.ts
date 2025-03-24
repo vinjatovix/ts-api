@@ -7,7 +7,7 @@ export class AllCharactersFinder {
 
   async run(
     options: Partial<RequestOptions> = {}
-  ): Promise<CharacterPrimitives[]> {
+  ): Promise<Partial<CharacterPrimitives[]>> {
     const characters: Array<Character | PopulatedCharacter> =
       await this.repository.findAll(options);
 

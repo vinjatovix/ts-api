@@ -1,21 +1,12 @@
-import { Nullable } from '../../../shared/domain/Nullable';
+import { Nullable } from '../../../shared/domain/types/';
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
 import { BookBase } from './BookBase';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { BookPrimitives } from './interfaces';
+import { BookProps } from './interfaces/BookProps';
 import { Isbn } from './ISBN';
-
-interface BookProps {
-  id: Uuid;
-  title: Nullable<BookTitle>;
-  author: Nullable<Uuid>;
-  isbn: Nullable<Isbn>;
-  releaseDate: Nullable<BookReleaseDate>;
-  pages: Nullable<BookPages>;
-  metadata: Metadata;
-}
 
 export class Book extends BookBase {
   readonly author: Nullable<Uuid>;

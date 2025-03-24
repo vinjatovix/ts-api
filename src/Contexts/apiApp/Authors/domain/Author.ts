@@ -1,23 +1,16 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Nullable } from '../../../shared/domain/Nullable';
+import { AggregateRoot } from '../../../shared/domain';
+import { Nullable } from '../../../shared/domain/types';
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
+import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/types';
 import { AuthorName } from './AuthorName';
+import { AuthorProps } from './interfaces';
 
 export class Author extends AggregateRoot {
   readonly id: Uuid;
   readonly name: Nullable<AuthorName>;
   readonly metadata: Metadata;
 
-  constructor({
-    id,
-    name,
-    metadata
-  }: {
-    id: Uuid;
-    name: Nullable<AuthorName>;
-    metadata: Metadata;
-  }) {
+  constructor({ id, name, metadata }: AuthorProps) {
     super();
     this.id = id;
     this.name = name;

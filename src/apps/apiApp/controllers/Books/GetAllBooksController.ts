@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { AllBooksFinder } from '../../../../Contexts/apiApp/Books/application';
-import { Controller, RequestOptions } from '../../shared/interfaces';
+import { Controller } from '../../shared/interfaces';
 import { getOptions } from '../shared/getOptions';
 
 export class GetAllBooksController implements Controller {
@@ -12,7 +12,7 @@ export class GetAllBooksController implements Controller {
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const options: Partial<RequestOptions> = getOptions(req);
+      const options = getOptions(req);
       const books = await this.service.run(options);
 
       res.status(this.status()).send(books);

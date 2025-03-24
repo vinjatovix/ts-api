@@ -8,30 +8,28 @@ import {
 import { assert, expect } from 'chai';
 import request from 'supertest';
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
+import container from '../../../../../src/apps/apiApp/dependency-injection';
 import { API_PREFIXES } from '../../../../../src/apps/apiApp/routes/shared';
 import { StringsMap } from '../../../../../src/apps/apiApp/shared/interfaces';
-import container from '../../../../../src/apps/apiApp/dependency-injection';
-import {
-  AuthorCreatorRequest,
-  AuthorPrimitives
-} from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
-import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application';
-import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
-import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
-import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
-import { random } from '../../../../Contexts/fixtures/shared';
+import { Nullable } from '../../../../../src/Contexts/shared/domain/types';
 import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
+import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
+import { random } from '../../../../Contexts/fixtures/shared';
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
+import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
+import { AuthorPrimitives } from '../../../../../src/Contexts/apiApp/Authors/domain/interfaces';
+import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/interfaces';
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
-import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
-import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers/CharacterCreatorRequestMother';
+import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers';
+import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
-import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
-import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
+import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
+import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 
 type EntityPrimitives =
   | BookPrimitives

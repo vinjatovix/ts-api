@@ -1,10 +1,10 @@
 import { CharacterPatcher } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
 import { BookRepositoryMock } from '../../Books/__mocks__/BookRepositoryMock';
 import { CharacterRepositoryMock } from '../__mocks__/CharacterRepositoryMock';
 import { CharacterNameMother } from '../domain/mothers';
-import { CharacterPatch } from '../../../../../src/Contexts/apiApp/Characters/domain/CharacterPatch';
 
 const username = UserMother.random().username;
 

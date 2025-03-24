@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { CharacterPatcher } from '../../../../Contexts/apiApp/Characters/application';
-import { Controller } from '../../shared/interfaces/Controller';
 import httpStatus from 'http-status';
+import { CharacterPatcher } from '../../../../Contexts/apiApp/Characters/application';
+import { Controller } from '../../shared/interfaces';
 
 export class PatchCharacterController implements Controller {
   private static readonly _containerId =

@@ -1,6 +1,6 @@
 import { MongoServerError } from 'mongodb';
-import { MONGO_ERROR_CODES } from './mongoErrorCodes';
 import { createError } from '../../../domain/errors';
+import { MONGO_ERROR_CODES } from './mongoErrorCodes';
 
 export class MongoErrorHandler {
   static formatError(err: MongoServerError): void {

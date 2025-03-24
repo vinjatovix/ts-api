@@ -5,7 +5,7 @@ import { LoginUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import { LoginUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
-import { LoginUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers/LoginUserRequestMother';
+import { LoginUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers';
 
 describe('LoginController', () => {
   let repository: UserRepositoryMock;

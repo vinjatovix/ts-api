@@ -1,6 +1,6 @@
 import { UserRoles } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { random } from '../../../fixtures/shared';
-import { UserRolesMother } from './mothers/UserRolesMother';
+import { UserRolesMother } from './mothers';
 
 describe('UserRoles', () => {
   it('should create a valid user roles', () => {

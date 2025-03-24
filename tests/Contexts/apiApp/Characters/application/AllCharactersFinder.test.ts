@@ -1,4 +1,4 @@
-import { AllCharactersFinder } from '../../../../../src/Contexts/apiApp/Characters/application/AllCharactersFinder';
+import { AllCharactersFinder } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { CharacterRepositoryMock } from '../__mocks__/CharacterRepositoryMock';
 
 describe('AllCharactersFinder', () => {

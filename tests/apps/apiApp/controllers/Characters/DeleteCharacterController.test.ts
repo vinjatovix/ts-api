@@ -1,10 +1,10 @@
-import { DeleteCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters/DeleteCharacterController';
-import { CharacterRemover } from '../../../../../src/Contexts/apiApp/Characters/application/CharacterRemover';
-import { random } from '../../../../Contexts/fixtures/shared';
-import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import { DeleteCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
+import { CharacterRemover } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterRemover'

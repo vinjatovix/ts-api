@@ -1,9 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { Controller, RequestOptions } from '../../shared/interfaces';
 import httpStatus from 'http-status';
+import { CharacterFinder } from '../../../../Contexts/apiApp/Characters/application';
+import { Controller } from '../../shared/interfaces';
 import { getOptions } from '../shared/getOptions';
-import { CharacterFinder } from '../../../../Contexts/apiApp/Characters/application/CharacterFinder';
-import { CharacterPrimitives } from '../../../../Contexts/apiApp/Characters/domain/interfaces/CharacterPrimitives';
 
 export class GetCharacterController implements Controller {
   private static readonly _containerId =
@@ -14,8 +13,8 @@ export class GetCharacterController implements Controller {
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
-      const options: Partial<RequestOptions> = getOptions(req);
-      const data: CharacterPrimitives = await this.service.run({ id }, options);
+      const options = getOptions(req);
+      const data = await this.service.run({ id }, options);
 
       res.status(this.status()).send(data);
     } catch (error: unknown) {

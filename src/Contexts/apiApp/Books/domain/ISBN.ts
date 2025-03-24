@@ -1,5 +1,5 @@
 import { createError } from '../../../shared/domain/errors';
-import { StringValueObject } from '../../../shared/domain/valueObject/StringValueObject';
+import { StringValueObject } from '../../../shared/domain/valueObject';
 
 export class Isbn extends StringValueObject {
   readonly value: string;

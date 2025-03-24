@@ -1,4 +1,4 @@
-import { SceneCreator } from '../../../../../src/Contexts/apiApp/Scenes/application/SceneCreator';
+import { SceneCreator } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { UserMother } from '../../Auth/domain/mothers';
 import { CharacterRepositoryMock } from '../../Characters/__mocks__/CharacterRepositoryMock';
 import { SceneRepositoryMock } from '../__mocks__/SceneRepositoryMock';

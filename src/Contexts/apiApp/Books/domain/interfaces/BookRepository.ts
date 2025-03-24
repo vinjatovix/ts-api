@@ -1,6 +1,6 @@
-import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces/RequestOptions';
+import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
+import { BookByQuery } from '../../application/interfaces';
 import { Book } from '../Book';
-import { BookByQuery } from './BookByQuery';
 import { BookPatch } from '../BookPatch';
 import { PopulatedBook } from '../PopulatedBook';
 import { Username } from '../../../Auth/domain';

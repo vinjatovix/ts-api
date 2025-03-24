@@ -1,9 +1,14 @@
 import { createError } from '../../../shared/domain/errors';
-import { StringValueObject, Uuid } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import {
+  Email,
+  Metadata,
+  StringValueObject,
+  Uuid
+} from '../../../shared/domain/valueObject';
 import { EncrypterTool, buildLogger } from '../../../shared/plugins';
-import { User, Email, UserRepository, UserRoles, Username } from '../domain';
-import { RegisterUserRequest } from './interfaces/RegisterUserRequest';
+import { User, Username, UserRoles } from '../domain';
+import { UserRepository } from '../domain/interfaces';
+import { RegisterUserRequest } from './interfaces';
 
 const logger = buildLogger('registerUser');
 

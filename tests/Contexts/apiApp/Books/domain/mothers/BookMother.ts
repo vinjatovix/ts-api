@@ -1,4 +1,4 @@
-import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
+import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application/interfaces';
 import {
   Book,
   BookPages,
@@ -6,9 +6,11 @@ import {
   BookTitle,
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
-import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject/Metadata';
-import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
+import {
+  Uuid,
+  Metadata
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../../Auth/domain/mothers';
 import { BookPagesMother } from './BookPagesMother';
 import { BookReleaseDateMother } from './BookReleaseDateMother';

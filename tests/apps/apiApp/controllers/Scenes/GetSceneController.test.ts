@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { GetSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes/GetSceneController';
-import { SceneFinder } from '../../../../../src/Contexts/apiApp/Scenes/application/SceneFinder';
-import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
-import { random } from '../../../../Contexts/fixtures/shared';
-import { SceneMother } from '../../../../Contexts/apiApp/Scenes/domain/mothers';
 import httpStatus from 'http-status';
+import { GetSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
+import { SceneFinder } from '../../../../../src/Contexts/apiApp/Scenes/application';
+import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
+import { SceneMother } from '../../../../Contexts/apiApp/Scenes/domain/mothers';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 const SCENE_ID = random.uuid();
 
