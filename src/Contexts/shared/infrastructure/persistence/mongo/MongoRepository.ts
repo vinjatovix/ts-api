@@ -1,4 +1,4 @@
-import { Collection, MongoClient } from 'mongodb';
+import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { AggregateRoot } from '../../../domain/AggregateRoot';
 
 export abstract class MongoRepository<T extends AggregateRoot> {
@@ -23,7 +23,7 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     };
 
     await collection.updateOne(
-      { _id: id },
+      { _id: id as unknown as ObjectId },
       { $set: document },
       { upsert: true }
     );
@@ -33,11 +33,11 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     const collection = await this.collection();
     const { id, ...document } = aggregateRoot.toPrimitives();
 
-    await collection.updateOne({ _id: id }, { $set: document });
+    await collection.updateOne({ _id: id as ObjectId }, { $set: document });
   }
 
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
-    await collection.deleteOne({ _id: id });
+    await collection.deleteOne({ _id: id as unknown as ObjectId });
   }
 }

@@ -1,3 +1,4 @@
+import { UUID } from 'bson';
 import { MongoClient } from 'mongodb';
 import MongoConfig from './MongoConfig';
 
@@ -29,7 +30,8 @@ export class MongoClientFactory {
     try {
       const connectionString = `${config.connection}://${config.username}:${config.password}@${config.url}/${config.db}`;
       const client = new MongoClient(connectionString, {
-        ignoreUndefined: true
+        ignoreUndefined: true,
+        pkFactory: { createPk: () => new UUID().toBinary() }
       });
 
       await client.connect();
