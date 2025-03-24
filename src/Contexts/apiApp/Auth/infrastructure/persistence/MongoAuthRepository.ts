@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import { Nullable } from '../../../../shared/domain/types';
 import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
 import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
@@ -51,9 +52,13 @@ export class MongoAuthRepository
     id?: string;
     username?: string;
   }): Promise<{ id: string; username: string }[]> {
+    const filter = {
+      _id: query.id as unknown as ObjectId,
+      username: query.username
+    };
     const collection = await this.collection();
     const documents = await collection
-      .find<AuthDocument>(query, { projection: { password: 0 } })
+      .find<AuthDocument>(filter, { projection: { password: 0 } })
       .toArray();
 
     return documents.map((doc) => ({ id: doc._id, username: doc.username }));
