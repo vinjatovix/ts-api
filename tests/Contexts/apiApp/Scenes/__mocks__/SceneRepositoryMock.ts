@@ -6,6 +6,7 @@ import { SceneMother } from '../domain/mothers';
 export class SceneRepositoryMock implements SceneRepository {
   protected saveMock: jest.Mock;
   private readonly findAllMock: jest.Mock;
+  protected findMock: jest.Mock;
   private isFindable: boolean;
 
   constructor({ find }: { find: boolean } = { find: false }) {
@@ -13,6 +14,9 @@ export class SceneRepositoryMock implements SceneRepository {
     this.saveMock = jest.fn();
     this.findAllMock = jest.fn().mockImplementation(() => {
       return this.isFindable ? [SceneMother.random()] : [];
+    });
+    this.findMock = jest.fn().mockImplementation(() => {
+      return this.isFindable ? SceneMother.random() : null;
     });
   }
 
@@ -38,5 +42,19 @@ export class SceneRepositoryMock implements SceneRepository {
 
   setFindable(findable: boolean): void {
     this.isFindable = findable;
+  }
+
+  async search(
+    id: string,
+    options?: Partial<RequestOptions>
+  ): Promise<Scene | null> {
+    return this.findMock(id, options);
+  }
+
+  assertSearchHasBeenCalledWith(
+    expected: string,
+    options?: Partial<RequestOptions>
+  ): void {
+    expect(this.findMock).toHaveBeenCalledWith(expected, options);
   }
 }
