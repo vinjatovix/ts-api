@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-
-import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application/AuthorRemover';
 import { DeleteAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application/AuthorRemover';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
@@ -12,6 +11,7 @@ jest.mock(
 );
 
 const AUTHOR_UUID = random.uuid();
+const username = random.word();
 
 describe('DeleteAuthorController', () => {
   let authorRemover: AuthorRemover;
@@ -30,7 +30,12 @@ describe('DeleteAuthorController', () => {
     req = { params: { id: AUTHOR_UUID } };
     res = {
       status: jest.fn().mockReturnThis(),
-      send: jest.fn()
+      send: jest.fn(),
+      locals: {
+        user: {
+          username
+        }
+      }
     };
     next = jest.fn();
   });
@@ -39,7 +44,10 @@ describe('DeleteAuthorController', () => {
     it('should delete an author and send 204 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(authorRemover.run).toHaveBeenCalledWith({ id: AUTHOR_UUID });
+      expect(authorRemover.run).toHaveBeenCalledWith(
+        { id: AUTHOR_UUID },
+        username
+      );
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();
     });

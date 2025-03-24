@@ -1,13 +1,15 @@
 import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
-
-import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock';
-
-import { BookMother } from '../domain/mothers';
-
-import { BookCreatorRequestMother } from './mothers';
+import {
+  InvalidArgumentError,
+  NotFoundError
+} from '../../../../../src/Contexts/shared/domain/errors';
+import { random } from '../../../fixtures/shared';
 import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
+import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock';
+import { BookMother } from '../domain/mothers';
+import { BookCreatorRequestMother } from './mothers';
+
+const username = random.word();
 
 describe('BookCreator', () => {
   let repository: CreateBookRepositoryMock;
@@ -24,7 +26,7 @@ describe('BookCreator', () => {
     const request = BookCreatorRequestMother.random();
     const book = BookMother.from(request);
 
-    await creator.run(request);
+    await creator.run(request, username);
 
     repository.assertSaveHasBeenCalledWith(book);
   });
@@ -34,7 +36,7 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['title']);
       const book = BookMother.from(request);
 
-      creator.run(request);
+      creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
     }).toThrow(InvalidArgumentError);
@@ -45,7 +47,7 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['author']);
       const book = BookMother.from(request);
 
-      creator.run(request);
+      creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
     }).toThrow(InvalidArgumentError);
@@ -55,7 +57,7 @@ describe('BookCreator', () => {
     const request = BookCreatorRequestMother.random();
     request.author = 'not-found';
 
-    await expect(creator.run(request)).rejects.toThrow(NotFoundError);
+    await expect(creator.run(request, username)).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error when the book isbn is not valid', async () => {
@@ -63,7 +65,7 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['isbn']);
       const book = BookMother.from(request);
 
-      creator.run(request);
+      creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
     }).toThrow(InvalidArgumentError);
@@ -74,7 +76,7 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['releaseDate']);
       const book = BookMother.from(request);
 
-      creator.run(request);
+      creator.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
     }).toThrow(InvalidArgumentError);
