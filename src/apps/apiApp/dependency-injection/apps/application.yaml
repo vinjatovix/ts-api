@@ -140,3 +140,44 @@ services:
       class: ../../controllers/Scenes/DeleteSceneController
       method: 'createDeleteSceneController'
     arguments: ['@apiApp.Scenes.application.SceneRemover']
+
+  # CHARACTERBUILDINGS
+  Apps.apiApp.controllers.CharacterBuildings.PostCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+      method: 'createPostCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingCreator']
+
+  # Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+  #   class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+  #   arguments:
+  #     ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+      method: 'createGetAllCharacterBuildingsController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetCharacterBuildingController
+      method: 'createGetCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.DeleteCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/DeleteCharacterBuildingController
+      method: 'createDeleteCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingRemover']
+
+  Apps.apiApp.controllers.CharacterBuildings.PatchCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PatchCharacterBuildingController
+      method: 'createPatchCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingPatcher']
