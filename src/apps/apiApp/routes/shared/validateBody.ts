@@ -1,8 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import httpStatus from 'http-status';
-import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
-
-const logger = buildLogger('validateReqSchema');
+import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
 
 export const validateBody = (
   req: Request,
@@ -13,8 +10,5 @@ export const validateBody = (
     return next();
   }
 
-  logger.error(`${req.method} ${req.path} - Empty body`);
-  return res.status(httpStatus.BAD_REQUEST).json({
-    errors: [{ message: 'Empty body is not allowed' }]
-  });
+  throw new InvalidArgumentError('Empty body is not allowed');
 };

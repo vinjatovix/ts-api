@@ -47,11 +47,7 @@ Feature: Register a new user
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "repeatPassword": "Passwords do not match at body."
-          }
-        ]
+        "message": "{ repeatPassword : Passwords do not match at body. }"
       }
       """
 
@@ -68,19 +64,6 @@ Feature: Register a new user
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "email": "Invalid value at body. Value: aaJaa"
-          },
-          {
-            "username": "Invalid value at body. Value: undefined"
-          },
-          {
-            "password": "Invalid value at body."
-          },
-          {
-            "repeatPassword": "Invalid value at body."
-          }
-        ]
+        "message": "{ email : Invalid value at body. Value: aaJaa , username : Invalid value at body. Value: undefined , password : Invalid value at body. , repeatPassword : Invalid value at body. }"
       }
       """
