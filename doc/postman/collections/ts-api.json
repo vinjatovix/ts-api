@@ -27,7 +27,8 @@
 									"pm.environment.set(\"userEmail\", email);",
 									"pm.environment.set(\"userPassword\", password)"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -36,7 +37,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"username\": \"{{userName}}\",\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"#aD3fe2.0%\",\n    \"repeatPassword\": \"#aD3fe2.0%\"\n}",
+							"raw": "{\n    \"username\": \"{{userName}}\",\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"{{userPassword}}\",\n    \"repeatPassword\": \"{{userPassword}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1810,6 +1811,202 @@
 								{
 									"key": "id",
 									"value": "{{sceneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CharacterBuilding",
+			"item": [
+				{
+					"name": "Create CharacterBuilding",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"const generateUUID = () => {",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {",
+									"        var r = Math.random() * 16 | 0,",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+									"        return v.toString(16);",
+									"    });",
+									"}",
+									"",
+									"",
+									"const generatedUUID = generateUUID();",
+									"console.log(generatedUUID)",
+									"pm.environment.set(\"CharacterBuildingId\", generatedUUID);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{CharacterBuildingId}}\",\n    \"actor\": \"15fe885e-db71-4117-8cea-2fce7f7d2ef3\",\n    \"character\": \"{{characterId}}\",\n    \"scene\": \"a1c9f790-da68-4aef-bdac-58146ebc6e99\",\n    \"sceneCircumstances\": \"{{$randomLoremSentence}}\",\n    \"previousCircumstances\": \"{{$randomLoremSentence}}\",\n    \"relationshipCircumstances\": [\n        {\n            \"character\": \"36493a87-10c2-4cf9-bb0d-019152c51ee4\",\n            \"circumstance\": \"{{$randomLoremSentence}}\"\n        }\n    ],\n    \"actionUnits\": [\n        {\n            \"action\": \"convencer\",\n            \"strategies\": [\n                \"sobornar\",\n                \"intimidar\"\n            ]\n        },\n        {\n            \"action\": \"someter\",\n            \"strategies\": [\n                \"drogar\",\n                \"amordazar\"\n            ]\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/CharacterBuildings",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CharacterBuildings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create CharacterBuilding Copy",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sceneCircumstances\": \"{{$randomLoremSentence}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/CharacterBuildings/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CharacterBuildings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{CharacterBuildingId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Character Buildings",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/CharacterBuildings?include=character.book.author,scene.characters,actor,relationshipCircumstances.character&fields=actor.username",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CharacterBuildings"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "character.book.author,scene.characters,actor,relationshipCircumstances.character"
+								},
+								{
+									"key": "fields",
+									"value": "actor.username"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Character Buildings by  id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/CharacterBuildings/:id?include=character.book.author,scene.characters,actor,relationshipCircumstances.character&fields=sceneCircumstances,previousCircumstances,actionUnits,actor.username",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CharacterBuildings",
+								":id"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "character.book.author,scene.characters,actor,relationshipCircumstances.character"
+								},
+								{
+									"key": "fields",
+									"value": "sceneCircumstances,previousCircumstances,actionUnits,actor.username"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{CharacterBuildingId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Character Buildings by  id Copy",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/CharacterBuildings/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CharacterBuildings",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{CharacterBuildingId}}"
 								}
 							]
 						}
