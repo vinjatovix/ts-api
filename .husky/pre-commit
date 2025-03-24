@@ -1,5 +1,4 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
 LAST_TAG=$(git describe --tags --abbrev=0)
 
