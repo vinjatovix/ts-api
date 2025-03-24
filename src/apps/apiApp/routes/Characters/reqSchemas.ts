@@ -1,4 +1,4 @@
-import { body, param } from 'express-validator';
+import { body, checkExact, param } from 'express-validator';
 
 export const postReqSchema = [
   body('id').exists().isUUID(),
@@ -11,3 +11,5 @@ export const patchReqSchema = [
   body('name').optional().isString(),
   body('book').optional().isUUID()
 ];
+
+export const deleteReqSchema = [param('id').exists().isUUID(), checkExact()];
