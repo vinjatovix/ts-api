@@ -15,7 +15,8 @@ services:
 
   apiApp.CharacterBuildings.domain.CharacterBuildingRepository:
     class: ../../../../Contexts/apiApp/CharacterBuildings/infrastructure/persistence/MongoCharacterBuildingRepository
-    arguments: [
+    arguments:
+      [
         '@apiApp.MongoClient',
         '@apiApp.CharacterBuildings.infrastructure.CharacterBuildingMapper'
       ]
@@ -28,3 +29,7 @@ services:
         '@apiApp.Auth.domain.AuthRepository',
         '@apiApp.Scenes.domain.SceneRepository'
       ]
+
+  apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/application/AllCharacterBuildingsFinder
+    arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']

@@ -27,4 +27,28 @@ describe('MongoCharacterBuildingRepository', () => {
       await repository.save(characterBuilding);
     });
   });
+
+  describe('findAll', () => {
+    it('should return all character buildings', async () => {
+      const characterBuilding = CharacterBuildingMother.random();
+      await repository.save(characterBuilding);
+
+      const characterBuildings = await repository.findAll();
+
+      expect(characterBuildings).toEqual([characterBuilding]);
+    });
+
+    it('should return only basic and selected props', async () => {
+      const characterBuilding = CharacterBuildingMother.random();
+      await repository.save(characterBuilding);
+
+      const characterBuildings = await repository.findAll({
+        fields: ['actor']
+      });
+
+      expect(characterBuildings[0]).not.toMatchObject({
+        character: characterBuilding.character
+      });
+    });
+  });
 });
