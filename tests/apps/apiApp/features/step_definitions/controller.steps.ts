@@ -27,6 +27,7 @@ import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/a
 import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 import { App } from 'supertest/types';
 import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
+import { CharacterBuildingCreatorRequest } from '../../../../../src/Contexts/apiApp/CharacterBuildings/application/interfaces';
 import { PayloadFactory } from './PayloadFactory';
 
 type EntityPrimitives =
@@ -40,7 +41,8 @@ type ApplicationPostRequest =
   | BookCreatorRequest
   | AuthorCreatorRequest
   | CharacterCreatorRequest
-  | SceneCreatorRequest;
+  | SceneCreatorRequest
+  | CharacterBuildingCreatorRequest;
 
 const ENVIRONMENT_ARRANGER: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'

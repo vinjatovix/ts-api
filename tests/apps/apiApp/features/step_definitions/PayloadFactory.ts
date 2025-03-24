@@ -1,10 +1,15 @@
 import { StringsMap } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/interfaces';
+import { CharacterBuildingCreatorRequest } from '../../../../../src/Contexts/apiApp/CharacterBuildings/application/interfaces';
+import { Center } from '../../../../../src/Contexts/apiApp/CharacterBuildings/domain';
 import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { RegisterUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers';
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
+import { CharacterBuildingCreatorRequestMother } from '../../../../Contexts/apiApp/CharacterBuildings/application/mothers/CharacterBuildingCreatorRequestMother';
 import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers';
 import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
@@ -62,6 +67,14 @@ class AuthorPayloadStrategy extends BasePayloadStrategy<AuthorCreatorRequest> {
   }
 }
 
+class ActorPayloadStrategy extends BasePayloadStrategy<RegisterUserRequest> {
+  async getPayload(id: string): Promise<RegisterUserRequest> {
+    const actor = RegisterUserRequestMother.random(id);
+
+    return { ...actor, repeatPassword: actor.password };
+  }
+}
+
 class BookPayloadStrategy extends BasePayloadStrategy<BookCreatorRequest> {
   async getPayload(
     id: string,
@@ -104,13 +117,39 @@ class ScenePayloadStrategy extends BasePayloadStrategy<SceneCreatorRequest> {
   }
 }
 
+class CharacterBuildingPayloadStrategy extends BasePayloadStrategy<CharacterBuildingCreatorRequest> {
+  async getPayload(
+    id: string,
+    creator: CreateDependencyFunction
+  ): Promise<CharacterBuildingCreatorRequest> {
+    const { scene, character } = await this.createDependencies(
+      'characterBuilding',
+      creator
+    );
+    const { id: actor } = await creator('actor');
+
+    return CharacterBuildingCreatorRequestMother.create({
+      id: new Uuid(id),
+      scene: new Uuid(scene),
+      actor: new Uuid(actor),
+      character: new Uuid(character),
+      center: new Center('mental'),
+      sceneCircumstances: SceneCircumstanceMother.random(),
+      previousCircumstances: SceneCircumstanceMother.random(),
+      relationshipCircumstances: []
+    });
+  }
+}
+
 export class PayloadFactory {
   private static readonly strategies: Record<string, PayloadStrategy<unknown>> =
     {
+      actor: new ActorPayloadStrategy(),
       author: new AuthorPayloadStrategy(),
       book: new BookPayloadStrategy(),
       character: new CharacterPayloadStrategy(),
-      scene: new ScenePayloadStrategy()
+      scene: new ScenePayloadStrategy(),
+      characterBuilding: new CharacterBuildingPayloadStrategy()
     };
 
   static async getPayload<T>(
