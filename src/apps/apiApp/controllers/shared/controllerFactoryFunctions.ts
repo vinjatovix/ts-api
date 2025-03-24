@@ -5,7 +5,10 @@ import { getOptions } from './getOptions';
 import httpStatus from 'http-status';
 
 interface DeleteService {
-  run({ id }: { id: string }, username: string): Promise<void>;
+  run(
+    { id }: { id: string },
+    user: { username: string; id: string }
+  ): Promise<void>;
 }
 
 export function createDeleteController<TService extends DeleteService>(
@@ -15,9 +18,9 @@ export function createDeleteController<TService extends DeleteService>(
     async run(req, res, next) {
       try {
         const { id } = req.params;
-        const username = res.locals.user.username;
+        const user = res.locals.user;
 
-        await service.run({ id }, username);
+        await service.run({ id }, user);
 
         res.status(httpStatus.NO_CONTENT).send();
       } catch (error) {
@@ -85,12 +88,9 @@ export function createPatchController<TService, TPayload>(
       try {
         const { id } = req.params;
         const updates = req.body;
-        const username = res.locals.user.username;
+        const user = res.locals.user;
 
-        await (service as PatchService<TPayload>).run(
-          { id, ...updates },
-          username
-        );
+        await (service as PatchService<TPayload>).run({ id, ...updates }, user);
 
         res.status(httpStatus.OK).send();
       } catch (error) {
