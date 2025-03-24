@@ -7,5 +7,6 @@ export const API_PREFIXES: StringsMap = {
   docs: '/api/v1/Docs',
   health: '/api/v1/Health',
   character: '/api/v1/Characters',
-  scene: '/api/v1/Scenes'
+  scene: '/api/v1/Scenes',
+  characterBuilding: '/api/v1/CharacterBuildings'
 };
