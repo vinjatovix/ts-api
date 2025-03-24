@@ -140,3 +140,9 @@ services:
       class: ../../controllers/Scenes/DeleteSceneController
       method: 'createDeleteSceneController'
     arguments: ['@apiApp.Scenes.application.SceneRemover']
+
+  # CHARACTERBUILDINGS
+  Apps.apiApp.controllers.CharacterBuildings.PostCharacterBuildingController:
+    class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingCreator']
