@@ -6,6 +6,7 @@ import { BookRepositoryMock } from '../../Books/__mocks__/BookRepositoryMock';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 
 const username = random.word();
+const request = RequestByIdMother.create(UuidMother.random());
 
 describe('AuthorRemover', () => {
   let repository: AuthorRepositoryMock;
@@ -24,7 +25,7 @@ describe('AuthorRemover', () => {
   });
 
   it('should remove an author', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
+    repository.setFindable(true);
 
     await remover.run(request, username);
 
@@ -32,7 +33,6 @@ describe('AuthorRemover', () => {
   });
 
   it('should fail when the author has books', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
     bookRepository.findByQueryMock.mockResolvedValue([{}]);
 
     await expect(remover.run(request, username)).rejects.toThrow(
@@ -41,8 +41,6 @@ describe('AuthorRemover', () => {
   });
 
   it('should not throw an error when the author is not found', async () => {
-    const request = RequestByIdMother.inexistentId();
-
     await expect(remover.run(request, username)).resolves.toBeUndefined();
   });
 });
