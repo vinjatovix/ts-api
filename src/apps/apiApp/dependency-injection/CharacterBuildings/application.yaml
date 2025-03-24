@@ -1,0 +1,30 @@
+services:
+  apiApp.MongoConfig:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoConfigFactory
+      method: 'createConfig'
+
+  apiApp.MongoClient:
+    factory:
+      class: ../../../../Contexts/shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: 'createClient'
+    arguments: ['apiApp', '@apiApp.MongoConfig']
+
+  apiApp.CharacterBuildings.infrastructure.CharacterBuildingMapper:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/infrastructure/CharacterBuildingMapper
+
+  apiApp.CharacterBuildings.domain.CharacterBuildingRepository:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/infrastructure/persistence/MongoCharacterBuildingRepository
+    arguments: [
+        '@apiApp.MongoClient',
+        '@apiApp.CharacterBuildings.infrastructure.CharacterBuildingMapper'
+      ]
+
+  # apiApp.CharacterBuildings.application.CharacterBuildingCreator:
+  #   class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingCreator
+  #   arguments:
+  #     [
+  #       '@apiApp.CharacterBuildings.domain.CharacterBuildingRepository',
+  #       '@apiApp.Auth.domain.AuthRepository',
+  #       '@apiApp.Scenes.domain.SceneRepository'
+  #     ]
