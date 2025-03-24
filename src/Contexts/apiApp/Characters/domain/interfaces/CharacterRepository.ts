@@ -9,7 +9,7 @@ export interface CharacterRepository {
   save(character: Character): Promise<void>;
 
   findByQuery(
-    query: CharacterByQuery
+    query: CharacterByQuery | { _id: { $in: string[] } }
   ): Promise<Character[] | PopulatedCharacter[]>;
 
   findAll(
