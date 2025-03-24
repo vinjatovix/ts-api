@@ -838,6 +838,36 @@ paths:
                 'message': 'Scene has associated characterBuilds'
 
   /api/v1/CharacterBuildings:
+    get:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Get all characterBuildings
+      operationId: GetAllCharacterBuildings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CharacterBuilding'
     post:
       deprecated: false
       tags:
@@ -886,6 +916,44 @@ paths:
                 $ref: '#/components/schemas/409'
               example:
                 'message': 'CharacterBuilding already exists'
+
+  /api/v1/CharacterBuildings/{id}:
+    get:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Get CharacterBuilding by id
+      operationId: GetCharacterBuildingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterBuildingId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterBuilding'
 
   /api/v1/health/http:
     get:
