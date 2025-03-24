@@ -1,9 +1,11 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
 import { CharacterRepository } from '../../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
 import { SceneRepository } from '../../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
+import { ScenePatch } from '../../../../../../src/Contexts/apiApp/Scenes/domain/ScenePatch';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
+import { UserMother } from '../../../Auth/domain/mothers';
 import { CharacterMother } from '../../../Characters/domain/mothers';
-import { SceneMother } from '../../domain/mothers';
+import { SceneCircumstanceMother, SceneMother } from '../../domain/mothers';
 
 const repository: SceneRepository = container.get(
   'apiApp.Scenes.domain.SceneRepository'
@@ -16,6 +18,8 @@ const characterRepository: CharacterRepository = container.get(
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
 );
+
+const username = UserMother.random().username;
 
 describe('MongoSceneRepository', () => {
   beforeEach(async () => {
@@ -129,6 +133,24 @@ describe('MongoSceneRepository', () => {
       const foundScene = await repository.search(scene.id.value);
 
       expect(foundScene).toBeNull();
+    });
+  });
+
+  describe('update', () => {
+    it('should update a scene', async () => {
+      const scene = SceneMother.random();
+      await repository.save(scene);
+      const updatedScene = ScenePatch.fromPrimitives({
+        id: scene.id.value,
+        description: SceneCircumstanceMother.random().value
+      });
+
+      await repository.update(updatedScene, username);
+
+      const foundScene = await repository.search(scene.id.value);
+      expect(foundScene).toMatchObject({
+        metadata: { updatedBy: username.value }
+      });
     });
   });
 });

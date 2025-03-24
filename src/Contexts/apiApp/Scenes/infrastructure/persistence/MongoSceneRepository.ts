@@ -7,9 +7,11 @@ import { PopulatedScene } from '../../domain/PopulatedScene';
 import { PopulatedSceneType } from '../types/PopulatedSceneType';
 import { SceneType } from '../types/SceneType';
 import { ObjectId } from 'bson';
+import { ScenePatch } from '../../domain/ScenePatch';
+import { Username } from '../../../Auth/domain';
 
 export class MongoSceneRepository
-  extends MongoRepository<Scene>
+  extends MongoRepository<Scene | ScenePatch>
   implements SceneRepository
 {
   protected collectionName(): string {
@@ -29,6 +31,7 @@ export class MongoSceneRepository
 
       return documents.map(SceneMapper.toDomain);
     }
+
     if (options.include) {
       const { include } = options;
       if (include.some((i) => i.includes('characters'))) {
@@ -54,16 +57,24 @@ export class MongoSceneRepository
 
       return document ? SceneMapper.toDomain(document) : null;
     }
+
     if (options.include) {
       const { include } = options;
       if (include.some((i) => i.includes('characters'))) {
         options.list = ['characters'];
       }
     }
+
     const documents = await this.fetch<PopulatedSceneType>({ id, options });
 
     return documents.length
       ? SceneMapper.toPopulatedDomain(documents[0])
       : null;
+  }
+
+  public async update(scene: ScenePatch, username: Username): Promise<void> {
+    return this.handleMongoError(() =>
+      this.persist(scene.id.value, scene, username)
+    );
   }
 }
