@@ -28,4 +28,16 @@ describe('MongoSceneRepository', () => {
       await repository.save(scene);
     });
   });
+
+  describe('findAll', () => {
+    it('should return all scenes', async () => {
+      const scene = SceneMother.random();
+
+      await repository.save(scene);
+
+      const scenes = await repository.findAll();
+
+      expect(scenes).toEqual([scene]);
+    });
+  });
 });
