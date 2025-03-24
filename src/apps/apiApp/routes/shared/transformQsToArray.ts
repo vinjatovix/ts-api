@@ -7,7 +7,7 @@ export const transformQsToArray = (
     return value.split(',');
   }
   if (Array.isArray(value)) {
-    return value.filter((item) => typeof item === 'string') as string[];
+    return value.filter((item) => typeof item === 'string');
   }
 
   return undefined;
