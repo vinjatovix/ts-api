@@ -1,10 +1,10 @@
-import { buildLogger } from '../../../shared/plugins';
-import { CharacterRepository } from '../domain/interfaces';
-import { BookRepository } from '../../Books/domain/interfaces/BookRepository';
-import { CharacterCreatorRequest } from './CharacterCreatorRequest';
-import { Character } from '../domain';
 import { Metadata } from '../../../shared/domain/valueObject';
 import { createError } from '../../../shared/domain/errors';
+import { buildLogger } from '../../../shared/plugins';
+import { BookRepository } from '../../Books/domain/interfaces';
+import { Character } from '../domain';
+import { CharacterRepository } from '../domain/interfaces';
+import { CharacterCreatorRequest } from './interfaces';
 
 const logger = buildLogger('characterCreator');
 

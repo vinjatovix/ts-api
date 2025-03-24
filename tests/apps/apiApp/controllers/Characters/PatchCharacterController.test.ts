@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { PatchCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters/PatchCharacterController';
-import {
-  CharacterCreatorRequest,
-  CharacterPatcher
-} from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterPatcher } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers/CharacterCreatorRequestMother';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterPatcher'

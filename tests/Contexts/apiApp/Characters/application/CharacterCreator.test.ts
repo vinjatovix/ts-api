@@ -1,7 +1,5 @@
-import {
-  CharacterCreator,
-  CharacterCreatorRequest
-} from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterCreator } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { random } from '../../../fixtures/shared';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';

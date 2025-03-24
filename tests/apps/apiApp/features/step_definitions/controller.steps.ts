@@ -25,13 +25,13 @@ import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
 import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
+import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers/CharacterCreatorRequestMother';
 import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
 import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
 import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
-import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application';
 
 type EntityPrimitives =
   | BookPrimitives

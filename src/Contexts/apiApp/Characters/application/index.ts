@@ -1,5 +1,5 @@
 export * from './AllCharactersFinder';
-export * from './CharacterByQuery';
 export * from './CharacterCreator';
-export * from './CharacterCreatorRequest';
+export * from './CharacterFinder';
 export * from './CharacterPatcher';
+export * from './CharacterRemover';
