@@ -22,4 +22,6 @@ export interface CharacterRepository {
   ): Promise<Partial<Character | PopulatedCharacter> | null>;
 
   update(char: CharacterPatch, user: Username): Promise<void>;
+
+  remove(id: string): Promise<void>;
 }
