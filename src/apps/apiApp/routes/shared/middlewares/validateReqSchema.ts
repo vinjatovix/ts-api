@@ -5,7 +5,7 @@ import {
   ValidationError,
   validationResult
 } from 'express-validator';
-import { createError } from '../../../../Contexts/shared/domain/errors';
+import { createError } from '../../../../../Contexts/shared/domain/errors';
 
 export const validateReqSchema = (
   req: Request,
