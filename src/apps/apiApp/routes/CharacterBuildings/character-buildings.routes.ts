@@ -15,6 +15,8 @@ import { GetAllController } from '../../controllers/shared/GetAllController';
 import { AllCharacterBuildingsFinder } from '../../../../Contexts/apiApp/CharacterBuildings/application/AllCharacterBuildingsFinder';
 import { RequestOptions } from '../../shared/interfaces';
 import { CharacterBuildingPrimitives } from '../../../../Contexts/apiApp/CharacterBuildings/domain/interfaces';
+import { GetController } from '../../controllers/shared/GetController';
+import { CharacterBuildingFinder } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingFinder';
 
 const prefix = API_PREFIXES.characterBuilding;
 
@@ -34,6 +36,14 @@ export const register = (router: Router) => {
     'Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController'
   );
 
+  const getController: GetController<
+    CharacterBuildingFinder,
+    Partial<RequestOptions>,
+    CharacterBuildingPrimitives
+  > = container.get(
+    'Apps.apiApp.controllers.CharacterBuildings.GetCharacterBuildingController'
+  );
+
   router.post(
     `${prefix}/`,
     auth,
@@ -51,6 +61,15 @@ export const register = (router: Router) => {
     includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getAllController.run(req, res, next);
+    }
+  );
+
+  router.get(
+    `${prefix}/:id`,
+    auth,
+    includeAndFilter,
+    (req: Request, res: Response, next: NextFunction) => {
+      getController.run(req, res, next);
     }
   );
 };

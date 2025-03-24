@@ -13,4 +13,9 @@ export interface CharacterBuildingRepository {
   findAll(
     options?: Partial<RequestOptions>
   ): Promise<CharacterBuilding[] | PopulatedCharacterBuilding[]>;
+
+  search(
+    id: string,
+    options?: Partial<RequestOptions>
+  ): Promise<Partial<CharacterBuilding | PopulatedCharacterBuilding> | null>;
 }

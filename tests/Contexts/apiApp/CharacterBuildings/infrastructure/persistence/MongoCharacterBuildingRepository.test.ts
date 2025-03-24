@@ -51,4 +51,36 @@ describe('MongoCharacterBuildingRepository', () => {
       });
     });
   });
+
+  describe('search', () => {
+    it('should return an existing character building', async () => {
+      const characterBuilding = CharacterBuildingMother.random();
+
+      await repository.save(characterBuilding);
+
+      expect(await repository.search(characterBuilding.id.value)).toEqual(
+        characterBuilding
+      );
+    });
+
+    it('should not return a non existing character building', async () => {
+      expect(
+        await repository.search(CharacterBuildingMother.random().id.value)
+      ).toBeNull();
+    });
+
+    it('should return only basic and selected props', async () => {
+      const characterBuilding = CharacterBuildingMother.random();
+      await repository.save(characterBuilding);
+
+      const storedCharacterBuilding = await repository.search(
+        characterBuilding.id.value,
+        { fields: ['actor'] }
+      );
+
+      expect(storedCharacterBuilding).not.toMatchObject({
+        character: characterBuilding.character
+      });
+    });
+  });
 });
