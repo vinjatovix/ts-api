@@ -1,5 +1,5 @@
-import { envs } from '../../../../../config/plugins/envs.plugin';
-import MongoConfig from './MongoConfig';
+import { envs } from '../../../../../config/plugins';
+import MongoConfig from './interfaces/MongoConfig';
 
 const mongoConfig = {
   connection: envs.MONGO_CONNECTION,

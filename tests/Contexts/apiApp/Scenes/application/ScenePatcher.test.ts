@@ -1,5 +1,5 @@
-import { ScenePatcher } from '../../../../../src/Contexts/apiApp/Scenes/application/ScenePatcher';
-import { ScenePatch } from '../../../../../src/Contexts/apiApp/Scenes/domain/ScenePatch';
+import { ScenePatcher } from '../../../../../src/Contexts/apiApp/Scenes/application';
+import { ScenePatch } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
 import { CharacterRepositoryMock } from '../../Characters/__mocks__/CharacterRepositoryMock';

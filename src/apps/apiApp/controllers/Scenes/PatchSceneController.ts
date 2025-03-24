@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { ScenePatcher } from '../../../../Contexts/apiApp/Scenes/application/ScenePatcher';
-import { Controller } from '../../shared/interfaces';
 import httpStatus from 'http-status';
+import { ScenePatcher } from '../../../../Contexts/apiApp/Scenes/application';
+import { Controller } from '../../shared/interfaces';
 
 export class PatchSceneController implements Controller {
   private static readonly _containerId =

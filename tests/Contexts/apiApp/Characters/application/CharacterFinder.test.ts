@@ -1,4 +1,4 @@
-import { CharacterFinder } from '../../../../../src/Contexts/apiApp/Characters/application/CharacterFinder';
+import { CharacterFinder } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { CharacterRepositoryMock } from '../__mocks__/CharacterRepositoryMock';
 

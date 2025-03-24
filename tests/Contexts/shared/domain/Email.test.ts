@@ -1,6 +1,6 @@
-import { Email } from '../../../../src/Contexts/apiApp/Auth/domain';
+import { Email } from '../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../fixtures/shared';
-import { EmailMother } from './mothers/EmailMother';
+import { EmailMother } from './mothers';
 
 describe('Email', () => {
   it('should create a valid email', () => {

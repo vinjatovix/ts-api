@@ -1,9 +1,9 @@
 import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
+import { Username } from '../../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Email,
-  Username
-} from '../../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../../src/Contexts/shared/domain/valueObject';
+  StringValueObject
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../../fixtures/shared';
 import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
 

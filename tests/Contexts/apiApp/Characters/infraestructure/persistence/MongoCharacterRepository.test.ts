@@ -1,5 +1,5 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
-import { CharacterPatch } from '../../../../../../src/Contexts/apiApp/Characters/domain/CharacterPatch';
+import { CharacterPatch } from '../../../../../../src/Contexts/apiApp/Characters/domain';
 import { CharacterRepository } from '../../../../../../src/Contexts/apiApp/Characters/domain/interfaces/';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../../Auth/domain/mothers';

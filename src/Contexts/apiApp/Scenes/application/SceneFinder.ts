@@ -11,7 +11,7 @@ export class SceneFinder {
   async run(
     { id }: RequestById,
     options: Partial<RequestOptions> = {}
-  ): Promise<ScenePrimitives> {
+  ): Promise<Partial<ScenePrimitives>> {
     const scene = (await this.repository.search(id, options)) as
       | Scene
       | PopulatedScene;

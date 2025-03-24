@@ -1,11 +1,11 @@
-import { Nullable } from '../../../shared/domain/Nullable';
+import { Nullable } from '../../../shared/domain/types';
 import { Metadata, Uuid } from '../../../shared/domain/valueObject';
 import { Character, PopulatedCharacter } from '../../Characters/domain';
-import { CharacterMapper } from '../../Characters/infraestructure/persistence/CharacterMapper';
-import { CharacterType } from '../../Characters/infraestructure/types';
-import { ScenePrimitives } from './interfaces';
+import { CharacterMapper } from '../../Characters/infrastructure';
+import { CharacterType } from '../../Characters/infrastructure/types';
 import { SceneBase, SceneProps } from './SceneBase';
 import { SceneCircumstance } from './SceneCircumstance';
+import { ScenePrimitives } from './interfaces';
 
 export class PopulatedScene extends SceneBase {
   readonly characters: Nullable<Array<Character | PopulatedCharacter>>;
@@ -38,18 +38,25 @@ export class PopulatedScene extends SceneBase {
     metadata,
     characters
   }: ScenePrimitives): PopulatedScene {
+    if (
+      !characters ||
+      !Array.isArray(characters) ||
+      (characters.length && typeof characters[0] !== 'object')
+    ) {
+      throw new Error(
+        `${this.constructor.name} cannot be created without populated characters`
+      );
+    }
+
     const charInstances = characters?.map((character) =>
-      CharacterMapper.map(character as unknown as CharacterType)
+      new CharacterMapper().map(character as unknown as CharacterType)
     );
+
     return new PopulatedScene({
       id: new Uuid(id),
       metadata: Metadata.fromPrimitives(metadata),
       description: description ? new SceneCircumstance(description) : null,
-      // ...(description && { description: new SceneCircumstance(description) }),
-      characters:
-        charInstances?.filter(
-          (char): char is Character | PopulatedCharacter => char !== null
-        ) || []
+      characters: charInstances
     });
   }
 

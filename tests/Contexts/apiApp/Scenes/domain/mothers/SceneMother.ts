@@ -8,8 +8,8 @@ import {
   Uuid
 } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
-import { SceneCircumstanceMother } from './SceneCircumstanceMother';
 import { UserMother } from '../../../Auth/domain/mothers';
+import { SceneCircumstanceMother } from './SceneCircumstanceMother';
 
 export class SceneMother {
   static create({ id, description, characters, metadata }: SceneProps) {

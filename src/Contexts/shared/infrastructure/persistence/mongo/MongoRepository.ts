@@ -1,11 +1,11 @@
 import { Collection, MongoClient, MongoServerError, ObjectId } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { AggregateRoot } from '../../../domain/AggregateRoot';
 import { Username } from '../../../../apiApp/Auth/domain';
 import { updateMetadata } from '../../../application/utils';
+import { AggregateRoot } from '../../../domain';
 import { MongoErrorHandler } from './MongoErrorHandler';
 import { MongoFetchService } from './MongoFetchService';
-import { Entity } from './Entity';
+import { Entity } from './types';
 
 export abstract class MongoRepository<T extends AggregateRoot> {
   constructor(private readonly _client: Promise<MongoClient>) {}

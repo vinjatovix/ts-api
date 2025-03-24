@@ -1,4 +1,4 @@
-import { CharacterType } from '../../../Characters/infraestructure/types';
+import { CharacterType } from '../../../Characters/infrastructure/types';
 import { SceneType } from './SceneType';
 
 export type PopulatedSceneType = SceneType & {

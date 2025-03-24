@@ -1,9 +1,9 @@
 import { random } from '../../../fixtures/shared';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
-import { CharacterRepositoryMock } from '../__mocks__/CharacterRepositoryMock';
-import { CharacterRemover } from '../../../../../src/Contexts/apiApp/Characters/application/CharacterRemover';
+import { CharacterRemover } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { SceneRepositoryMock } from '../../Scenes/__mocks__/SceneRepositoryMock';
+import { CharacterRepositoryMock } from '../__mocks__/CharacterRepositoryMock';
 
 const username = random.word();
 const request = RequestByIdMother.create(UuidMother.random());

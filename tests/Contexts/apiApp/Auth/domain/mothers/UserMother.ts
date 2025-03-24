@@ -1,18 +1,18 @@
 import { RegisterUserRequest } from '../../../../../../src/Contexts/apiApp/Auth/application/interfaces';
 import {
   User,
-  Email,
   UserRoles,
   Username,
   UserPatch
 } from '../../../../../../src/Contexts/apiApp/Auth/domain';
 import {
+  Email,
+  Metadata,
   StringValueObject,
   Uuid
 } from '../../../../../../src/Contexts/shared/domain/valueObject';
-import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { random } from '../../../../fixtures/shared';
-import { EmailMother } from '../../../../shared/domain/mothers/EmailMother';
+import { EmailMother } from '../../../../shared/domain/mothers';
 import { UserRolesMother } from './UserRolesMother';
 
 export class UserMother {

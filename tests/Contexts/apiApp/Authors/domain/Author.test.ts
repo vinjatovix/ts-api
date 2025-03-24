@@ -2,11 +2,13 @@ import {
   Author,
   AuthorName
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
-import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import {
+  Uuid,
+  Metadata
+} from '../../../../../src/Contexts/shared/domain/valueObject';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
-import { AuthorNameMother } from './mothers/AuthorNameMother';
+import { AuthorNameMother } from './mothers';
 
 const user = UserMother.random().username.value;
 const metadata = new Metadata({

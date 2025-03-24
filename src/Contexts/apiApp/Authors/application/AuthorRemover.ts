@@ -2,7 +2,7 @@ import { RequestById } from '../../../shared/application/interfaces';
 import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
 import { BookRepository } from '../../Books/domain/interfaces';
-import { AuthorRepository } from '../domain';
+import { AuthorRepository } from '../domain/interfaces';
 
 const logger = buildLogger('authorRemover');
 

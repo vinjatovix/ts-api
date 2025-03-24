@@ -1,4 +1,4 @@
-import { AllScenesFinder } from '../../../../../src/Contexts/apiApp/Scenes/application/AllScenesFinder';
+import { AllScenesFinder } from '../../../../../src/Contexts/apiApp/Scenes/application';
 import { SceneRepositoryMock } from '../__mocks__/SceneRepositoryMock';
 
 describe('AllScenesFinder', () => {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
-import { SceneRemover } from '../../../../Contexts/apiApp/Scenes/application/SceneRemover';
-import { Controller } from '../../shared/interfaces';
 import httpStatus from 'http-status';
+import { SceneRemover } from '../../../../Contexts/apiApp/Scenes/application';
+import { Controller } from '../../shared/interfaces';
 
 export class DeleteSceneController implements Controller {
   private static readonly _containerId =
