@@ -1,7 +1,8 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import {
   PostCharacterController,
-  GetAllCharactersController
+  GetAllCharactersController,
+  GetCharacterController
 } from '../../controllers/Characters';
 import container from '../../dependency-injection';
 import {
@@ -25,6 +26,10 @@ export const register = (router: Router) => {
     GetAllCharactersController.containerId
   );
 
+  const getController: GetCharacterController = container.get(
+    GetCharacterController.containerId
+  );
+
   router.post(
     `${prefix}/`,
     auth,
@@ -43,6 +48,15 @@ export const register = (router: Router) => {
     includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getAllController.run(req, res, next);
+    }
+  );
+
+  router.get(
+    `${prefix}/:id`,
+    auth,
+    includeAndFilter,
+    (req: Request, res: Response, next: NextFunction) => {
+      getController.run(req, res, next);
     }
   );
 };
