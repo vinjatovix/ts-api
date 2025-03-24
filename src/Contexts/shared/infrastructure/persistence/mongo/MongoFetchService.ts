@@ -1,6 +1,8 @@
 import { Collection } from 'mongodb';
-import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { AggregateBuilder } from '../../../../shared/infrastructure/persistence/mongo';
+import {
+  AggregateBuilder,
+  AggregationOptions
+} from '../../../../shared/infrastructure/persistence/mongo';
 import { Entity } from './types';
 
 export class MongoFetchService {
@@ -11,7 +13,7 @@ export class MongoFetchService {
   }: {
     collection: Collection;
     id?: string;
-    options: Partial<RequestOptions>;
+    options: AggregationOptions;
   }): Promise<T[]> {
     if (!Object.keys(options).length) {
       return await collection.find<T>({}).toArray();
