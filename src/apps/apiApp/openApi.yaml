@@ -23,6 +23,8 @@ tags:
   - name: Auth
   - name: Authors
   - name: Books
+  - name: Characters
+  - name: Scenes
   - name: Health
 
 paths:
@@ -47,25 +49,6 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content: {}
 
   /api/v1/Auth/login:
@@ -87,27 +70,6 @@ paths:
       responses:
         '200':
           description: Successful operation
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
@@ -116,7 +78,7 @@ paths:
                   token:
                     type: string
               example:
-                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKlHdEvuL4k5CBFlyNCCWjkAZbwC1x2AYQqNUhA"
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKlHdEvuL4k5CBFlyNCCWjkAZbwC1x2AYQqNUhA'
 
   /api/v1/Auth/validate/{token}:
     get:
@@ -137,27 +99,6 @@ paths:
       responses:
         '200':
           description: Successful operation
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
@@ -166,30 +107,9 @@ paths:
                   token:
                     type: string
               example:
-                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKl"
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKl'
         '401':
           description: Unauthorized
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
@@ -249,48 +169,10 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content: {}
 
         '400':
           description: Bad Request
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-            content-length:
-              $ref: '#/components/headers/content-length'
           content:
             application/json:
               schema:
@@ -299,6 +181,15 @@ paths:
                 errors:
                   - id: 'Invalid value at params. Value: USB'
                   - name: 'Invalid value at body. Value: undefined'
+
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Author <36493a87-10c2-4cf9-bb0d-019152c51ee4> already exists'
 
   /api/v1/Authors/{id}:
     get:
@@ -332,31 +223,11 @@ paths:
       responses:
         '200':
           description: Successful operation
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Author'
+
     patch:
       deprecated: false
       tags:
@@ -379,54 +250,14 @@ paths:
         content:
           application/json:
             example:
-              name: "Sempere"
+              name: 'Sempere'
         required: true
       responses:
         '200':
           description: Updated
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-            content-length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
           content: {}
         '400':
           description: Bad Request
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
           content:
             application/json:
               schema:
@@ -434,6 +265,7 @@ paths:
               example:
                 errors:
                   - message: 'Empty body is not allowed'
+
     delete:
       deprecated: false
       tags:
@@ -454,24 +286,15 @@ paths:
       responses:
         '204':
           description: Deleted
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
           content: {}
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Author <36493a87-10c2-4cf9-bb0d-019152c51ee4> has associated books'
 
   /api/v1/Books:
     get:
@@ -527,47 +350,9 @@ paths:
       responses:
         '201':
           description: Created
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content: {}
         '400':
           description: Bad Request
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-            content-length:
-              $ref: '#/components/headers/content-length'
           content:
             application/json:
               schema:
@@ -579,6 +364,14 @@ paths:
                   - isbn: 'Invalid value at body. Value: 522'
                   - releaseDate: 'Invalid value at body. Value: leading-edge'
                   - pages: 'Invalid value at body. Value: Baht'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Book already exists'
 
   /api/v1/Books/{id}:
     get:
@@ -613,27 +406,6 @@ paths:
       responses:
         '200':
           description: Successful operation
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            x-envoy-upstream-service-time:
-              $ref: '#/components/headers/x-envoy-upstream-service-time'
-            server:
-              $ref: '#/components/headers/server'
           content:
             application/json:
               schema:
@@ -665,49 +437,9 @@ paths:
       responses:
         '200':
           description: Updated
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
-            content-length:
-              content:
-                text/plain:
-                  schema:
-                    type: string
-                  example: '0'
           content: {}
         '400':
           description: Bad Request
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
           content:
             application/json:
               schema:
@@ -735,24 +467,374 @@ paths:
       responses:
         '204':
           description: Deleted
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
           content: {}
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Book <36493a87-10c2-4cf9-bb0d-019152c51ee4> has associated characters'
+
+  /api/v1/Characters:
+    get:
+      tags:
+        - Characters
+      summary: Get all characters
+      operationId: GetAllCharacters
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Character'
+
+    post:
+      deprecated: false
+      tags:
+        - Characters
+      summary: Create Character
+      operationId: CreateCharacter
+      security:
+        - bearerAuth: []
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              id: '{{$guid}}'
+              name: '{{$randomWords}}'
+              book: '{{$guid}}'
+        required: true
+      responses:
+        '201':
+          description: Created
+          content: {}
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - id: 'Invalid value at params. Value: USB'
+                  - name: 'Invalid value at body. Value: undefined'
+                  - book: 'Invalid value at body. Value: undefined'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Character already exists'
+
+  /api/v1/Characters/{id}:
+    get:
+      deprecated: false
+      tags:
+        - Characters
+      summary: Get Character by id
+      operationId: GetCharacterById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Character'
+
+    patch:
+      deprecated: false
+      tags:
+        - Characters
+      summary: Update Character by Id
+      operationId: UpdateCharacter
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              name: 'Sempere'
+              book: '{{$guid}}'
+        required: true
+      responses:
+        '200':
+          description: Updated
+          content: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - message: 'Empty body is not allowed'
+    delete:
+      deprecated: false
+      tags:
+        - Characters
+      summary: Delete Character by Id
+      operationId: DeleteCharacterById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterId}}'
+      responses:
+        '204':
+          description: Deleted
+          content: {}
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Character <36493a87-10c2-4cf9-bb0d-019152c51ee4> has associated scenes'
+
+  /api/v1/Scenes:
+    get:
+      tags:
+        - Scenes
+      summary: Get all scenes
+      operationId: GetAllScenes
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Scene'
+
+    post:
+      deprecated: false
+      tags:
+        - Scenes
+      summary: Create Scene
+      operationId: CreateScene
+      security:
+        - bearerAuth: []
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              id: '{{$guid}}'
+              description: '{{$randomdescription}}'
+              characters: ['{{$guid}}']
+        required: true
+      responses:
+        '201':
+          description: Created
+          content: {}
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - id: 'Invalid value at params. Value: USB'
+                  - description: 'Invalid value at body. Value: undefined'
+                  - characters: 'Invalid value at body. Value: undefined'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Scene already exists'
+
+  /api/v1/Scenes/{id}:
+    get:
+      deprecated: false
+      tags:
+        - Scenes
+      summary: Get Scene by id
+      operationId: GetSceneById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{sceneId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Scene'
+    patch:
+      deprecated: false
+      tags:
+        - Scenes
+      summary: Update Scene by Id
+      operationId: UpdateScene
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              description: 'Sempere se va'
+              characters: ['{{$guid}}']
+        required: true
+      responses:
+        '200':
+          description: Updated
+          content: {}
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - message: 'Empty body is not allowed'
+    delete:
+      deprecated: false
+      tags:
+        - Scenes
+      summary: Delete Scene by Id
+      operationId: DeleteSceneById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{sceneId}}'
+      responses:
+        '204':
+          description: Deleted
+          content: {}
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'Scene has associated characterBuilds'
 
   /api/v1/health/http:
     get:
@@ -765,27 +847,6 @@ paths:
       responses:
         '200':
           description: OK
-          headers:
-            vary:
-              $ref: '#/components/headers/vary'
-            access-control-allow-credentials:
-              $ref: '#/components/headers/access-control-allow-credentials'
-            x-xss-protection:
-              $ref: '#/components/headers/x-xss-protection'
-            x-content-type-options:
-              $ref: '#/components/headers/x-content-type-options'
-            x-frame-options:
-              $ref: '#/components/headers/x-frame-options'
-            content-length:
-              $ref: '#/components/headers/content-length'
-            etag:
-              $ref: '#/components/headers/etag'
-            date:
-              $ref: '#/components/headers/date'
-            connection:
-              $ref: '#/components/headers/connection'
-            keep-alive:
-              $ref: '#/components/headers/keep-alive'
           content:
             application/json:
               schema:
@@ -885,8 +946,17 @@ components:
       example:
         message: 'Invalid token'
 
+    409:
+      title: 'Conflict'
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: 'Character <36493a87-10c2-4cf9-bb0d-019152c51ee4> has associated scenes'
+
     Health:
-      title: "Health"
+      title: 'Health'
       type: object
       properties:
         version:
@@ -906,7 +976,6 @@ components:
           type: string
         metadata:
           $ref: '#/components/schemas/Metadata'
-
 
     Book:
       type: object
@@ -933,10 +1002,45 @@ components:
         releaseDate: '2023-10-15T22:00:21.845Z'
         pages: 576
         metadata:
-          createdAt: "2023-10-15T22:00:21.845Z"
-          createdBy: "admin"
-          updatedAt: "2023-10-15T22:00:21.845Z"
-          updatedBy: "admin"
+          createdAt: '2023-10-15T22:00:21.845Z'
+          createdBy: 'admin'
+          updatedAt: '2023-10-15T22:00:21.845Z'
+          updatedBy: 'admin'
+
+    Character:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        book:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+
+    Scene:
+      type: object
+      properties:
+        id:
+          type: string
+        description:
+          type: string
+        characters:
+          type: array
+          items:
+            type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+      example:
+        id: 'b1d9b21-f695-4abd-910b-78c42204f1f9'
+        description: 'Scene description'
+        characters: ['51ad86d3-a782-4222-b96e-c1999cd7e2c9']
+        metadata:
+          createdAt: '2023-10-15T22:00:21.845Z'
+          createdBy: 'admin'
+          updatedAt: '2023-10-15T22:00:21.845Z'
+          updatedBy: 'admin'
 
     Metadata:
       type: object
@@ -953,11 +1057,10 @@ components:
           type: string
       example:
         metadata:
-          createdAt: "2023-10-15T22:00:21.845Z"
-          createdBy: "admin"
-          updatedAt: "2023-10-15T22:00:21.845Z"
-          updatedBy: "admin"
-
+          createdAt: '2023-10-15T22:00:21.845Z'
+          createdBy: 'admin'
+          updatedAt: '2023-10-15T22:00:21.845Z'
+          updatedBy: 'admin'
 
   securitySchemes:
     bearerAuth:
