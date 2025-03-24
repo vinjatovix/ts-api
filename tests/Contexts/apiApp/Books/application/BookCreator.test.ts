@@ -6,14 +6,18 @@ import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock'
 import { BookMother } from '../domain/mothers';
 
 import { BookCreatorRequestMother } from './mothers';
+import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
+import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 
 describe('BookCreator', () => {
   let repository: CreateBookRepositoryMock;
   let creator: BookCreator;
+  let authorRepository: AuthorRepositoryMock;
 
   beforeEach(() => {
     repository = new CreateBookRepositoryMock();
-    creator = new BookCreator(repository);
+    authorRepository = new AuthorRepositoryMock();
+    creator = new BookCreator(repository, authorRepository);
   });
 
   it('should create a valid book', async () => {
@@ -45,6 +49,13 @@ describe('BookCreator', () => {
 
       repository.assertSaveHasBeenCalledWith(book);
     }).toThrow(InvalidArgumentError);
+  });
+
+  it('should throw an error when the book author is not found', async () => {
+    const request = BookCreatorRequestMother.random();
+    request.author = 'not-found';
+
+    await expect(creator.run(request)).rejects.toThrow(NotFoundError);
   });
 
   it('should throw an error when the book isbn is not valid', async () => {

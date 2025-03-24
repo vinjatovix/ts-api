@@ -2,33 +2,9 @@ Feature: Get all books in the collection
   In order to see all books in the collection
   As an authenticated user
 
-  #preconditions for the scenario
   Background:
-    Given a POST admin request to "/api/v1/Books/" with body
-      """
-      {
-        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
-        "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148410-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 1178
-      }
-      """
-    Then the response status code should be 201
-
-    Given a POST admin request to "/api/v1/Books/" with body
-      """
-      {
-        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d",
-        "title": "The Lord of the Rings 2",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148412-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 1178
-      }
-      """
-    Then the response status code should be 201
+    Given an existing "book" with id "9a6e0804-2bd0-4672-a79d-d97027f9071c"
+    Given an existing "book" with id "9a6e0804-2bd0-4672-b79d-b97027f9071d"
 
   Scenario: Get all books in the collection
     Given an authenticated GET request to "/api/v1/Books"
@@ -36,22 +12,12 @@ Feature: Get all books in the collection
     Then the response body will be an array containing
       """
       {
-        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
-        "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148410-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 1178
+        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c"
       }
       """
     Then the response body will be an array containing
       """
       {
-        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d",
-        "title": "The Lord of the Rings 2",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148412-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 1178
+        "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d"
       }
       """

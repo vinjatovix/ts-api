@@ -15,7 +15,7 @@ export const postReqSchema = [
 export const patchReqSchema = [
   param('id').exists().isUUID(),
   body('title').optional().isString(),
-  body('author').optional().isString(),
+  body('author').optional().isUUID(),
   body('isbn').optional().matches(isbnRegex),
   body('releaseDate').optional().isISO8601().toDate(),
   body('pages').optional().isInt(),

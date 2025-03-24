@@ -1,14 +1,17 @@
 import { NextFunction, Request, Response, Router } from 'express';
-
 import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
 import { GetAllBooksController } from '../../controllers/Books/GetAllBooksController';
 import { GetBookController } from '../../controllers/Books/GetBookController';
 import { PatchBookController } from '../../controllers/Books/PatchBookController';
 import { PostBookController } from '../../controllers/Books/PostBookController';
 import container from '../../dependency-injection';
-
-import { auth, isAdmin, validateBody, validateReqSchema } from '../shared';
-
+import {
+  API_PREFIXES,
+  auth,
+  isAdmin,
+  validateBody,
+  validateReqSchema
+} from '../shared';
 import {
   deleteReqSchema,
   getReqSchema,
@@ -16,7 +19,7 @@ import {
   postReqSchema
 } from './reqSchemas';
 
-const prefix = '/api/v1/Books';
+const prefix = API_PREFIXES.book;
 
 export const register = (router: Router) => {
   const postController: PostBookController = container.get(

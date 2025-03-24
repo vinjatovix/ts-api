@@ -4,12 +4,13 @@ Feature: Create a new book
   I want to create a new book
 
   Scenario: A valid non existing book
+    Given an existing "author" with id "8a6e0804-2bd0-4672-b79d-d97027f9071b"
     Given a POST admin request to "/api/v1/Books/" with body
       """
       {
         "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
         "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
+        "author": "8a6e0804-2bd0-4672-b79d-d97027f9071b",
         "isbn": "978-3-16-148410-0",
         "releaseDate": "2023-10-10T23:21:50.508Z",
         "pages": 1178
@@ -65,7 +66,7 @@ Feature: Create a new book
       {
         "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
         "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
+        "author": "8a6e0804-2bd0-4672-b79d-d97027f9071b",
         "isbn": "978-3-16-148410-0",
         "releaseDate": "2023-10-10T23:21:50.508Z",
         "pages": 1178
@@ -85,7 +86,7 @@ Feature: Create a new book
       {
         "id": "8a6e0804-2bd0-4672-b79d-d97027f9071a",
         "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
+        "author": "8a6e0804-2bd0-4672-b79d-d97027f9071b",
         "isbn": "978-3-16-148410-0",
         "releaseDate": "2023-10-10T23:21:50.508Z",
         "pages": 1178
