@@ -5,7 +5,7 @@ import {
   Then,
   DataTable
 } from '@cucumber/cucumber';
-import { assert } from 'chai';
+import { assert, expect } from 'chai';
 import request from 'supertest';
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
 import { API_PREFIXES } from '../../../../../src/apps/apiApp/routes/shared';
@@ -24,6 +24,11 @@ import { random } from '../../../../Contexts/fixtures/shared';
 import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
 import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
+import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
+import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers/CharacterCreatorRequestMother';
+import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
+
+type EntityPrimitives = BookPrimitives | AuthorPrimitives | CharacterPrimitives;
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -51,6 +56,17 @@ const getPayloadByEntity = async (
     return { ...bookRequest, ...dependencies };
   }
 
+  if (entity === 'character') {
+    const { book } = await _createDependenciesByEntity(entity);
+    const characterRequest = CharacterCreatorRequestMother.create({
+      id: new Uuid(id),
+      name: CharacterNameMother.random(),
+      book: new Uuid(book)
+    });
+
+    return characterRequest;
+  }
+
   return {};
 };
 
@@ -60,6 +76,8 @@ const _createDependenciesByEntity = async (
   switch (entity) {
     case 'book':
       return await _getBookDependencies();
+    case 'character':
+      return await _getCharacterDependencies();
     default:
       return {};
   }
@@ -74,6 +92,18 @@ const _getBookDependencies = async (): Promise<{ author: string }> => {
   await _request.expect(201);
 
   return { author: autor?.id };
+};
+
+const _getCharacterDependencies = async (): Promise<{ book: string }> => {
+  const book = await getPayloadByEntity('book', Uuid.random().value);
+  _request = request(app.httpServer)
+    .post(API_PREFIXES.book)
+    .set('Authorization', `Bearer ${validAdminBearerToken}`)
+    .send(book);
+
+  await _request.expect(201);
+
+  return { book: book?.id };
 };
 
 const compareResponseObject = <T>(
@@ -230,6 +260,26 @@ Then('the response body should be', async (docString: string) => {
   assert.deepStrictEqual(_response.body, JSON.parse(docString));
 });
 
+Then('the field {string} should be populated', async (fieldPath) => {
+  const response = await _request;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function getNestedValue(obj: any, path: string): any {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  }
+
+  const data = Array.isArray(response.body) ? response.body[0] : response.body;
+  const fieldValue = getNestedValue(data, fieldPath);
+
+  expect(fieldValue).to.exist;
+  expect(typeof fieldValue).to.equal('object');
+  expect(
+    fieldValue &&
+      typeof fieldValue === 'object' &&
+      Object.keys(fieldValue).length
+  ).to.be.greaterThan(0);
+});
+
 Then('the response body should contain', async (docString: string) => {
   const response = await _request;
   const expectedResponseBody: Partial<BookPrimitives | AuthorPrimitives> =
@@ -247,7 +297,7 @@ Then(
   'the response body will be an array containing',
   async (docString: string) => {
     const response = await _request;
-    const expectedResponseBody: Partial<BookPrimitives | AuthorPrimitives> =
+    const expectedResponseBody: Partial<EntityPrimitives> =
       JSON.parse(docString);
     assert.isArray(response.body);
 
