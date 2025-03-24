@@ -10,9 +10,13 @@ services:
       method: 'createClient'
     arguments: ['apiApp', '@apiApp.MongoConfig']
 
+  apiApp.Scenes.infrastructure.SceneMapper:
+    class: ../../../../Contexts/apiApp/Scenes/infrastructure/SceneMapper
+
   apiApp.Scenes.domain.SceneRepository:
     class: ../../../../Contexts/apiApp/Scenes/infrastructure/persistence/MongoSceneRepository
-    arguments: ['@apiApp.MongoClient']
+    arguments:
+      ['@apiApp.MongoClient', '@apiApp.Scenes.infrastructure.SceneMapper']
 
   apiApp.Scenes.application.SceneCreator:
     class: ../../../../Contexts/apiApp/Scenes/application/SceneCreator
