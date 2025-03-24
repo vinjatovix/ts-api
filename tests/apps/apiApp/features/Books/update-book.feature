@@ -1,5 +1,5 @@
 Feature: Update an existing book
-  As an  4532q  1  r56guser with admin rights
+  As an user with admin rights
   I want to update an existing book
 
   Scenario: A valid existing book
