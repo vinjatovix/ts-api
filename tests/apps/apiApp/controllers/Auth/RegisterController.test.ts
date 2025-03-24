@@ -6,7 +6,6 @@ import { RegisterController } from '../../../../../src/apps/apiApp/controllers/A
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';
 import { RegisterUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers/RegisterUserRequestMother';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
 
 describe('RegisterController', () => {
   let repository: UserRepositoryMock;
@@ -48,7 +47,9 @@ describe('RegisterController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(next).toHaveBeenCalledWith(expect.any(InvalidArgumentError));
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'InvalidArgumentError' })
+      );
     });
   });
 });

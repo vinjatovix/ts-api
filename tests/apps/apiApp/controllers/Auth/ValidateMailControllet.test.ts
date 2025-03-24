@@ -4,7 +4,6 @@ import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/U
 import { ValidateMailController } from '../../../../../src/apps/apiApp/controllers/Auth';
 import { ValidateMail } from '../../../../../src/Contexts/apiApp/Auth/application';
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
-import { AuthError } from '../../../../../src/Contexts/shared/domain/errors/AuthError';
 
 describe('ValidateMailController', () => {
   let repository: UserRepositoryMock;
@@ -46,7 +45,9 @@ describe('ValidateMailController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(next).toHaveBeenCalledWith(expect.any(AuthError));
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'AuthError' })
+      );
     });
   });
 });

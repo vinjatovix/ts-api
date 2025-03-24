@@ -1,6 +1,5 @@
 import { BookPatcher } from '../../../../../src/Contexts/apiApp/Books/application/BookPatcher';
 import { BookPatch } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors';
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
@@ -40,7 +39,7 @@ describe('BookPatcher', () => {
     request.author = 'not-found';
 
     await expect(updater.run(request, username.value)).rejects.toThrow(
-      NotFoundError
+      expect.objectContaining({ name: 'NotFoundError' })
     );
   });
 });

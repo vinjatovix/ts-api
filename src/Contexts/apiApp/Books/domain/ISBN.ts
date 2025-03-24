@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
+import { createError } from '../../../shared/domain/errors';
 import { StringValueObject } from '../../../shared/domain/valueObject/StringValueObject';
 
 export class Isbn extends StringValueObject {
@@ -15,7 +15,7 @@ export class Isbn extends StringValueObject {
       /^(978|979)-\d{1,5}-\d{1,7}-\d{1,7}-\d$/.test(_value) === false ||
       _value.replace(/-/g, '').length > 13
     ) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> <${value}> is not a valid ISBN`
       );
     }

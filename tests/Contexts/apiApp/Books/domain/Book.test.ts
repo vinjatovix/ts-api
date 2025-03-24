@@ -5,7 +5,6 @@ import {
   BookTitle,
   Isbn
 } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { random } from '../../../fixtures/shared';
@@ -45,7 +44,7 @@ describe('Book', () => {
       let id;
       expect(() => {
         id = new Uuid(UuidMother.invalidValue());
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(id).toBeUndefined();
     });
@@ -57,7 +56,7 @@ describe('Book', () => {
       expect(() => {
         // @ts-expect-error Testing purposes
         title = new BookTitle(BookTitleMother.invalidValue());
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(title).toBeUndefined();
     });
@@ -66,7 +65,7 @@ describe('Book', () => {
       let title;
       expect(() => {
         title = new BookTitle(random.word({ min: BookTitle.MAX_LENGTH + 1 }));
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(title).toBeUndefined();
     });
@@ -75,7 +74,7 @@ describe('Book', () => {
       let title;
       expect(() => {
         title = new BookTitle('');
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(title).toBeUndefined();
     });
@@ -85,7 +84,7 @@ describe('Book', () => {
       expect(() => {
         // @ts-expect-error Testing purposes
         title = new BookTitle(null);
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(title).toBeUndefined();
     });
@@ -97,7 +96,7 @@ describe('Book', () => {
       expect(() => {
         // @ts-expect-error Testing purposes
         author = new Uuid(123);
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(author).toBeUndefined();
     });
@@ -106,7 +105,7 @@ describe('Book', () => {
       let author;
       expect(() => {
         author = new Uuid(UuidMother.invalidValue());
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(author).toBeUndefined();
     });
@@ -115,7 +114,7 @@ describe('Book', () => {
       let author;
       expect(() => {
         author = new Uuid('');
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(author).toBeUndefined();
     });
@@ -126,7 +125,7 @@ describe('Book', () => {
       let releaseDate;
       expect(() => {
         releaseDate = new BookReleaseDate('invalid-date');
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(releaseDate).toBeUndefined();
     });
@@ -137,7 +136,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('invalid-isbn');
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(isbn).toBeUndefined();
     });
@@ -146,7 +145,7 @@ describe('Book', () => {
       let isbn;
       expect(() => {
         isbn = new Isbn('');
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(isbn).toBeUndefined();
     });
@@ -158,7 +157,7 @@ describe('Book', () => {
       expect(() => {
         // @ts-expect-error Testing purposes
         pages = new BookPages(BookPagesMother.invalidType());
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(pages).toBeUndefined();
     });
@@ -167,7 +166,7 @@ describe('Book', () => {
       let pages;
       expect(() => {
         pages = new BookPages(BookPagesMother.invalidValue());
-      }).toThrow(InvalidArgumentError);
+      }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
       expect(pages).toBeUndefined();
     });

@@ -1,6 +1,5 @@
 import { AuthorPatcher } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorPatch } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 import { AuthorCreatorRequestMother } from './mothers/AuthorCreatorRequestMother';
@@ -37,7 +36,7 @@ describe('AuthorPatcher', () => {
     request.id = 'not-found';
 
     await expect(updater.run(request, username.value)).rejects.toThrow(
-      NotFoundError
+      expect.objectContaining({ name: 'NotFoundError' })
     );
   });
 });

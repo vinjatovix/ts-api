@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../errors/InvalidArgumentError';
+import { createError } from '../errors';
 
 export class DateValueObject {
   readonly value: Date;
@@ -12,7 +12,7 @@ export class DateValueObject {
     const parsedDate = new Date(value);
 
     if (isNaN(parsedDate.getTime())) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> does not allow the value <${value}>`
       );
     }
