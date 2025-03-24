@@ -67,3 +67,7 @@ services:
   Apps.apiApp.controllers.Characters.GetAllCharactersController:
     class: ../../controllers/Characters/GetAllCharactersController
     arguments: ['@apiApp.Characters.application.AllCharactersFinder']
+
+  Apps.apiApp.controllers.Characters.GetCharacterController:
+    class: ../../controllers/Characters/GetCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterFinder']
