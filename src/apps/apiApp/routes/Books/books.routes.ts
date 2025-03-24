@@ -19,6 +19,8 @@ import {
   postReqSchema
 } from './reqSchemas';
 
+import { includeAndFilter } from '../shared/middlewares/includeAndFilter';
+
 const prefix = API_PREFIXES.book;
 
 export const register = (router: Router) => {
@@ -69,6 +71,7 @@ export const register = (router: Router) => {
   router.get(
     `${prefix}`,
     auth,
+    includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getAllController.run(req, res, next);
     }
@@ -78,6 +81,7 @@ export const register = (router: Router) => {
     `${prefix}/:id`,
     auth,
     getReqSchema,
+    includeAndFilter,
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       getController.run(req, res, next);

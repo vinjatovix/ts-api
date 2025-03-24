@@ -1,7 +1,9 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { StringValueObject } from '../../../shared/domain/value-object/StringValueObject';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-import { Email } from '../../../shared/domain/value-object/Email';
+import {
+  Email,
+  StringValueObject,
+  Uuid
+} from '../../../shared/domain/valueObject';
 import { UserRoles } from './UserRoles';
 import { Username } from './Username';
 

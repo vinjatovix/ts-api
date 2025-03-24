@@ -4,7 +4,7 @@ import {
   UserRoles,
   Username
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/value-object/StringValueObject';
+import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
 import { RegisterUserRequestMother } from './mothers/RegisterUserRequestMother';

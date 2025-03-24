@@ -7,25 +7,24 @@ import {
 } from '@cucumber/cucumber';
 import { assert } from 'chai';
 import request from 'supertest';
-
 import { ApiApp } from '../../../../../src/apps/apiApp/ApiApp';
-import container from '../../../../../src/apps/apiApp/dependency-injection';
-
-import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
-import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins/EncrypterTool';
-import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
-import { random } from '../../../../Contexts/fixtures/shared';
-
-import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { API_PREFIXES } from '../../../../../src/apps/apiApp/routes/shared';
-import { KeyStringObject } from '../../../../../src/apps/apiApp/shared/interfaces/KeyStringObject';
+import { StringsMap } from '../../../../../src/apps/apiApp/shared/interfaces';
+import container from '../../../../../src/apps/apiApp/dependency-injection';
 import {
   AuthorCreatorRequest,
   AuthorResponse
 } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application';
-import { BookResponse } from '../../../../../src/Contexts/apiApp/Books/application/BookResponse';
+import {
+  BookCreatorRequest,
+  BookResponse
+} from '../../../../../src/Contexts/apiApp/Books/application';
+import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
+import { random } from '../../../../Contexts/fixtures/shared';
+import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -42,7 +41,7 @@ let validUserBearerToken: Nullable<string>;
 const getPayloadByEntity = async (
   entity: string,
   id: string
-): Promise<BookCreatorRequest | AuthorCreatorRequest | KeyStringObject> => {
+): Promise<BookCreatorRequest | AuthorCreatorRequest | StringsMap> => {
   if (entity === 'author') {
     return { id, name: 'test author' };
   }
@@ -58,7 +57,7 @@ const getPayloadByEntity = async (
 
 const _createDependenciesByEntity = async (
   entity: string
-): Promise<KeyStringObject> => {
+): Promise<StringsMap> => {
   switch (entity) {
     case 'book':
       return await _getBookDependencies();
@@ -76,6 +75,32 @@ const _getBookDependencies = async (): Promise<{ author: string }> => {
   await _request.expect(201);
 
   return { author: autor?.id };
+};
+
+const compareResponseObject = <T>(
+  responseObj: T,
+  expectedObj: Partial<T>
+): boolean => {
+  return Object.entries(expectedObj).every(([key, value]) => {
+    if (Object.prototype.hasOwnProperty.call(responseObj, key)) {
+      if (typeof value === 'object' && value !== null) {
+        return Object.entries(value).every(
+          ([subKey, subValue]: [string, unknown]) => {
+            const typedSubKey = subKey as keyof typeof value;
+            return (
+              (responseObj[key as keyof T] as Record<string, unknown>)[
+                typedSubKey
+              ] === subValue
+            );
+          }
+        );
+      } else {
+        return responseObj[key as keyof T] === value;
+      }
+    } else {
+      return false;
+    }
+  });
 };
 
 BeforeAll(async () => {
@@ -208,8 +233,15 @@ Then('the response body should be', async (docString: string) => {
 
 Then('the response body should contain', async (docString: string) => {
   const response = await _request;
-  const expectedResponseBody = JSON.parse(docString);
-  assert.include(response.body, expectedResponseBody);
+  const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+    JSON.parse(docString);
+
+  const matches = compareResponseObject(response.body, expectedResponseBody);
+
+  assert.isTrue(
+    matches,
+    'Expected response body to match the expected response body'
+  );
 });
 
 Then(
@@ -219,14 +251,11 @@ Then(
     const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
       JSON.parse(docString);
     assert.isArray(response.body);
+
     const matches = response.body.some(
       (item: BookResponse | AuthorResponse) => {
         const typedItem = item as BookResponse | AuthorResponse;
-
-        return Object.keys(expectedResponseBody).every((key) => {
-          const typedKey = key as keyof (BookResponse | AuthorResponse);
-          return typedItem[typedKey] === expectedResponseBody[typedKey];
-        });
+        return compareResponseObject(typedItem, expectedResponseBody);
       }
     );
 

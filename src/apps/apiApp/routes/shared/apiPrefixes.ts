@@ -1,6 +1,6 @@
-import { KeyStringObject } from '../../shared/interfaces/KeyStringObject';
+import { StringsMap } from '../../shared/interfaces';
 
-export const API_PREFIXES: KeyStringObject = {
+export const API_PREFIXES: StringsMap = {
   auth: '/api/v1/Auth',
   author: '/api/v1/Authors',
   book: '/api/v1/Books',

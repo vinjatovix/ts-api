@@ -1,12 +1,8 @@
-import { EncrypterTool } from '../../../shared/plugins/EncrypterTool';
 import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
-import { StringValueObject } from '../../../shared/domain/value-object/StringValueObject';
-import { Uuid } from '../../../shared/domain/value-object/Uuid';
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
-
+import { StringValueObject, Uuid } from '../../../shared/domain/valueObject';
+import { EncrypterTool, buildLogger } from '../../../shared/plugins';
 import { User, Email, UserRepository, UserRoles, Username } from '../domain';
-
-import { RegisterUserRequest } from './RegisterUserRequest';
+import { RegisterUserRequest } from './interfaces/RegisterUserRequest';
 
 const logger = buildLogger('registerUser');
 

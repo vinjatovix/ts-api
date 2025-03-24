@@ -1,16 +1,14 @@
 import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
 import {
-  BookAuthor,
   BookPages,
   BookReleaseDate,
   BookTitle,
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
 
 import {
-  BookAuthorMother,
   BookPagesMother,
   BookReleaseDateMother,
   BookTitleMother,
@@ -21,7 +19,7 @@ export class BookCreatorRequestMother {
   static create(
     id: Uuid,
     title: BookTitle,
-    author: BookAuthor,
+    author: Uuid,
     isbn: Isbn,
     releaseDate: BookReleaseDate,
     pages: BookPages
@@ -40,7 +38,7 @@ export class BookCreatorRequestMother {
     return this.create(
       id ? UuidMother.create(id) : UuidMother.random(),
       BookTitleMother.random(),
-      BookAuthorMother.random(),
+      UuidMother.random(),
       ISBNMother.random(),
       BookReleaseDateMother.random(),
       BookPagesMother.random()
@@ -55,8 +53,8 @@ export class BookCreatorRequestMother {
       ? (BookTitleMother.invalidValue() as string)
       : BookTitleMother.random().value;
     const author = keys.includes('author')
-      ? BookAuthorMother.invalidValue()
-      : BookAuthorMother.random().value;
+      ? UuidMother.invalidValue()
+      : UuidMother.random().value;
     const isbn = keys.includes('isbn')
       ? ISBNMother.invalidValue()
       : ISBNMother.random().value;

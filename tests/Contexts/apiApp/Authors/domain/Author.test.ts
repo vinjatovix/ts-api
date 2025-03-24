@@ -2,8 +2,8 @@ import {
   Author,
   AuthorName
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
-import { Uuid } from '../../../../../src/Contexts/shared/domain/value-object/Uuid';
+import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
+import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { AuthorNameMother } from './mothers/AuthorNameMother';
 

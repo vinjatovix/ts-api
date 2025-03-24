@@ -21,3 +21,16 @@ Feature: Get all books in the collection
         "id": "9a6e0804-2bd0-4672-b79d-b97027f9071d"
       }
       """
+
+    Given an authenticated GET request to "/api/v1/Books?include=author"
+    Then the response status code should be 200
+    Then the response body will be an array containing
+      """
+      {
+        "id": "9a6e0804-2bd0-4672-a79d-d97027f9071c",
+        "author": {
+          "name": "test author"
+        }
+      }
+      """
+

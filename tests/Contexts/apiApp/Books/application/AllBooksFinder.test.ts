@@ -19,4 +19,12 @@ describe('AllBooksFinder', () => {
 
     repository.assertSearchAllHasBeenCalled();
   });
+
+  it('should find all books with options', async () => {
+    const options = { include: ['author'] };
+
+    await finder.run(options);
+
+    repository.assertSearchAllHasBeenCalledWith(options);
+  });
 });

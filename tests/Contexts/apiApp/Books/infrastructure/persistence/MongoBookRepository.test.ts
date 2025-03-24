@@ -1,8 +1,6 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
-import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain';
-
+import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
-
 import { BookMother } from '../../domain/mothers';
 
 const repository: BookRepository = container.get(
