@@ -18,7 +18,7 @@ export class MongoCharacterRepository
     private readonly mapper: CharacterMapper
   ) {
     super(client);
-    this.mapper = new CharacterMapper();
+    this.mapper = mapper;
   }
   public async save(character: Character): Promise<void> {
     return await this.persist(character.id.value, character);
