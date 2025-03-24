@@ -13,5 +13,5 @@ export interface UserRepository {
   findByQuery(query: {
     id?: string;
     username?: string;
-  }): Promise<{ id: string; username: string }[]>;
+  }): Promise<Partial<User>[]>;
 }
