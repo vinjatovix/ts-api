@@ -4,14 +4,25 @@ import {
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
 import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorNameMother } from './mothers/AuthorNameMother';
+
+const user = UserMother.random().username.value;
+const metadata = new Metadata({
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  createdBy: user,
+  updatedBy: user
+});
 
 describe('Author', () => {
   it('should create a valid author', () => {
     const authorValueObjects = {
       id: Uuid.random(),
-      name: AuthorNameMother.random()
+      name: AuthorNameMother.random(),
+      metadata
     };
 
     expect(new Author(authorValueObjects)).toEqual(authorValueObjects);

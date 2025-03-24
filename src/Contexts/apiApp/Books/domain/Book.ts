@@ -1,5 +1,7 @@
+import { MetadataType } from '../../../shared/application/MetadataType';
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
 import { Uuid } from '../../../shared/domain/valueObject';
+import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
@@ -12,6 +14,7 @@ export class Book extends AggregateRoot {
   readonly isbn: Isbn;
   readonly releaseDate: BookReleaseDate;
   readonly pages: BookPages;
+  readonly metadata: Metadata;
 
   constructor({
     id,
@@ -19,7 +22,8 @@ export class Book extends AggregateRoot {
     author,
     isbn,
     releaseDate,
-    pages
+    pages,
+    metadata
   }: {
     id: Uuid;
     title: BookTitle;
@@ -27,6 +31,7 @@ export class Book extends AggregateRoot {
     isbn: Isbn;
     releaseDate: BookReleaseDate;
     pages: BookPages;
+    metadata: Metadata;
   }) {
     super();
     this.id = id;
@@ -35,6 +40,7 @@ export class Book extends AggregateRoot {
     this.isbn = isbn;
     this.releaseDate = releaseDate;
     this.pages = pages;
+    this.metadata = metadata;
   }
 
   toPrimitives() {
@@ -44,7 +50,8 @@ export class Book extends AggregateRoot {
       author: this.author.value,
       isbn: this.isbn.value,
       releaseDate: this.releaseDate.value,
-      pages: this.pages.value
+      pages: this.pages.value,
+      metadata: this.metadata.toPrimitives()
     };
   }
 
@@ -54,7 +61,8 @@ export class Book extends AggregateRoot {
     author,
     isbn,
     releaseDate,
-    pages
+    pages,
+    metadata
   }: {
     id: string;
     title: string;
@@ -62,6 +70,7 @@ export class Book extends AggregateRoot {
     isbn: string;
     releaseDate: string;
     pages: number;
+    metadata: MetadataType;
   }) {
     return new Book({
       id: new Uuid(id),
@@ -69,7 +78,8 @@ export class Book extends AggregateRoot {
       author: new Uuid(author),
       isbn: new Isbn(isbn),
       releaseDate: new BookReleaseDate(releaseDate),
-      pages: new BookPages(pages)
+      pages: new BookPages(pages),
+      metadata: Metadata.fromPrimitives(metadata)
     });
   }
 }

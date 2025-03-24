@@ -21,7 +21,8 @@ export class AuthorFinder {
 
     return {
       id: author.id.value,
-      name: author.name.value
+      name: author.name.value,
+      metadata: author.metadata.toPrimitives()
     };
   }
 }

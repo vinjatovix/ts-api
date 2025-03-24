@@ -25,6 +25,7 @@ import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
 import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
 import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
+import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -67,7 +68,7 @@ const _createDependenciesByEntity = async (
 };
 
 const _getBookDependencies = async (): Promise<{ author: string }> => {
-  const autor = await getPayloadByEntity('author', random.uuid());
+  const autor = await getPayloadByEntity('author', Uuid.random().value);
   _request = request(app.httpServer)
     .post(API_PREFIXES.author)
     .set('Authorization', `Bearer ${validAdminBearerToken}`)
@@ -110,13 +111,13 @@ BeforeAll(async () => {
   validAdminBearerToken = await encrypter.generateToken({
     id: Uuid.random().value,
     email: 'admin@tsapi.com',
-    username: random.word(),
+    username: UserMother.random().username.value,
     roles: ['admin']
   });
   validUserBearerToken = await encrypter.generateToken({
     id: Uuid.random().value,
     email: 'user@tsapi.com',
-    username: random.word(),
+    username: UserMother.random().username.value,
     roles: ['user']
   });
 });

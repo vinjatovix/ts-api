@@ -1,5 +1,11 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { AggregateRoot } from '../../../domain/AggregateRoot';
+import { Username } from '../../../../apiApp/Auth/domain';
+
+interface UpdateMetadata {
+  'metadata.updatedBy': string;
+  'metadata.updatedAt': Date;
+}
 
 export abstract class MongoRepository<T extends AggregateRoot> {
   constructor(private _client: Promise<MongoClient>) {}
@@ -14,12 +20,17 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     return (await this.client()).db().collection(this.collectionName());
   }
 
-  protected async persist(id: string, aggregateRoot: T): Promise<void> {
+  protected async persist(
+    id: string,
+    aggregateRoot: T,
+    username?: Username
+  ): Promise<void> {
     const collection = await this.collection();
     const document = {
       ...aggregateRoot.toPrimitives(),
       _id: id,
-      id: undefined
+      id: undefined,
+      ...(username && this.updateMetadata(username))
     };
 
     await collection.updateOne(
@@ -29,15 +40,15 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     );
   }
 
-  protected async patch(aggregateRoot: T): Promise<void> {
-    const collection = await this.collection();
-    const { id, ...document } = aggregateRoot.toPrimitives();
-
-    await collection.updateOne({ _id: id as ObjectId }, { $set: document });
-  }
-
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
     await collection.deleteOne({ _id: id as unknown as ObjectId });
+  }
+
+  private updateMetadata(username: Username): UpdateMetadata {
+    return {
+      'metadata.updatedBy': username.value,
+      'metadata.updatedAt': new Date()
+    };
   }
 }

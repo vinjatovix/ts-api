@@ -1,9 +1,11 @@
+import { MetadataType } from '../../../shared/application/MetadataType';
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
 import {
   Email,
   StringValueObject,
   Uuid
 } from '../../../shared/domain/valueObject';
+import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { UserRoles } from './UserRoles';
 import { Username } from './Username';
 
@@ -14,6 +16,7 @@ export class User extends AggregateRoot {
   readonly password: StringValueObject;
   readonly emailValidated: boolean;
   readonly roles: UserRoles;
+  readonly metadata: Metadata;
 
   constructor({
     id,
@@ -21,7 +24,8 @@ export class User extends AggregateRoot {
     username,
     password,
     emailValidated,
-    roles
+    roles,
+    metadata
   }: {
     id: Uuid;
     email: Email;
@@ -29,6 +33,7 @@ export class User extends AggregateRoot {
     password: StringValueObject;
     emailValidated: boolean;
     roles: UserRoles;
+    metadata: Metadata;
   }) {
     super();
     this.id = id;
@@ -37,6 +42,7 @@ export class User extends AggregateRoot {
     this.password = password;
     this.emailValidated = emailValidated;
     this.roles = roles;
+    this.metadata = metadata;
   }
 
   toPrimitives(): Record<string, unknown> {
@@ -46,7 +52,8 @@ export class User extends AggregateRoot {
       username: this.username.value,
       password: this.password.value,
       emailValidated: this.emailValidated,
-      roles: this.roles.value
+      roles: this.roles.value,
+      metadata: this.metadata.toPrimitives()
     };
   }
 
@@ -56,7 +63,8 @@ export class User extends AggregateRoot {
     username,
     password,
     emailValidated,
-    roles
+    roles,
+    metadata
   }: {
     id: string;
     email: string;
@@ -64,6 +72,7 @@ export class User extends AggregateRoot {
     password: string;
     emailValidated: boolean;
     roles: string[];
+    metadata: MetadataType;
   }): User {
     return new User({
       id: new Uuid(id),
@@ -71,7 +80,8 @@ export class User extends AggregateRoot {
       username: new Username(username),
       password: new StringValueObject(password),
       emailValidated,
-      roles: new UserRoles(roles)
+      roles: new UserRoles(roles),
+      metadata: Metadata.fromPrimitives(metadata)
     });
   }
 }

@@ -1,5 +1,6 @@
 import { NotFoundError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
+import { Username } from '../../Auth/domain';
 import { AuthorRepository } from '../../Authors/domain';
 import { BookPatch } from '../domain';
 import { BookRepository } from '../domain/interfaces';
@@ -32,7 +33,7 @@ export class BookPatcher {
 
     const book = BookPatch.fromPrimitives(request);
 
-    await this.repository.update(book);
+    await this.repository.update(book, new Username(username));
     logger.info(`Updated Book: <${book.id}> by <${username}>`);
   }
 }
