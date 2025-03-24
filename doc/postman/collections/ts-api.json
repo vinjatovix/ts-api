@@ -3,8 +3,8 @@
 		"_postman_id": "f3678fc0-a2c3-4a13-940c-912cf5bb48aa",
 		"name": "ts-api",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "30268071",
-		"_collection_link": "https://vinjatovix.postman.co/workspace/vinjatovix-Workspace~59364019-9d51-4f17-8557-f17e428fa64b/collection/30268071-f3678fc0-a2c3-4a13-940c-912cf5bb48aa?action=share&source=collection_link&creator=30268071"
+		"_exporter_id": "11253333",
+		"_collection_link": "https://vinjatovix.postman.co/workspace/vinjatovix-Workspace~59364019-9d51-4f17-8557-f17e428fa64b/collection/30268071-f3678fc0-a2c3-4a13-940c-912cf5bb48aa?action=share&source=collection_link&creator=11253333"
 	},
 	"item": [
 		{
@@ -76,7 +76,8 @@
 									"    pm.environment.set(\"userToken\", userToken);",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -85,7 +86,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\":\"{{userEmail}}\",\n    \"password\": \"#aD3fe2.0%\"\n}",
+							"raw": "{\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"#aD3fe2.0%\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -237,6 +238,187 @@
 			]
 		},
 		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "All Authors",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Authors/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Author",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"const generateUUID = () => {",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {",
+									"        var r = Math.random() * 16 | 0,",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+									"        return v.toString(16);",
+									"    });",
+									"}",
+									"",
+									"",
+									"const generatedUUID = generateUUID();",
+									"console.log(generatedUUID)",
+									"pm.environment.set(\"authorId\", generatedUUID);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{authorId}}\",\n    \"name\": \"Federico García Lorca\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Authors/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Author By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Authors/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{authorId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Author",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomNamePrefix}} {{$randomLastName}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Authors/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{authorId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Author",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Authors/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Authors",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{authorId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Books",
 			"item": [
 				{
@@ -257,7 +439,8 @@
 									"",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -279,7 +462,8 @@
 									"pm.environment.set(\"bookId\", generatedUUID);",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -288,13 +472,12 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id\": \"{{bookId}}\",\n    \"title\": \"{{$randomWords}}\",\n    \"author\": \"{{$randomNamePrefix}} {{$randomLastName}}\",\n    \"isbn\": \"978-3-16-148410-0\",\n    \"releaseDate\": \"{{$isoTimestamp}}\",\n    \"pages\": {{$randomInt}}\n}",
+							"raw": "{\n    \"id\": \"{{bookId}}\",\n    \"title\": \"Yerma\",\n    \"author\": \"{{authorId}}\",\n    \"isbn\": \"978-8-43-760072-7\",\n    \"releaseDate\": \"{{$isoTimestamp}}\",\n    \"pages\": 124\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -603,7 +786,8 @@
 									"",
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						},
 						{
@@ -612,7 +796,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -621,13 +806,12 @@
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"value": "application/json"
 							}
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"pages\": {{$randomInt}}\n}",
+							"raw": "{\n    \"pages\": {{$randomInt}},\n    \"author\": \"{{authorId}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -753,7 +937,18 @@
 									"    pm.response.to.have.status(200);",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -761,7 +956,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v1/Books/:id",
+							"raw": "{{host}}/api/v1/Books/:id?include=author&fields=author.name,title,isbn",
 							"host": [
 								"{{host}}"
 							],
@@ -771,11 +966,20 @@
 								"Books",
 								":id"
 							],
+							"query": [
+								{
+									"key": "include",
+									"value": "author"
+								},
+								{
+									"key": "fields",
+									"value": "author.name,title,isbn"
+								}
+							],
 							"variable": [
 								{
 									"key": "id",
-									"value": "{{bookId}}",
-									"description": "required"
+									"value": ""
 								}
 							]
 						}
@@ -877,7 +1081,8 @@
 									"    pm.response.to.have.status(204);",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -894,6 +1099,13 @@
 								"v1",
 								"Books",
 								":id"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "author",
+									"disabled": true
+								}
 							],
 							"variable": [
 								{
@@ -983,7 +1195,18 @@
 									"    pm.response.to.have.status(200);",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -991,7 +1214,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}/api/v1/Books/",
+							"raw": "{{host}}/api/v1/Books/?include=author&fields=author.name,title",
 							"host": [
 								"{{host}}"
 							],
@@ -1000,6 +1223,16 @@
 								"v1",
 								"Books",
 								""
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "author"
+								},
+								{
+									"key": "fields",
+									"value": "author.name,title"
+								}
 							]
 						}
 					},
@@ -1075,6 +1308,26 @@
 							"body": "[\n    {\n        \"id\": \"fd1e9e44-26a2-44e4-ae4b-3ea823ac4177\",\n        \"title\": \"New Implementation Cotton sensor Personal\",\n        \"author\": \"Dr. Kreiger\",\n        \"isbn\": \"978-5-29-589250-0\",\n        \"releaseDate\": \"2023-10-22T17:11:21.909Z\",\n        \"pages\": 209\n    },\n    {\n        \"id\": \"fd0902d9-dda9-4a0c-bfe5-ecce8b2aa310\",\n        \"title\": \"generate Knoll\",\n        \"author\": \"Miss Klocko\",\n        \"isbn\": \"979-0-02-381965-5\",\n        \"releaseDate\": \"2023-10-22T17:12:15.602Z\",\n        \"pages\": 65\n    },\n    {\n        \"id\": \"e13fb69c-642d-46b3-b091-c17a38cff51e\",\n        \"title\": \"redundant utilize Alabama Security\",\n        \"author\": \"Dr. Mueller\",\n        \"isbn\": \"979-4-80-771812-1\",\n        \"releaseDate\": \"2023-10-22T17:13:36.456Z\",\n        \"pages\": 652\n    },\n    {\n        \"id\": \"4d27b67f-2931-419a-8257-c66c546ab7a0\",\n        \"title\": \"bottom-line Concrete\",\n        \"author\": \"Miss Padberg\",\n        \"isbn\": \"978-0-35-868829-8\",\n        \"releaseDate\": \"2023-10-22T17:18:40.108Z\",\n        \"pages\": 140\n    },\n    {\n        \"id\": \"7cfbc6ff-e98f-4166-95d9-fbe7324c0e9c\",\n        \"title\": \"Wall Shoes Jordan Sharable\",\n        \"author\": \"Mr. Maggio\",\n        \"isbn\": \"978-8-20-028455-5\",\n        \"releaseDate\": \"2023-10-22T17:19:14.871Z\",\n        \"pages\": 565\n    },\n    {\n        \"id\": \"9fe3093f-45b0-479f-b528-acda58f77e2d\",\n        \"title\": \"Refined Seychelles\",\n        \"author\": \"Mrs. Jacobi\",\n        \"isbn\": \"979-7-11-360362-1\",\n        \"releaseDate\": \"2023-10-22T17:20:45.214Z\",\n        \"pages\": 148\n    },\n    {\n        \"id\": \"53e2d122-7723-4ba5-9698-6a40795fb99c\",\n        \"title\": \"Electronics Borders Orchestrator override\",\n        \"author\": \"Miss Price\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:22:42.103Z\",\n        \"pages\": 151\n    },\n    {\n        \"id\": \"9def21b1-2752-45e3-8fcf-362e4e702460\",\n        \"title\": \"Metal niches synthesizing transmitting lavender\",\n        \"author\": \"Miss Schulist\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:23:46.111Z\",\n        \"pages\": 321\n    },\n    {\n        \"id\": \"221303c9-a5f1-40de-8015-27b625b8b2b4\",\n        \"title\": \"Soap Communications Bedfordshire Wooden Shirt\",\n        \"author\": \"Dr. Parisian\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:26:33.641Z\",\n        \"pages\": 452\n    },\n    {\n        \"id\": \"e11456cd-2f4e-46cd-9c8a-1279eb32b80b\",\n        \"title\": \"red Checking area Roads withdrawal\",\n        \"author\": \"Mrs. Robel\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:27:15.859Z\",\n        \"pages\": 448\n    },\n    {\n        \"id\": \"5f3ceadb-896b-45a5-9e8c-0342b094c807\",\n        \"title\": \"Steel mobile Awesome\",\n        \"author\": \"Mrs. Conn\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:27:51.382Z\",\n        \"pages\": 364\n    },\n    {\n        \"id\": \"822725d9-c1f9-4d8f-91e0-6e137b022146\",\n        \"title\": \"Executive Lodge maroon pricing services\",\n        \"author\": \"Mrs. Considine\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:29:10.429Z\",\n        \"pages\": 4\n    },\n    {\n        \"id\": \"1bfac6be-a5af-40ae-a68a-69a4876e2249\",\n        \"title\": \"Licensed open-source Unbranded\",\n        \"author\": \"Ms. Jaskolski\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:30:16.682Z\",\n        \"pages\": 941\n    },\n    {\n        \"id\": \"c1ff2715-1886-49ca-81c5-6016fd6b10e3\",\n        \"title\": \"withdrawal PNG\",\n        \"author\": \"Miss Blanda\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:32:12.327Z\",\n        \"pages\": 192\n    },\n    {\n        \"id\": \"880f47da-cb04-4ed3-a149-51899297cf3c\",\n        \"title\": \"Shilling deliverables Market\",\n        \"author\": \"Mr. Kilback\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:32:45.164Z\",\n        \"pages\": 59\n    },\n    {\n        \"id\": \"01597ae4-f8cf-446f-87dc-e1a8a74fd9a8\",\n        \"title\": \"pixel Advanced pixel bypass\",\n        \"author\": \"Dr. Ledner\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:34:18.074Z\",\n        \"pages\": 445\n    },\n    {\n        \"id\": \"4ab60e6b-537d-4232-a011-52b19c287683\",\n        \"title\": \"Strategist bypass grow transmit Valley\",\n        \"author\": \"Dr. Leuschke\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:35:34.384Z\",\n        \"pages\": 305\n    },\n    {\n        \"id\": \"ffc8ea73-6f20-4277-a7cf-e5d0fdf729f1\",\n        \"title\": \"transitional implementation generate Incredible pixel\",\n        \"author\": \"Dr. Ratke\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:36:20.918Z\",\n        \"pages\": 212\n    },\n    {\n        \"id\": \"5d6cca83-5a32-4265-a51e-f5a10eb9d557\",\n        \"title\": \"Borders Michigan bluetooth\",\n        \"author\": \"Mrs. Streich\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:39:54.490Z\",\n        \"pages\": 176\n    },\n    {\n        \"id\": \"a70259fd-2919-44da-8f86-82bb5b2b581b\",\n        \"title\": \"copying Central functionalities Metal\",\n        \"author\": \"Mrs. Gutkowski\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:40:07.819Z\",\n        \"pages\": 14\n    },\n    {\n        \"id\": \"0974f1e8-0154-4de4-8e65-4d540c8a241d\",\n        \"title\": \"Tunisia Fish Iceland Shirt\",\n        \"author\": \"Miss Hickle\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:41:03.608Z\",\n        \"pages\": 898\n    },\n    {\n        \"id\": \"8d2aacba-5f64-460a-aecd-6e894871aef0\",\n        \"title\": \"portal Marketing B2C\",\n        \"author\": \"Miss Heaney\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:41:30.996Z\",\n        \"pages\": 642\n    },\n    {\n        \"id\": \"326c081b-7cd9-4d47-8a5b-748daa973152\",\n        \"title\": \"Games reciprocal Books\",\n        \"author\": \"Miss Welch\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:43:28.092Z\",\n        \"pages\": 491\n    },\n    {\n        \"id\": \"1ecfdf4f-9852-4721-bebb-da5eb98552d4\",\n        \"title\": \"Computers Mouse Iowa Concrete HDD\",\n        \"author\": \"Ms. Marvin\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:45:23.082Z\",\n        \"pages\": 242\n    },\n    {\n        \"id\": \"86a44048-dfbf-4d07-854e-0eae6fd5d2bd\",\n        \"title\": \"Engineer migration Up-sized\",\n        \"author\": \"Mrs. Block\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T17:55:09.138Z\",\n        \"pages\": 618\n    },\n    {\n        \"id\": \"102d2db4-a3ae-49ef-afe1-bc0d517da189\",\n        \"title\": \"Awesome full-range Sports Car Global\",\n        \"author\": \"Miss Farrell\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:05:13.713Z\",\n        \"pages\": 200\n    },\n    {\n        \"id\": \"74ced318-ce7e-471d-ad72-01fa15f08e55\",\n        \"title\": \"Borders 1080p Baby lavender\",\n        \"author\": \"Mrs. Leuschke\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:42:43.706Z\",\n        \"pages\": 583\n    },\n    {\n        \"id\": \"c3327445-8275-4712-82f5-66c4f2b69578\",\n        \"title\": \"Cotton Accountability Gloves Berkshire\",\n        \"author\": \"Ms. Mueller\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:43:58.488Z\",\n        \"pages\": 137\n    },\n    {\n        \"id\": \"dc0cab3c-cf63-4e3f-9b46-dbdf0a51d32f\",\n        \"title\": \"interface Chair\",\n        \"author\": \"Miss Will\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:45:17.495Z\",\n        \"pages\": 468\n    },\n    {\n        \"id\": \"54f744cb-e69e-4c5f-a351-9d3a7e5f830c\",\n        \"title\": \"Dakota Steel sexy connect\",\n        \"author\": \"Miss Price\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:45:48.192Z\",\n        \"pages\": 528\n    },\n    {\n        \"id\": \"c0d92e7d-528d-49f1-82b6-1467938ee98d\",\n        \"title\": \"deposit bandwidth\",\n        \"author\": \"Miss Bernhard\",\n        \"isbn\": \"978-3-16-148410-0\",\n        \"releaseDate\": \"2023-10-22T18:54:42.990Z\",\n        \"pages\": 467\n    }\n]"
 						}
 					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -1188,6 +1441,414 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "Characters",
+			"item": [
+				{
+					"name": "Create Character",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"const generateUUID = () => {",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {",
+									"        var r = Math.random() * 16 | 0,",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+									"        return v.toString(16);",
+									"    });",
+									"}",
+									"",
+									"",
+									"const generatedUUID = generateUUID();",
+									"console.log(generatedUUID)",
+									"pm.environment.set(\"characterId\", generatedUUID);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{characterId}}\",\n    \"name\": \"Juan\",\n    \"book\": \"{{bookId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Characters/",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Characters",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Characters",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Characters/?fields=book",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Characters",
+								""
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "book"
+								},
+								{
+									"key": "include",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Character by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Characters/:id?fields=book.title&include=book.author",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Characters",
+								":id"
+							],
+							"query": [
+								{
+									"key": "fields",
+									"value": "book.title"
+								},
+								{
+									"key": "include",
+									"value": "book.author"
+								},
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{characterId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch character by id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomAbbreviation}} {{$randomAdjective}}\",\n    \"book\": \"{{bookId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Characters/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Characters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{characterId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete character by id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Characters/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Characters",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{characterId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Scenes",
+			"item": [
+				{
+					"name": "Create Scene",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"",
+									"const generateUUID = () => {",
+									"    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {",
+									"        var r = Math.random() * 16 | 0,",
+									"            v = c == 'x' ? r : (r & 0x3 | 0x8);",
+									"        return v.toString(16);",
+									"    });",
+									"}",
+									"",
+									"",
+									"const generatedUUID = generateUUID();",
+									"console.log(generatedUUID)",
+									"pm.environment.set(\"sceneId\", generatedUUID);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{sceneId}}\",\n    \"description\": \"{{$randomLoremWords}}\",\n    \"characters\": [\n        \"{{characterId}}\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Scenes",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Scenes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Scenes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Scenes?include=characters.book.author&fields=description,characters.name,characters.book.title,characters.book.author.name",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Scenes"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "characters.book.author"
+								},
+								{
+									"key": "fields",
+									"value": "description,characters.name,characters.book.title,characters.book.author.name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Scene by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Scenes/:id?include=characters.book.author&fields=description,characters.name,characters.book.title,characters.book.author.name",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Scenes",
+								":id"
+							],
+							"query": [
+								{
+									"key": "include",
+									"value": "characters.book.author"
+								},
+								{
+									"key": "fields",
+									"value": "description,characters.name,characters.book.title,characters.book.author.name"
+								}
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{sceneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Scene By Id",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"description\": \"{{$randomAbbreviation}} {{$randomCatchPhrase}}\",\n    \"characters\": [\n        \"{{characterId}}\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/v1/Scenes/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Scenes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{sceneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Scene By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/v1/Scenes/:id",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Scenes",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "{{sceneId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{userToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
