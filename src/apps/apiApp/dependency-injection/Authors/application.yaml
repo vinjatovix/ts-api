@@ -26,6 +26,12 @@ services:
     class: ../../../../Contexts/apiApp/Authors/application/AllAuthorsFinder
     arguments: ['@apiApp.Authors.domain.AuthorRepository']
 
+  # apiApp.Authors.application.AllAuthorsFinder:
+  #   factory:
+  #     class: ../../../../Contexts/apiApp/Authors/application/AllAuthorsFinder
+  #     method: 'createAllAuthorsFinder'
+  #   arguments: ['@apiApp.Authors.domain.AuthorRepository']
+
   apiApp.Authors.application.AuthorFinder:
     class: ../../../../Contexts/apiApp/Authors/application/AuthorFinder
     arguments: ['@apiApp.Authors.domain.AuthorRepository']

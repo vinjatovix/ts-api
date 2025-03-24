@@ -140,3 +140,23 @@ services:
       class: ../../controllers/Scenes/DeleteSceneController
       method: 'createDeleteSceneController'
     arguments: ['@apiApp.Scenes.application.SceneRemover']
+
+  # CHARACTERBUILDINGS
+  Apps.apiApp.controllers.CharacterBuildings.PostCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+      method: 'createPostCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingCreator']
+
+  # Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+  #   class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+  #   arguments:
+  #     ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+      method: 'createGetAllCharacterBuildingsController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']

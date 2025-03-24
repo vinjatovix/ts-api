@@ -44,4 +44,8 @@ services:
 
   apiApp.Scenes.application.SceneRemover:
     class: ../../../../Contexts/apiApp/Scenes/application/SceneRemover
-    arguments: ['@apiApp.Scenes.domain.SceneRepository']
+    arguments:
+      [
+        '@apiApp.Scenes.domain.SceneRepository',
+        '@apiApp.CharacterBuildings.domain.CharacterBuildingRepository'
+      ]
