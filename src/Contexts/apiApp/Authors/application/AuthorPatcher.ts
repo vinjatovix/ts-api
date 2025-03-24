@@ -1,4 +1,4 @@
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
+import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins/logger.plugin';
 import { Username } from '../../Auth/domain';
 import { AuthorPatch, AuthorRepository } from '../domain';
@@ -17,7 +17,7 @@ export class AuthorPatcher {
     const storedAuthor = await this.repository.search(request.id);
 
     if (storedAuthor === null) {
-      throw new NotFoundError(`Author <${request.id}>`);
+      throw createError.notFound(`Author <${request.id}>`);
     }
 
     const author = AuthorPatch.fromPrimitives(request);

@@ -2,7 +2,6 @@ import {
   Author,
   AuthorName
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
@@ -32,7 +31,7 @@ describe('Author', () => {
     let id;
     expect(() => {
       id = new Uuid(UuidMother.invalidValue());
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
     expect(id).toBeUndefined();
   });
@@ -42,7 +41,7 @@ describe('Author', () => {
     expect(() => {
       // @ts-expect-error Testing purposes
       name = new AuthorName(AuthorNameMother.invalidValue('max-length'));
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
     expect(name).toBeUndefined();
   });
@@ -52,7 +51,7 @@ describe('Author', () => {
     expect(() => {
       // @ts-expect-error Testing purposes
       name = new AuthorName(AuthorNameMother.invalidValue('min-length'));
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
     expect(name).toBeUndefined();
   });
@@ -62,7 +61,7 @@ describe('Author', () => {
     expect(() => {
       // @ts-expect-error Testing purposes
       name = new AuthorName(AuthorNameMother.invalidValue('invalid-type'));
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
 
     expect(name).toBeUndefined();
   });

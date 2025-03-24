@@ -1,5 +1,4 @@
 import { AuthorCreator } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { ConflictError } from '../../../../../src/Contexts/shared/domain/errors/ConflictError';
 import { UserMother } from '../../Auth/domain/mothers';
 
 import { CreateAuthorRepositoryMock } from '../__mocks__/CreateAuthorRepositoryMock';
@@ -37,6 +36,8 @@ describe('AuthorCreator', () => {
     const request = AuthorCreatorRequestMother.random();
     request.id = 'existing-id';
 
-    await expect(creator.run(request, username)).rejects.toThrow(ConflictError);
+    await expect(creator.run(request, username)).rejects.toThrow(
+      expect.objectContaining({ name: 'ConflictError' })
+    );
   });
 });

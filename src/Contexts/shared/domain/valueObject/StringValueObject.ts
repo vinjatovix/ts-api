@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../errors';
+import { createError } from '../errors';
 
 export class StringValueObject {
   readonly value: string;
@@ -9,7 +9,7 @@ export class StringValueObject {
 
   protected ensureType(value: string): string {
     if (typeof value !== 'string') {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> does not allow the value <${value}>`
       );
     }
@@ -29,7 +29,7 @@ export class StringValueObject {
         _value.length < minLength
           ? `less than ${minLength}`
           : `more than ${maxLength}`;
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> <${value}> has ${message} characters`
       );
     }

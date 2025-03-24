@@ -1,5 +1,4 @@
 import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application/BookFinder';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { BookCreatorRequestMother } from './mothers';
@@ -29,6 +28,8 @@ describe('BookFinder', () => {
   it('should throw an error when the book is not found', async () => {
     const request = BookCreatorRequestMother.inexistentId();
 
-    await expect(finder.run(request)).rejects.toThrow(NotFoundError);
+    await expect(finder.run(request)).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
+    );
   });
 });

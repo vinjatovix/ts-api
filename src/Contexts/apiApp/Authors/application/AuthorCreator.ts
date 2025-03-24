@@ -1,4 +1,4 @@
-import { ConflictError } from '../../../shared/domain/errors';
+import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
@@ -37,7 +37,7 @@ export class AuthorCreator {
   ): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
     if (storedAuthor) {
-      throw new ConflictError(`Author <${request.id}> already exists`);
+      throw createError.conflict(`Author <${request.id}> already exists`);
     }
   }
 }
