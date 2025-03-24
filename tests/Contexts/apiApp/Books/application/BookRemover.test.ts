@@ -15,7 +15,7 @@ describe('BookRemover', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock({ find: true });
-    characterRepository = new CharacterRepositoryMock();
+    characterRepository = new CharacterRepositoryMock({ find: false });
     service = new BookRemover(repository, characterRepository);
   });
 
