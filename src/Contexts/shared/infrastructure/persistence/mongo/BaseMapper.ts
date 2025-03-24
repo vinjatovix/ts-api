@@ -19,7 +19,11 @@ export class BaseMapper {
       }
     }
 
-    if (typeof newDocument === 'object' && '_id' in newDocument) {
+    if (
+      newDocument &&
+      typeof newDocument === 'object' &&
+      '_id' in newDocument
+    ) {
       return this.mapId(newDocument);
     }
 
