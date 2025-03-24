@@ -37,3 +37,7 @@ services:
   apiApp.CharacterBuildings.application.CharacterBuildingFinder:
     class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingFinder
     arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']
+
+  apiApp.CharacterBuildings.application.CharacterBuildingRemover:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingRemover
+    arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']

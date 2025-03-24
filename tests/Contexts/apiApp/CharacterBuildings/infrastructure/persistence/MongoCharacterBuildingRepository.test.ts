@@ -83,4 +83,15 @@ describe('MongoCharacterBuildingRepository', () => {
       });
     });
   });
+
+  describe('remove', () => {
+    it('should remove an existing character building', async () => {
+      const characterBuilding = CharacterBuildingMother.random();
+      await repository.save(characterBuilding);
+
+      await repository.remove(characterBuilding.id.value);
+
+      expect(await repository.search(characterBuilding.id.value)).toBeNull();
+    });
+  });
 });
