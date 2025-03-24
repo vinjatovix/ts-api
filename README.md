@@ -88,16 +88,6 @@ A nice postman collection is provided for you ready to work with in `./doc/postm
 
 **We are working to automate this doc with swagger**
 
-You can run newman against the provided postman collection.
-Just rename `ENV.postman_environment.json_sample` to `local.postman_environment.json` inside `./doc/postman/environments` and full-fill the needed variables.
-```bash
-npm run newman:local
-```
-You can run the collection against the PRE deploy if you have the needed rights to do it
-```bash
-npm run newman
-```
-> Note this only will work if the proper `pre.postman_environment.json` is set up
 ## Testing
 ### ATDD
 We encourage ATDD flow in development phase.
@@ -131,8 +121,6 @@ npm run prepare-release $RELEASE_TYPE
 - dev: Run the application in development mode using ts-node-dev.
 - docker:local: Build the Docker image and start the application using Docker Compose.
 - docker:mongo: Set up the local mongo docker.
-- newman: Runs the postman collection against the deployed build.
-- newman:local: Once you have your local env up you can check the postman collections with this script.
 - prepare-release: Accepts major, minor, patch. Updates release files, commit and push the new tag.
 - restoreDB: Requires an ENV and a password for restore in local mongo docker some cloud DB
 - restoreDump: Accepts an ENV for restore a previously dumped ENV db stores in the local mongo docker.
