@@ -27,8 +27,17 @@ import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/
 import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers/CharacterCreatorRequestMother';
 import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
+import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
+import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
+import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
+import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
+import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application';
 
-type EntityPrimitives = BookPrimitives | AuthorPrimitives | CharacterPrimitives;
+type EntityPrimitives =
+  | BookPrimitives
+  | AuthorPrimitives
+  | CharacterPrimitives
+  | ScenePrimitives;
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -45,7 +54,13 @@ let validUserBearerToken: Nullable<string>;
 const getPayloadByEntity = async (
   entity: string,
   id: string
-): Promise<BookCreatorRequest | AuthorCreatorRequest | StringsMap> => {
+): Promise<
+  | BookCreatorRequest
+  | AuthorCreatorRequest
+  | CharacterCreatorRequest
+  | SceneCreatorRequest
+  | StringsMap
+> => {
   if (entity === 'author') {
     return { id, name: 'test author' };
   }
@@ -67,6 +82,16 @@ const getPayloadByEntity = async (
     return characterRequest;
   }
 
+  if (entity === 'scene') {
+    const { character } = await _createDependenciesByEntity(entity);
+    const sceneRequest = SceneCreatorRequestMother.create({
+      id: new Uuid(id),
+      description: new SceneCircumstance(random.word()),
+      characters: [new Uuid(character)]
+    });
+    return sceneRequest;
+  }
+
   return {};
 };
 
@@ -78,6 +103,8 @@ const _createDependenciesByEntity = async (
       return await _getBookDependencies();
     case 'character':
       return await _getCharacterDependencies();
+    case 'scene':
+      return await _getSceneDependencies();
     default:
       return {};
   }
@@ -104,6 +131,18 @@ const _getCharacterDependencies = async (): Promise<{ book: string }> => {
   await _request.expect(201);
 
   return { book: book?.id };
+};
+
+const _getSceneDependencies = async (): Promise<{ character: string }> => {
+  const character = await getPayloadByEntity('character', Uuid.random().value);
+  _request = request(app.httpServer)
+    .post(API_PREFIXES.character)
+    .set('Authorization', `Bearer ${validAdminBearerToken}`)
+    .send(character);
+
+  await _request.expect(201);
+
+  return { character: character?.id };
 };
 
 const compareResponseObject = <T>(
@@ -260,12 +299,27 @@ Then('the response body should be', async (docString: string) => {
   assert.deepStrictEqual(_response.body, JSON.parse(docString));
 });
 
-Then('the field {string} should be populated', async (fieldPath) => {
+Then('the field {string} should be populated', async (fieldPath: string) => {
   const response = await _request;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function getNestedValue(obj: any, path: string): any {
-    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  // Función para obtener valores anidados sin usar eval ni any
+  function getNestedValue(obj: unknown, path: string): unknown {
+    const pathArray = path.split('.');
+
+    return pathArray.reduce((acc, key) => {
+      const arrayMatch = /^(\w+)\[(\d+)]$/.exec(key);
+
+      if (arrayMatch) {
+        const [_, arrayKey, index] = arrayMatch;
+        const record = acc as Record<string, unknown>;
+        if (Array.isArray(record[arrayKey])) {
+          return (record[arrayKey] as unknown[])[parseInt(index, 10)];
+        }
+        return undefined;
+      }
+
+      return (acc as Record<string, unknown>)?.[key];
+    }, obj);
   }
 
   const data = Array.isArray(response.body) ? response.body[0] : response.body;

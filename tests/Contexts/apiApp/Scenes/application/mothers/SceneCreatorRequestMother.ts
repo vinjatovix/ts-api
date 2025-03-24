@@ -5,11 +5,15 @@ import { random } from '../../../../fixtures/shared';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
 
 export class SceneCreatorRequestMother {
-  static create(
-    id: Uuid,
-    description: SceneCircumstance,
-    characters: Uuid[]
-  ): SceneCreatorRequest {
+  static create({
+    id,
+    description,
+    characters
+  }: {
+    id: Uuid;
+    description: SceneCircumstance;
+    characters: Uuid[];
+  }): SceneCreatorRequest {
     return {
       id: id.value,
       description: description.value,
@@ -18,15 +22,15 @@ export class SceneCreatorRequestMother {
   }
 
   static random(id?: string): SceneCreatorRequest {
-    return this.create(
-      id ? UuidMother.create(id) : UuidMother.random(),
-      new SceneCircumstance(
+    return this.create({
+      id: id ? UuidMother.create(id) : UuidMother.random(),
+      description: new SceneCircumstance(
         random.word({
           min: SceneCircumstance.MIN_LENGTH,
           max: SceneCircumstance.MAX_LENGTH
         })
       ),
-      [(UuidMother.random(), UuidMother.random())]
-    );
+      characters: [(UuidMother.random(), UuidMother.random())]
+    });
   }
 }
