@@ -11,7 +11,7 @@ export interface BookRepository {
   update(book: BookPatch, user: Username): Promise<void>;
 
   search(
-    bookId: string,
+    book: string,
     options?: Partial<RequestOptions>
   ): Promise<Partial<Book | PopulatedBook> | null>;
 
