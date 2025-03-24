@@ -71,3 +71,7 @@ services:
   Apps.apiApp.controllers.Characters.GetCharacterController:
     class: ../../controllers/Characters/GetCharacterController
     arguments: ['@apiApp.Characters.application.CharacterFinder']
+
+  Apps.apiApp.controllers.Characters.PatchCharacterController:
+    class: ../../controllers/Characters/PatchCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterPatcher']
