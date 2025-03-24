@@ -20,11 +20,11 @@ services:
         '@apiApp.CharacterBuildings.infrastructure.CharacterBuildingMapper'
       ]
 
-  # apiApp.CharacterBuildings.application.CharacterBuildingCreator:
-  #   class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingCreator
-  #   arguments:
-  #     [
-  #       '@apiApp.CharacterBuildings.domain.CharacterBuildingRepository',
-  #       '@apiApp.Auth.domain.AuthRepository',
-  #       '@apiApp.Scenes.domain.SceneRepository'
-  #     ]
+  apiApp.CharacterBuildings.application.CharacterBuildingCreator:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingCreator
+    arguments:
+      [
+        '@apiApp.CharacterBuildings.domain.CharacterBuildingRepository',
+        '@apiApp.Auth.domain.AuthRepository',
+        '@apiApp.Scenes.domain.SceneRepository'
+      ]
