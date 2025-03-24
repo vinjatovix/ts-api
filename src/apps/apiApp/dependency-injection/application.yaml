@@ -5,4 +5,4 @@ imports:
   - { resource: ./Authors/application.yaml }
   - { resource: ./Characters/application.yaml }
   - { resource: ./Scenes/application.yaml }
-
+  - { resource: ./CharacterBuildings/application.yaml }
