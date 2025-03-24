@@ -92,3 +92,7 @@ services:
   Apps.apiApp.controllers.Scenes.GetSceneController:
     class: ../../controllers/Scenes/GetSceneController
     arguments: ['@apiApp.Scenes.application.SceneFinder']
+
+  Apps.apiApp.controllers.Scenes.PatchSceneController:
+    class: ../../controllers/Scenes/PatchSceneController
+    arguments: ['@apiApp.Scenes.application.ScenePatcher']

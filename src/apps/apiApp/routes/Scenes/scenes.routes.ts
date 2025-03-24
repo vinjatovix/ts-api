@@ -9,18 +9,18 @@ import {
   validateBody,
   validateReqSchema
 } from '../shared/middlewares';
-import { postReqSchema } from './postReqSchema';
+import { patchReqSchema, postReqSchema } from './reqSchemas';
 import { GetAllScenesController } from '../../controllers/Scenes/GetAllScenesController';
 import { GetSceneController } from '../../controllers/Scenes/GetSceneController';
+import { PatchSceneController } from '../../controllers/Scenes/PatchSceneController';
 
 const prefix = API_PREFIXES.scene;
 
 export const register = (router: Router) => {
   const postController = container.get(PostSceneController.containerId);
-
   const getAllController = container.get(GetAllScenesController.containerId);
-
   const getController = container.get(GetSceneController.containerId);
+  const patchController = container.get(PatchSceneController.containerId);
 
   router.post(
     `${prefix}/`,
@@ -49,6 +49,18 @@ export const register = (router: Router) => {
     includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getController.run(req, res, next);
+    }
+  );
+
+  router.patch(
+    `${prefix}/:id`,
+    auth,
+    isAdmin,
+    validateBody,
+    patchReqSchema,
+    validateReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      patchController.run(req, res, next);
     }
   );
 };
