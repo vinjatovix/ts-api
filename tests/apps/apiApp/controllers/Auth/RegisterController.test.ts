@@ -21,7 +21,7 @@ describe('RegisterController', () => {
   const spyService = jest.spyOn(RegisterUser.prototype, 'run');
 
   beforeEach(() => {
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock({ find: false });
     encrypter = new CryptAdapterMock({ token: true });
     service = new RegisterUser(repository, encrypter);
     controller = new RegisterController(service);
@@ -41,7 +41,7 @@ describe('RegisterController', () => {
     });
 
     it('should fail if user email exists', async () => {
-      repository = new UserRepositoryMock({ exists: true });
+      repository = new UserRepositoryMock({ find: true });
       service = new RegisterUser(repository, encrypter);
       controller = new RegisterController(service);
 

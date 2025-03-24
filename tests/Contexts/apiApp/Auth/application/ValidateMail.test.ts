@@ -11,7 +11,7 @@ describe('ValidateMail', () => {
 
   beforeEach(() => {
     encrypter = new CryptAdapterMock({ token: true });
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     service = new ValidateMail(repository, encrypter);
   });
 
@@ -38,7 +38,7 @@ describe('ValidateMail', () => {
   });
 
   it('should throw an error if the user is not found', async () => {
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock({ find: false });
     service = new ValidateMail(repository, encrypter);
     const token = random.word({ min: 6, max: 255 });
 

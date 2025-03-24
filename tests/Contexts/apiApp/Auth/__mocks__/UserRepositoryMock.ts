@@ -11,26 +11,38 @@ import {
 import { UserMother } from '../domain/mothers';
 
 export class UserRepositoryMock implements UserRepository {
-  private readonly saveMock: jest.Mock;
-  private readonly updateMock: jest.Mock;
-  private readonly findMock: jest.Mock;
-  private readonly password: StringValueObject = new StringValueObject(
+  private readonly saveMock = jest.fn();
+  private readonly updateMock = jest.fn();
+  private readonly findMock = jest.fn();
+  private readonly findByQueryMock = jest.fn();
+  private readonly password = new StringValueObject(
     '$2a$12$mZgfH4D7z4dZcZHDKyogqOOnEWS6XHLdczPJktzD88djpvlr3Bq1C'
   );
+  private isFindable: boolean;
 
-  constructor({ exists }: { exists: boolean }) {
-    if (exists) {
-      this.findMock = jest.fn().mockImplementation((email: string) => {
-        return UserMother.create({
-          email: new Email(email),
-          password: this.password
-        });
+  constructor({ find }: { find: boolean } = { find: false }) {
+    this.isFindable = find;
+    this.setupMocks();
+  }
+
+  private setupMocks(): void {
+    this.findMock.mockImplementation((email: string) => {
+      if (!this.isFindable) {
+        return null;
+      }
+      return UserMother.create({
+        email: new Email(email),
+        password: this.password
       });
-    } else {
-      this.findMock = jest.fn().mockReturnValue(null);
-    }
-    this.saveMock = jest.fn();
-    this.updateMock = jest.fn();
+    });
+
+    this.findByQueryMock.mockImplementation(({ id }: Partial<User>) => {
+      if (!this.isFindable) {
+        return [];
+      }
+      const { password: _password, ...user } = UserMother.create({ id });
+      return [user];
+    });
   }
 
   async save(user: User): Promise<void> {
@@ -55,5 +67,23 @@ export class UserRepositoryMock implements UserRepository {
 
   assertSearchHasBeenCalledWith(expected: string): void {
     expect(this.findMock).toHaveBeenCalledWith(expected);
+  }
+
+  async findByQuery(query: {
+    id?: string;
+    username?: string;
+  }): Promise<{ id: string; username: string }[]> {
+    return this.findByQueryMock(query);
+  }
+
+  assertFindByQueryHasBeenCalledWith(expected: {
+    id?: string;
+    username?: string;
+  }): void {
+    expect(this.findByQueryMock).toHaveBeenCalledWith(expected);
+  }
+
+  setIsFindable(exists: boolean): void {
+    this.isFindable = exists;
   }
 }

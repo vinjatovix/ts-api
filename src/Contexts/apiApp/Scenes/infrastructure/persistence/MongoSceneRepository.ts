@@ -86,7 +86,7 @@ export class MongoSceneRepository
   }
 
   async findByQuery(query: SceneByQuery): Promise<Scene[]> {
-    const filter: { [key: string]: { $in: string[] } } = {};
+    const filter: { [key: string]: string | { $in: string[] } } = {};
 
     if (query.characters) {
       filter['characters'] = { $in: query.characters };

@@ -17,7 +17,7 @@ describe('AllBooksFinder', () => {
   it('should find all books', async () => {
     await service.run();
 
-    repository.assertSearchAllHasBeenCalled();
+    repository.assertFindAllHasBeenCalled();
   });
 
   it('should find all books with options', async () => {
@@ -25,6 +25,6 @@ describe('AllBooksFinder', () => {
 
     await service.run(options);
 
-    repository.assertSearchAllHasBeenCalledWith(options);
+    repository.assertFindAllHasBeenCalledWith(options);
   });
 });
