@@ -21,3 +21,7 @@ services:
         '@apiApp.Scenes.domain.SceneRepository',
         '@apiApp.Characters.domain.CharacterRepository'
       ]
+
+  apiApp.Scenes.application.AllScenesFinder:
+    class: ../../../../Contexts/apiApp/Scenes/application/AllScenesFinder
+    arguments: ['@apiApp.Scenes.domain.SceneRepository']

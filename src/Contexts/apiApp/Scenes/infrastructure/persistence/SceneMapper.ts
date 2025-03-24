@@ -1,10 +1,9 @@
-import { CharacterPrimitives } from '../../../Characters/domain/interfaces';
+import { BaseMapper } from '../../../shared/infraestructure/persistence/BaseMapper';
 import { Scene } from '../../domain';
+import { ScenePrimitives } from '../../domain/interfaces';
 import { PopulatedScene } from '../../domain/PopulatedScene';
 import { PopulatedSceneType } from '../types/PopulatedSceneType';
 import { SceneType } from '../types/SceneType';
-
-import { BaseMapper } from '../../../shared/infraestructure/persistence/BaseMapper';
 
 export class SceneMapper {
   static toDomain(document: SceneType): Scene {
@@ -17,19 +16,10 @@ export class SceneMapper {
   }
 
   static toPopulatedDomain(document: PopulatedSceneType): PopulatedScene {
-    return PopulatedScene.fromPrimitives({
-      id: document._id,
-      description: document.description,
-      characters: document.characters.map((character) => {
-        const transformedCharacter = BaseMapper.mapNestedId(character);
-
-        return {
-          ...transformedCharacter,
-          id: transformedCharacter._id
-        } as CharacterPrimitives;
-      }),
-      metadata: document.metadata
-    });
+    const primitives = BaseMapper.mapNestedId(
+      document
+    ) as unknown as ScenePrimitives;
+    return PopulatedScene.fromPrimitives(primitives);
   }
 
   static map(scene: SceneType | PopulatedSceneType): Scene | PopulatedScene {
