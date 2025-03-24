@@ -14,12 +14,8 @@ export interface SceneProps {
 export class Scene extends SceneBase {
   readonly characters: Nullable<Uuid[]>;
 
-  constructor({ id, description, characters, metadata }: SceneProps) {
-    super({
-      id,
-      description,
-      metadata
-    });
+  constructor({ characters, ...props }: SceneProps) {
+    super(props);
     this.characters = characters;
   }
 
@@ -31,17 +27,13 @@ export class Scene extends SceneBase {
   }
 
   static readonly fromPrimitives = ({
-    id,
-    description,
     characters,
-    metadata
-  }: ScenePrimitives): Scene =>
+    ...primitives
+  }: ScenePrimitives & { characters?: string[] | null }): Scene =>
     new Scene({
-      id: new Uuid(id),
-      description: description ? new SceneCircumstance(description) : null,
-      characters: Array.isArray(characters)
-        ? characters.map((charId) => new Uuid(charId as string))
-        : null,
-      metadata: Metadata.fromPrimitives(metadata)
+      ...super.fromPrimitives(primitives),
+      characters: characters
+        ? characters.map((characterId) => new Uuid(characterId))
+        : null
     });
 }

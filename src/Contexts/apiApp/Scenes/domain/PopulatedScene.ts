@@ -1,24 +1,20 @@
 import { Nullable } from '../../../shared/domain/types';
-import { Metadata, Uuid } from '../../../shared/domain/valueObject';
 import { Character, PopulatedCharacter } from '../../Characters/domain';
 import { CharacterMapper } from '../../Characters/infrastructure';
 import { CharacterType } from '../../Characters/infrastructure/types';
 import { SceneBase, SceneProps } from './SceneBase';
-import { SceneCircumstance } from './SceneCircumstance';
 import { ScenePrimitives } from './interfaces';
 
 export class PopulatedScene extends SceneBase {
   readonly characters: Nullable<Array<Character | PopulatedCharacter>>;
 
   constructor({
-    id,
-    description,
     characters,
-    metadata
-  }: Omit<SceneProps, 'characters'> & {
+    ...props
+  }: SceneProps & {
     characters: Array<Character | PopulatedCharacter>;
   }) {
-    super({ id, description, metadata });
+    super(props);
     this.characters = characters ?? null;
   }
 
@@ -33,10 +29,8 @@ export class PopulatedScene extends SceneBase {
   }
 
   static fromPrimitives({
-    id,
-    description,
-    metadata,
-    characters
+    characters,
+    ...primitives
   }: ScenePrimitives): PopulatedScene {
     if (
       !characters ||
@@ -53,9 +47,7 @@ export class PopulatedScene extends SceneBase {
     );
 
     return new PopulatedScene({
-      id: new Uuid(id),
-      metadata: Metadata.fromPrimitives(metadata),
-      description: description ? new SceneCircumstance(description) : null,
+      ...super.fromPrimitives(primitives),
       characters: charInstances
     });
   }
