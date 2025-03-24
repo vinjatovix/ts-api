@@ -29,3 +29,11 @@ services:
   apiApp.Scenes.application.SceneFinder:
     class: ../../../../Contexts/apiApp/Scenes/application/SceneFinder
     arguments: ['@apiApp.Scenes.domain.SceneRepository']
+
+  apiApp.Scenes.application.ScenePatcher:
+    class: ../../../../Contexts/apiApp/Scenes/application/ScenePatcher
+    arguments:
+      [
+        '@apiApp.Scenes.domain.SceneRepository',
+        '@apiApp.Characters.domain.CharacterRepository'
+      ]

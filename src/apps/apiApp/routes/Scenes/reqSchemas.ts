@@ -6,3 +6,9 @@ export const postReqSchema = [
   body('characters').exists().isArray(),
   body('characters.*').isString()
 ];
+
+export const patchReqSchema = [
+  body('description').optional().isString(),
+  body('characters').optional().isArray(),
+  body('characters.*').isString()
+];
