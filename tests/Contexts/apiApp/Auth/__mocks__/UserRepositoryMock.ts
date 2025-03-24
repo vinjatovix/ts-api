@@ -6,7 +6,8 @@ import { UserRepository } from '../../../../../src/Contexts/apiApp/Auth/domain/i
 import { Nullable } from '../../../../../src/Contexts/shared/domain/types';
 import {
   Email,
-  StringValueObject
+  StringValueObject,
+  Uuid
 } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { UserMother } from '../domain/mothers';
 
@@ -19,6 +20,7 @@ export class UserRepositoryMock implements UserRepository {
     '$2a$12$mZgfH4D7z4dZcZHDKyogqOOnEWS6XHLdczPJktzD88djpvlr3Bq1C'
   );
   private isFindable: boolean;
+  private readonly storage: User[] = [];
 
   constructor({ find }: { find: boolean } = { find: false }) {
     this.isFindable = find;
@@ -36,13 +38,26 @@ export class UserRepositoryMock implements UserRepository {
       });
     });
 
-    this.findByQueryMock.mockImplementation(({ id }: Partial<User>) => {
-      if (!this.isFindable) {
-        return [];
+    this.findByQueryMock.mockImplementation(
+      ({ id, username }: { id: string; username: string }) => {
+        if (!this.isFindable) {
+          return this.storage.filter((user) => {
+            if (id) {
+              return user.id.value === id;
+            }
+            if (username) {
+              return user.username.value === username;
+            }
+            return true;
+          });
+        }
+
+        const { password: _password, ...user } = UserMother.create({
+          id: new Uuid(id)
+        });
+        return [user];
       }
-      const { password: _password, ...user } = UserMother.create({ id });
-      return [user];
-    });
+    );
   }
 
   async save(user: User): Promise<void> {
@@ -72,7 +87,7 @@ export class UserRepositoryMock implements UserRepository {
   async findByQuery(query: {
     id?: string;
     username?: string;
-  }): Promise<{ id: string; username: string }[]> {
+  }): Promise<Partial<User>[]> {
     return this.findByQueryMock(query);
   }
 
@@ -85,5 +100,9 @@ export class UserRepositoryMock implements UserRepository {
 
   setIsFindable(exists: boolean): void {
     this.isFindable = exists;
+  }
+
+  addToStorage(user: User): void {
+    this.storage.push(user);
   }
 }
