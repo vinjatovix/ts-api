@@ -1,7 +1,10 @@
 import { ObjectId } from 'bson';
 import { MongoClient } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
+import {
+  AggregationOptions,
+  MongoRepository
+} from '../../../../shared/infrastructure/persistence/mongo';
 import { Username } from '../../../Auth/domain';
 import { SceneByQuery } from '../../application/interfaces';
 import { Scene, ScenePatch, PopulatedScene } from '../../domain';
@@ -29,12 +32,21 @@ export class MongoSceneRepository
     return await this.persist(scene.id.value, scene);
   }
 
-  private processIncludeOptions(
-    options: Partial<RequestOptions>
-  ): Partial<RequestOptions> {
-    return options.include?.some((i) => i.includes('characters'))
-      ? { ...options, list: ['characters'] }
-      : options;
+  private processIncludeOptions(options: RequestOptions): AggregationOptions {
+    const { include, fields } = options;
+    const customizedOptions: AggregationOptions = {
+      include,
+      fields
+    };
+
+    if (options.include) {
+      for (const key of options.include) {
+        if (key.startsWith('characters')) {
+          customizedOptions.list = ['characters'];
+        }
+      }
+    }
+    return customizedOptions;
   }
 
   public async findAll(
