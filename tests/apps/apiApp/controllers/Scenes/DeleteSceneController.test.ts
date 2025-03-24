@@ -5,6 +5,7 @@ import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks_
 import { random } from '../../../../Contexts/fixtures/shared';
 import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
 import { createDeleteSceneController } from '../../../../../src/apps/apiApp/controllers/Scenes';
+import { CharacterBuildingRepositoryMock } from '../../../../Contexts/apiApp/CharacterBuildings/__mocks__/CharacterBuildingRepositoryMock';
 
 jest.mock('../../../../../src/Contexts/apiApp/Scenes/application/SceneRemover');
 
@@ -14,16 +15,19 @@ describe('DeleteSceneController', () => {
   let service: SceneRemover;
   let controller: DeleteController<SceneRemover>;
   let repository: SceneRepositoryMock;
+  let characterBuildingRepository: CharacterBuildingRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
     repository = new SceneRepositoryMock();
-    service = new SceneRemover(repository);
+    characterBuildingRepository = new CharacterBuildingRepositoryMock();
+    service = new SceneRemover(repository, characterBuildingRepository);
     controller = createDeleteSceneController(
       service
     ) as DeleteController<SceneRemover>;
+
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
