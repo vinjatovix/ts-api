@@ -25,6 +25,7 @@ tags:
   - name: Books
   - name: Characters
   - name: Scenes
+  - name: CharacterBuildings
   - name: Health
 
 paths:
@@ -836,6 +837,193 @@ paths:
               example:
                 'message': 'Scene has associated characterBuilds'
 
+  /api/v1/CharacterBuildings:
+    get:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Get all characterBuildings
+      operationId: GetAllCharacterBuildings
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CharacterBuilding'
+    post:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Create CharacterBuilding
+      operationId: CreateCharacterBuilding
+      security:
+        - bearerAuth: []
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              id: '{{$guid}}'
+              actor: '{{$guid}}'
+              character: '{{$guid}}'
+              scene: '{{$guid}}'
+              center: 'mental'
+              sceneCircumstances: '{{$randomWords}}'
+              previousCircumstances: '{{$randomWords}}'
+              relationshipCircumstances:
+                [{ character: '{{$guid}}', circumstance: '{{$randomWords}}' }]
+
+        required: true
+      responses:
+        '201':
+          description: Created
+          content: {}
+
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/400'
+              example:
+                errors:
+                  - character: 'Invalid value at body. Value: undefined'
+                  - scene: 'Invalid value at body. Value: undefined'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/409'
+              example:
+                'message': 'CharacterBuilding already exists'
+
+  /api/v1/CharacterBuildings/{id}:
+    get:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Get CharacterBuilding by id
+      operationId: GetCharacterBuildingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterBuildingId}}'
+        - name: include
+          description: Include relateds
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: fields
+          description: Return only specific fields
+          in: query
+          schema:
+            type: string
+          required: false
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterBuilding'
+    delete:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Delete CharacterBuilding by Id
+      operationId: DeleteCharacterBuildingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterBuildingId}}'
+      responses:
+        '204':
+          description: Deleted
+          content: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403'
+              example:
+                message: 'You dont own this characterBulding'
+    patch:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Update CharacterBuilding by Id
+      operationId: UpdateCharacterBuilding
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              center: 'mental'
+              sceneCircumstances: '{{$randomWords}}'
+              previousCircumstances: '{{$randomWords}}'
+              relationshipCircumstances:
+                [{ character: '{{$guid}}', circumstance: '{{$randomWords}}' }]
+        required: true
+      responses:
+        '200':
+          description: Updated
+          content: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403'
+              example:
+                message: 'You dont own this characterBulding'
+
   /api/v1/health/http:
     get:
       deprecated: false
@@ -946,6 +1134,15 @@ components:
       example:
         message: 'Invalid token'
 
+    403:
+      title: 'Forbidden'
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: 'You dont own this characterBulding'
+
     409:
       title: 'Conflict'
       type: object
@@ -1036,6 +1233,51 @@ components:
         id: 'b1d9b21-f695-4abd-910b-78c42204f1f9'
         description: 'Scene description'
         characters: ['51ad86d3-a782-4222-b96e-c1999cd7e2c9']
+        metadata:
+          createdAt: '2023-10-15T22:00:21.845Z'
+          createdBy: 'admin'
+          updatedAt: '2023-10-15T22:00:21.845Z'
+          updatedBy: 'admin'
+
+    CharacterBuilding:
+      type: object
+      properties:
+        id:
+          type: string
+        actor:
+          type: string
+        character:
+          type: string
+        scene:
+          type: string
+        center:
+          type: string
+        sceneCircumstances:
+          type: string
+        previousCircumstances:
+          type: string
+        relationshipCircumstances:
+          type: array
+          items:
+            type: object
+            properties:
+              character:
+                type: string
+              circumstance:
+                type: string
+        metadata:
+          $ref: '#/components/schemas/Metadata'
+      example:
+        id: 'b1d9b21-f695-4abd-910b-78c42204f1f9'
+        actor: '51ad86d3-a782-4222-b96e-c1999cd7e2c9'
+        character: '51ad86d3-a782-4222-b96e-c1999cd7e2c9'
+        scene: '51ad86d3-a782-4222-b96e-c1999cd7e2c9'
+        center: 'mental'
+        sceneCircumstances: 'Scene circumstances'
+        previousCircumstances: 'Previous circumstances'
+        relationshipCircumstances:
+          - character: '51ad86d3-a782-4222-b96e-c1999cd7e2c9'
+            circumstance: 'Relationship circumstances'
         metadata:
           createdAt: '2023-10-15T22:00:21.845Z'
           createdBy: 'admin'
