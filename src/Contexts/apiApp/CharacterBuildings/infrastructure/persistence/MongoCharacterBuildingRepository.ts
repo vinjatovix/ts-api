@@ -1,4 +1,4 @@
-import { MongoClient } from 'mongodb';
+import { MongoClient, ObjectId } from 'mongodb';
 import {
   AggregationOptions,
   MongoRepository
@@ -111,5 +111,38 @@ export class MongoCharacterBuildingRepository
       : documents.map((doc) =>
           this.mapper.toDomain(doc as unknown as CharacterBuildingType)
         );
+  }
+
+  public async search(
+    id: string,
+    options: RequestOptions = {}
+  ): Promise<Partial<CharacterBuilding | PopulatedCharacterBuilding> | null> {
+    if (!options.include) {
+      const fields = options.fields?.reduce(
+        (acc: Record<string, number>, field: string) => {
+          acc[field] = 1;
+          return acc;
+        },
+        { metadata: 1 } as Record<string, number>
+      );
+      const collection = await this.collection();
+      const document = await collection.findOne<CharacterBuildingType>(
+        {
+          _id: id as unknown as ObjectId
+        },
+        { ...(options.fields && { projection: fields }) }
+      );
+      return document ? this.mapper.toDomain(document) : null;
+    }
+
+    const processedOptions = this.processIncludeOptions(options);
+    const documents = await this.fetch<PopulatedCharacterBuildingType>({
+      id,
+      options: processedOptions
+    });
+
+    return documents.length
+      ? this.mapper.toPopulatedDomain(documents[0])
+      : null;
   }
 }

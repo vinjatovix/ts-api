@@ -160,3 +160,10 @@ services:
       method: 'createGetAllCharacterBuildingsController'
     arguments:
       ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetCharacterBuildingController
+      method: 'createGetCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingFinder']
