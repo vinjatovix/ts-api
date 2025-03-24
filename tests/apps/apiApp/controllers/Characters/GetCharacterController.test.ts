@@ -1,16 +1,23 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { GetCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 import { CharacterFinder } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { Character } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { CharacterMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { GetController } from '../../../../../src/apps/apiApp/controllers/shared/GetController';
+import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
+import { createGetCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 
 const CHARACTER_ID = random.uuid();
 
 describe('GetCharacterController', () => {
-  let controller: GetCharacterController;
+  let controller: GetController<
+    CharacterFinder,
+    Partial<RequestOptions>,
+    CharacterPrimitives
+  >;
   let service: CharacterFinder;
   let repository: CharacterRepositoryMock;
   let req: Partial<Request>;
@@ -20,7 +27,11 @@ describe('GetCharacterController', () => {
   beforeEach(() => {
     repository = new CharacterRepositoryMock();
     service = new CharacterFinder(repository);
-    controller = new GetCharacterController(service);
+    controller = createGetCharacterController(service) as GetController<
+      CharacterFinder,
+      Partial<RequestOptions>,
+      CharacterPrimitives
+    >;
     req = { params: { id: CHARACTER_ID }, query: {} };
     res = {
       status: jest.fn().mockReturnThis(),

@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { DeleteCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 import { CharacterRemover } from '../../../../../src/Contexts/apiApp/Characters/application';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { SceneRepositoryMock } from '../../../../Contexts/apiApp/Scenes/__mocks__/SceneRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
+import { createDeleteCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterRemover'
@@ -15,7 +16,7 @@ const id = random.uuid();
 
 describe('DeleteCharacterController', () => {
   let service: CharacterRemover;
-  let controller: DeleteCharacterController;
+  let controller: DeleteController<CharacterRemover>;
   let repository: CharacterRepositoryMock;
   let sceneRepository: SceneRepositoryMock;
   let req: Partial<Request>;
@@ -26,7 +27,9 @@ describe('DeleteCharacterController', () => {
     repository = new CharacterRepositoryMock();
     sceneRepository = new SceneRepositoryMock();
     service = new CharacterRemover(repository, sceneRepository);
-    controller = new DeleteCharacterController(service);
+    controller = createDeleteCharacterController(
+      service
+    ) as DeleteController<CharacterRemover>;
     req = { params: { id } };
     res = {
       status: jest.fn().mockReturnThis(),

@@ -9,7 +9,7 @@ export class CharacterFinder {
   async run(
     { id }: RequestById,
     options: Partial<RequestOptions> = {}
-  ): Promise<Partial<CharacterPrimitives>> {
+  ): Promise<CharacterPrimitives> {
     const character = (await this.repository.search(id, options)) as
       | Character
       | PopulatedCharacter;

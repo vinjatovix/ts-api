@@ -21,7 +21,7 @@ describe('AllScenesFinder', () => {
   });
 
   it('should find all scenes with options', async () => {
-    const options = { include: ['chatacters'] };
+    const options = { include: ['characters'] };
 
     await service.run(options);
 
