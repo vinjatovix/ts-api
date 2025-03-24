@@ -1,5 +1,5 @@
 import { AuthorRepository } from '../domain/';
-import { AuthorResponse } from './interfaces/AuthorResponse';
+import { AuthorPrimitives } from './interfaces';
 
 export class AllAuthorsFinder {
   private readonly repository: AuthorRepository;
@@ -8,13 +8,9 @@ export class AllAuthorsFinder {
     this.repository = repository;
   }
 
-  async run(): Promise<AuthorResponse[]> {
+  async run(): Promise<AuthorPrimitives[]> {
     const authors = await this.repository.findAll();
 
-    return authors.map((author) => ({
-      id: author.id.value,
-      name: author.name.value,
-      metadata: author.metadata.toPrimitives()
-    }));
+    return authors.map((author) => author.toPrimitives());
   }
 }

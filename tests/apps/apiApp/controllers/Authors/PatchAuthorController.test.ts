@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import { PatchAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
-import {
-  AuthorCreatorRequest,
-  AuthorPatcher
-} from '../../../../../src/Contexts/apiApp/Authors/application';
+import { AuthorPatcher } from '../../../../../src/Contexts/apiApp/Authors/application';
+import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers/AuthorCreatorRequestMother';
 import { random } from '../../../../Contexts/fixtures/shared';

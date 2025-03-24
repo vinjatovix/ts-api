@@ -13,12 +13,9 @@ import { StringsMap } from '../../../../../src/apps/apiApp/shared/interfaces';
 import container from '../../../../../src/apps/apiApp/dependency-injection';
 import {
   AuthorCreatorRequest,
-  AuthorResponse
-} from '../../../../../src/Contexts/apiApp/Authors/application';
-import {
-  BookCreatorRequest,
-  BookResponse
-} from '../../../../../src/Contexts/apiApp/Books/application';
+  AuthorPrimitives
+} from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
+import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application';
 import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
 import { Uuid } from '../../../../../src/Contexts/shared/domain/valueObject';
 import { EncrypterTool } from '../../../../../src/Contexts/shared/plugins';
@@ -26,6 +23,7 @@ import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/appl
 import { random } from '../../../../Contexts/fixtures/shared';
 import { EnvironmentArranger } from '../../../../Contexts/shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
+import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 
 const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
@@ -234,7 +232,7 @@ Then('the response body should be', async (docString: string) => {
 
 Then('the response body should contain', async (docString: string) => {
   const response = await _request;
-  const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+  const expectedResponseBody: Partial<BookPrimitives | AuthorPrimitives> =
     JSON.parse(docString);
 
   const matches = compareResponseObject(response.body, expectedResponseBody);
@@ -249,15 +247,13 @@ Then(
   'the response body will be an array containing',
   async (docString: string) => {
     const response = await _request;
-    const expectedResponseBody: Partial<BookResponse | AuthorResponse> =
+    const expectedResponseBody: Partial<BookPrimitives | AuthorPrimitives> =
       JSON.parse(docString);
     assert.isArray(response.body);
 
     const matches = response.body.some(
-      (item: BookResponse | AuthorResponse) => {
-        const typedItem = item as BookResponse | AuthorResponse;
-        return compareResponseObject(typedItem, expectedResponseBody);
-      }
+      (item: BookPrimitives | AuthorPrimitives) =>
+        compareResponseObject(item, expectedResponseBody)
     );
 
     assert.isTrue(

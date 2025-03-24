@@ -1,4 +1,4 @@
-import { AuthorCreatorRequest } from '../../../../../../src/Contexts/apiApp/Authors/application';
+import { AuthorCreatorRequest } from '../../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import {
   Author,
   AuthorName
