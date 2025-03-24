@@ -96,3 +96,7 @@ services:
   Apps.apiApp.controllers.Scenes.PatchSceneController:
     class: ../../controllers/Scenes/PatchSceneController
     arguments: ['@apiApp.Scenes.application.ScenePatcher']
+
+  Apps.apiApp.controllers.Scenes.DeleteSceneController:
+    class: ../../controllers/Scenes/DeleteSceneController
+    arguments: ['@apiApp.Scenes.application.SceneRemover']

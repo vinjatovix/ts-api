@@ -14,6 +14,7 @@ export class SceneRepositoryMock implements SceneRepository {
   protected findMock: jest.Mock;
   private readonly updateMock: jest.Mock;
   private readonly findByQueryMock: jest.Mock;
+  private readonly removeMock: jest.Mock;
   private isFindable: boolean;
 
   constructor({ find }: { find: boolean } = { find: false }) {
@@ -29,6 +30,7 @@ export class SceneRepositoryMock implements SceneRepository {
     this.findByQueryMock = jest.fn().mockImplementation(() => {
       return this.isFindable ? [SceneMother.random()] : [];
     });
+    this.removeMock = jest.fn();
   }
 
   async findAll(options?: Partial<RequestOptions>): Promise<Scene[]> {
@@ -75,6 +77,14 @@ export class SceneRepositoryMock implements SceneRepository {
 
   assertUpdateHasBeenCalledWith(expected: Scene, user: Username): void {
     expect(this.updateMock).toHaveBeenCalledWith(expected, user);
+  }
+
+  async remove(id: string): Promise<void> {
+    this.removeMock(id);
+  }
+
+  assertRemoveHasBeenCalledWith(expected: string): void {
+    expect(this.removeMock).toHaveBeenCalledWith(expected);
   }
 
   async findByQuery(query: SceneByQuery): Promise<Scene[]> {

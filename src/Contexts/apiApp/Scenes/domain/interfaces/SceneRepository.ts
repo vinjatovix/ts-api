@@ -19,5 +19,7 @@ export interface SceneRepository {
 
   update(scene: ScenePatch, user: Username): Promise<void>;
 
+  remove(id: string): Promise<void>;
+
   findByQuery(query: SceneByQuery): Promise<Scene[]>;
 }
