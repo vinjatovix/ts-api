@@ -1,6 +1,8 @@
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
+import { Username } from '../../../Auth/domain/Username';
 import { CharacterByQuery } from '../../application';
 import { Character } from '../Character';
+import { CharacterPatch } from '../CharacterPatch';
 import { PopulatedCharacter } from '../PopulatedCharacter';
 
 export interface CharacterRepository {
@@ -18,4 +20,6 @@ export interface CharacterRepository {
     id: string,
     options?: Partial<RequestOptions>
   ): Promise<Partial<Character | PopulatedCharacter> | null>;
+
+  update(char: CharacterPatch, user: Username): Promise<void>;
 }
