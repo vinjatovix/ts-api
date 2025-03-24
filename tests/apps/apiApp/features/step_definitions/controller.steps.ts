@@ -20,19 +20,14 @@ import { UserMother } from '../../../../Contexts/apiApp/Auth/domain/mothers';
 import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import { AuthorPrimitives } from '../../../../../src/Contexts/apiApp/Authors/domain/interfaces';
 import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/interfaces';
-import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { BookPrimitives } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
-import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers';
-import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
 import { CharacterPrimitives } from '../../../../../src/Contexts/apiApp/Characters/domain/interfaces';
-import { SceneCreatorRequestMother } from '../../../../Contexts/apiApp/Scenes/application/mothers';
 import { SceneCreatorRequest } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
-import { SceneCircumstance } from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { ScenePrimitives } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
 import { App } from 'supertest/types';
-import { RegisterUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers';
 import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
+import { PayloadFactory } from './PayloadFactory';
 
 type EntityPrimitives =
   | BookPrimitives
@@ -40,11 +35,18 @@ type EntityPrimitives =
   | CharacterPrimitives
   | ScenePrimitives;
 
-const environmentArranger: Promise<EnvironmentArranger> = container.get(
+type ApplicationPostRequest =
+  | RegisterUserRequest
+  | BookCreatorRequest
+  | AuthorCreatorRequest
+  | CharacterCreatorRequest
+  | SceneCreatorRequest;
+
+const ENVIRONMENT_ARRANGER: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
 );
 
-const encrypter: EncrypterTool = container.get('plugin.Encrypter');
+const ENCRYPTER: EncrypterTool = container.get('plugin.Encrypter');
 
 let _request: request.Test;
 let _response: request.Response;
@@ -53,104 +55,41 @@ let httpServer: App; // Agregar esta variable global
 let validAdminBearerToken: Nullable<string>;
 let validUserBearerToken: Nullable<string>;
 
+const createDependencyRequest = async (
+  dependencyEntity: string
+): Promise<StringsMap> => {
+  const entity = dependencyEntity === 'actor' ? 'auth' : dependencyEntity;
+  const url =
+    entity === 'auth'
+      ? `${API_PREFIXES[entity]}/register`
+      : API_PREFIXES[entity];
+
+  const payload = await getPayloadByEntity(
+    dependencyEntity,
+    Uuid.random().value
+  );
+
+  await sendPostRequest(url, payload);
+
+  return payload as StringsMap;
+};
+
 const getPayloadByEntity = async (
   entity: string,
   id: string
-): Promise<
-  | RegisterUserRequest
-  | BookCreatorRequest
-  | AuthorCreatorRequest
-  | CharacterCreatorRequest
-  | SceneCreatorRequest
-  | StringsMap
-> => {
-  if (entity === 'actor') {
-    const actor = RegisterUserRequestMother.random(id);
-
-    return { ...actor, repeatPassword: actor.password };
-  }
-  if (entity === 'author') {
-    return { id, name: 'test author' };
-  }
-
-  if (entity === 'book') {
-    const bookRequest = BookCreatorRequestMother.random(id);
-    const dependencies = await _createDependenciesByEntity(entity);
-    return { ...bookRequest, ...dependencies };
-  }
-
-  if (entity === 'character') {
-    const { book } = await _createDependenciesByEntity(entity);
-    const characterRequest = CharacterCreatorRequestMother.create({
-      id: new Uuid(id),
-      name: CharacterNameMother.random(),
-      book: new Uuid(book)
-    });
-
-    return characterRequest;
-  }
-
-  if (entity === 'scene') {
-    const { character } = await _createDependenciesByEntity(entity);
-    const sceneRequest = SceneCreatorRequestMother.create({
-      id: new Uuid(id),
-      description: new SceneCircumstance(random.word()),
-      characters: [new Uuid(character)]
-    });
-    return sceneRequest;
-  }
-
-  return {};
+): Promise<ApplicationPostRequest> => {
+  return await PayloadFactory.getPayload(entity, id, createDependencyRequest);
 };
 
-const _createDependenciesByEntity = async (
-  entity: string
-): Promise<StringsMap> => {
-  switch (entity) {
-    case 'book':
-      return await _getBookDependencies();
-    case 'character':
-      return await _getCharacterDependencies();
-    case 'scene':
-      return await _getSceneDependencies();
-    default:
-      return {};
-  }
-};
-
-const _getBookDependencies = async (): Promise<{ author: string }> => {
-  const autor = await getPayloadByEntity('author', Uuid.random().value);
+const sendPostRequest = async (
+  endpoint: string,
+  payload: ApplicationPostRequest
+) => {
   _request = request(httpServer)
-    .post(API_PREFIXES.author)
+    .post(endpoint)
     .set('Authorization', `Bearer ${validAdminBearerToken}`)
-    .send(autor);
+    .send(payload as object);
   await _request.expect(201);
-
-  return { author: autor?.id };
-};
-
-const _getCharacterDependencies = async (): Promise<{ book: string }> => {
-  const book = await getPayloadByEntity('book', Uuid.random().value);
-  _request = request(httpServer)
-    .post(API_PREFIXES.book)
-    .set('Authorization', `Bearer ${validAdminBearerToken}`)
-    .send(book);
-
-  await _request.expect(201);
-
-  return { book: book?.id };
-};
-
-const _getSceneDependencies = async (): Promise<{ character: string }> => {
-  const character = await getPayloadByEntity('character', Uuid.random().value);
-  _request = request(httpServer)
-    .post(API_PREFIXES.character)
-    .set('Authorization', `Bearer ${validAdminBearerToken}`)
-    .send(character);
-
-  await _request.expect(201);
-
-  return { character: character?.id };
 };
 
 const compareResponseObject = <T>(
@@ -186,14 +125,14 @@ BeforeAll(async () => {
     throw new Error('httpServer no available');
   }
   httpServer = app.httpServer;
-  await (await environmentArranger).arrange();
-  validAdminBearerToken = await encrypter.generateToken({
+  await (await ENVIRONMENT_ARRANGER).arrange();
+  validAdminBearerToken = await ENCRYPTER.generateToken({
     id: Uuid.random().value,
     email: 'admin@tsapi.com',
     username: UserMother.random().username.value,
     roles: ['admin']
   });
-  validUserBearerToken = await encrypter.generateToken({
+  validUserBearerToken = await ENCRYPTER.generateToken({
     id: Uuid.random().value,
     email: 'user@tsapi.com',
     username: UserMother.random().username.value,
@@ -202,13 +141,23 @@ BeforeAll(async () => {
 });
 
 AfterAll(async () => {
-  await (await environmentArranger).arrange();
-  await (await environmentArranger).close();
+  await (await ENVIRONMENT_ARRANGER).arrange();
+  await (await ENVIRONMENT_ARRANGER).close();
   await app.stop();
 });
 
 Given('a GET request to {string}', async (route: string) => {
   _request = request(httpServer).get(route);
+});
+
+Given('an authentication with body', async (docString: string) => {
+  const payload = JSON.parse(docString);
+  _request = request(httpServer)
+    .post(API_PREFIXES.auth + '/login')
+    .send(payload);
+
+  const response = await _request;
+  validUserBearerToken = response.body.token;
 });
 
 Given('an authenticated GET request to {string}', async (route: string) => {
@@ -272,6 +221,16 @@ Given(
 );
 
 Given(
+  'a PATCH user request to {string} with body',
+  async (route: string, body: string) => {
+    _request = request(httpServer)
+      .patch(route)
+      .set('Authorization', `Bearer ${validUserBearerToken}`)
+      .send(JSON.parse(body));
+  }
+);
+
+Given(
   'a PATCH admin request to {string} with body',
   async (route: string, body: string) => {
     _request = request(httpServer)
@@ -283,6 +242,12 @@ Given(
 
 Given('a DELETE request to {string}', async (route: string) => {
   _request = request(httpServer).delete(route);
+});
+
+Given('a DELETE user request to {string}', async (route: string) => {
+  _request = request(httpServer)
+    .delete(route)
+    .set('Authorization', `Bearer ${validUserBearerToken}`);
 });
 
 Given('a DELETE admin request to {string}', async (route: string) => {
@@ -299,11 +264,12 @@ Given(
       entityKey === 'auth'
         ? `${API_PREFIXES[entityKey]}/register`
         : API_PREFIXES[entityKey];
+    const payload = await getPayloadByEntity(entity, id);
 
     _request = request(httpServer)
       .post(prefix)
       .set('Authorization', `Bearer ${validAdminBearerToken}`)
-      .send(await getPayloadByEntity(entity, id));
+      .send(payload);
 
     await _request.expect(201);
   }
@@ -320,7 +286,6 @@ Then('the response body should be', async (docString: string) => {
 Then('the field {string} should be populated', async (fieldPath: string) => {
   const response = await _request;
 
-  // Función para obtener valores anidados sin usar eval ni any
   function getNestedValue(obj: unknown, path: string): unknown {
     const pathArray = path.split('.');
 
