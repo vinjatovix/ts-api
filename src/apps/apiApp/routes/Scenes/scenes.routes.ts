@@ -13,6 +13,7 @@ import { patchReqSchema, postReqSchema } from './reqSchemas';
 import { GetAllScenesController } from '../../controllers/Scenes/GetAllScenesController';
 import { GetSceneController } from '../../controllers/Scenes/GetSceneController';
 import { PatchSceneController } from '../../controllers/Scenes/PatchSceneController';
+import { DeleteSceneController } from '../../controllers/Scenes/DeleteSceneController';
 
 const prefix = API_PREFIXES.scene;
 
@@ -21,6 +22,7 @@ export const register = (router: Router) => {
   const getAllController = container.get(GetAllScenesController.containerId);
   const getController = container.get(GetSceneController.containerId);
   const patchController = container.get(PatchSceneController.containerId);
+  const deleteController = container.get(DeleteSceneController.containerId);
 
   router.post(
     `${prefix}/`,
@@ -61,6 +63,15 @@ export const register = (router: Router) => {
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       patchController.run(req, res, next);
+    }
+  );
+
+  router.delete(
+    `${prefix}/:id`,
+    auth,
+    isAdmin,
+    (req: Request, res: Response, next: NextFunction) => {
+      deleteController.run(req, res, next);
     }
   );
 };
