@@ -1,4 +1,4 @@
-import { body } from 'express-validator';
+import { body, param } from 'express-validator';
 import { RelationshipCircumstancePrimitives } from '../../../../Contexts/apiApp/CharacterBuildings/domain/interfaces';
 import { createError } from '../../../../Contexts/shared/domain/errors';
 
@@ -26,4 +26,16 @@ export const postReqSchema = [
   body('sceneCircumstances').exists().isString(),
   body('previousCircumstances').exists().isString(),
   body('relationshipCircumstances').custom(validateRelationshipCircumstances)
+];
+
+export const patchReqSchema = [
+  param('id').exists().isUUID(),
+  body('actor').optional().isUUID(),
+  body('character').optional().isUUID(),
+  body('scene').optional().isUUID(),
+  body('sceneCircumstances').optional().isString(),
+  body('previousCircumstances').optional().isString(),
+  body('relationshipCircumstances')
+    .optional()
+    .custom(validateRelationshipCircumstances)
 ];

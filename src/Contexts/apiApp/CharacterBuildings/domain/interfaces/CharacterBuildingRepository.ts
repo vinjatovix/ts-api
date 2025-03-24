@@ -1,5 +1,7 @@
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
+import { Username } from '../../../Auth/domain';
 import { CharacterBuilding } from '../CharacterBuilding';
+import { CharacterBuildingPatch } from '../CharacterBuildingPatch';
 import { PopulatedCharacterBuilding } from '../PopulatedCharacterBuilding';
 
 export interface CharacterBuildingRepository {
@@ -20,4 +22,6 @@ export interface CharacterBuildingRepository {
   ): Promise<Partial<CharacterBuilding | PopulatedCharacterBuilding> | null>;
 
   remove(id: string): Promise<void>;
+
+  update(data: CharacterBuildingPatch, user: Username): Promise<void>;
 }

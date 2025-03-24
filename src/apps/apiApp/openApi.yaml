@@ -983,6 +983,46 @@ paths:
                 $ref: '#/components/schemas/403'
               example:
                 message: 'You dont own this characterBulding'
+    patch:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Update CharacterBuilding by Id
+      operationId: UpdateCharacterBuilding
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{$guid}}'
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            example:
+              center: 'mental'
+              sceneCircumstances: '{{$randomWords}}'
+              previousCircumstances: '{{$randomWords}}'
+              relationshipCircumstances:
+                [{ character: '{{$guid}}', circumstance: '{{$randomWords}}' }]
+        required: true
+      responses:
+        '200':
+          description: Updated
+          content: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403'
+              example:
+                message: 'You dont own this characterBulding'
 
   /api/v1/health/http:
     get:
