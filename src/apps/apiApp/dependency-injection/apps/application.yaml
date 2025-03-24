@@ -58,3 +58,8 @@ services:
   Apps.apiApp.controllers.Books.DeleteBookController:
     class: ../../controllers/Books/DeleteBookController
     arguments: ['@apiApp.Books.application.BookRemover']
+
+  # CHARACTERS
+  Apps.apiApp.controllers.Characters.PostCharacterController:
+    class: ../../controllers/Characters/PostCharacterController
+    arguments: ['@apiApp.Characters.application.CharacterCreator']
