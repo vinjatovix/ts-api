@@ -10,9 +10,16 @@ services:
       method: 'createClient'
     arguments: ['apiApp', '@apiApp.MongoConfig']
 
+  apiApp.Characters.infrastructure.CharacterMapper:
+    class: ../../../../Contexts/apiApp/Characters/infrastructure/CharacterMapper
+
   apiApp.Characters.domain.CharacterRepository:
-    class: ../../../../Contexts/apiApp/Characters/infraestructure/persistence/MongoCharacterRepository
-    arguments: ['@apiApp.MongoClient']
+    class: ../../../../Contexts/apiApp/Characters/infrastructure/persistence/MongoCharacterRepository
+    arguments:
+      [
+        '@apiApp.MongoClient',
+        '@apiApp.Characters.infrastructure.CharacterMapper'
+      ]
 
   apiApp.Characters.application.CharacterCreator:
     class: ../../../../Contexts/apiApp/Characters/application/CharacterCreator
@@ -40,4 +47,8 @@ services:
 
   apiApp.Characters.application.CharacterRemover:
     class: ../../../../Contexts/apiApp/Characters/application/CharacterRemover
-    arguments: ['@apiApp.Characters.domain.CharacterRepository']
+    arguments:
+      [
+        '@apiApp.Characters.domain.CharacterRepository',
+        '@apiApp.Scenes.domain.SceneRepository'
+      ]

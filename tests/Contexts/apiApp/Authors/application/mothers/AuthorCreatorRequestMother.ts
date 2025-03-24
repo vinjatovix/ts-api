@@ -1,8 +1,8 @@
 import { AuthorCreatorRequest } from '../../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import { AuthorName } from '../../../../../../src/Contexts/apiApp/Authors/domain';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject/Uuid';
-import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
-import { AuthorNameMother } from '../../domain/mothers/AuthorNameMother';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
+import { AuthorNameMother } from '../../domain/mothers';
 
 export class AuthorCreatorRequestMother {
   static create(id: Uuid, name: AuthorName) {

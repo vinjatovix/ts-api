@@ -1,5 +1,4 @@
 import { MongoClient } from 'mongodb';
-
 import { EnvironmentArranger } from '../arranger/EnvironmentArranger';
 
 export class MongoEnvironmentArranger extends EnvironmentArranger {

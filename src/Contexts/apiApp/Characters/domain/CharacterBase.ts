@@ -1,7 +1,7 @@
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+import { AggregateRoot } from '../../../shared/domain';
 import { Uuid, Metadata } from '../../../shared/domain/valueObject';
-import { Nullable } from '../../../shared/domain/Nullable';
-import { MetadataType } from '../../../shared/application/MetadataType';
+import { Nullable } from '../../../shared/domain/types';
+import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/types';
 import { Book, PopulatedBook } from '../../Books/domain';
 import { CharacterName } from './CharacterName';
 import { CharacterPrimitives } from './interfaces';

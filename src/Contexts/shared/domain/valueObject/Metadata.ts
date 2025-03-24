@@ -1,4 +1,4 @@
-import { MetadataType } from '../../application/MetadataType';
+import { MetadataType } from '../../infrastructure/persistence/mongo/types';
 
 export class Metadata {
   readonly createdAt?: Date;

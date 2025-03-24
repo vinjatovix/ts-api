@@ -1,37 +1,35 @@
 import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
 import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
+import { BookByQuery } from '../../../../../src/Contexts/apiApp/Books/application/interfaces';
 import {
   Book,
   BookPatch
 } from '../../../../../src/Contexts/apiApp/Books/domain';
-import {
-  BookByQuery,
-  BookRepository
-} from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
-import { BookMother } from '../domain/mothers/BookMother';
+import { BookRepository } from '../../../../../src/Contexts/apiApp/Books/domain/interfaces';
+import { BookMother } from '../domain/mothers';
 
 export class BookRepositoryMock implements BookRepository {
-  protected saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  protected findMock: jest.Mock;
-  public findAllMock: jest.Mock;
-  private removeMock: jest.Mock;
-  public findByQueryMock: jest.Mock;
-  private isBookFindable: boolean;
+  private readonly saveMock: jest.Mock;
+  private readonly updateMock: jest.Mock;
+  private readonly findMock: jest.Mock;
+  private readonly findAllMock: jest.Mock;
+  private readonly removeMock: jest.Mock;
+  private readonly findByQueryMock: jest.Mock;
+  private isFindable: boolean;
 
   constructor({ find }: { find: boolean } = { find: false }) {
-    this.isBookFindable = find;
+    this.isFindable = find;
     this.saveMock = jest.fn();
     this.updateMock = jest.fn();
     this.findMock = jest.fn().mockImplementation(() => {
-      return this.isBookFindable ? BookMother.random() : null;
+      return this.isFindable ? BookMother.random() : null;
     });
     this.findAllMock = jest.fn().mockImplementation(() => {
-      return this.isBookFindable ? BookMother.randomList(3) : [];
+      return this.isFindable ? BookMother.randomList(3) : [];
     });
     this.removeMock = jest.fn();
     this.findByQueryMock = jest.fn().mockImplementation(() => {
-      return this.isBookFindable ? [BookMother.random()] : [];
+      return this.isFindable ? [BookMother.random()] : [];
     });
   }
 
@@ -88,6 +86,6 @@ export class BookRepositoryMock implements BookRepository {
   }
 
   setFindable(findable: boolean): void {
-    this.isBookFindable = findable;
+    this.isFindable = findable;
   }
 }

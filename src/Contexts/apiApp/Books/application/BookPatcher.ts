@@ -2,20 +2,12 @@ import { hasValuesChanges } from '../../../shared/application/utils';
 import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
 import { Username } from '../../Auth/domain';
-import { AuthorRepository } from '../../Authors/domain';
+import { AuthorRepository } from '../../Authors/domain/interfaces';
 import { BookPatch } from '../domain';
 import { BookRepository } from '../domain/interfaces';
+import { BookPatcherRequest } from './interfaces';
 
 const logger = buildLogger('bookPatcher');
-
-interface BookPatcherRequest {
-  id: string;
-  title?: string;
-  author?: string;
-  isbn?: string;
-  releaseDate?: string;
-  pages?: number;
-}
 
 export class BookPatcher {
   private readonly repository: BookRepository;

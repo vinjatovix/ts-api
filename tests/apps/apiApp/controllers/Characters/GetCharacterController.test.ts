@@ -1,11 +1,11 @@
-import { random } from '../../../../Contexts/fixtures/shared';
-import { CharacterFinder } from '../../../../../src/Contexts/apiApp/Characters/application/CharacterFinder';
-import { GetCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters/GetCharacterController';
-import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { Request, Response } from 'express';
+import httpStatus from 'http-status';
+import { GetCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
+import { CharacterFinder } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { Character } from '../../../../../src/Contexts/apiApp/Characters/domain';
 import { CharacterMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';
-import httpStatus from 'http-status';
+import { random } from '../../../../Contexts/fixtures/shared';
 
 const CHARACTER_ID = random.uuid();
 

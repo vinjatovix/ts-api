@@ -1,8 +1,8 @@
-import { Nullable } from '../../../../shared/domain/Nullable';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
-import { User, UserRepository, Username } from '../../domain';
-import { UserPatch } from '../../domain/UserPatch';
-import { MetadataType } from '../../../../shared/application/MetadataType';
+import { Nullable } from '../../../../shared/domain/types';
+import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
+import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
+import { User, UserPatch, Username } from '../../domain';
+import { UserRepository } from '../../domain/interfaces';
 
 export interface AuthDocument {
   _id: string;

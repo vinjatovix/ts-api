@@ -16,5 +16,6 @@ module.exports = {
     '/test/',
     '/start.ts',
     '/server.ts'
-  ]
+  ],
+  maxWorkers: '50%'
 };

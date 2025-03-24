@@ -1,7 +1,7 @@
 import { UUID } from 'bson';
 import { MongoClient, MongoServerError } from 'mongodb';
-import { INDEXES } from '../../../../apiApp/shared/infraestructure/MongoCollectionIndexes';
-import MongoConfig from './MongoConfig';
+import { INDEXES } from '../../../../apiApp/shared/infrastructure/persistence';
+import MongoConfig from './interfaces/MongoConfig';
 
 interface IndexConfig {
   collection: string;
