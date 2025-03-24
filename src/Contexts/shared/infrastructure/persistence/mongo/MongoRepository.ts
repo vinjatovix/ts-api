@@ -33,16 +33,21 @@ export abstract class MongoRepository<T extends AggregateRoot> {
       ...(username && updateMetadata(username))
     };
 
-    await collection.updateOne(
-      { _id: id as unknown as ObjectId },
-      { $set: document },
-      { upsert: true }
+    await this.handleMongoError(
+      async () =>
+        await collection.updateOne(
+          { _id: id as unknown as ObjectId },
+          { $set: document },
+          { upsert: true }
+        )
     );
   }
 
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
-    await collection.deleteOne({ _id: id as unknown as ObjectId });
+    await this.handleMongoError(
+      async () => await collection.deleteOne({ _id: id as unknown as ObjectId })
+    );
   }
 
   protected async handleMongoError<T>(operation: () => Promise<T>): Promise<T> {
@@ -64,6 +69,8 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     options: Partial<RequestOptions>;
   }): Promise<T[]> {
     const collection = await this.collection();
-    return MongoFetchService.fetch<T>({ collection, id, options });
+    return await this.handleMongoError(
+      async () => await MongoFetchService.fetch<T>({ collection, id, options })
+    );
   }
 }

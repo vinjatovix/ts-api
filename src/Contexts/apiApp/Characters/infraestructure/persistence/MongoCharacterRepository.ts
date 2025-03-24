@@ -1,12 +1,7 @@
-import { ObjectId } from 'bson';
-import { Collection, MongoServerError } from 'mongodb';
+import { ObjectId } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Nullable } from '../../../../shared/domain/Nullable';
-import {
-  MongoRepository,
-  AggregateBuilder,
-  MongoErrorHandler
-} from '../../../../shared/infrastructure/persistence/mongo';
+import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
 import { Username } from '../../../Auth/domain';
 import { CharacterByQuery } from '../../application';
 import { Character, PopulatedCharacter } from '../../domain/';
@@ -20,28 +15,14 @@ export class MongoCharacterRepository
   implements CharacterRepository
 {
   public async save(character: Character): Promise<void> {
-    try {
-      return await this.persist(character.id.value, character);
-    } catch (err: unknown) {
-      if (err as MongoServerError) {
-        MongoErrorHandler.formatError(err as MongoServerError);
-      }
-      throw err;
-    }
+    return await this.persist(character.id.value, character);
   }
 
   public async update(
     character: CharacterPatch,
     username: Username
   ): Promise<void> {
-    try {
-      return await this.persist(character.id.value, character, username);
-    } catch (err: unknown) {
-      if (err as MongoServerError) {
-        MongoErrorHandler.formatError(err as MongoServerError);
-      }
-      throw err;
-    }
+    return await this.persist(character.id.value, character, username);
   }
 
   public async findByQuery(query: CharacterByQuery): Promise<Character[]> {
@@ -61,11 +42,9 @@ export class MongoCharacterRepository
       return documents.map(CharacterMapper.toDomain);
     }
 
-    const documents = await this.fetch({ collection, options });
+    const documents = await this.fetch<PopulatedCharacterType>({ options });
 
-    return documents.map((document) =>
-      CharacterMapper.toPopulatedDomain(document)
-    );
+    return documents.map(CharacterMapper.toPopulatedDomain);
   }
 
   public async search(
@@ -81,8 +60,7 @@ export class MongoCharacterRepository
 
       return document ? CharacterMapper.toDomain(document) : null;
     }
-
-    const documents = await this.fetch({ id, collection, options });
+    const documents = await this.fetch<PopulatedCharacterType>({ id, options });
 
     return documents.length > 0
       ? CharacterMapper.toPopulatedDomain(documents[0])
@@ -91,23 +69,6 @@ export class MongoCharacterRepository
 
   protected collectionName(): string {
     return 'characters';
-  }
-
-  private async fetch({
-    collection,
-    id,
-    options
-  }: {
-    collection: Collection;
-    id?: string;
-    options: Partial<RequestOptions>;
-  }): Promise<PopulatedCharacterType[]> {
-    const aggregateBuilder = new AggregateBuilder();
-    const pipeline = aggregateBuilder.buildPipeline(id ?? '', options);
-
-    return (await collection
-      .aggregate(pipeline)
-      .toArray()) as PopulatedCharacterType[];
   }
 
   public async remove(id: string): Promise<void> {
