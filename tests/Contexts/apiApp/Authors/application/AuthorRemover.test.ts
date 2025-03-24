@@ -32,7 +32,7 @@ describe('AuthorRemover', () => {
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
 
-  it('should fail when the author has books', async () => {
+  it('should fail when the author has associated books', async () => {
     bookRepository.findByQueryMock.mockResolvedValue([{}]);
 
     await expect(remover.run(request, username)).rejects.toThrow(

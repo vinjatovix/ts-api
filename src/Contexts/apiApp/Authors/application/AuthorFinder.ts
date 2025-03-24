@@ -1,9 +1,7 @@
 import { RequestById } from '../../../shared/application/interfaces';
 import { createError } from '../../../shared/domain/errors';
-
 import { AuthorRepository } from '../domain';
-
-import { AuthorResponse } from './interfaces/AuthorResponse';
+import { AuthorPrimitives } from './interfaces';
 
 export class AuthorFinder {
   private readonly repository: AuthorRepository;
@@ -12,17 +10,13 @@ export class AuthorFinder {
     this.repository = repository;
   }
 
-  async run(request: RequestById): Promise<AuthorResponse> {
+  async run(request: RequestById): Promise<AuthorPrimitives> {
     const author = await this.repository.search(request.id);
 
     if (!author) {
       throw createError.notFound(`Author <${request.id}>`);
     }
 
-    return {
-      id: author.id.value,
-      name: author.name.value,
-      metadata: author.metadata.toPrimitives()
-    };
+    return author.toPrimitives();
   }
 }

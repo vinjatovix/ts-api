@@ -1,22 +1,19 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
 import { Nullable } from '../../../shared/domain/Nullable';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
-import { Uuid } from '../../../shared/domain/valueObject/Uuid';
-import { Author, AuthorName } from '../../Authors/domain';
+import { Metadata, Uuid } from '../../../shared/domain/valueObject';
+import { Author } from '../../Authors/domain';
+import { BookBase, BookBaseProps } from './BookBase';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
+import { BookPrimitives } from './interfaces';
 import { Isbn } from './ISBN';
 
-export class PopulatedBook extends AggregateRoot {
-  readonly id: Uuid;
-  readonly title: Nullable<BookTitle> = null;
-  readonly author: Nullable<Author> = null;
-  readonly isbn: Nullable<Isbn> = null;
-  readonly releaseDate: Nullable<BookReleaseDate> = null;
-  readonly pages: Nullable<BookPages> = null;
-  readonly metadata: Metadata;
+interface PopulatedBookProps extends BookBaseProps {
+  author?: Author;
+}
+
+export class PopulatedBook extends BookBase {
+  readonly author: Nullable<Author>;
 
   constructor({
     id,
@@ -26,40 +23,22 @@ export class PopulatedBook extends AggregateRoot {
     releaseDate,
     pages,
     metadata
-  }: {
-    id: Uuid;
-    metadata: Metadata;
-    title?: BookTitle;
-    author?: Author;
-    isbn?: Isbn;
-    releaseDate?: BookReleaseDate;
-    pages?: BookPages;
-  }) {
-    super();
-    this.id = id;
-    this.metadata = metadata;
-    title && (this.title = title);
-    author && (this.author = author);
-    isbn && (this.isbn = isbn);
-    releaseDate && (this.releaseDate = releaseDate);
-    pages && (this.pages = pages);
+  }: PopulatedBookProps) {
+    super({
+      id,
+      title,
+      isbn,
+      releaseDate,
+      pages,
+      metadata
+    });
+    this.author = author || null;
   }
 
-  toPrimitives() {
+  toPrimitives(): BookPrimitives {
     return {
-      id: this.id.value,
-      metadata: this.metadata.toPrimitives(),
-      ...(this.title && { title: this.title.value }),
-      ...(this.author && {
-        author: {
-          id: this.author?.id.value,
-          metadata: this.author?.metadata.toPrimitives(),
-          ...(this.author?.name && { name: this.author?.name.value })
-        }
-      }),
-      ...(this.isbn && { isbn: this.isbn.value }),
-      ...(this.releaseDate && { releaseDate: this.releaseDate.value }),
-      ...(this.pages && { pages: this.pages.value })
+      ...super.toPrimitives(),
+      ...(this.author && { author: this.author.toPrimitives() })
     };
   }
 
@@ -71,33 +50,23 @@ export class PopulatedBook extends AggregateRoot {
     isbn,
     releaseDate,
     pages
-  }: {
-    id: string;
-    metadata: MetadataType;
-    title?: string;
-    author?: {
-      id: string;
-      name: string;
-      metadata: MetadataType;
-    };
-    isbn?: string;
-    releaseDate?: string;
-    pages?: number;
-  }) {
+  }: BookPrimitives) {
+    const isAuthorValid = author && typeof author === 'object' && author.id;
+
     return new PopulatedBook({
       id: new Uuid(id),
       metadata: Metadata.fromPrimitives(metadata),
-      ...(title && { title: new BookTitle(title) }),
-      ...(isbn && { isbn: new Isbn(isbn) }),
-      ...(releaseDate && { releaseDate: new BookReleaseDate(releaseDate) }),
-      ...(pages && { pages: new BookPages(pages) }),
-      ...(author && {
-        author: new Author({
-          id: new Uuid(author.id),
-          name: new AuthorName(author.name),
-          metadata: Metadata.fromPrimitives(author.metadata)
-        })
-      })
+      title: title ? new BookTitle(title) : undefined,
+      isbn: isbn ? new Isbn(isbn) : undefined,
+      releaseDate: releaseDate ? new BookReleaseDate(releaseDate) : undefined,
+      pages: pages ? new BookPages(pages) : undefined,
+      author: isAuthorValid
+        ? Author.fromPrimitives({
+            id: author.id,
+            name: author.name ?? undefined,
+            metadata: author.metadata
+          })
+        : undefined
     });
   }
 }
