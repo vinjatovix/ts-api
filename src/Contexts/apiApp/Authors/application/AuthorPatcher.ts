@@ -14,7 +14,10 @@ export class AuthorPatcher {
     this.repository = repository;
   }
 
-  async run(request: AuthorCreatorRequest, username: string): Promise<void> {
+  async run(
+    request: AuthorCreatorRequest,
+    user: { username: string }
+  ): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
 
     if (!storedAuthor) {
@@ -23,7 +26,7 @@ export class AuthorPatcher {
 
     const author = AuthorPatch.fromPrimitives(request);
 
-    await this.repository.update(author, new Username(username));
-    logger.info(`Updated Author: <${author.id}> by <${username}>`);
+    await this.repository.update(author, new Username(user.username));
+    logger.info(`Updated Author: <${author.id}> by <${user.username}>`);
   }
 }
