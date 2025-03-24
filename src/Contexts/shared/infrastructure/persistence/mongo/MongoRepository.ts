@@ -1,14 +1,10 @@
 import { Collection, MongoClient, ObjectId } from 'mongodb';
 import { AggregateRoot } from '../../../domain/AggregateRoot';
 import { Username } from '../../../../apiApp/Auth/domain';
-
-interface UpdateMetadata {
-  'metadata.updatedBy': string;
-  'metadata.updatedAt': Date;
-}
+import { updateMetadata } from '../../../application/utils';
 
 export abstract class MongoRepository<T extends AggregateRoot> {
-  constructor(private _client: Promise<MongoClient>) {}
+  constructor(private readonly _client: Promise<MongoClient>) {}
 
   protected abstract collectionName(): string;
 
@@ -30,7 +26,7 @@ export abstract class MongoRepository<T extends AggregateRoot> {
       ...aggregateRoot.toPrimitives(),
       _id: id,
       id: undefined,
-      ...(username && this.updateMetadata(username))
+      ...(username && updateMetadata(username))
     };
 
     await collection.updateOne(
@@ -43,12 +39,5 @@ export abstract class MongoRepository<T extends AggregateRoot> {
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
     await collection.deleteOne({ _id: id as unknown as ObjectId });
-  }
-
-  private updateMetadata(username: Username): UpdateMetadata {
-    return {
-      'metadata.updatedBy': username.value,
-      'metadata.updatedAt': new Date()
-    };
   }
 }
