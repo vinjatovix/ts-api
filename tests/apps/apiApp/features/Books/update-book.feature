@@ -61,3 +61,16 @@ Feature: Update an existing book
         "message": "Empty body is not allowed"
       }
       """
+
+  Scenario: An empty update
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+      """
+      {}
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "message": "Empty body is not allowed"
+      }
+      """

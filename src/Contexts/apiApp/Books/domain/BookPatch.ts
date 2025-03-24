@@ -1,5 +1,6 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/valueObject/Uuid';
+import { createError } from '../../../shared/domain/errors';
+import { Uuid } from '../../../shared/domain/valueObject';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
@@ -35,6 +36,23 @@ export class BookPatch extends AggregateRoot {
     isbn && (this.isbn = isbn);
     releaseDate && (this.releaseDate = releaseDate);
     pages && (this.pages = pages);
+    this.validatePatch();
+  }
+
+  private validatePatch() {
+    if (
+      !(
+        this.title ||
+        this.author ||
+        this.isbn ||
+        this.releaseDate ||
+        this.pages
+      )
+    ) {
+      throw createError.invalidArgument(
+        `${this.constructor.name} has nothing to patch`
+      );
+    }
   }
 
   toPrimitives() {

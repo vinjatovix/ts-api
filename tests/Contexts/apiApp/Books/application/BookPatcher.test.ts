@@ -42,4 +42,14 @@ describe('BookPatcher', () => {
       expect.objectContaining({ name: 'NotFoundError' })
     );
   });
+
+  it('should throw an error if there are no changes with the stored document', async () => {
+    const request = BookCreatorRequestMother.random();
+
+    await expect(
+      updater.run({ id: request.id }, username.value)
+    ).rejects.toThrow(
+      expect.objectContaining({ name: 'InvalidArgumentError' })
+    );
+  });
 });
