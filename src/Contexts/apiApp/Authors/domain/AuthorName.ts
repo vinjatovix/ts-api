@@ -2,7 +2,7 @@ import { StringValueObject } from '../../../shared/domain/valueObject';
 
 export class AuthorName extends StringValueObject {
   static readonly MIN_LENGTH = 1;
-  static readonly MAX_LENGTH = 20;
+  static readonly MAX_LENGTH = 30;
   readonly value: string;
 
   constructor(value: string) {
