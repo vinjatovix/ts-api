@@ -1,4 +1,5 @@
 import container from '../../../../../../src/apps/apiApp/dependency-injection';
+import { BookPatch } from '../../../../../../src/Contexts/apiApp/Books/domain';
 import { BookRepository } from '../../../../../../src/Contexts/apiApp/Books/domain/interfaces';
 import { EnvironmentArranger } from '../../../../shared/infrastructure/arranger/EnvironmentArranger';
 import { UserMother } from '../../../Auth/domain/mothers';
@@ -36,11 +37,10 @@ describe('MongoBookRepository', () => {
     it('should update an existing book', async () => {
       const book = BookMother.random();
       await repository.save(book);
-      const updatedBook = {
-        id: book.id,
-        title: BookTitleMother.random(),
-        toPrimitives: jest.fn()
-      };
+      const updatedBook = BookPatch.fromPrimitives({
+        id: book.id.value,
+        title: BookTitleMother.random().value
+      });
 
       await repository.update(updatedBook, username);
 
