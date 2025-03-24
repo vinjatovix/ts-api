@@ -33,3 +33,7 @@ services:
   apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder:
     class: ../../../../Contexts/apiApp/CharacterBuildings/application/AllCharacterBuildingsFinder
     arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']
+
+  apiApp.CharacterBuildings.application.CharacterBuildingFinder:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingFinder
+    arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']
