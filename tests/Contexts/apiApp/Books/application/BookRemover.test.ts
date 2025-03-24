@@ -24,7 +24,7 @@ describe('BookRemover', () => {
   });
 
   it('should remove a book', async () => {
-    await service.run(request, username);
+    await service.run(request, { username });
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
@@ -32,13 +32,13 @@ describe('BookRemover', () => {
   it('should not throw an error when the book is not found', async () => {
     repository.setFindable(false);
 
-    await expect(service.run(request, username)).resolves.toBeUndefined();
+    await expect(service.run(request, { username })).resolves.toBeUndefined();
   });
 
   it('should throw an error the book has associated chars', async () => {
     characterRepository.setFindable(true);
 
-    await expect(service.run(request, username)).rejects.toThrow(
+    await expect(service.run(request, { username })).rejects.toThrow(
       expect.objectContaining({ name: 'ConflictError' })
     );
   });

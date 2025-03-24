@@ -51,7 +51,9 @@ describe('PatchAuthorController', () => {
     it('should update an author and send 200 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(authorPatcher.run).toHaveBeenCalledWith(expectedAuthor, username);
+      expect(authorPatcher.run).toHaveBeenCalledWith(expectedAuthor, {
+        username
+      });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });

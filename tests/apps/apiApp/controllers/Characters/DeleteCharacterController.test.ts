@@ -50,7 +50,10 @@ describe('DeleteCharacterController', () => {
   it('should delete a character and send 204 status', async () => {
     await controller.run(req as Request, res as Response, next);
 
-    expect(service.run).toHaveBeenCalledWith({ id }, username);
+    expect(service.run).toHaveBeenCalledWith(
+      { id },
+      expect.objectContaining({ username })
+    );
     expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
     expect(res.send).toHaveBeenCalledWith();
   });

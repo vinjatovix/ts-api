@@ -2,7 +2,10 @@ import { NextFunction, Request, Response } from 'express';
 import { Controller } from '../../shared/interfaces';
 
 interface DeleteService {
-  run({ id }: { id: string }, username: string): Promise<void>;
+  run(
+    { id }: { id: string },
+    user: { username: string; id: string }
+  ): Promise<void>;
 }
 
 export abstract class DeleteController<TService extends DeleteService>

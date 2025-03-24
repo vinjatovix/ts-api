@@ -18,7 +18,10 @@ export class BookPatcher {
     this.authorRepository = authorRepository;
   }
 
-  async run(request: BookPatcherRequest, username: string): Promise<void> {
+  async run(
+    request: BookPatcherRequest,
+    user: { username: string }
+  ): Promise<void> {
     const storedBook = await this.repository.search(request.id);
 
     if (!storedBook) {
@@ -43,7 +46,7 @@ export class BookPatcher {
 
     const book = BookPatch.fromPrimitives(request);
 
-    await this.repository.update(book, new Username(username));
-    logger.info(`Updated Book: <${book.id}> by <${username}>`);
+    await this.repository.update(book, new Username(user.username));
+    logger.info(`Updated Book: <${book.id}> by <${user.username}>`);
   }
 }

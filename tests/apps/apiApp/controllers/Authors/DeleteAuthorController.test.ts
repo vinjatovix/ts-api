@@ -49,7 +49,7 @@ describe('DeleteAuthorController', () => {
 
       expect(authorRemover.run).toHaveBeenCalledWith(
         { id: AUTHOR_UUID },
-        username
+        expect.objectContaining({ username })
       );
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();

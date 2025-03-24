@@ -52,7 +52,7 @@ describe('PatchSceneController', () => {
     it('should update a scene and return status 200', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(service.run).toHaveBeenCalledWith(expectedScene, username);
+      expect(service.run).toHaveBeenCalledWith(expectedScene, { username });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });
