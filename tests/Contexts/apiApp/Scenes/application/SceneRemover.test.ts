@@ -21,7 +21,7 @@ describe('SceneRemover', () => {
   });
 
   it('should remove a scene', async () => {
-    await service.run(request, username);
+    await service.run(request, { username });
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
@@ -29,6 +29,6 @@ describe('SceneRemover', () => {
   it('should not throw an error when the scene is not found', async () => {
     repository.setFindable(false);
 
-    await expect(service.run(request, username)).resolves.toBeUndefined();
+    await expect(service.run(request, { username })).resolves.toBeUndefined();
   });
 });

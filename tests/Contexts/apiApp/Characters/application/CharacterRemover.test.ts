@@ -24,7 +24,7 @@ describe('CharacterRemover', () => {
   });
 
   it('should remove a character', async () => {
-    await service.run(request, username);
+    await service.run(request, { username });
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
@@ -32,13 +32,13 @@ describe('CharacterRemover', () => {
   it('should not throw an error when the character is not found', async () => {
     repository.setFindable(false);
 
-    await expect(service.run(request, username)).resolves.toBeUndefined();
+    await expect(service.run(request, { username })).resolves.toBeUndefined();
   });
 
   it('should throw an error when the character has associated scenes', async () => {
     sceneRepository.setFindable(true);
 
-    await expect(service.run(request, username)).rejects.toThrow(
+    await expect(service.run(request, { username })).rejects.toThrow(
       expect.objectContaining({ name: 'ConflictError' })
     );
   });

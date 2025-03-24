@@ -1,10 +1,12 @@
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { AuthorPatcher } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorPatch } from '../../../../../src/Contexts/apiApp/Authors/domain';
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 import { AuthorCreatorRequestMother } from './mothers';
 
-const username = UserMother.random().username;
+const username = UserMother.random();
+const USERNAME = username.username.value;
 const request = AuthorCreatorRequestMother.random();
 
 describe('AuthorPatcher', () => {
@@ -23,18 +25,18 @@ describe('AuthorPatcher', () => {
   it('should update a valid author', async () => {
     const author = AuthorPatch.fromPrimitives(request);
 
-    await service.run(request, username.value);
+    await service.run(request, { username: USERNAME });
 
     repository.assertUpdateHasBeenCalledWith(
       expect.objectContaining(author),
-      username
+      new Username(USERNAME)
     );
   });
 
   it('should throw an error when the author is not found', async () => {
     repository.setFindable(false);
 
-    await expect(service.run(request, username.value)).rejects.toThrow(
+    await expect(service.run(request, { username: USERNAME })).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })
     );
   });

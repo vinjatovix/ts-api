@@ -18,11 +18,11 @@ export class CharacterRemover {
     this.sceneRepository = sceneRepository;
   }
 
-  async run(request: RequestById, username: string): Promise<void> {
+  async run(request: RequestById, user: { username: string }): Promise<void> {
     await this.validateRelations(request);
     await this.repository.remove(request.id);
 
-    logger.info(`Removed Character: <${request.id}> by <${username}>`);
+    logger.info(`Removed Character: <${request.id}> by <${user.username}>`);
   }
 
   private async validateRelations(request: RequestById) {

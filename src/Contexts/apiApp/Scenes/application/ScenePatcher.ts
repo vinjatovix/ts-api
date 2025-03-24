@@ -10,37 +10,29 @@ import { ScenePatcherRequest } from './interfaces';
 const logger = buildLogger('scenePatcher');
 
 export class ScenePatcher {
-  private readonly repository: SceneRepository;
-  private readonly characterRepository: CharacterRepository;
-
   constructor(
-    repository: SceneRepository,
-    characterRepository: CharacterRepository
-  ) {
-    this.repository = repository;
-    this.characterRepository = characterRepository;
-  }
+    private readonly repository: SceneRepository,
+    private readonly characterRepository: CharacterRepository
+  ) {}
 
-  async run(request: ScenePatcherRequest, username: string): Promise<void> {
+  async run(
+    request: ScenePatcherRequest,
+    user: { username: string }
+  ): Promise<void> {
     await this.validatePatch(request);
     const scene = ScenePatch.fromPrimitives(request);
 
-    await this.repository.update(scene, new Username(username));
-    logger.info(`Updated Scene: <${scene.id}> by <${username}>`);
+    await this.repository.update(scene, new Username(user.username));
+    logger.info(`Updated Scene: <${scene.id}> by <${user.username}>`);
   }
 
-  private async validatePatch(request: ScenePatcherRequest) {
+  private async validatePatch(request: ScenePatcherRequest): Promise<void> {
     const storedScene = await this.repository.search(request.id);
     if (!storedScene) {
       throw createError.notFound(`Scene <${request.id}>`);
     }
 
-    if (
-      !hasValuesChanges(
-        request as unknown as Record<string, unknown>,
-        storedScene
-      )
-    ) {
+    if (!hasValuesChanges(request, storedScene)) {
       throw createError.invalidArgument('Nothing to update');
     }
 
