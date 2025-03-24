@@ -5,13 +5,14 @@ import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
 import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 
 const username = random.word();
+const request = RequestByIdMother.create(UuidMother.random());
 
 describe('BookRemover', () => {
   let repository: BookRepositoryMock;
   let remover: BookRemover;
 
   beforeEach(() => {
-    repository = new BookRepositoryMock();
+    repository = new BookRepositoryMock({ find: true });
     remover = new BookRemover(repository);
   });
 
@@ -20,15 +21,13 @@ describe('BookRemover', () => {
   });
 
   it('should remove a book', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
-
     await remover.run(request, username);
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
 
   it('should not throw an error when the book is not found', async () => {
-    const request = RequestByIdMother.inexistentId();
+    repository.setFindable(false);
 
     await expect(remover.run(request, username)).resolves.toBeUndefined();
   });
