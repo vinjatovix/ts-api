@@ -143,6 +143,8 @@ services:
 
   # CHARACTERBUILDINGS
   Apps.apiApp.controllers.CharacterBuildings.PostCharacterBuildingController:
-    class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+    factory:
+      class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+      method: 'createPostCharacterBuildingController'
     arguments:
       ['@apiApp.CharacterBuildings.application.CharacterBuildingCreator']
