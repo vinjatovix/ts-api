@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { PatchCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 import { CharacterPatcher } from '../../../../../src/Contexts/apiApp/Characters/application';
-import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
+import { CharacterPatcherRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { CharacterCreatorRequestMother } from '../../../../Contexts/apiApp/Characters/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { PatchController } from '../../../../../src/apps/apiApp/controllers/shared/PatchController';
+import { createPatchCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Characters/application/CharacterPatcher'
@@ -16,19 +17,22 @@ const username = random.word;
 
 describe('PatchCharacterController', () => {
   let service: CharacterPatcher;
-  let controller: PatchCharacterController;
+  let controller: PatchController<CharacterPatcher, CharacterPatcherRequest>;
   let repository: CharacterRepositoryMock;
   let bookRepository: BookRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
-  let expectedChar: CharacterCreatorRequest;
+  let expectedChar: CharacterPatcherRequest;
 
   beforeEach(() => {
     repository = new CharacterRepositoryMock();
     bookRepository = new BookRepositoryMock();
     service = new CharacterPatcher(repository, bookRepository);
-    controller = new PatchCharacterController(service);
+    controller = createPatchCharacterController(service) as PatchController<
+      CharacterPatcher,
+      CharacterPatcherRequest
+    >;
     expectedChar = CharacterCreatorRequestMother.random();
     req = { params: { id: expectedChar.id }, body: expectedChar };
     res = {

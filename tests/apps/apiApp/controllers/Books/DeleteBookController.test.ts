@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
+import { createDeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
 
@@ -12,7 +13,7 @@ const username = random.word();
 
 describe('DeleteBookController', () => {
   let service: BookRemover;
-  let controller: DeleteBookController;
+  let controller: DeleteController<BookRemover>;
   let repository: BookRepositoryMock;
   let characterRepository: CharacterRepositoryMock;
   let req: Partial<Request>;
@@ -23,7 +24,9 @@ describe('DeleteBookController', () => {
     repository = new BookRepositoryMock();
     characterRepository = new CharacterRepositoryMock();
     service = new BookRemover(repository, characterRepository);
-    controller = new DeleteBookController(service);
+    controller = createDeleteBookController(
+      service
+    ) as DeleteController<BookRemover>;
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
