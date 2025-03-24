@@ -44,6 +44,6 @@ describe('RegisterUser', () => {
 
     expect(async () => {
       await registerUser.run(request);
-    }).rejects.toThrowError(`User <${request.email}> already exists`);
+    }).rejects.toThrow(`User <${request.email}> already exists`);
   });
 });
