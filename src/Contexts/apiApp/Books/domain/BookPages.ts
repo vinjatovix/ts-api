@@ -1,5 +1,5 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors/InvalidArgumentError';
-import { NumberValueObject } from '../../../shared/domain/value-object/NumberValueObject';
+import { InvalidArgumentError } from '../../../shared/domain/errors';
+import { NumberValueObject } from '../../../shared/domain/valueObject';
 
 export class BookPages extends NumberValueObject {
   readonly value: number;

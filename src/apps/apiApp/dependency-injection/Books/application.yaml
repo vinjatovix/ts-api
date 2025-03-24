@@ -16,11 +16,19 @@ services:
 
   apiApp.Books.application.BookCreator:
     class: ../../../../Contexts/apiApp/Books/application/BookCreator
-    arguments: ['@apiApp.Books.domain.BookRepository']
+    arguments:
+      [
+        '@apiApp.Books.domain.BookRepository',
+        '@apiApp.Authors.domain.AuthorRepository'
+      ]
 
   apiApp.Books.application.BookPatcher:
     class: ../../../../Contexts/apiApp/Books/application/BookPatcher
-    arguments: ['@apiApp.Books.domain.BookRepository']
+    arguments:
+      [
+        '@apiApp.Books.domain.BookRepository',
+        '@apiApp.Authors.domain.AuthorRepository'
+      ]
 
   apiApp.Books.application.BookFinder:
     class: ../../../../Contexts/apiApp/Books/application/BookFinder

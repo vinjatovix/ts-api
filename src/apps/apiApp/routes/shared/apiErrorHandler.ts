@@ -35,9 +35,17 @@ export const apiErrorHandler = (
 
   const stack =
     statusCode === httpStatus.INTERNAL_SERVER_ERROR
-      ? `Stack: ${err.stack}`
+      ? `- Stack: ${err.stack}`
       : '';
 
-  logger.error(`Error: ${err.message}. ${stack}`);
+  const url = _req.originalUrl;
+  const method = _req.method;
+  const usernameMessage = res.locals.user
+    ? `User: ${res.locals.user.username} -`
+    : 'User: anonymous -';
+
+  logger.error(
+    `${_req.ip} - ${usernameMessage} ${method} ${url} - Error: ${statusCode} ${err.message} ${stack}`
+  );
   res.status(statusCode).json({ message });
 };

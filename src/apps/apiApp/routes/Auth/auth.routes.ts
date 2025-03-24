@@ -1,16 +1,14 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import { body, check, checkExact, param } from 'express-validator';
-
-import container from '../../dependency-injection';
-
-import { validateBody, validateReqSchema } from '../shared';
 import {
   LoginController,
   RegisterController,
   ValidateMailController
 } from '../../controllers/Auth';
+import container from '../../dependency-injection';
+import { API_PREFIXES, validateBody, validateReqSchema } from '../shared';
 
-const prefix = '/api/v1/Auth';
+const prefix = API_PREFIXES.auth;
 
 export const register = (router: Router) => {
   const loginReqSchema = [

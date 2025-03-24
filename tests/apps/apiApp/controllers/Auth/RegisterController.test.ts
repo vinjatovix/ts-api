@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import { Request, Response } from 'express';
 import { RegisterUser } from '../../../../../src/Contexts/apiApp/Auth/application';
-import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/RegisterUserRequest';
+import { RegisterUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces/RegisterUserRequest';
 import { RegisterController } from '../../../../../src/apps/apiApp/controllers/Auth';
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';

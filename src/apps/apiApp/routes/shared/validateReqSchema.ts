@@ -5,10 +5,7 @@ import {
   ValidationError,
   validationResult
 } from 'express-validator';
-import httpStatus from 'http-status';
-import { buildLogger } from '../../../../Contexts/shared/plugins/logger.plugin';
-
-const logger = buildLogger('validateReqSchema');
+import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
 
 export const validateReqSchema = (
   req: Request,
@@ -84,9 +81,11 @@ export const validateReqSchema = (
       return acc;
     }, []);
 
-  const errorMessages = errors.map((error) => JSON.stringify(error)).join(',');
-  logger.error(`${req.method} ${req.path} - [${errorMessages}]`);
-  res.status(httpStatus.BAD_REQUEST).json({
-    errors
-  });
+  const errorMessages = errors.reduce((acc, error) => {
+    return { ...acc, ...error };
+  }, {});
+
+  throw new InvalidArgumentError(
+    JSON.stringify(errorMessages).replace(/"/g, ' ')
+  );
 };

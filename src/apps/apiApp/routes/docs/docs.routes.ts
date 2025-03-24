@@ -3,8 +3,9 @@ import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
 import { join } from 'path';
 import { envs } from '../../../../config/plugins/envs.plugin';
+import { API_PREFIXES } from '../shared';
 
-const prefix = '/api/v1/Docs';
+const prefix = API_PREFIXES.docs;
 
 export const register = (router: Router) => {
   const openApiPath = join(__dirname, '../../openApi.yaml');

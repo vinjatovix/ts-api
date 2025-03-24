@@ -33,7 +33,7 @@ describe('LoginUser', () => {
 
     expect(async () => {
       await loginUser.run(request);
-    }).rejects.toThrowError(`Invalid credentials`);
+    }).rejects.toThrow(`Invalid credentials`);
   });
 
   it('should throw an error when the password is invalid', async () => {
@@ -43,6 +43,6 @@ describe('LoginUser', () => {
 
     expect(async () => {
       await loginUser.run(request);
-    }).rejects.toThrowError(`Invalid credentials`);
+    }).rejects.toThrow(`Invalid credentials`);
   });
 });

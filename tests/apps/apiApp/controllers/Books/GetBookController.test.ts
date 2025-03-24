@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
-import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application';
 import { GetBookController } from '../../../../../src/apps/apiApp/controllers/Books';
-import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers/BookMother';
 import { Book } from '../../../../../src/Contexts/apiApp/Books/domain/Book';
+import { BookFinder } from '../../../../../src/Contexts/apiApp/Books/application';
+import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
+import { BookMother } from '../../../../Contexts/apiApp/Books/domain/mothers/BookMother';
+import { random } from '../../../../Contexts/fixtures/shared';
 
-jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookFinder');
+const BOOK_UUID = random.uuid();
 
 describe('GetBookController', () => {
   let bookFinder: BookFinder;
@@ -20,7 +21,7 @@ describe('GetBookController', () => {
     repository = new BookRepositoryMock();
     bookFinder = new BookFinder(repository);
     controller = new GetBookController(bookFinder);
-    req = { params: { id: '1' } };
+    req = { params: { id: BOOK_UUID }, query: {} };
     res = {
       status: jest.fn().mockReturnThis(),
       send: jest.fn()
@@ -35,7 +36,7 @@ describe('GetBookController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookFinder.run).toHaveBeenCalledWith({ id: '1' });
+      expect(bookFinder.run).toHaveBeenCalledWith({ id: BOOK_UUID }, {});
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith(book.toPrimitives());
     });
@@ -47,6 +48,19 @@ describe('GetBookController', () => {
       await controller.run(req as Request, res as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should pass the qs to the finder', async () => {
+      const book: Book = BookMother.random();
+      const options = { include: ['author'], fields: ['title', 'author'] };
+      req.query = options;
+      jest.spyOn(bookFinder, 'run').mockResolvedValueOnce(book.toPrimitives());
+
+      await controller.run(req as Request, res as Response, next);
+
+      expect(bookFinder.run).toHaveBeenCalledWith({ id: BOOK_UUID }, options);
+      expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
+      expect(res.send).toHaveBeenCalledWith(book.toPrimitives());
     });
   });
 });

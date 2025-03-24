@@ -1,16 +1,14 @@
 import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-
-import { BookAuthor } from './BookAuthor';
-import { BookId } from './BookId';
+import { Uuid } from '../../../shared/domain/valueObject/Uuid';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { Isbn } from './ISBN';
 
 export class BookPatch extends AggregateRoot {
-  readonly id: BookId;
+  readonly id: Uuid;
   readonly title?: BookTitle;
-  readonly author?: BookAuthor;
+  readonly author?: Uuid;
   readonly isbn?: Isbn;
   readonly releaseDate?: BookReleaseDate;
   readonly pages?: BookPages;
@@ -23,9 +21,9 @@ export class BookPatch extends AggregateRoot {
     releaseDate,
     pages
   }: {
-    id: BookId;
+    id: Uuid;
     title?: BookTitle;
-    author?: BookAuthor;
+    author?: Uuid;
     isbn?: Isbn;
     releaseDate?: BookReleaseDate;
     pages?: BookPages;
@@ -66,9 +64,9 @@ export class BookPatch extends AggregateRoot {
     pages?: number;
   }): BookPatch {
     return new BookPatch({
-      id: new BookId(id),
+      id: new Uuid(id),
       ...(title && { title: new BookTitle(title) }),
-      ...(author && { author: new BookAuthor(author) }),
+      ...(author && { author: new Uuid(author) }),
       ...(isbn && { isbn: new Isbn(isbn) }),
       ...(releaseDate && { releaseDate: new BookReleaseDate(releaseDate) }),
       ...(pages && { pages: new BookPages(pages) })

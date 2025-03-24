@@ -1,41 +1,15 @@
-Feature: Create a new book
-  In order to have a book to read
+Feature: Update an existing book
   As a user with admin rights
-  I want to create a new book
-
-
+  I want to update an existing book
 
   Scenario: A valid existing book
-    Given a POST admin request to "/api/v1/Books/" with body
-      """
-      {
-        "id": "9a6e0804-2bd0-4685-b79d-d97027f9073a",
-        "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148410-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 1178
-      }
-      """
-    Then the response status code should be 201
+    Given an existing "book" with id "9a6e0804-2bd0-4685-b79d-d97027f9073a"
+    Given an existing "author" with id "345f46b4-8035-44a2-937b-3a133072c8f4"
 
     Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
       """
       {
-        "title": "The Lord of the Rings",
-        "author": "J. R. R. Tolkien",
-        "isbn": "978-3-16-148410-0",
-        "releaseDate": "2023-10-10T23:21:50.508Z",
-        "pages": 11
-      }
-      """
-    Then the response status code should be 200
-    Then the response body should be empty
-
-    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
-      """
-      {
-        "pages": 11
+        "author": "345f46b4-8035-44a2-937b-3a133072c8f4"
       }
       """
     Then the response status code should be 200
@@ -49,11 +23,7 @@ Feature: Create a new book
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "message": "Empty body is not allowed"
-          }
-        ]
+        "message": "Empty body is not allowed"
       }
       """
 
@@ -73,26 +43,7 @@ Feature: Create a new book
     Then the response body should be
       """
       {
-        "errors": [
-          {
-            "id": "Invalid value at params. Value: 9a6e0804"
-          },
-          {
-            "author": "Invalid value at body. Value: 56"
-          },
-          {
-            "isbn": "Invalid value at body. Value: AAA-3-16-148410-0"
-          },
-          {
-            "releaseDate": "Invalid value at body. Value: AAAAA"
-          },
-          {
-            "pages": "Invalid value at body. Value: ad3f3210"
-          },
-          {
-            "fields": "Unknown field <extra> in <body> with value <property>"
-          }
-        ]
+        "message": "{ id : Invalid value at params. Value: 9a6e0804 , author : Invalid value at body. Value: 56 , isbn : Invalid value at body. Value: AAA-3-16-148410-0 , releaseDate : Invalid value at body. Value: AAAAA , pages : Invalid value at body. Value: ad3f3210 , fields : Unknown field <extra> in <body> with value <property> }"
       }
       """
 

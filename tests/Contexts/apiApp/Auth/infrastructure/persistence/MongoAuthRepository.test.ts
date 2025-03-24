@@ -12,6 +12,8 @@ const environmentArranger: Promise<EnvironmentArranger> = container.get(
   'apiApp.EnvironmentArranger'
 );
 
+const username = UserMother.random().username;
+
 describe('MongoAuthRepository', () => {
   beforeEach(async () => {
     await (await environmentArranger).arrange();
@@ -36,7 +38,7 @@ describe('MongoAuthRepository', () => {
       await repository.save(user);
       const userPatch = UserMother.randomPatch(user.id.value);
 
-      await repository.update(userPatch);
+      await repository.update(userPatch, username);
 
       expect(await repository.search(user.email.value)).toMatchObject(
         userPatch
