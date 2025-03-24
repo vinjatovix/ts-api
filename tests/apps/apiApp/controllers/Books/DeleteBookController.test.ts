@@ -1,26 +1,32 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { DeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 import { BookRemover } from '../../../../../src/Contexts/apiApp/Books/application';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
+import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
+import { createDeleteBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookRemover');
 
 const username = random.word();
 
 describe('DeleteBookController', () => {
-  let bookRemover: BookRemover;
-  let controller: DeleteBookController;
+  let service: BookRemover;
+  let controller: DeleteController<BookRemover>;
   let repository: BookRepositoryMock;
+  let characterRepository: CharacterRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
   let next: jest.Mock;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    bookRemover = new BookRemover(repository);
-    controller = new DeleteBookController(bookRemover);
+    characterRepository = new CharacterRepositoryMock();
+    service = new BookRemover(repository, characterRepository);
+    controller = createDeleteBookController(
+      service
+    ) as DeleteController<BookRemover>;
     req = { params: { id: '1' } };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -34,18 +40,25 @@ describe('DeleteBookController', () => {
     next = jest.fn();
   });
 
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   describe('run', () => {
     it('should delete a book and send 204 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookRemover.run).toHaveBeenCalledWith({ id: '1' }, username);
+      expect(service.run).toHaveBeenCalledWith(
+        { id: '1' },
+        expect.objectContaining({ username })
+      );
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();
     });
 
     it('should call next with the error if deletion fails', async () => {
       const error = new Error('Deletion failed');
-      jest.spyOn(bookRemover, 'run').mockRejectedValueOnce(error);
+      jest.spyOn(service, 'run').mockRejectedValueOnce(error);
 
       await controller.run(req as Request, res as Response, next);
 

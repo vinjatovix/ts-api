@@ -6,7 +6,6 @@ import { RegisterController } from '../../../../../src/apps/apiApp/controllers/A
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';
 import { RegisterUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers/RegisterUserRequestMother';
-import { InvalidArgumentError } from '../../../../../src/Contexts/shared/domain/errors/InvalidArgumentError';
 
 describe('RegisterController', () => {
   let repository: UserRepositoryMock;
@@ -22,7 +21,7 @@ describe('RegisterController', () => {
   const spyService = jest.spyOn(RegisterUser.prototype, 'run');
 
   beforeEach(() => {
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock({ find: false });
     encrypter = new CryptAdapterMock({ token: true });
     service = new RegisterUser(repository, encrypter);
     controller = new RegisterController(service);
@@ -42,13 +41,15 @@ describe('RegisterController', () => {
     });
 
     it('should fail if user email exists', async () => {
-      repository = new UserRepositoryMock({ exists: true });
+      repository = new UserRepositoryMock({ find: true });
       service = new RegisterUser(repository, encrypter);
       controller = new RegisterController(service);
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(next).toHaveBeenCalledWith(expect.any(InvalidArgumentError));
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'InvalidArgumentError' })
+      );
     });
   });
 });

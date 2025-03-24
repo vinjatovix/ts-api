@@ -1,9 +1,6 @@
-import { RequestById } from '../../../shared/application/RequestById';
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
-
-import { AuthorRepository } from '../domain';
-
-import { AuthorResponse } from './interfaces/AuthorResponse';
+import { RequestById } from '../../../shared/application/interfaces';
+import { createError } from '../../../shared/domain/errors';
+import { AuthorPrimitives, AuthorRepository } from '../domain/interfaces';
 
 export class AuthorFinder {
   private readonly repository: AuthorRepository;
@@ -12,17 +9,13 @@ export class AuthorFinder {
     this.repository = repository;
   }
 
-  async run(request: RequestById): Promise<AuthorResponse> {
-    const author = await this.repository.search(request.id);
+  async run({ id }: RequestById): Promise<AuthorPrimitives> {
+    const author = await this.repository.search(id);
 
     if (!author) {
-      throw new NotFoundError(`Author <${request.id}>`);
+      throw createError.notFound(`Author <${id}>`);
     }
 
-    return {
-      id: author.id.value,
-      name: author.name.value,
-      metadata: author.metadata.toPrimitives()
-    };
+    return author.toPrimitives();
   }
 }

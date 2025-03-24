@@ -1,33 +1,29 @@
 import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application';
-import {
-  InvalidArgumentError,
-  NotFoundError
-} from '../../../../../src/Contexts/shared/domain/errors';
-
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../../Authors/__mocks__/AuthorRepositoryMock';
-import { CreateBookRepositoryMock } from '../__mocks__/CreateBookRepositoryMock';
+import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 import { BookMother } from '../domain/mothers';
 import { BookCreatorRequestMother } from './mothers';
 
 const username = UserMother.random().username.value;
 
 describe('BookCreator', () => {
-  let repository: CreateBookRepositoryMock;
-  let creator: BookCreator;
+  let repository: BookRepositoryMock;
   let authorRepository: AuthorRepositoryMock;
+  let service: BookCreator;
 
   beforeEach(() => {
-    repository = new CreateBookRepositoryMock();
+    repository = new BookRepositoryMock();
     authorRepository = new AuthorRepositoryMock();
-    creator = new BookCreator(repository, authorRepository);
+    service = new BookCreator(repository, authorRepository);
   });
 
   it('should create a valid book', async () => {
+    authorRepository.setFindable(true);
     const request = BookCreatorRequestMother.random();
     const book = BookMother.from(request, username);
 
-    await creator.run(request, username);
+    await service.run(request, username);
 
     repository.assertSaveHasBeenCalledWith(
       expect.objectContaining({
@@ -39,15 +35,39 @@ describe('BookCreator', () => {
     );
   });
 
+  it('should throw an error when the book does exist in the repository', async () => {
+    repository.setFindable(true);
+    const request = BookCreatorRequestMother.random();
+
+    await expect(service.run(request, username)).rejects.toThrow(
+      expect.objectContaining({
+        name: 'InvalidArgumentError',
+        message: expect.stringContaining('already exists')
+      })
+    );
+  });
+
+  it('should throw an error when the book author is not found', async () => {
+    authorRepository.setFindable(false);
+    const request = BookCreatorRequestMother.random();
+
+    await expect(service.run(request, username)).rejects.toThrow(
+      expect.objectContaining({
+        name: 'NotFoundError',
+        message: expect.stringContaining(request.author)
+      })
+    );
+  });
+
   it('should throw an error when the book title is invalid', async () => {
     expect(() => {
       const request = BookCreatorRequestMother.invalidValue(['title']);
       const book = BookMother.from(request, username);
 
-      creator.run(request, username);
+      service.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book author is invalid', async () => {
@@ -55,17 +75,19 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['author']);
       const book = BookMother.from(request, username);
 
-      creator.run(request, username);
+      service.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book author is not found', async () => {
+    repository.setFindable(false);
     const request = BookCreatorRequestMother.random();
-    request.author = 'not-found';
 
-    await expect(creator.run(request, username)).rejects.toThrow(NotFoundError);
+    await expect(service.run(request, username)).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
+    );
   });
 
   it('should throw an error when the book isbn is not valid', async () => {
@@ -73,10 +95,10 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['isbn']);
       const book = BookMother.from(request, username);
 
-      creator.run(request, username);
+      service.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 
   it('should throw an error when the book release date is not valid', async () => {
@@ -84,9 +106,9 @@ describe('BookCreator', () => {
       const request = BookCreatorRequestMother.invalidValue(['releaseDate']);
       const book = BookMother.from(request, username);
 
-      creator.run(request, username);
+      service.run(request, username);
 
       repository.assertSaveHasBeenCalledWith(book);
-    }).toThrow(InvalidArgumentError);
+    }).toThrow(expect.objectContaining({ name: 'InvalidArgumentError' }));
   });
 });

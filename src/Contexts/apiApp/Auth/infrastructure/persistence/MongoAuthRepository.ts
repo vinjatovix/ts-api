@@ -1,9 +1,10 @@
-import { MongoClient } from 'mongodb';
-import { Nullable } from '../../../../shared/domain/Nullable';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
-import { User, UserRepository, Username } from '../../domain';
-import { UserPatch } from '../../domain/UserPatch';
-import { MetadataType } from '../../../../shared/application/MetadataType';
+import { ObjectId } from 'bson';
+import { Nullable } from '../../../../shared/domain/types';
+import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
+import { MetadataType } from '../../../../shared/infrastructure/persistence/mongo/types';
+import { User, UserPatch, Username } from '../../domain';
+import { UserRepository } from '../../domain/interfaces';
+import { Uuid } from '../../../../shared/domain/valueObject';
 
 export interface AuthDocument {
   _id: string;
@@ -19,10 +20,6 @@ export class MongoAuthRepository
   extends MongoRepository<User | UserPatch>
   implements UserRepository
 {
-  constructor(client: Promise<MongoClient>) {
-    super(client);
-    this.createUniqueIndex();
-  }
   protected collectionName(): string {
     return 'users';
   }
@@ -52,9 +49,22 @@ export class MongoAuthRepository
       : null;
   }
 
-  private async createUniqueIndex(): Promise<void> {
+  async findByQuery(query: {
+    id?: string;
+    username?: string;
+  }): Promise<Partial<User>[]> {
+    const filter = {
+      _id: query.id as unknown as ObjectId,
+      username: query.username
+    };
     const collection = await this.collection();
-    await collection.createIndex({ email: 1 }, { unique: true });
-    await collection.createIndex({ username: 1 }, { unique: true });
+    const documents = await collection
+      .find<AuthDocument>(filter, { projection: { password: 0 } })
+      .toArray();
+
+    return documents.map((doc) => ({
+      id: new Uuid(doc._id),
+      username: new Username(doc.username)
+    }));
   }
 }

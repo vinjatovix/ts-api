@@ -1,7 +1,7 @@
 import Chance from 'chance';
 
 export class Random {
-  private chance: Chance.Chance;
+  private readonly chance: Chance.Chance;
 
   constructor() {
     this.chance = new Chance();

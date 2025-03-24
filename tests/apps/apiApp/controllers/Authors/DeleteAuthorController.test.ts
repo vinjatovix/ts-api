@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { DeleteAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
-import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application/AuthorRemover';
+import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { DeleteController } from '../../../../../src/apps/apiApp/controllers/shared/DeleteController';
+import { createDeleteAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Authors/application/AuthorRemover'
@@ -15,7 +16,7 @@ const username = random.word();
 
 describe('DeleteAuthorController', () => {
   let authorRemover: AuthorRemover;
-  let controller: DeleteAuthorController;
+  let controller: DeleteController<AuthorRemover>;
   let repository: AuthorRepositoryMock;
   let bookRepository: BookRepositoryMock;
   let req: Partial<Request>;
@@ -26,7 +27,9 @@ describe('DeleteAuthorController', () => {
     repository = new AuthorRepositoryMock();
     bookRepository = new BookRepositoryMock();
     authorRemover = new AuthorRemover(repository, bookRepository);
-    controller = new DeleteAuthorController(authorRemover);
+    controller = createDeleteAuthorController(
+      authorRemover
+    ) as DeleteController<AuthorRemover>;
     req = { params: { id: AUTHOR_UUID } };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -46,7 +49,7 @@ describe('DeleteAuthorController', () => {
 
       expect(authorRemover.run).toHaveBeenCalledWith(
         { id: AUTHOR_UUID },
-        username
+        expect.objectContaining({ username })
       );
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();

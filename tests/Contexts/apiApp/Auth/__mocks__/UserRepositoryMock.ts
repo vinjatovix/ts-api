@@ -1,34 +1,63 @@
 import {
-  Email,
   User,
-  UserPatch,
-  UserRepository
+  UserPatch
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
-import { UserMother } from '../domain/mothers/UserMother';
+import { UserRepository } from '../../../../../src/Contexts/apiApp/Auth/domain/interfaces';
+import { Nullable } from '../../../../../src/Contexts/shared/domain/types';
+import {
+  Email,
+  StringValueObject,
+  Uuid
+} from '../../../../../src/Contexts/shared/domain/valueObject';
+import { UserMother } from '../domain/mothers';
 
 export class UserRepositoryMock implements UserRepository {
-  private saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  private findMock: jest.Mock;
-  private password: StringValueObject = new StringValueObject(
+  private readonly saveMock = jest.fn();
+  private readonly updateMock = jest.fn();
+  private readonly findMock = jest.fn();
+  private readonly findByQueryMock = jest.fn();
+  private readonly password = new StringValueObject(
     '$2a$12$mZgfH4D7z4dZcZHDKyogqOOnEWS6XHLdczPJktzD88djpvlr3Bq1C'
   );
+  private isFindable: boolean;
+  private readonly storage: User[] = [];
 
-  constructor({ exists }: { exists: boolean }) {
-    if (exists) {
-      this.findMock = jest.fn().mockImplementation((email: string) => {
-        return UserMother.create({
-          email: new Email(email),
-          password: this.password
-        });
+  constructor({ find }: { find: boolean } = { find: false }) {
+    this.isFindable = find;
+    this.setupMocks();
+  }
+
+  private setupMocks(): void {
+    this.findMock.mockImplementation((email: string) => {
+      if (!this.isFindable) {
+        return null;
+      }
+      return UserMother.create({
+        email: new Email(email),
+        password: this.password
       });
-    } else {
-      this.findMock = jest.fn().mockReturnValue(null);
-    }
-    this.saveMock = jest.fn();
-    this.updateMock = jest.fn();
+    });
+
+    this.findByQueryMock.mockImplementation(
+      ({ id, username }: { id: string; username: string }) => {
+        if (!this.isFindable) {
+          return this.storage.filter((user) => {
+            if (id) {
+              return user.id.value === id;
+            }
+            if (username) {
+              return user.username.value === username;
+            }
+            return true;
+          });
+        }
+
+        const { password: _password, ...user } = UserMother.create({
+          id: new Uuid(id)
+        });
+        return [user];
+      }
+    );
   }
 
   async save(user: User): Promise<void> {
@@ -53,5 +82,27 @@ export class UserRepositoryMock implements UserRepository {
 
   assertSearchHasBeenCalledWith(expected: string): void {
     expect(this.findMock).toHaveBeenCalledWith(expected);
+  }
+
+  async findByQuery(query: {
+    id?: string;
+    username?: string;
+  }): Promise<Partial<User>[]> {
+    return this.findByQueryMock(query);
+  }
+
+  assertFindByQueryHasBeenCalledWith(expected: {
+    id?: string;
+    username?: string;
+  }): void {
+    expect(this.findByQueryMock).toHaveBeenCalledWith(expected);
+  }
+
+  setIsFindable(exists: boolean): void {
+    this.isFindable = exists;
+  }
+
+  addToStorage(user: User): void {
+    this.storage.push(user);
   }
 }

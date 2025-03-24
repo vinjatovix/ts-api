@@ -1,10 +1,10 @@
-import { AuthorCreatorRequest } from '../../../../../../src/Contexts/apiApp/Authors/application';
+import { AuthorCreatorRequest } from '../../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import {
   Author,
   AuthorName
 } from '../../../../../../src/Contexts/apiApp/Authors/domain';
 import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject/Metadata';
-import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject/Uuid';
+import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UserMother } from '../../../Auth/domain/mothers';
 import { AuthorNameMother } from './AuthorNameMother';
 

@@ -1,13 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { PostAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { AuthorCreator } from '../../../../../src/Contexts/apiApp/Authors/application';
+import { AuthorCreatorRequest } from '../../../../../src/Contexts/apiApp/Authors/application/interfaces';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
-import {
-  AuthorCreator,
-  AuthorCreatorRequest
-} from '../../../../../src/Contexts/apiApp/Authors/application';
-import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers/AuthorCreatorRequestMother';
+import { AuthorCreatorRequestMother } from '../../../../Contexts/apiApp/Authors/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { PostController } from '../../../../../src/apps/apiApp/controllers/shared/PostController';
+import { createPostAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
 
 jest.mock(
   '../../../../../src/Contexts/apiApp/Authors/application/AuthorCreator'
@@ -17,7 +16,7 @@ const username = random.word();
 
 describe('PostAuthorController', () => {
   let authorCreator: AuthorCreator;
-  let controller: PostAuthorController;
+  let controller: PostController<AuthorCreator, AuthorCreatorRequest>;
   let repository: AuthorRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -27,7 +26,10 @@ describe('PostAuthorController', () => {
   beforeEach(() => {
     repository = new AuthorRepositoryMock();
     authorCreator = new AuthorCreator(repository);
-    controller = new PostAuthorController(authorCreator);
+    controller = createPostAuthorController(authorCreator) as PostController<
+      AuthorCreator,
+      AuthorCreatorRequest
+    >;
     expectedAuthor = AuthorCreatorRequestMother.random();
     req = {
       body: expectedAuthor

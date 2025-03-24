@@ -1,85 +1,32 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
+import { Nullable } from '../../../shared/domain/types/';
 import { Uuid } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
-import { BookPages } from './BookPages';
-import { BookReleaseDate } from './BookReleaseDate';
-import { BookTitle } from './BookTitle';
-import { Isbn } from './ISBN';
+import { BookBase } from './BookBase';
+import { BookPrimitives } from './interfaces';
+import { BookProps } from './interfaces/BookProps';
 
-export class Book extends AggregateRoot {
-  readonly id: Uuid;
-  readonly title: BookTitle;
-  readonly author: Uuid;
-  readonly isbn: Isbn;
-  readonly releaseDate: BookReleaseDate;
-  readonly pages: BookPages;
-  readonly metadata: Metadata;
+export class Book extends BookBase {
+  readonly author: Nullable<Uuid>;
 
-  constructor({
-    id,
-    title,
-    author,
-    isbn,
-    releaseDate,
-    pages,
-    metadata
-  }: {
-    id: Uuid;
-    title: BookTitle;
-    author: Uuid;
-    isbn: Isbn;
-    releaseDate: BookReleaseDate;
-    pages: BookPages;
-    metadata: Metadata;
-  }) {
-    super();
-    this.id = id;
-    this.title = title;
-    this.author = author;
-    this.isbn = isbn;
-    this.releaseDate = releaseDate;
-    this.pages = pages;
-    this.metadata = metadata;
+  constructor(props: BookProps) {
+    super(props);
+    this.author = props.author;
   }
 
-  toPrimitives() {
-    return {
-      id: this.id.value,
-      title: this.title.value,
-      author: this.author.value,
-      isbn: this.isbn.value,
-      releaseDate: this.releaseDate.value,
-      pages: this.pages.value,
-      metadata: this.metadata.toPrimitives()
+  toPrimitives(): BookPrimitives {
+    const primitives = {
+      ...super.toPrimitives(),
+      author: this.author?.value
     };
+
+    return primitives;
   }
 
-  static fromPrimitives({
-    id,
-    title,
+  static readonly fromPrimitives = ({
     author,
-    isbn,
-    releaseDate,
-    pages,
-    metadata
-  }: {
-    id: string;
-    title: string;
-    author: string;
-    isbn: string;
-    releaseDate: string;
-    pages: number;
-    metadata: MetadataType;
-  }) {
-    return new Book({
-      id: new Uuid(id),
-      title: new BookTitle(title),
-      author: new Uuid(author),
-      isbn: new Isbn(isbn),
-      releaseDate: new BookReleaseDate(releaseDate),
-      pages: new BookPages(pages),
-      metadata: Metadata.fromPrimitives(metadata)
+    ...primitives
+  }: BookPrimitives & { author?: string | null }): Book =>
+    new Book({
+      ...super.fromPrimitives(primitives),
+      author: typeof author === 'string' ? new Uuid(author) : null
     });
-  }
 }

@@ -1,9 +1,10 @@
-import { ConflictError } from '../../../shared/domain/errors';
+import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
-import { Author, AuthorName, AuthorRepository } from '../domain';
-import { AuthorCreatorRequest } from './interfaces/AuthorCreatorRequest';
+import { Author, AuthorName } from '../domain';
+import { AuthorRepository } from '../domain/interfaces';
+import { AuthorCreatorRequest } from './interfaces';
 
 const logger = buildLogger('authorCreator');
 
@@ -37,7 +38,7 @@ export class AuthorCreator {
   ): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
     if (storedAuthor) {
-      throw new ConflictError(`Author <${request.id}> already exists`);
+      throw createError.conflict(`Author <${request.id}> already exists`);
     }
   }
 }

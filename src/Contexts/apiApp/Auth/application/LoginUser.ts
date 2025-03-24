@@ -1,11 +1,8 @@
-import { EncrypterTool } from '../../../shared/plugins/EncrypterTool';
-import { Nullable } from '../../../shared/domain/Nullable';
-import { AuthError } from '../../../shared/domain/errors/AuthError';
-import { buildLogger } from '../../../shared/plugins/logger.plugin';
-
-import { UserRepository } from '../domain';
-
-import { LoginUserRequest } from './interfaces/LoginUserRequest';
+import { createError } from '../../../shared/domain/errors';
+import { Nullable } from '../../../shared/domain/types';
+import { buildLogger, EncrypterTool } from '../../../shared/plugins';
+import { UserRepository } from '../domain/interfaces';
+import { LoginUserRequest } from './interfaces/';
 
 const logger = buildLogger('loginUser');
 
@@ -21,7 +18,7 @@ export class LoginUser {
   async run({ email, password }: LoginUserRequest): Promise<Nullable<string>> {
     const storedUser = await this.repository.search(email);
     if (!storedUser) {
-      throw new AuthError('Invalid credentials');
+      throw createError.auth('Invalid credentials');
     }
 
     const success = await this.encrypter.compare(
@@ -29,7 +26,7 @@ export class LoginUser {
       storedUser.password.value
     );
     if (!success) {
-      throw new AuthError('Invalid credentials');
+      throw createError.auth('Invalid credentials');
     }
 
     const token = await this.encrypter.generateToken({

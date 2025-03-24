@@ -42,12 +42,12 @@ replace_version README.md
 replace_version docker-compose.yaml
 
 # Replace the version in OpenAPI specification
-replace_version ./src/apps/apiApp/openapi.yaml
+replace_version ./src/apps/apiApp/openApi.yaml
 
 # Commit the changes
 ISSUE=$(git branch --show-current | sed 's/^release\///')
 git add .
-git commit -m "[$ISSUE] Prepare release v$NEW_VERSION"
+git commit -m "[GH-$ISSUE] Prepare release v$NEW_VERSION"
 
 # Check if the commit was successful
 if [ $? -ne 0 ]; then

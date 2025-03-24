@@ -1,17 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { DeleteBookController } from '../../controllers/Books/DeleteBookController';
-import { GetAllBooksController } from '../../controllers/Books/GetAllBooksController';
-import { GetBookController } from '../../controllers/Books/GetBookController';
-import { PatchBookController } from '../../controllers/Books/PatchBookController';
-import { PostBookController } from '../../controllers/Books/PostBookController';
 import container from '../../dependency-injection';
-import {
-  API_PREFIXES,
-  auth,
-  isAdmin,
-  validateBody,
-  validateReqSchema
-} from '../shared';
+import { API_PREFIXES } from '../shared';
 import {
   deleteReqSchema,
   getReqSchema,
@@ -20,27 +9,49 @@ import {
 } from './reqSchemas';
 
 import { includeAndFilter } from '../shared/middlewares/includeAndFilter';
+import {
+  auth,
+  isAdmin,
+  validateBody,
+  validateReqSchema
+} from '../shared/middlewares';
+import { GetController } from '../../controllers/shared/GetController';
+import {
+  AllBooksFinder,
+  BookCreator,
+  BookFinder,
+  BookPatcher,
+  BookRemover
+} from '../../../../Contexts/apiApp/Books/application';
+import { BookPrimitives } from '../../../../Contexts/apiApp/Books/domain/interfaces';
+import { RequestOptions } from '../../shared/interfaces';
+import { GetAllController } from '../../controllers/shared/GetAllController';
+import { BookCreatorRequest } from '../../../../Contexts/apiApp/Books/application/interfaces';
+import { PostController } from '../../controllers/shared/PostController';
+import { DeleteController } from '../../controllers/shared/DeleteController';
+import { PatchController } from '../../controllers/shared/PatchController';
 
 const prefix = API_PREFIXES.book;
-
 export const register = (router: Router) => {
-  const postController: PostBookController = container.get(
-    'Apps.apiApp.controllers.Books.PostBookController'
-  );
+  const postController: PostController<BookCreator, BookCreatorRequest> =
+    container.get('Apps.apiApp.controllers.Books.PostBookController');
 
-  const getController: GetBookController = container.get(
-    'Apps.apiApp.controllers.Books.GetBookController'
-  );
+  const getController: GetController<
+    BookFinder,
+    Partial<RequestOptions>,
+    BookPrimitives
+  > = container.get('Apps.apiApp.controllers.Books.GetBookController');
 
-  const getAllController: GetAllBooksController = container.get(
-    'Apps.apiApp.controllers.Books.GetAllBooksController'
-  );
+  const getAllController: GetAllController<
+    AllBooksFinder,
+    Partial<RequestOptions>,
+    BookPrimitives[]
+  > = container.get('Apps.apiApp.controllers.Books.GetAllBooksController');
 
-  const patchController: PatchBookController = container.get(
-    'Apps.apiApp.controllers.Books.PatchBookController'
-  );
+  const patchController: PatchController<BookPatcher, BookCreatorRequest> =
+    container.get('Apps.apiApp.controllers.Books.PatchBookController');
 
-  const deleteController: DeleteBookController = container.get(
+  const deleteController: DeleteController<BookRemover> = container.get(
     'Apps.apiApp.controllers.Books.DeleteBookController'
   );
 

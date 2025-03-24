@@ -1,6 +1,12 @@
 import { UUID } from 'bson';
-import { MongoClient } from 'mongodb';
-import MongoConfig from './MongoConfig';
+import { MongoClient, MongoServerError } from 'mongodb';
+import { INDEXES } from '../../../../apiApp/shared/infrastructure/persistence';
+import MongoConfig from './interfaces/MongoConfig';
+
+interface IndexConfig {
+  collection: string;
+  indexes: string[][];
+}
 
 export class MongoClientFactory {
   private static clients: { [key: string]: MongoClient } = {};
@@ -15,6 +21,7 @@ export class MongoClientFactory {
       client = await MongoClientFactory.createAndConnectClient(config);
 
       MongoClientFactory.registerClient(client, contextName);
+      await MongoClientFactory.ensureIndexes(client, config.db, INDEXES);
     }
 
     return client;
@@ -57,5 +64,38 @@ export class MongoClientFactory {
     if (client) {
       await client.close();
     }
+  }
+
+  private static async ensureIndexes(
+    client: MongoClient,
+    dbName: string,
+    indexes: IndexConfig[]
+  ) {
+    const db = client.db(dbName);
+
+    await Promise.all(
+      indexes.flatMap(({ collection, indexes }) =>
+        indexes.map(async (fieldsArray) => {
+          const fields = Object.fromEntries(
+            fieldsArray.map((field) => [field, 1])
+          );
+
+          try {
+            await db
+              .collection(collection)
+              .createIndex(fields, { unique: true });
+          } catch (error: unknown) {
+            if ((error as MongoServerError).code !== 11000) {
+              console.error(
+                `Error creating index in ${collection}: ${JSON.stringify(fields)}`,
+                error
+              );
+
+              throw error;
+            }
+          }
+        })
+      )
+    );
   }
 }

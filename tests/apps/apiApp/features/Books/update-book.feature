@@ -1,5 +1,5 @@
 Feature: Update an existing book
-  As a user with admin rights
+  As an user with admin rights
   I want to update an existing book
 
   Scenario: A valid existing book
@@ -14,19 +14,6 @@ Feature: Update an existing book
       """
     Then the response status code should be 200
     Then the response body should be empty
-
-    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
-      """
-      {}
-      """
-    Then the response status code should be 400
-    Then the response body should be
-      """
-      {
-        "message": "Empty body is not allowed"
-      }
-      """
-
 
   Scenario: An unprocessable book
     Given a PATCH admin request to "/api/v1/Books/9a6e0804" with body
@@ -58,6 +45,32 @@ Feature: Update an existing book
     Then the response body should be
       """
       {
-        "message": "Book <9a6e0804-2bd0-4675-b79d-d97027f9073b> not found"
+        "message": "Book <9a6e0804-2bd0-4675-b79d-d97027f9073b> not found."
+      }
+      """
+
+  Scenario: An empty update
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+      """
+      {}
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "message": "Empty body is not allowed"
+      }
+      """
+
+  Scenario: An empty update
+    Given a PATCH admin request to "/api/v1/Books/9a6e0804-2bd0-4685-b79d-d97027f9073a" with body
+      """
+      {}
+      """
+    Then the response status code should be 400
+    Then the response body should be
+      """
+      {
+        "message": "Empty body is not allowed"
       }
       """

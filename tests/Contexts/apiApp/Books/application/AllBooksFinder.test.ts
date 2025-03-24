@@ -3,11 +3,11 @@ import { BookRepositoryMock } from '../__mocks__/BookRepositoryMock';
 
 describe('AllBooksFinder', () => {
   let repository: BookRepositoryMock;
-  let finder: AllBooksFinder;
+  let service: AllBooksFinder;
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
-    finder = new AllBooksFinder(repository);
+    service = new AllBooksFinder(repository);
   });
 
   afterEach(() => {
@@ -15,16 +15,16 @@ describe('AllBooksFinder', () => {
   });
 
   it('should find all books', async () => {
-    await finder.run();
+    await service.run();
 
-    repository.assertSearchAllHasBeenCalled();
+    repository.assertFindAllHasBeenCalled();
   });
 
   it('should find all books with options', async () => {
     const options = { include: ['author'] };
 
-    await finder.run(options);
+    await service.run(options);
 
-    repository.assertSearchAllHasBeenCalledWith(options);
+    repository.assertFindAllHasBeenCalledWith(options);
   });
 });

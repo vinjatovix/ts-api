@@ -1,17 +1,24 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthorFinder } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { GetAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { createGetAuthorController } from '../../../../../src/apps/apiApp/controllers/Authors';
+import { Author } from '../../../../../src/Contexts/apiApp/Authors/domain';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
 import { random } from '../../../../Contexts/fixtures/shared';
-import { AuthorMother } from '../../../../Contexts/apiApp/Authors/domain/mothers/AuthorMother';
-import { Author } from '../../../../../src/Contexts/apiApp/Authors/domain';
+import { AuthorMother } from '../../../../Contexts/apiApp/Authors/domain/mothers';
+import { GetController } from '../../../../../src/apps/apiApp/controllers/shared/GetController';
+import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
+import { AuthorPrimitives } from '../../../../../src/Contexts/apiApp/Authors/domain/interfaces';
 
 const AUTHOR_UUID = random.uuid();
 
 describe('GetAuthorController', () => {
   let authorFinder: AuthorFinder;
-  let controller: GetAuthorController;
+  let controller: GetController<
+    AuthorFinder,
+    Partial<RequestOptions>,
+    AuthorPrimitives
+  >;
   let repository: AuthorRepositoryMock;
   let req: Partial<Request>;
   let res: Partial<Response>;
@@ -20,7 +27,11 @@ describe('GetAuthorController', () => {
   beforeEach(() => {
     repository = new AuthorRepositoryMock();
     authorFinder = new AuthorFinder(repository);
-    controller = new GetAuthorController(authorFinder);
+    controller = createGetAuthorController(authorFinder) as GetController<
+      AuthorFinder,
+      Partial<RequestOptions>,
+      AuthorPrimitives
+    >;
     req = { params: { id: AUTHOR_UUID } };
     res = {
       status: jest.fn().mockReturnThis(),
@@ -38,7 +49,7 @@ describe('GetAuthorController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(authorFinder.run).toHaveBeenCalledWith({ id: AUTHOR_UUID });
+      expect(authorFinder.run).toHaveBeenCalledWith({ id: AUTHOR_UUID }, {});
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith(author.toPrimitives());
     });

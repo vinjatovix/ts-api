@@ -1,27 +1,30 @@
 import { AuthorCreator } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { ConflictError } from '../../../../../src/Contexts/shared/domain/errors/ConflictError';
 import { UserMother } from '../../Auth/domain/mothers';
+import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 
-import { CreateAuthorRepositoryMock } from '../__mocks__/CreateAuthorRepositoryMock';
-import { AuthorMother } from '../domain/mothers/AuthorMother';
-import { AuthorCreatorRequestMother } from './mothers/AuthorCreatorRequestMother';
+import { AuthorMother } from '../domain/mothers';
+import { AuthorCreatorRequestMother } from './mothers';
 
 const username = UserMother.random().username.value;
 
 describe('AuthorCreator', () => {
-  let repository: CreateAuthorRepositoryMock;
-  let creator: AuthorCreator;
+  let repository: AuthorRepositoryMock;
+  let service: AuthorCreator;
 
   beforeEach(() => {
-    repository = new CreateAuthorRepositoryMock();
-    creator = new AuthorCreator(repository);
+    repository = new AuthorRepositoryMock();
+    service = new AuthorCreator(repository);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should create a valid author', async () => {
     const request = AuthorCreatorRequestMother.random();
     const author = AuthorMother.from(request);
 
-    await creator.run(request, username);
+    await service.run(request, username);
 
     repository.assertSaveHasBeenCalledWith(
       expect.objectContaining({
@@ -34,9 +37,11 @@ describe('AuthorCreator', () => {
   });
 
   it('should throw an error when the author already exists', async () => {
+    repository.setFindable(true);
     const request = AuthorCreatorRequestMother.random();
-    request.id = 'existing-id';
 
-    await expect(creator.run(request, username)).rejects.toThrow(ConflictError);
+    await expect(service.run(request, username)).rejects.toThrow(
+      expect.objectContaining({ name: 'ConflictError' })
+    );
   });
 });

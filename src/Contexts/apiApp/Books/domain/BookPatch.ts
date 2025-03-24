@@ -1,9 +1,11 @@
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/valueObject/Uuid';
+import { AggregateRoot } from '../../../shared/domain';
+import { createError } from '../../../shared/domain/errors';
+import { Uuid } from '../../../shared/domain/valueObject';
 import { BookPages } from './BookPages';
 import { BookReleaseDate } from './BookReleaseDate';
 import { BookTitle } from './BookTitle';
 import { Isbn } from './ISBN';
+import { BookPatchProps } from './interfaces';
 
 export class BookPatch extends AggregateRoot {
   readonly id: Uuid;
@@ -13,21 +15,7 @@ export class BookPatch extends AggregateRoot {
   readonly releaseDate?: BookReleaseDate;
   readonly pages?: BookPages;
 
-  constructor({
-    id,
-    title,
-    author,
-    isbn,
-    releaseDate,
-    pages
-  }: {
-    id: Uuid;
-    title?: BookTitle;
-    author?: Uuid;
-    isbn?: Isbn;
-    releaseDate?: BookReleaseDate;
-    pages?: BookPages;
-  }) {
+  constructor({ id, title, author, isbn, releaseDate, pages }: BookPatchProps) {
     super();
     this.id = id;
     title && (this.title = title);
@@ -35,6 +23,23 @@ export class BookPatch extends AggregateRoot {
     isbn && (this.isbn = isbn);
     releaseDate && (this.releaseDate = releaseDate);
     pages && (this.pages = pages);
+    this.validatePatch();
+  }
+
+  private validatePatch() {
+    if (
+      !(
+        this.title ||
+        this.author ||
+        this.isbn ||
+        this.releaseDate ||
+        this.pages
+      )
+    ) {
+      throw createError.invalidArgument(
+        `${this.constructor.name} has nothing to patch`
+      );
+    }
   }
 
   toPrimitives() {

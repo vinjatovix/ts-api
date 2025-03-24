@@ -1,14 +1,14 @@
-import { Collection, MongoClient, ObjectId } from 'mongodb';
-import { AggregateRoot } from '../../../domain/AggregateRoot';
+import { Collection, MongoClient, MongoServerError, ObjectId } from 'mongodb';
+import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Username } from '../../../../apiApp/Auth/domain';
-
-interface UpdateMetadata {
-  'metadata.updatedBy': string;
-  'metadata.updatedAt': Date;
-}
+import { updateMetadata } from '../../../application/utils';
+import { AggregateRoot } from '../../../domain';
+import { MongoErrorHandler } from './MongoErrorHandler';
+import { MongoFetchService } from './MongoFetchService';
+import { Entity } from './types';
 
 export abstract class MongoRepository<T extends AggregateRoot> {
-  constructor(private _client: Promise<MongoClient>) {}
+  constructor(private readonly _client: Promise<MongoClient>) {}
 
   protected abstract collectionName(): string;
 
@@ -30,25 +30,47 @@ export abstract class MongoRepository<T extends AggregateRoot> {
       ...aggregateRoot.toPrimitives(),
       _id: id,
       id: undefined,
-      ...(username && this.updateMetadata(username))
+      ...(username && updateMetadata(username))
     };
 
-    await collection.updateOne(
-      { _id: id as unknown as ObjectId },
-      { $set: document },
-      { upsert: true }
+    await this.handleMongoError(
+      async () =>
+        await collection.updateOne(
+          { _id: id as unknown as ObjectId },
+          { $set: document },
+          { upsert: true }
+        )
     );
   }
 
   protected async delete(id: string): Promise<void> {
     const collection = await this.collection();
-    await collection.deleteOne({ _id: id as unknown as ObjectId });
+    await this.handleMongoError(
+      async () => await collection.deleteOne({ _id: id as unknown as ObjectId })
+    );
   }
 
-  private updateMetadata(username: Username): UpdateMetadata {
-    return {
-      'metadata.updatedBy': username.value,
-      'metadata.updatedAt': new Date()
-    };
+  protected async handleMongoError<T>(operation: () => Promise<T>): Promise<T> {
+    try {
+      return await operation();
+    } catch (err: unknown) {
+      if (err instanceof MongoServerError) {
+        MongoErrorHandler.formatError(err);
+      }
+      throw err;
+    }
+  }
+
+  protected async fetch<T extends Entity>({
+    id,
+    options
+  }: {
+    id?: string;
+    options: Partial<RequestOptions>;
+  }): Promise<T[]> {
+    const collection = await this.collection();
+    return await this.handleMongoError(
+      async () => await MongoFetchService.fetch<T>({ collection, id, options })
+    );
   }
 }

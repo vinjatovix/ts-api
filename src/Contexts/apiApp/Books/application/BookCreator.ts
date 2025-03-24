@@ -1,14 +1,11 @@
-import {
-  InvalidArgumentError,
-  NotFoundError
-} from '../../../shared/domain/errors';
+import { createError } from '../../../shared/domain/errors';
 import { Uuid } from '../../../shared/domain/valueObject';
 import { Metadata } from '../../../shared/domain/valueObject/Metadata';
 import { buildLogger } from '../../../shared/plugins';
-import { AuthorRepository } from '../../Authors/domain';
+import { AuthorRepository } from '../../Authors/domain/interfaces';
 import { Book, BookPages, BookReleaseDate, BookTitle, Isbn } from '../domain';
 import { BookRepository } from '../domain/interfaces';
-import { BookCreatorRequest } from './BookCreatorRequest';
+import { BookCreatorRequest } from './interfaces';
 
 const logger = buildLogger('bookCreator');
 
@@ -48,11 +45,11 @@ export class BookCreator {
   ): Promise<void> {
     const storedBook = await this.repository.search(request.id);
     if (storedBook) {
-      throw new InvalidArgumentError(`Book <${request.id}> already exists`);
+      throw createError.invalidArgument(`Book <${request.id}> already exists`);
     }
     const author = await this.authorRepository.search(request.author);
     if (!author) {
-      throw new NotFoundError(`Author <${request.author}>`);
+      throw createError.notFound(`Author <${request.author}>`);
     }
   }
 }

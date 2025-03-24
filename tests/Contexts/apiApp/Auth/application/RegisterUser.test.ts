@@ -1,13 +1,16 @@
 import { RegisterUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import {
-  Email,
   UserRoles,
   Username
 } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { StringValueObject } from '../../../../../src/Contexts/shared/domain/valueObject';
+import {
+  Email,
+  StringValueObject,
+  Uuid
+} from '../../../../../src/Contexts/shared/domain/valueObject';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
-import { RegisterUserRequestMother } from './mothers/RegisterUserRequestMother';
+import { RegisterUserRequestMother } from './mothers';
 
 describe('RegisterUser', () => {
   let encrypter: CryptAdapterMock;
@@ -16,7 +19,7 @@ describe('RegisterUser', () => {
 
   beforeEach(() => {
     encrypter = new CryptAdapterMock({ login: false });
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock({ find: false });
     registerUser = new RegisterUser(repository, encrypter);
   });
 
@@ -28,6 +31,7 @@ describe('RegisterUser', () => {
     repository.assertSearchHasBeenCalledWith(request.email);
     repository.assertSaveHasBeenCalledWith(
       expect.objectContaining({
+        id: expect.any(Uuid),
         email: expect.any(Email),
         username: expect.any(Username),
         password: expect.any(StringValueObject),
@@ -39,7 +43,7 @@ describe('RegisterUser', () => {
 
   it('should throw an error when the user already exists', async () => {
     const request = RegisterUserRequestMother.random();
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     registerUser = new RegisterUser(repository, encrypter);
 
     expect(async () => {

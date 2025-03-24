@@ -1,48 +1,56 @@
 import { NextFunction, Request, Response, Router } from 'express';
-
 import container from '../../dependency-injection';
-
+import { API_PREFIXES } from '../shared';
 import {
-  API_PREFIXES,
   auth,
   isAdmin,
   validateBody,
   validateReqSchema
-} from '../shared';
+} from '../shared/middlewares';
 import {
   deleteReqSchema,
   getReqSchema,
   patchReqSchema,
   postReqSchema
 } from './reqSchemas';
+import { GetController } from '../../controllers/shared/GetController';
 import {
-  DeleteAuthorController,
-  GetAllAuthorsController,
-  GetAuthorController,
-  PatchAuthorController,
-  PostAuthorController
-} from '../../controllers/Authors';
+  AllAuthorsFinder,
+  AuthorCreator,
+  AuthorFinder,
+  AuthorPatcher,
+  AuthorRemover
+} from '../../../../Contexts/apiApp/Authors/application';
+import { RequestOptions } from '../../shared/interfaces';
+import { AuthorPrimitives } from '../../../../Contexts/apiApp/Authors/domain/interfaces';
+import { GetAllController } from '../../controllers/shared/GetAllController';
+import { PostController } from '../../controllers/shared/PostController';
+import { AuthorCreatorRequest } from '../../../../Contexts/apiApp/Authors/application/interfaces';
+import { DeleteController } from '../../controllers/shared/DeleteController';
+import { PatchController } from '../../controllers/shared/PatchController';
 
 const prefix = API_PREFIXES.author;
 
 export const register = (router: Router) => {
-  const postController: PostAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.PostAuthorController'
-  );
+  const postController: PostController<AuthorCreator, AuthorCreatorRequest> =
+    container.get('Apps.apiApp.controllers.Authors.PostAuthorController');
 
-  const getController: GetAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.GetAuthorController'
-  );
+  const getController: GetController<
+    AuthorFinder,
+    Partial<RequestOptions>,
+    AuthorPrimitives
+  > = container.get('Apps.apiApp.controllers.Authors.GetAuthorController');
 
-  const getAllController: GetAllAuthorsController = container.get(
-    'Apps.apiApp.controllers.Authors.GetAllAuthorsController'
-  );
+  const getAllController: GetAllController<
+    AllAuthorsFinder,
+    Partial<RequestOptions>,
+    AuthorPrimitives[]
+  > = container.get('Apps.apiApp.controllers.Authors.GetAllAuthorsController');
 
-  const patchController: PatchAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.PatchAuthorController'
-  );
+  const patchController: PatchController<AuthorPatcher, AuthorCreatorRequest> =
+    container.get('Apps.apiApp.controllers.Authors.PatchAuthorController');
 
-  const deleteController: DeleteAuthorController = container.get(
+  const deleteController: DeleteController<AuthorRemover> = container.get(
     'Apps.apiApp.controllers.Authors.DeleteAuthorController'
   );
 

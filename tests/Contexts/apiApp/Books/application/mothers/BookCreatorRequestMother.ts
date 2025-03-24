@@ -1,4 +1,4 @@
-import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application';
+import { BookCreatorRequest } from '../../../../../../src/Contexts/apiApp/Books/application/interfaces';
 import {
   BookPages,
   BookReleaseDate,
@@ -6,8 +6,7 @@ import {
   Isbn
 } from '../../../../../../src/Contexts/apiApp/Books/domain';
 import { Uuid } from '../../../../../../src/Contexts/shared/domain/valueObject';
-import { UuidMother } from '../../../../fixtures/shared/domain/mothers/UuidMother';
-
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
 import {
   BookPagesMother,
   BookReleaseDateMother,
@@ -72,13 +71,6 @@ export class BookCreatorRequestMother {
       isbn,
       releaseDate,
       pages
-    };
-  }
-
-  static inexistentId(): BookCreatorRequest {
-    return {
-      ...this.random(),
-      id: 'not-found'
     };
   }
 }

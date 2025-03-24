@@ -1,14 +1,14 @@
-import { CryptAdapter } from '../../../../../src/Contexts/shared/plugins/CryptAdapter';
-import { Nullable } from '../../../../../src/Contexts/shared/domain/Nullable';
+import { CryptAdapter } from '../../../../../src/Contexts/shared/plugins';
+import { Nullable } from '../../../../../src/Contexts/shared/domain/types';
 import { random } from '../../../fixtures/shared';
 import { EmailMother } from '../../../shared/domain/mothers/EmailMother';
 
 export class CryptAdapterMock implements CryptAdapter {
-  private hashMock: jest.Mock;
-  private compareMock: jest.Mock;
-  private generateTokenMock: jest.Mock;
-  private verifyTokenMock: jest.Mock;
-  private refreshTokenMock: jest.Mock;
+  private readonly hashMock: jest.Mock;
+  private readonly compareMock: jest.Mock;
+  private readonly generateTokenMock: jest.Mock;
+  private readonly verifyTokenMock: jest.Mock;
+  private readonly refreshTokenMock: jest.Mock;
 
   constructor(
     { login, token }: { login?: boolean; token?: boolean } = {

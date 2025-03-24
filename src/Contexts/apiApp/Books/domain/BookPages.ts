@@ -1,4 +1,4 @@
-import { InvalidArgumentError } from '../../../shared/domain/errors';
+import { createError } from '../../../shared/domain/errors';
 import { NumberValueObject } from '../../../shared/domain/valueObject';
 
 export class BookPages extends NumberValueObject {
@@ -19,7 +19,7 @@ export class BookPages extends NumberValueObject {
       !isFinite(value) ||
       typeof value === 'boolean'
     ) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> does not allow the value <${value}>`
       );
     }
@@ -27,7 +27,7 @@ export class BookPages extends NumberValueObject {
 
   private ensureLength(value: number): void {
     if (value <= 0) {
-      throw new InvalidArgumentError(
+      throw createError.invalidArgument(
         `<${this.constructor.name}> <${value}> has is less than 1`
       );
     }

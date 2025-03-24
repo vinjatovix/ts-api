@@ -1,14 +1,13 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import { PostBookController } from '../../../../../src/apps/apiApp/controllers/Books';
-import {
-  BookCreator,
-  BookCreatorRequest
-} from '../../../../../src/Contexts/apiApp/Books/application';
+import { BookCreator } from '../../../../../src/Contexts/apiApp/Books/application';
+import { BookCreatorRequest } from '../../../../../src/Contexts/apiApp/Books/application/interfaces';
 import { AuthorRepositoryMock } from '../../../../Contexts/apiApp/Authors/__mocks__/AuthorRepositoryMock';
-import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock'; // Importa el BookRepositoryMock
-import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers/BookCreatorRequestMother';
+import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
+import { BookCreatorRequestMother } from '../../../../Contexts/apiApp/Books/application/mothers';
 import { random } from '../../../../Contexts/fixtures/shared';
+import { PostController } from '../../../../../src/apps/apiApp/controllers/shared/PostController';
+import { createPostBookController } from '../../../../../src/apps/apiApp/controllers/Books';
 
 jest.mock('../../../../../src/Contexts/apiApp/Books/application/BookCreator');
 
@@ -16,7 +15,7 @@ const username = random.word();
 
 describe('PostBookController', () => {
   let bookCreator: BookCreator;
-  let controller: PostBookController;
+  let controller: PostController<BookCreator, BookCreatorRequest>;
   let repository: BookRepositoryMock;
   let authorRepository: AuthorRepositoryMock;
   let req: Partial<Request>;
@@ -26,8 +25,12 @@ describe('PostBookController', () => {
 
   beforeEach(() => {
     repository = new BookRepositoryMock();
+    authorRepository = new AuthorRepositoryMock();
     bookCreator = new BookCreator(repository, authorRepository);
-    controller = new PostBookController(bookCreator);
+    controller = createPostBookController(bookCreator) as PostController<
+      BookCreator,
+      BookCreatorRequest
+    >;
     expectedBook = BookCreatorRequestMother.random();
     req = {
       body: expectedBook

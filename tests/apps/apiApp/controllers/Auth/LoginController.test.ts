@@ -3,10 +3,9 @@ import httpStatus from 'http-status';
 import { LoginController } from '../../../../../src/apps/apiApp/controllers/Auth';
 import { LoginUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import { LoginUserRequest } from '../../../../../src/Contexts/apiApp/Auth/application/interfaces';
-import { AuthError } from '../../../../../src/Contexts/shared/domain/errors/AuthError';
 import { UserRepositoryMock } from '../../../../Contexts/apiApp/Auth/__mocks__/UserRepositoryMock';
 import { CryptAdapterMock } from '../../../../Contexts/apiApp/Auth/__mocks__/CryptAdapterMock';
-import { LoginUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers/LoginUserRequestMother';
+import { LoginUserRequestMother } from '../../../../Contexts/apiApp/Auth/application/mothers';
 
 describe('LoginController', () => {
   let repository: UserRepositoryMock;
@@ -22,7 +21,7 @@ describe('LoginController', () => {
   const spyService = jest.spyOn(LoginUser.prototype, 'run');
 
   beforeEach(() => {
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     encrypter = new CryptAdapterMock({ login: true, token: true });
     service = new LoginUser(repository, encrypter);
     controller = new LoginController(service);
@@ -48,7 +47,9 @@ describe('LoginController', () => {
 
       await controller.run(req as Request, res as Response, next);
 
-      expect(next).toHaveBeenCalledWith(expect.any(AuthError));
+      expect(next).toHaveBeenCalledWith(
+        expect.objectContaining({ name: 'AuthError' })
+      );
     });
   });
 });

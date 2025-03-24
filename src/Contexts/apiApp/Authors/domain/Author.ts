@@ -1,23 +1,16 @@
-import { MetadataType } from '../../../shared/application/MetadataType';
-import { AggregateRoot } from '../../../shared/domain/AggregateRoot';
-import { Uuid } from '../../../shared/domain/valueObject';
-import { Metadata } from '../../../shared/domain/valueObject/Metadata';
+import { AggregateRoot } from '../../../shared/domain';
+import { Nullable } from '../../../shared/domain/types';
+import { Uuid, Metadata } from '../../../shared/domain/valueObject';
+import { MetadataType } from '../../../shared/infrastructure/persistence/mongo/types';
 import { AuthorName } from './AuthorName';
+import { AuthorProps } from './interfaces';
 
 export class Author extends AggregateRoot {
   readonly id: Uuid;
-  readonly name: AuthorName;
+  readonly name: Nullable<AuthorName>;
   readonly metadata: Metadata;
 
-  constructor({
-    id,
-    name,
-    metadata
-  }: {
-    id: Uuid;
-    name: AuthorName;
-    metadata: Metadata;
-  }) {
+  constructor({ id, name, metadata }: AuthorProps) {
     super();
     this.id = id;
     this.name = name;
@@ -27,7 +20,7 @@ export class Author extends AggregateRoot {
   toPrimitives() {
     return {
       id: this.id.value,
-      name: this.name.value,
+      name: this.name?.value,
       metadata: this.metadata.toPrimitives()
     };
   }
@@ -38,12 +31,12 @@ export class Author extends AggregateRoot {
     metadata
   }: {
     id: string;
-    name: string;
+    name?: string;
     metadata: MetadataType;
   }) {
     return new Author({
       id: new Uuid(id),
-      name: new AuthorName(name),
+      name: name ? new AuthorName(name) : null,
       metadata: Metadata.fromPrimitives(metadata)
     });
   }

@@ -19,42 +19,165 @@ services:
 
   # AUTHORS
   Apps.apiApp.controllers.Authors.PostAuthorController:
-    class: ../../controllers/Authors/PostAuthorController
+    factory:
+      class: ../../controllers/Authors/PostAuthorController
+      method: 'createPostAuthorController'
     arguments: ['@apiApp.Authors.application.AuthorCreator']
 
   Apps.apiApp.controllers.Authors.GetAuthorController:
-    class: ../../controllers/Authors/GetAuthorController
+    factory:
+      class: ../../controllers/Authors/GetAuthorController
+      method: 'createGetAuthorController'
     arguments: ['@apiApp.Authors.application.AuthorFinder']
 
   Apps.apiApp.controllers.Authors.GetAllAuthorsController:
-    class: ../../controllers/Authors/GetAllAuthorsController
+    factory:
+      class: ../../controllers/Authors/GetAllAuthorsController
+      method: 'createGetAllAuthorsController'
     arguments: ['@apiApp.Authors.application.AllAuthorsFinder']
 
   Apps.apiApp.controllers.Authors.PatchAuthorController:
-    class: ../../controllers/Authors/PatchAuthorController
+    factory:
+      class: ../../controllers/Authors/PatchAuthorController
+      method: 'createPatchAuthorController'
     arguments: ['@apiApp.Authors.application.AuthorPatcher']
 
   Apps.apiApp.controllers.Authors.DeleteAuthorController:
-    class: ../../controllers/Authors/DeleteAuthorController
+    factory:
+      class: ../../controllers/Authors/DeleteAuthorController
+      method: 'createDeleteAuthorController'
     arguments: ['@apiApp.Authors.application.AuthorRemover']
 
   # BOOKS
   Apps.apiApp.controllers.Books.PostBookController:
-    class: ../../controllers/Books/PostBookController
+    factory:
+      class: ../../controllers/Books/PostBookController
+      method: 'createPostBookController'
     arguments: ['@apiApp.Books.application.BookCreator']
 
   Apps.apiApp.controllers.Books.GetBookController:
-    class: ../../controllers/Books/GetBookController
+    factory:
+      class: ../../controllers/Books/GetBookController
+      method: 'createGetBookController'
     arguments: ['@apiApp.Books.application.BookFinder']
 
   Apps.apiApp.controllers.Books.GetAllBooksController:
-    class: ../../controllers/Books/GetAllBooksController
+    factory:
+      class: ../../controllers/Books/GetAllBooksController
+      method: 'createGetAllBooksController'
     arguments: ['@apiApp.Books.application.AllBooksFinder']
 
   Apps.apiApp.controllers.Books.PatchBookController:
-    class: ../../controllers/Books/PatchBookController
+    factory:
+      class: ../../controllers/Books/PatchBookController
+      method: 'createPatchBookController'
     arguments: ['@apiApp.Books.application.BookPatcher']
 
   Apps.apiApp.controllers.Books.DeleteBookController:
-    class: ../../controllers/Books/DeleteBookController
+    factory:
+      class: ../../controllers/Books/DeleteBookController
+      method: 'createDeleteBookController'
     arguments: ['@apiApp.Books.application.BookRemover']
+
+  # CHARACTERS
+  Apps.apiApp.controllers.Characters.PostCharacterController:
+    factory:
+      class: ../../controllers/Characters/PostCharacterController
+      method: 'createPostCharacterController'
+    arguments: ['@apiApp.Characters.application.CharacterCreator']
+
+  Apps.apiApp.controllers.Characters.GetAllCharactersController:
+    factory:
+      class: ../../controllers/Characters/GetAllCharactersController
+      method: 'createGetAllCharactersController'
+    arguments: ['@apiApp.Characters.application.AllCharactersFinder']
+
+  Apps.apiApp.controllers.Characters.GetCharacterController:
+    factory:
+      class: ../../controllers/Characters/GetCharacterController
+      method: 'createGetCharacterController'
+    arguments: ['@apiApp.Characters.application.CharacterFinder']
+
+  Apps.apiApp.controllers.Characters.PatchCharacterController:
+    factory:
+      class: ../../controllers/Characters/PatchCharacterController
+      method: 'createPatchCharacterController'
+    arguments: ['@apiApp.Characters.application.CharacterPatcher']
+
+  Apps.apiApp.controllers.Characters.DeleteCharacterController:
+    factory:
+      class: ../../controllers/Characters/DeleteCharacterController
+      method: 'createDeleteCharacterController'
+    arguments: ['@apiApp.Characters.application.CharacterRemover']
+
+  # SCENES
+  Apps.apiApp.controllers.Scenes.PostSceneController:
+    factory:
+      class: ../../controllers/Scenes/PostSceneController
+      method: 'createPostSceneController'
+    arguments: ['@apiApp.Scenes.application.SceneCreator']
+
+  Apps.apiApp.controllers.Scenes.GetAllScenesController:
+    factory:
+      class: ../../controllers/Scenes/GetAllScenesController
+      method: 'createGetAllScenesController'
+    arguments: ['@apiApp.Scenes.application.AllScenesFinder']
+
+  Apps.apiApp.controllers.Scenes.GetSceneController:
+    factory:
+      class: ../../controllers/Scenes/GetSceneController
+      method: 'createGetSceneController'
+    arguments: ['@apiApp.Scenes.application.SceneFinder']
+
+  Apps.apiApp.controllers.Scenes.PatchSceneController:
+    factory:
+      class: ../../controllers/Scenes/PatchSceneController
+      method: 'createPatchSceneController'
+    arguments: ['@apiApp.Scenes.application.ScenePatcher']
+
+  Apps.apiApp.controllers.Scenes.DeleteSceneController:
+    factory:
+      class: ../../controllers/Scenes/DeleteSceneController
+      method: 'createDeleteSceneController'
+    arguments: ['@apiApp.Scenes.application.SceneRemover']
+
+  # CHARACTERBUILDINGS
+  Apps.apiApp.controllers.CharacterBuildings.PostCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PostCharacterBuildingController
+      method: 'createPostCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingCreator']
+
+  # Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+  #   class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+  #   arguments:
+  #     ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetAllCharacterBuildingsController
+      method: 'createGetAllCharacterBuildingsController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.AllCharacterBuildingsFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.GetCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/GetCharacterBuildingController
+      method: 'createGetCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.DeleteCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/DeleteCharacterBuildingController
+      method: 'createDeleteCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingRemover']
+
+  Apps.apiApp.controllers.CharacterBuildings.PatchCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PatchCharacterBuildingController
+      method: 'createPatchCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingPatcher']

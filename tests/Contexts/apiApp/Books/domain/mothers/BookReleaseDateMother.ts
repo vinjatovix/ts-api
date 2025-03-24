@@ -1,5 +1,4 @@
 import { BookReleaseDate } from '../../../../../../src/Contexts/apiApp/Books/domain';
-
 import { random } from '../../../../fixtures/shared';
 
 export class BookReleaseDateMother {

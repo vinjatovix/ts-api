@@ -1,8 +1,8 @@
 import { compareSync, genSaltSync, hashSync } from 'bcryptjs';
 import { EncrypterTool } from './EncrypterTool';
-import { sign, verify } from 'jsonwebtoken';
-import { envs } from '../../../config/plugins/envs.plugin';
-import { Nullable } from '../domain/Nullable';
+import { sign, SignOptions, verify } from 'jsonwebtoken';
+import { envs } from '../../../config/plugins';
+import { Nullable } from '../domain/types';
 
 const JWT_SECRET = envs.JWT_SECRET;
 const SALT_ROUNDS = 12;
@@ -22,8 +22,11 @@ export class CryptAdapter implements EncrypterTool {
     duration: string = '2h'
   ): Promise<Nullable<string>> {
     return new Promise((resolve) => {
-      sign(payload, JWT_SECRET, { expiresIn: duration }, (err, token) =>
-        err ? resolve(null) : resolve(token as string)
+      sign(
+        payload,
+        JWT_SECRET,
+        { expiresIn: duration } as SignOptions,
+        (err, token) => (err ? resolve(null) : resolve(token as string))
       );
     });
   }

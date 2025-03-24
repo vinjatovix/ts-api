@@ -1,22 +1,22 @@
 import { AuthorRemover } from '../../../../../src/Contexts/apiApp/Authors/application';
-import { random } from '../../../fixtures/shared';
 import { RequestByIdMother } from '../../../fixtures/shared/application/RequestByIdMother';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { random } from '../../../fixtures/shared';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { BookRepositoryMock } from '../../Books/__mocks__/BookRepositoryMock';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
 
 const username = random.word();
+const request = RequestByIdMother.create(UuidMother.random());
 
 describe('AuthorRemover', () => {
   let repository: AuthorRepositoryMock;
   let bookRepository: BookRepositoryMock;
-  let remover: AuthorRemover;
+  let service: AuthorRemover;
 
   beforeEach(() => {
     repository = new AuthorRepositoryMock();
     bookRepository = new BookRepositoryMock();
-    bookRepository.findByQueryMock.mockResolvedValue([]);
-    remover = new AuthorRemover(repository, bookRepository);
+    service = new AuthorRemover(repository, bookRepository);
   });
 
   afterEach(() => {
@@ -24,25 +24,22 @@ describe('AuthorRemover', () => {
   });
 
   it('should remove an author', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
+    repository.setFindable(true);
 
-    await remover.run(request, username);
+    await service.run(request, { username });
 
     repository.assertRemoveHasBeenCalledWith(request.id);
   });
 
-  it('should fail when the author has books', async () => {
-    const request = RequestByIdMother.create(UuidMother.random());
-    bookRepository.findByQueryMock.mockResolvedValue([{}]);
+  it('should fail when the author has associated books', async () => {
+    bookRepository.setFindable(true);
 
-    await expect(remover.run(request, username)).rejects.toThrow(
-      `Author <${request.id}> has books`
+    await expect(service.run(request, { username })).rejects.toThrow(
+      `Author <${request.id}> has associated books`
     );
   });
 
   it('should not throw an error when the author is not found', async () => {
-    const request = RequestByIdMother.inexistentId();
-
-    await expect(remover.run(request, username)).resolves.toBeUndefined();
+    await expect(service.run(request, { username })).resolves.toBeUndefined();
   });
 });

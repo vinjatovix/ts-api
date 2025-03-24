@@ -1,8 +1,8 @@
-import { BookRepository } from '../../Books/domain/interfaces';
-import { RequestById } from '../../../shared/application/RequestById';
-import { ConflictError } from '../../../shared/domain/errors';
+import { RequestById } from '../../../shared/application/interfaces';
+import { createError } from '../../../shared/domain/errors';
 import { buildLogger } from '../../../shared/plugins';
-import { AuthorRepository } from '../domain';
+import { BookRepository } from '../../Books/domain/interfaces';
+import { AuthorRepository } from '../domain/interfaces';
 
 const logger = buildLogger('authorRemover');
 
@@ -15,19 +15,18 @@ export class AuthorRemover {
     this.bookRepository = bookRepository;
   }
 
-  async run(request: RequestById, username: string): Promise<void> {
-    const books = await this.bookRepository.findByQuery(
-      {
-        author: request.id
-      },
-      { fields: ['id'] }
-    );
-
-    if (books.length > 0) {
-      throw new ConflictError(`Author <${request.id}> has books`);
-    }
+  async run(request: RequestById, user: { username: string }): Promise<void> {
+    await this.validateRelations(request);
 
     await this.repository.remove(request.id);
-    logger.info(`Removed Author: <${request.id}> by <${username}>`);
+    logger.info(`Removed Author: <${request.id}> by <${user.username}>`);
+  }
+
+  private async validateRelations(request: RequestById) {
+    const books = await this.bookRepository.findByQuery({ author: request.id });
+
+    if (books.length > 0) {
+      throw createError.conflict(`Author <${request.id}> has associated books`);
+    }
   }
 }

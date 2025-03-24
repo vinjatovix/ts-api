@@ -1,7 +1,7 @@
 import { LoginUser } from '../../../../../src/Contexts/apiApp/Auth/application';
 import { CryptAdapterMock } from '../__mocks__/CryptAdapterMock';
 import { UserRepositoryMock } from '../__mocks__/UserRepositoryMock';
-import { LoginUserRequestMother } from './mothers/LoginUserRequestMother';
+import { LoginUserRequestMother } from './mothers';
 
 describe('LoginUser', () => {
   let encrypter: CryptAdapterMock;
@@ -10,7 +10,7 @@ describe('LoginUser', () => {
 
   beforeEach(() => {
     encrypter = new CryptAdapterMock({ login: true });
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     loginUser = new LoginUser(repository, encrypter);
   });
 
@@ -27,7 +27,7 @@ describe('LoginUser', () => {
   });
 
   it('should throw an error when the user does not exist', async () => {
-    repository = new UserRepositoryMock({ exists: false });
+    repository = new UserRepositoryMock();
     loginUser = new LoginUser(repository, encrypter);
     const request = LoginUserRequestMother.random();
 

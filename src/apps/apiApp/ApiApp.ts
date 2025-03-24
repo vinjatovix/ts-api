@@ -1,4 +1,4 @@
-import { envs } from '../../config/plugins/envs.plugin';
+import { envs } from '../../config/plugins';
 import { Server } from './server';
 
 export class ApiApp {
@@ -11,7 +11,8 @@ export class ApiApp {
     this.host = host;
     this.server = new Server(host, port);
 
-    return this.server.listen();
+    await this.server.listen();
+    return this.server;
   }
 
   async stop() {
@@ -19,6 +20,9 @@ export class ApiApp {
   }
 
   get httpServer() {
-    return this.server?.getHTTPServer();
+    if (!this.server) {
+      throw new Error('Server is not initialized');
+    }
+    return this.server.getHTTPServer();
   }
 }

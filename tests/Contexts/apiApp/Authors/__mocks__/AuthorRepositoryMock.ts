@@ -1,74 +1,37 @@
 import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import {
   Author,
-  AuthorPatch,
-  AuthorRepository
+  AuthorPatch
 } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { AuthorMother } from '../domain/mothers/AuthorMother';
+import { AuthorRepository } from '../../../../../src/Contexts/apiApp/Authors/domain/interfaces';
+import { BaseRepositoryMock } from '../../shared/__mocks__/BaseRepositoryMock';
+import { AuthorMother } from '../domain/mothers';
 
-export class AuthorRepositoryMock implements AuthorRepository {
-  private saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  public searchMock: jest.Mock;
-  private findAllMock: jest.Mock;
-  private removeMock: jest.Mock;
+export class AuthorRepositoryMock
+  extends BaseRepositoryMock<Author, AuthorPatch, { id: string }>
+  implements AuthorRepository
+{
+  protected defaultFindByQuery(query: { id: string }): Author[] {
+    return this.storage.filter((author) => author.id.value === query.id);
+  }
 
-  constructor() {
-    this.saveMock = jest.fn();
-    this.updateMock = jest.fn();
-    this.searchMock = jest.fn();
-    this.findAllMock = jest.fn();
-    this.removeMock = jest.fn();
+  constructor({ find }: { find: boolean } = { find: false }) {
+    super({ find }, [AuthorMother.random()]);
+  }
+
+  protected getId(author: Author): string {
+    return author.id.value;
   }
 
   async save(author: Author): Promise<void> {
     this.saveMock(author);
   }
 
-  assertSaveHasBeenCalledWith(expected: Author): void {
-    expect(this.saveMock).toHaveBeenCalledWith(expected);
-  }
-
   async update(author: AuthorPatch, user: Username): Promise<void> {
     this.updateMock(author, user);
   }
 
-  assertUpdateHasBeenCalledWith(expected: AuthorPatch, user: Username): void {
-    expect(this.updateMock).toHaveBeenCalledWith(expected, user);
-  }
-
   async search(authorId: string): Promise<Author | null> {
-    if (authorId === 'not-found') {
-      this.searchMock = jest.fn().mockReturnValue(null);
-    } else {
-      this.searchMock = jest
-        .fn()
-        .mockReturnValue(AuthorMother.random(authorId));
-    }
-
-    return this.searchMock(authorId);
-  }
-
-  assertSearchHasBeenCalledWith(expected: string): void {
-    expect(this.searchMock).toHaveBeenCalledWith(expected);
-  }
-
-  async findAll(): Promise<Author[]> {
-    const authorList = AuthorMother.randomList(3);
-    this.findAllMock = jest.fn().mockReturnValue(authorList);
-
-    return this.findAllMock();
-  }
-
-  assertFindAllHasBeenCalled(): void {
-    expect(this.findAllMock).toHaveBeenCalled();
-  }
-
-  async remove(authorId: string): Promise<void> {
-    this.removeMock(authorId);
-  }
-
-  assertRemoveHasBeenCalledWith(expected: string): void {
-    expect(this.removeMock).toHaveBeenCalledWith(expected);
+    return this.findMock(authorId);
   }
 }

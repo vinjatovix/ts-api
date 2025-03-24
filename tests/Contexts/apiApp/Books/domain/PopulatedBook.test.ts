@@ -1,8 +1,8 @@
 import { PopulatedBook } from '../../../../../src/Contexts/apiApp/Books/domain';
-import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject/Metadata';
-import { UuidMother } from '../../../fixtures/shared/domain/mothers/UuidMother';
+import { Metadata } from '../../../../../src/Contexts/shared/domain/valueObject';
+import { UuidMother } from '../../../fixtures/shared/domain/mothers';
 import { UserMother } from '../../Auth/domain/mothers';
-import { AuthorMother } from '../../Authors/domain/mothers/AuthorMother';
+import { AuthorMother } from '../../Authors/domain/mothers';
 import {
   BookPagesMother,
   BookReleaseDateMother,
@@ -42,7 +42,7 @@ describe('PopulatedBook', () => {
       id: populatedBookValueObjects.id.value,
       title: populatedBookValueObjects.title.value,
       isbn: populatedBookValueObjects.isbn.value,
-      releaseDate: populatedBookValueObjects.releaseDate.value,
+      releaseDate: populatedBookValueObjects.releaseDate.value.toISOString(),
       pages: populatedBookValueObjects.pages.value,
       metadata: populatedBookValueObjects.metadata.toPrimitives(),
       author: populatedBookValueObjects.author.toPrimitives()

@@ -1,19 +1,21 @@
+import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
 import { AuthorPatcher } from '../../../../../src/Contexts/apiApp/Authors/application';
 import { AuthorPatch } from '../../../../../src/Contexts/apiApp/Authors/domain';
-import { NotFoundError } from '../../../../../src/Contexts/shared/domain/errors/NotFoundError';
 import { UserMother } from '../../Auth/domain/mothers';
 import { AuthorRepositoryMock } from '../__mocks__/AuthorRepositoryMock';
-import { AuthorCreatorRequestMother } from './mothers/AuthorCreatorRequestMother';
+import { AuthorCreatorRequestMother } from './mothers';
 
-const username = UserMother.random().username;
+const username = UserMother.random();
+const USERNAME = username.username.value;
+const request = AuthorCreatorRequestMother.random();
 
 describe('AuthorPatcher', () => {
   let repository: AuthorRepositoryMock;
-  let updater: AuthorPatcher;
+  let service: AuthorPatcher;
 
   beforeEach(() => {
-    repository = new AuthorRepositoryMock();
-    updater = new AuthorPatcher(repository);
+    repository = new AuthorRepositoryMock({ find: true });
+    service = new AuthorPatcher(repository);
   });
 
   afterEach(() => {
@@ -21,23 +23,21 @@ describe('AuthorPatcher', () => {
   });
 
   it('should update a valid author', async () => {
-    const request = AuthorCreatorRequestMother.random();
     const author = AuthorPatch.fromPrimitives(request);
 
-    await updater.run(request, username.value);
+    await service.run(request, { username: USERNAME });
 
     repository.assertUpdateHasBeenCalledWith(
       expect.objectContaining(author),
-      username
+      new Username(USERNAME)
     );
   });
 
   it('should throw an error when the author is not found', async () => {
-    const request = AuthorCreatorRequestMother.random();
-    request.id = 'not-found';
+    repository.setFindable(false);
 
-    await expect(updater.run(request, username.value)).rejects.toThrow(
-      NotFoundError
+    await expect(service.run(request, { username: USERNAME })).rejects.toThrow(
+      expect.objectContaining({ name: 'NotFoundError' })
     );
   });
 });

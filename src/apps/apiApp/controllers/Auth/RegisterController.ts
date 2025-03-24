@@ -4,12 +4,15 @@ import { Controller } from '../../shared/interfaces/Controller';
 import { RegisterUser } from '../../../../Contexts/apiApp/Auth/application';
 
 export class RegisterController implements Controller {
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Auth.RegisterController';
+
   constructor(protected register: RegisterUser) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, username, password } = req.body;
-      await this.register.run({ email, username, password });
+      const { id, email, username, password } = req.body;
+      await this.register.run({ id, email, username, password });
 
       res.status(this.status()).send();
     } catch (error) {
@@ -19,5 +22,9 @@ export class RegisterController implements Controller {
 
   protected status() {
     return httpStatus.CREATED;
+  }
+
+  public static get containerId() {
+    return RegisterController._containerId;
   }
 }
