@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import httpStatus from 'http-status';
-
-import { AppError } from '../../../../Contexts/shared/domain/errors/AppErrorFactory';
-import { buildLogger } from '../../../../Contexts/shared/plugins';
+import { buildLogger } from '../../../../../Contexts/shared/plugins';
+import { AppError } from '../../../../../Contexts/shared/domain/errors';
 
 const logger = buildLogger('apiErrorHandler');
 

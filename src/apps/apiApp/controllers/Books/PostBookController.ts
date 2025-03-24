@@ -4,6 +4,9 @@ import { Controller } from '../../shared/interfaces/Controller';
 import { BookCreator } from '../../../../Contexts/apiApp/Books/application';
 
 export class PostBookController implements Controller {
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Books.PostBookController';
+
   constructor(protected bookCreator: BookCreator) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -31,5 +34,9 @@ export class PostBookController implements Controller {
 
   protected status() {
     return httpStatus.CREATED;
+  }
+
+  public static get containerId() {
+    return PostBookController._containerId;
   }
 }

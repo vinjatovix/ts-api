@@ -4,15 +4,25 @@ import { AllAuthorsFinder } from '../../../../Contexts/apiApp/Authors/applicatio
 import { Controller } from '../../shared/interfaces/Controller';
 
 export class GetAllAuthorsController implements Controller {
-  constructor(private allAuthorsFinder: AllAuthorsFinder) {}
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Authors.GetAllAuthorsController';
+
+  constructor(private readonly service: AllAuthorsFinder) {}
 
   async run(_req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const authors = await this.allAuthorsFinder.run();
+      const data = await this.service.run();
 
-      res.status(httpStatus.OK).send(authors);
+      res.status(this.status()).send(data);
     } catch (error: unknown) {
       next(error);
     }
+  }
+
+  private status() {
+    return httpStatus.OK;
+  }
+  public static get containerId() {
+    return GetAllAuthorsController._containerId;
   }
 }

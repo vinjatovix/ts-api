@@ -4,20 +4,17 @@ import { Controller } from '../../shared/interfaces/Controller';
 import { AuthorCreator } from '../../../../Contexts/apiApp/Authors/application';
 
 export class PostAuthorController implements Controller {
-  constructor(protected authorCreator: AuthorCreator) {}
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Authors.PostAuthorController';
+
+  constructor(protected service: AuthorCreator) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id, name } = req.body;
       const username = res.locals.user.username;
 
-      await this.authorCreator.run(
-        {
-          id,
-          name
-        },
-        username
-      );
+      await this.service.run({ id, name }, username);
 
       res.status(this.status()).send();
     } catch (error) {
@@ -27,5 +24,9 @@ export class PostAuthorController implements Controller {
 
   protected status() {
     return httpStatus.CREATED;
+  }
+
+  public static get containerId() {
+    return PostAuthorController._containerId;
   }
 }

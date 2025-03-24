@@ -4,21 +4,18 @@ import { AuthorPatcher } from '../../../../Contexts/apiApp/Authors/application';
 import { Controller } from '../../shared/interfaces/Controller';
 
 export class PatchAuthorController implements Controller {
-  constructor(protected authorPatcher: AuthorPatcher) {}
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Authors.PatchAuthorController';
+
+  constructor(protected service: AuthorPatcher) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { id } = req.params;
-      const updates = req.body;
+      const payload = req.body;
       const username = res.locals.user.username;
 
-      await this.authorPatcher.run(
-        {
-          id,
-          ...updates
-        },
-        username
-      );
+      await this.service.run({ id, ...payload }, username);
 
       res.status(this.status()).send();
     } catch (error: unknown) {
@@ -28,5 +25,9 @@ export class PatchAuthorController implements Controller {
 
   protected status() {
     return httpStatus.OK;
+  }
+
+  public static get containerId() {
+    return PatchAuthorController._containerId;
   }
 }
