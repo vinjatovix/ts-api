@@ -9,11 +9,12 @@ import { CharacterRepository } from '../../../../../src/Contexts/apiApp/Characte
 import { CharacterMother } from '../domain/mothers';
 
 export class CharacterRepositoryMock implements CharacterRepository {
-  protected saveMock: jest.Mock;
-  private updateMock: jest.Mock;
-  public findByQueryMock: jest.Mock;
-  public findAllMock: jest.Mock;
+  private readonly saveMock: jest.Mock;
+  private readonly updateMock: jest.Mock;
+  private readonly findByQueryMock: jest.Mock;
+  private readonly findAllMock: jest.Mock;
   protected findMock: jest.Mock;
+  private readonly removeMock: jest.Mock;
   private isCharacterFindable: boolean;
 
   constructor({ find = false }: { find: boolean } = { find: false }) {
@@ -27,6 +28,7 @@ export class CharacterRepositoryMock implements CharacterRepository {
     this.findMock = jest.fn().mockImplementation(() => {
       return this.isCharacterFindable ? CharacterMother.random() : null;
     });
+    this.removeMock = jest.fn();
   }
 
   async save(character: Character): Promise<void> {
@@ -76,5 +78,13 @@ export class CharacterRepositoryMock implements CharacterRepository {
 
   assertSearchHasBeenCalledWith(expected: string): void {
     expect(this.findMock).toHaveBeenCalledWith(expected);
+  }
+
+  async remove(id: string): Promise<void> {
+    this.removeMock(id);
+  }
+
+  assertRemoveHasBeenCalledWith(expected: string): void {
+    expect(this.removeMock).toHaveBeenCalledWith(expected);
   }
 }
