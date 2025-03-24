@@ -5,7 +5,7 @@ import {
   ValidationError,
   validationResult
 } from 'express-validator';
-import { InvalidArgumentError } from '../../../../Contexts/shared/domain/errors/InvalidArgumentError';
+import { createError } from '../../../../Contexts/shared/domain/errors';
 
 export const validateReqSchema = (
   req: Request,
@@ -85,7 +85,7 @@ export const validateReqSchema = (
     return { ...acc, ...error };
   }, {});
 
-  throw new InvalidArgumentError(
+  throw createError.invalidArgument(
     JSON.stringify(errorMessages).replace(/"/g, ' ')
   );
 };

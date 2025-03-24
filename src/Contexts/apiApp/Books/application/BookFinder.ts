@@ -1,7 +1,9 @@
 import { RequestOptions } from '../../../../apps/apiApp/shared/interfaces/RequestOptions';
-import { RequestById } from '../../../shared/application/RequestById';
+import { RequestById } from '../../../shared/application/interfaces';
+import { createError } from '../../../shared/domain/errors';
+
 import { Nullable } from '../../../shared/domain/Nullable';
-import { NotFoundError } from '../../../shared/domain/errors/NotFoundError';
+
 import { Book, PopulatedBook } from '../domain';
 import { BookRepository } from '../domain/interfaces';
 import { BookResponse } from './BookResponse';
@@ -24,6 +26,6 @@ export class BookFinder {
       return book.toPrimitives();
     }
 
-    throw new NotFoundError(`Book <${request.id}>`);
+    throw createError.notFound(`Book <${request.id}>`);
   }
 }
