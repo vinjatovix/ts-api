@@ -1,17 +1,14 @@
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo/MongoRepository';
-import { Character } from '../../domain';
-import { CharacterRepository } from '../../domain/interfaces';
-import { Nullable } from '../../../../shared/domain/Nullable';
-import { ObjectId } from 'bson';
-import { MetadataType } from '../../../../shared/application/MetadataType';
+import { Collection } from 'mongodb';
+import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
+import {
+  MongoRepository,
+  AggregateBuilder
+} from '../../../../shared/infrastructure/persistence/mongo';
 import { CharacterByQuery } from '../../application';
-
-export interface CharacterDocument {
-  _id: string;
-  name: string;
-  book: string;
-  metadata: MetadataType;
-}
+import { Character, PopulatedCharacter } from '../../domain/';
+import { CharacterRepository } from '../../domain/interfaces';
+import { CharacterType, PopulatedCharacterType } from '../types';
+import { CharacterMapper } from './CharacterMapper';
 
 export class MongoCharacterRepository
   extends MongoRepository<Character>
@@ -19,23 +16,6 @@ export class MongoCharacterRepository
 {
   public async save(character: Character): Promise<void> {
     return this.persist(character.id.value, character);
-  }
-
-  public async findById(id: string): Promise<Nullable<Character>> {
-    const collection = await this.collection();
-
-    const document = await collection.findOne<CharacterDocument>({
-      _id: id as unknown as ObjectId
-    });
-
-    return document
-      ? Character.fromPrimitives({
-          id: document._id,
-          name: document.name,
-          book: document.book,
-          metadata: document.metadata
-        })
-      : null;
   }
 
   public async findByQuery(query: CharacterByQuery): Promise<Character[]> {
@@ -54,21 +34,46 @@ export class MongoCharacterRepository
       }
     }
     const collection = await this.collection();
-    const documents = await collection
-      .find<CharacterDocument>(filter)
-      .toArray();
+    const documents = await collection.find<CharacterType>(filter).toArray();
+
+    return documents.map(CharacterMapper.toDomain);
+  }
+
+  public async findAll(
+    options: Partial<RequestOptions> = {}
+  ): Promise<Character[] | PopulatedCharacter[]> {
+    const collection = await this.collection();
+    if (Object.keys(options).length === 0) {
+      const documents = await collection.find<CharacterType>({}).toArray();
+
+      return documents.map(CharacterMapper.toDomain);
+    }
+
+    const documents = await this.fetch({ collection, options });
 
     return documents.map((document) =>
-      Character.fromPrimitives({
-        id: document._id,
-        name: document.name,
-        book: document.book,
-        metadata: document.metadata
-      })
+      CharacterMapper.toPopulatedDomain(document)
     );
   }
 
   protected collectionName(): string {
     return 'characters';
+  }
+
+  private async fetch({
+    collection,
+    id,
+    options
+  }: {
+    collection: Collection;
+    id?: string;
+    options: Partial<RequestOptions>;
+  }): Promise<PopulatedCharacterType[]> {
+    const aggregateBuilder = new AggregateBuilder<PopulatedCharacterType>();
+    const pipeline = aggregateBuilder.buildPipeline(id ?? '', options);
+
+    return (await collection
+      .aggregate(pipeline)
+      .toArray()) as PopulatedCharacterType[];
   }
 }

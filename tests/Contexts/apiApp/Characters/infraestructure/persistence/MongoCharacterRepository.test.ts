@@ -28,4 +28,17 @@ describe('MongoCharacterRepository', () => {
       await repository.save(character);
     });
   });
+
+  describe('findAll', () => {
+    it('should return an array of existing characters', async () => {
+      const char1 = CharacterMother.random();
+      await repository.save(char1);
+      const char2 = CharacterMother.random();
+      await repository.save(char2);
+
+      expect(await repository.findAll()).toEqual(
+        expect.arrayContaining([char1, char2])
+      );
+    });
+  });
 });
