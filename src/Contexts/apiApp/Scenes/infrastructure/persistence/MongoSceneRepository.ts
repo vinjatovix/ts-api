@@ -70,7 +70,7 @@ export class MongoSceneRepository
 
   public async search(
     id: string,
-    options: Partial<RequestOptions> = {}
+    options: RequestOptions = {}
   ): Promise<Partial<Scene | PopulatedScene> | null> {
     if (!Object.keys(options).length) {
       const collection = await this.collection();
