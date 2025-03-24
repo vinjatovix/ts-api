@@ -31,9 +31,35 @@ export class MongoCharacterRepository
     return await this.persist(character.id.value, character, username);
   }
 
-  public async findByQuery(query: CharacterByQuery): Promise<Character[]> {
+  public async findByQuery({
+    id,
+    _id,
+    name,
+    book
+  }: CharacterByQuery): Promise<Character[]> {
     const collection = await this.collection();
-    const documents = await collection.find<CharacterType>(query).toArray();
+    const filter = {} as Record<string, unknown>;
+
+    if (_id) {
+      filter['_id'] = _id as unknown as ObjectId;
+    }
+
+    if (id && name && book) {
+      filter.$or = [
+        { _id: id as unknown as ObjectId },
+        {
+          $and: [{ name: name }, { book: book }]
+        }
+      ];
+    } else if (id) {
+      filter['_id'] = id as unknown as ObjectId;
+    } else if (name) {
+      filter['name'] = name;
+    } else if (book) {
+      filter['book'] = book;
+    }
+
+    const documents = await collection.find<CharacterType>(filter).toArray();
 
     return documents.map(this.mapper.toDomain);
   }

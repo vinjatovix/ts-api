@@ -33,6 +33,7 @@ describe('AuthorPatcher', () => {
 
   it('should throw an error when the author is not found', async () => {
     repository.setFindable(false);
+
     await expect(service.run(request, username.value)).rejects.toThrow(
       expect.objectContaining({ name: 'NotFoundError' })
     );

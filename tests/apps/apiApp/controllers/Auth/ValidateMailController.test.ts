@@ -19,7 +19,7 @@ describe('ValidateMailController', () => {
   const spyService = jest.spyOn(ValidateMail.prototype, 'run');
 
   beforeEach(() => {
-    repository = new UserRepositoryMock({ exists: true });
+    repository = new UserRepositoryMock({ find: true });
     encrypter = new CryptAdapterMock({ login: true, token: true });
     service = new ValidateMail(repository, encrypter);
     controller = new ValidateMailController(service);

@@ -17,7 +17,7 @@ export class AuthorPatcher {
   async run(request: AuthorCreatorRequest, username: string): Promise<void> {
     const storedAuthor = await this.repository.search(request.id);
 
-    if (storedAuthor === null) {
+    if (!storedAuthor) {
       throw createError.notFound(`Author <${request.id}>`);
     }
 

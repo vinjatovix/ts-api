@@ -46,4 +46,16 @@ export class MongoAuthRepository
         })
       : null;
   }
+
+  async findByQuery(query: {
+    id?: string;
+    username?: string;
+  }): Promise<{ id: string; username: string }[]> {
+    const collection = await this.collection();
+    const documents = await collection
+      .find<AuthDocument>(query, { projection: { password: 0 } })
+      .toArray();
+
+    return documents.map((doc) => ({ id: doc._id, username: doc.username }));
+  }
 }
