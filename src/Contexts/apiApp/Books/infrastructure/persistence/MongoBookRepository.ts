@@ -18,7 +18,7 @@ export class MongoBookRepository
     private readonly mapper: BookMapper
   ) {
     super(client);
-    this.mapper = new BookMapper();
+    this.mapper = mapper;
   }
 
   public async save(book: Book): Promise<void> {

@@ -18,7 +18,7 @@ export class MongoSceneRepository
     private readonly mapper: SceneMapper
   ) {
     super(client);
-    this.mapper = new SceneMapper();
+    this.mapper = mapper;
   }
 
   protected collectionName(): string {
