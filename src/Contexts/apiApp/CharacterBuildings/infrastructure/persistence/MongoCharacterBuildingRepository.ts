@@ -25,11 +25,16 @@ export class MongoCharacterBuildingRepository
     return await this.persist(characterBuilding.id.value, characterBuilding);
   }
 
-  async findByQuery(query: { id: string }): Promise<CharacterBuilding[]> {
-    const filter: { [key: string]: string | { $in: string[] } } = {};
+  async findByQuery(
+    query: Partial<{ id: string; scene: string }>
+  ): Promise<CharacterBuilding[]> {
+    const filter: Record<string, unknown> = {};
 
     if (query.id) {
       filter['_id'] = query.id;
+    }
+    if (query.scene) {
+      filter['scene'] = query.scene;
     }
 
     const collection = await this.collection();
@@ -37,6 +42,6 @@ export class MongoCharacterBuildingRepository
       .find<CharacterBuildingType>(filter)
       .toArray();
 
-    return documents.map(this.mapper.toDomain);
+    return documents.map((doc) => this.mapper.toDomain(doc));
   }
 }
