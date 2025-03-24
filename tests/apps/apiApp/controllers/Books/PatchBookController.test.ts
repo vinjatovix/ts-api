@@ -52,7 +52,7 @@ describe('PatchBookController', () => {
     it('should update a book and send 200 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(bookPatcher.run).toHaveBeenCalledWith(expectedBook, username);
+      expect(bookPatcher.run).toHaveBeenCalledWith(expectedBook, { username });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });

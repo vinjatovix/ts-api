@@ -18,11 +18,11 @@ export class BookRemover {
     this.characterRepository = characterRepository;
   }
 
-  async run(request: RequestById, username: string): Promise<void> {
+  async run(request: RequestById, user: { username: string }): Promise<void> {
     await this.validateRelations(request);
 
     await this.repository.remove(request.id);
-    logger.info(`Removed Book: <${request.id}> by <${username}>`);
+    logger.info(`Removed Book: <${request.id}> by <${user.username}>`);
   }
 
   private async validateRelations(request: RequestById) {

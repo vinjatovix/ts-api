@@ -20,6 +20,7 @@ import {
   AllBooksFinder,
   BookCreator,
   BookFinder,
+  BookPatcher,
   BookRemover
 } from '../../../../Contexts/apiApp/Books/application';
 import { BookPrimitives } from '../../../../Contexts/apiApp/Books/domain/interfaces';
@@ -47,7 +48,7 @@ export const register = (router: Router) => {
     BookPrimitives[]
   > = container.get('Apps.apiApp.controllers.Books.GetAllBooksController');
 
-  const patchController: PatchController<BookCreator, BookCreatorRequest> =
+  const patchController: PatchController<BookPatcher, BookCreatorRequest> =
     container.get('Apps.apiApp.controllers.Books.PatchBookController');
 
   const deleteController: DeleteController<BookRemover> = container.get(

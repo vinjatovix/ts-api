@@ -51,7 +51,7 @@ describe('PatchCharacterController', () => {
     it('should update a character and return status 200', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(service.run).toHaveBeenCalledWith(expectedChar, username);
+      expect(service.run).toHaveBeenCalledWith(expectedChar, { username });
       expect(res.status).toHaveBeenCalledWith(httpStatus.OK);
       expect(res.send).toHaveBeenCalledWith();
     });
