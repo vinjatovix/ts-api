@@ -41,3 +41,12 @@ services:
   apiApp.CharacterBuildings.application.CharacterBuildingRemover:
     class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingRemover
     arguments: ['@apiApp.CharacterBuildings.domain.CharacterBuildingRepository']
+
+  apiApp.CharacterBuildings.application.CharacterBuildingPatcher:
+    class: ../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingPatcher
+    arguments:
+      [
+        '@apiApp.CharacterBuildings.domain.CharacterBuildingRepository',
+        '@apiApp.Auth.domain.AuthRepository',
+        '@apiApp.Scenes.domain.SceneRepository'
+      ]

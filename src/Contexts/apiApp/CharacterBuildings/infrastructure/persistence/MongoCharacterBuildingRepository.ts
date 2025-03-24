@@ -10,9 +10,11 @@ import { CharacterBuildingType } from '../types';
 import { PopulatedCharacterBuilding } from '../../domain/PopulatedCharacterBuilding';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { PopulatedCharacterBuildingType } from '../types/PopulatedCharacterBuildingType';
+import { CharacterBuildingPatch } from '../../domain/CharacterBuildingPatch';
+import { Username } from '../../../Auth/domain';
 
 export class MongoCharacterBuildingRepository
-  extends MongoRepository<CharacterBuilding>
+  extends MongoRepository<CharacterBuilding | CharacterBuildingPatch>
   implements CharacterBuildingRepository
 {
   constructor(
@@ -148,5 +150,12 @@ export class MongoCharacterBuildingRepository
 
   public async remove(id: string): Promise<void> {
     return await this.delete(id);
+  }
+
+  public async update(
+    data: CharacterBuildingPatch,
+    username: Username
+  ): Promise<void> {
+    return await this.persist(data.id.value, data, username);
   }
 }

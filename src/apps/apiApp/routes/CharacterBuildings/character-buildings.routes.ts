@@ -7,7 +7,7 @@ import {
   validateReqSchema
 } from '../shared/middlewares';
 import container from '../../dependency-injection';
-import { postReqSchema } from './reqSchemas';
+import { patchReqSchema, postReqSchema } from './reqSchemas';
 import { PostController } from '../../controllers/shared/PostController';
 import { CharacterBuildingCreator } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingCreator';
 import { CharacterBuildingCreatorRequest } from '../../../../Contexts/apiApp/CharacterBuildings/application/interfaces';
@@ -19,6 +19,9 @@ import { GetController } from '../../controllers/shared/GetController';
 import { CharacterBuildingFinder } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingFinder';
 import { CharacterBuildingRemover } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingRemover';
 import { DeleteController } from '../../controllers/shared/DeleteController';
+import { PatchController } from '../../controllers/shared/PatchController';
+import { CharacterBuildingPatcher } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingPatcher';
+import { CharacterBuildingPatcherRequest } from '../../../../Contexts/apiApp/CharacterBuildings/application/interfaces/CharacterBuildingPatcherRequest';
 
 const prefix = API_PREFIXES.characterBuilding;
 
@@ -50,6 +53,13 @@ export const register = (router: Router) => {
     container.get(
       'Apps.apiApp.controllers.CharacterBuildings.DeleteCharacterBuildingController'
     );
+
+  const patchController: PatchController<
+    CharacterBuildingPatcher,
+    CharacterBuildingPatcherRequest
+  > = container.get(
+    'Apps.apiApp.controllers.CharacterBuildings.PatchCharacterBuildingController'
+  );
 
   router.post(
     `${prefix}/`,
@@ -85,6 +95,17 @@ export const register = (router: Router) => {
     auth,
     (req: Request, res: Response, next: NextFunction) => {
       deleteController.run(req, res, next);
+    }
+  );
+
+  router.patch(
+    `${prefix}/:id`,
+    auth,
+    validateBody,
+    validateReqSchema,
+    patchReqSchema,
+    (req: Request, res: Response, next: NextFunction) => {
+      patchController.run(req, res, next);
     }
   );
 };
