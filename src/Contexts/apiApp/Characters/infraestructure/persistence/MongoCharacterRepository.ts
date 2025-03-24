@@ -20,7 +20,14 @@ export class MongoCharacterRepository
   implements CharacterRepository
 {
   public async save(character: Character): Promise<void> {
-    return this.persist(character.id.value, character);
+    try {
+      return await this.persist(character.id.value, character);
+    } catch (err: unknown) {
+      if (err as MongoServerError) {
+        MongoErrorHandler.formatError(err as MongoServerError);
+      }
+      throw err;
+    }
   }
 
   public async update(
@@ -38,22 +45,8 @@ export class MongoCharacterRepository
   }
 
   public async findByQuery(query: CharacterByQuery): Promise<Character[]> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const filter: any = {};
-
-    if (query.id || (query.book && query.name)) {
-      filter.$or = [];
-
-      if (query.id) {
-        filter.$or.push({ _id: query.id });
-      }
-
-      if (query.book && query.name) {
-        filter.$or.push({ book: query.book, name: query.name });
-      }
-    }
     const collection = await this.collection();
-    const documents = await collection.find<CharacterType>(filter).toArray();
+    const documents = await collection.find<CharacterType>(query).toArray();
 
     return documents.map(CharacterMapper.toDomain);
   }
