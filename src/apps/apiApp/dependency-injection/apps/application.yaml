@@ -174,3 +174,10 @@ services:
       method: 'createDeleteCharacterBuildingController'
     arguments:
       ['@apiApp.CharacterBuildings.application.CharacterBuildingRemover']
+
+  Apps.apiApp.controllers.CharacterBuildings.PatchCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/PatchCharacterBuildingController
+      method: 'createPatchCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingPatcher']
