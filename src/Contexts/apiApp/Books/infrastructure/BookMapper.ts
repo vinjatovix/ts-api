@@ -16,7 +16,7 @@ export class BookMapper extends BaseEntityMapper<
   toDomain(document: BookType): Book {
     const primitives = BaseMapper.mapNestedId(
       document
-    ) as unknown as BookPrimitives;
+    ) as unknown as BookPrimitives & { author?: string | null };
 
     return Book.fromPrimitives(primitives);
   }
