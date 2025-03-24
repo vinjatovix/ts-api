@@ -1,48 +1,25 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { body, check, checkExact, param } from 'express-validator';
 import {
   LoginController,
   RegisterController,
   ValidateMailController
 } from '../../controllers/Auth';
 import container from '../../dependency-injection';
-import { API_PREFIXES, validateBody, validateReqSchema } from '../shared';
+import { API_PREFIXES } from '../shared';
+import { validateBody, validateReqSchema } from '../shared/middlewares';
+import {
+  loginReqSchema,
+  registerReqSchema,
+  validateMailReqSchema
+} from './reqSchemas';
 
 const prefix = API_PREFIXES.auth;
 
 export const register = (router: Router) => {
-  const loginReqSchema = [
-    body('email').exists().isEmail(),
-    body('password').exists().isString(),
-    checkExact()
-  ];
-
-  const registerReqSchema = [
-    body('email').exists().isEmail(),
-    body('username').exists().isString(),
-    body('password').exists().isStrongPassword(),
-    body('repeatPassword').exists().isStrongPassword(),
-    check('repeatPassword', 'Passwords do not match').custom(
-      (value: string, { req }) => value === req.body.password
-    ),
-    checkExact()
-  ];
-
-  const validateMailReqSchema = [
-    param('token').exists().isString(),
-    checkExact()
-  ];
-
-  const loginController: LoginController = container.get(
-    'Apps.apiApp.controllers.Auth.LoginController'
-  );
-
-  const registerController: RegisterController = container.get(
-    'Apps.apiApp.controllers.Auth.RegisterController'
-  );
-
-  const validateMailController: ValidateMailController = container.get(
-    'Apps.apiApp.controllers.Auth.ValidateMailController'
+  const loginController = container.get(LoginController.containerId);
+  const registerController = container.get(RegisterController.containerId);
+  const validateMailController = container.get(
+    ValidateMailController.containerId
   );
 
   router.post(

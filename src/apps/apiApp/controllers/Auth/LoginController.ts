@@ -4,6 +4,9 @@ import { Controller } from '../../shared/interfaces/Controller';
 import { LoginUser } from '../../../../Contexts/apiApp/Auth/application';
 
 export class LoginController implements Controller {
+  private static readonly _containerId =
+    'Apps.apiApp.controllers.Auth.LoginController';
+
   constructor(protected login: LoginUser) {}
 
   async run(req: Request, res: Response, next: NextFunction): Promise<void> {
@@ -20,5 +23,9 @@ export class LoginController implements Controller {
 
   protected status() {
     return httpStatus.OK;
+  }
+
+  public static get containerId() {
+    return LoginController._containerId;
   }
 }

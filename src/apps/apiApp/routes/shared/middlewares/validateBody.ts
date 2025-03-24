@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { createError } from '../../../../Contexts/shared/domain/errors/AppErrorFactory';
+import { createError } from '../../../../../Contexts/shared/domain/errors/AppErrorFactory';
 
 export const validateBody = (
   req: Request,

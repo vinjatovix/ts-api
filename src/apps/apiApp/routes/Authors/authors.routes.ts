@@ -1,20 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
-
 import container from '../../dependency-injection';
-
-import {
-  API_PREFIXES,
-  auth,
-  isAdmin,
-  validateBody,
-  validateReqSchema
-} from '../shared';
-import {
-  deleteReqSchema,
-  getReqSchema,
-  patchReqSchema,
-  postReqSchema
-} from './reqSchemas';
+import { API_PREFIXES } from '../shared';
 import {
   DeleteAuthorController,
   GetAllAuthorsController,
@@ -22,29 +8,27 @@ import {
   PatchAuthorController,
   PostAuthorController
 } from '../../controllers/Authors';
+import {
+  auth,
+  isAdmin,
+  validateBody,
+  validateReqSchema
+} from '../shared/middlewares';
+import {
+  deleteReqSchema,
+  getReqSchema,
+  patchReqSchema,
+  postReqSchema
+} from './reqSchemas';
 
 const prefix = API_PREFIXES.author;
 
 export const register = (router: Router) => {
-  const postController: PostAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.PostAuthorController'
-  );
-
-  const getController: GetAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.GetAuthorController'
-  );
-
-  const getAllController: GetAllAuthorsController = container.get(
-    'Apps.apiApp.controllers.Authors.GetAllAuthorsController'
-  );
-
-  const patchController: PatchAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.PatchAuthorController'
-  );
-
-  const deleteController: DeleteAuthorController = container.get(
-    'Apps.apiApp.controllers.Authors.DeleteAuthorController'
-  );
+  const postController = container.get(PostAuthorController.containerId);
+  const getController = container.get(GetAuthorController.containerId);
+  const getAllController = container.get(GetAllAuthorsController.containerId);
+  const patchController = container.get(PatchAuthorController.containerId);
+  const deleteController = container.get(DeleteAuthorController.containerId);
 
   router.post(
     `${prefix}/`,
