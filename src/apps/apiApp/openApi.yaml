@@ -954,6 +954,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CharacterBuilding'
+    delete:
+      deprecated: false
+      tags:
+        - CharacterBuildings
+      summary: Delete CharacterBuilding by Id
+      operationId: DeleteCharacterBuildingById
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: required
+          required: true
+          style: simple
+          schema:
+            type: string
+            example: '{{characterBuildingId}}'
+      responses:
+        '204':
+          description: Deleted
+          content: {}
+        '403':
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/403'
+              example:
+                message: 'You dont own this characterBulding'
 
   /api/v1/health/http:
     get:
@@ -1064,6 +1093,15 @@ components:
           type: string
       example:
         message: 'Invalid token'
+
+    403:
+      title: 'Forbidden'
+      type: object
+      properties:
+        message:
+          type: string
+      example:
+        message: 'You dont own this characterBulding'
 
     409:
       title: 'Conflict'

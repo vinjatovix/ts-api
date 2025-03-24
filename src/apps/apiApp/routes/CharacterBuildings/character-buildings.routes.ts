@@ -17,6 +17,8 @@ import { RequestOptions } from '../../shared/interfaces';
 import { CharacterBuildingPrimitives } from '../../../../Contexts/apiApp/CharacterBuildings/domain/interfaces';
 import { GetController } from '../../controllers/shared/GetController';
 import { CharacterBuildingFinder } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingFinder';
+import { CharacterBuildingRemover } from '../../../../Contexts/apiApp/CharacterBuildings/application/CharacterBuildingRemover';
+import { DeleteController } from '../../controllers/shared/DeleteController';
 
 const prefix = API_PREFIXES.characterBuilding;
 
@@ -30,7 +32,7 @@ export const register = (router: Router) => {
 
   const getAllController: GetAllController<
     AllCharacterBuildingsFinder,
-    Partial<RequestOptions>,
+    RequestOptions,
     CharacterBuildingPrimitives[]
   > = container.get(
     'Apps.apiApp.controllers.CharacterBuildings.GetAllCharacterBuildingsController'
@@ -38,11 +40,16 @@ export const register = (router: Router) => {
 
   const getController: GetController<
     CharacterBuildingFinder,
-    Partial<RequestOptions>,
+    RequestOptions,
     CharacterBuildingPrimitives
   > = container.get(
     'Apps.apiApp.controllers.CharacterBuildings.GetCharacterBuildingController'
   );
+
+  const deleteController: DeleteController<CharacterBuildingRemover> =
+    container.get(
+      'Apps.apiApp.controllers.CharacterBuildings.DeleteCharacterBuildingController'
+    );
 
   router.post(
     `${prefix}/`,
@@ -70,6 +77,14 @@ export const register = (router: Router) => {
     includeAndFilter,
     (req: Request, res: Response, next: NextFunction) => {
       getController.run(req, res, next);
+    }
+  );
+
+  router.delete(
+    `${prefix}/:id`,
+    auth,
+    (req: Request, res: Response, next: NextFunction) => {
+      deleteController.run(req, res, next);
     }
   );
 };

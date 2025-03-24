@@ -18,4 +18,6 @@ export interface CharacterBuildingRepository {
     id: string,
     options?: Partial<RequestOptions>
   ): Promise<Partial<CharacterBuilding | PopulatedCharacterBuilding> | null>;
+
+  remove(id: string): Promise<void>;
 }
