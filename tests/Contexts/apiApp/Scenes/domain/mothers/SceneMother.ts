@@ -3,7 +3,10 @@ import {
   Scene,
   SceneProps
 } from '../../../../../../src/Contexts/apiApp/Scenes/domain';
-import { Metadata } from '../../../../../../src/Contexts/shared/domain/valueObject';
+import {
+  Metadata,
+  Uuid
+} from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
 import { SceneCircumstanceMother } from './SceneCircumstanceMother';
 import { UserMother } from '../../../Auth/domain/mothers';
@@ -27,11 +30,14 @@ export class SceneMother {
     });
   }
 
-  static random(id?: string): Scene {
+  static random({
+    id,
+    characters
+  }: { id?: string; characters?: Uuid[] } = {}): Scene {
     return this.create({
       id: id ? UuidMother.create(id) : UuidMother.random(),
       description: SceneCircumstanceMother.random(),
-      characters: [UuidMother.random(), UuidMother.random()],
+      characters: characters ?? [UuidMother.random(), UuidMother.random()],
       metadata: new Metadata({
         createdAt: new Date(),
         updatedAt: new Date(),
