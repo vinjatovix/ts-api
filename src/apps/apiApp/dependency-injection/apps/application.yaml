@@ -167,3 +167,10 @@ services:
       method: 'createGetCharacterBuildingController'
     arguments:
       ['@apiApp.CharacterBuildings.application.CharacterBuildingFinder']
+
+  Apps.apiApp.controllers.CharacterBuildings.DeleteCharacterBuildingController:
+    factory:
+      class: ../../controllers/CharacterBuildings/DeleteCharacterBuildingController
+      method: 'createDeleteCharacterBuildingController'
+    arguments:
+      ['@apiApp.CharacterBuildings.application.CharacterBuildingRemover']

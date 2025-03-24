@@ -145,4 +145,8 @@ export class MongoCharacterBuildingRepository
       ? this.mapper.toPopulatedDomain(documents[0])
       : null;
   }
+
+  public async remove(id: string): Promise<void> {
+    return await this.delete(id);
+  }
 }
