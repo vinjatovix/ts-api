@@ -10,7 +10,7 @@ export class BookFinder {
   async run(
     { id }: RequestById,
     options: Partial<RequestOptions> = {}
-  ): Promise<Partial<BookPrimitives>> {
+  ): Promise<BookPrimitives> {
     const book = (await this.repository.search(id, options)) as
       | Book
       | PopulatedBook;

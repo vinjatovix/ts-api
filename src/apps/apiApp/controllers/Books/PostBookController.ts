@@ -1,42 +1,6 @@
-import httpStatus from 'http-status';
-import { NextFunction, Request, Response } from 'express';
-import { Controller } from '../../shared/interfaces/Controller';
 import { BookCreator } from '../../../../Contexts/apiApp/Books/application';
+import { BookCreatorRequest } from '../../../../Contexts/apiApp/Books/application/interfaces';
+import { createPostController } from '../shared/controllerFactoryFunctions';
 
-export class PostBookController implements Controller {
-  private static readonly _containerId =
-    'Apps.apiApp.controllers.Books.PostBookController';
-
-  constructor(protected bookCreator: BookCreator) {}
-
-  async run(req: Request, res: Response, next: NextFunction): Promise<void> {
-    try {
-      const { id, title, author, isbn, releaseDate, pages } = req.body;
-      const username = res.locals.user.username;
-
-      await this.bookCreator.run(
-        {
-          id,
-          title,
-          author,
-          isbn,
-          releaseDate,
-          pages
-        },
-        username
-      );
-
-      res.status(this.status()).send();
-    } catch (error) {
-      next(error);
-    }
-  }
-
-  protected status() {
-    return httpStatus.CREATED;
-  }
-
-  public static get containerId() {
-    return PostBookController._containerId;
-  }
-}
+export const createPostBookController = (service: BookCreator) =>
+  createPostController<BookCreator, BookCreatorRequest>(service);
