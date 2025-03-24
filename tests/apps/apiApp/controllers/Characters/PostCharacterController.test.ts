@@ -1,10 +1,8 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { PostCharacterController } from '../../../../../src/apps/apiApp/controllers/Characters';
-import {
-  CharacterCreator,
-  CharacterCreatorRequest
-} from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterCreator } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterCreatorRequest } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import { BookRepositoryMock } from '../../../../Contexts/apiApp/Books/__mocks__/BookRepositoryMock';
 import { CharacterRepositoryMock } from '../../../../Contexts/apiApp/Characters/__mocks__/CharacterRepositoryMock';
 import { CharacterNameMother } from '../../../../Contexts/apiApp/Characters/domain/mothers';

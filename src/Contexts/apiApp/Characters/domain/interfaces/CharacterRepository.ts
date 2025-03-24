@@ -1,6 +1,6 @@
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Username } from '../../../Auth/domain/Username';
-import { CharacterByQuery } from '../../application';
+import { CharacterByQuery } from '../../application/interfaces';
 import { Character } from '../Character';
 import { CharacterPatch } from '../CharacterPatch';
 import { PopulatedCharacter } from '../PopulatedCharacter';

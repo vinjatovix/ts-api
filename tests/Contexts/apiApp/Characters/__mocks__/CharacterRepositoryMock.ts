@@ -1,5 +1,5 @@
 import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { CharacterByQuery } from '../../../../../src/Contexts/apiApp/Characters/application';
+import { CharacterByQuery } from '../../../../../src/Contexts/apiApp/Characters/application/interfaces';
 import {
   Character,
   PopulatedCharacter

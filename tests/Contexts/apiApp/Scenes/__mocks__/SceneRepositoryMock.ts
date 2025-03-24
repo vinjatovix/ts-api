@@ -1,8 +1,11 @@
 import { RequestOptions } from '../../../../../src/apps/apiApp/shared/interfaces';
 import { Username } from '../../../../../src/Contexts/apiApp/Auth/domain';
-import { Scene } from '../../../../../src/Contexts/apiApp/Scenes/domain';
+import { SceneByQuery } from '../../../../../src/Contexts/apiApp/Scenes/application/interfaces';
+import {
+  Scene,
+  ScenePatch
+} from '../../../../../src/Contexts/apiApp/Scenes/domain';
 import { SceneRepository } from '../../../../../src/Contexts/apiApp/Scenes/domain/interfaces';
-import { ScenePatch } from '../../../../../src/Contexts/apiApp/Scenes/domain/ScenePatch';
 import { SceneMother } from '../domain/mothers';
 
 export class SceneRepositoryMock implements SceneRepository {
@@ -10,6 +13,7 @@ export class SceneRepositoryMock implements SceneRepository {
   private readonly findAllMock: jest.Mock;
   protected findMock: jest.Mock;
   private readonly updateMock: jest.Mock;
+  private readonly findByQueryMock: jest.Mock;
   private isFindable: boolean;
 
   constructor({ find }: { find: boolean } = { find: false }) {
@@ -22,6 +26,9 @@ export class SceneRepositoryMock implements SceneRepository {
       return this.isFindable ? SceneMother.random() : null;
     });
     this.updateMock = jest.fn();
+    this.findByQueryMock = jest.fn().mockImplementation(() => {
+      return this.isFindable ? [SceneMother.random()] : [];
+    });
   }
 
   async findAll(options?: Partial<RequestOptions>): Promise<Scene[]> {
@@ -68,5 +75,13 @@ export class SceneRepositoryMock implements SceneRepository {
 
   assertUpdateHasBeenCalledWith(expected: Scene, user: Username): void {
     expect(this.updateMock).toHaveBeenCalledWith(expected, user);
+  }
+
+  async findByQuery(query: SceneByQuery): Promise<Scene[]> {
+    return this.findByQueryMock(query);
+  }
+
+  assertFindByQueryHasBeenCalledWith(expected: SceneByQuery): void {
+    expect(this.findByQueryMock).toHaveBeenCalledWith(expected);
   }
 }
