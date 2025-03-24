@@ -48,7 +48,10 @@ describe('DeleteBookController', () => {
     it('should delete a book and send 204 status', async () => {
       await controller.run(req as Request, res as Response, next);
 
-      expect(service.run).toHaveBeenCalledWith({ id: '1' }, username);
+      expect(service.run).toHaveBeenCalledWith(
+        { id: '1' },
+        expect.objectContaining({ username })
+      );
       expect(res.status).toHaveBeenCalledWith(httpStatus.NO_CONTENT);
       expect(res.send).toHaveBeenCalledWith();
     });

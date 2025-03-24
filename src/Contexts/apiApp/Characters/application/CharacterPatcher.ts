@@ -18,12 +18,15 @@ export class CharacterPatcher {
     this.bookRepository = bookRepository;
   }
 
-  async run(request: CharacterPatcherRequest, username: string): Promise<void> {
+  async run(
+    request: CharacterPatcherRequest,
+    user: { username: string }
+  ): Promise<void> {
     await this.validatePatch(request);
     const char = CharacterPatch.fromPrimitives(request);
 
-    await this.repository.update(char, new Username(username));
-    logger.info(`Updated Character: <${char.id}> by <${username}>`);
+    await this.repository.update(char, new Username(user.username));
+    logger.info(`Updated Character: <${char.id}> by <${user.username}>`);
   }
 
   private async validatePatch(request: CharacterPatcherRequest) {
