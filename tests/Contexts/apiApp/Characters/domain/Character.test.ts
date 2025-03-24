@@ -52,7 +52,7 @@ describe('Character', () => {
     const INVALID_NAMES = [
       '',
       random.integer(),
-      random.boolean(),
+      true,
       random.word({ min: CharacterName.MAX_LENGTH + 1 }),
       {},
       []
