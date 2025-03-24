@@ -12,6 +12,7 @@ import {
   Uuid
 } from '../../../../../../src/Contexts/shared/domain/valueObject';
 import { random } from '../../../../fixtures/shared';
+import { UuidMother } from '../../../../fixtures/shared/domain/mothers';
 import { EmailMother } from '../../../../shared/domain/mothers';
 import { UserRolesMother } from './UserRolesMother';
 
@@ -62,8 +63,11 @@ export class UserMother {
     });
   }
 
-  static random(): User {
-    return this.create();
+  static random(id?: string): User {
+    return (
+      (id && this.create({ id: new Uuid(id) })) ||
+      this.create({ id: UuidMother.random() })
+    );
   }
 
   static randomPatch(id: string): UserPatch {
