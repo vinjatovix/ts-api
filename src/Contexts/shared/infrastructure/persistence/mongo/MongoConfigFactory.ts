@@ -11,6 +11,21 @@ const mongoConfig = {
 
 export class MongoConfigFactory {
   static createConfig(): MongoConfig {
-    return mongoConfig;
+    return {
+      ...mongoConfig,
+      connectionString: MongoConfigFactory.createMongoUri()
+    };
+  }
+
+  static createMongoUri(): string {
+    const { username, password, connection, url, db } = mongoConfig;
+    const encodedPassword = encodeURIComponent(password);
+    const credentials =
+      username && encodedPassword ? `${username}:${encodedPassword}@` : '';
+    const baseConnectionString = `${connection}://${credentials}${url}/${db}`;
+
+    return connection === 'mongodb+srv'
+      ? `${baseConnectionString}?retryWrites=true&w=majority&appName=Cluster0`
+      : baseConnectionString;
   }
 }

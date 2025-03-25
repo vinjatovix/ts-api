@@ -8,8 +8,9 @@ import cors from 'cors';
 import { registerRoutes } from './routes';
 import { apiErrorHandler } from './routes/shared/middlewares';
 import { buildLogger } from '../../Contexts/shared/plugins/logger.plugin';
-import { envs } from '../../config/plugins/envs.plugin';
 import migrations from '../../../migrations';
+import { envs } from '../../config/plugins';
+
 const corsOptions = {
   origin: envs.ALLOWED_ORIGINS?.split(',') ?? [],
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -19,13 +20,12 @@ const corsOptions = {
 const logger = buildLogger('apiApp');
 
 export class Server {
-  private express: express.Express;
+  private readonly express: express.Express;
   private readonly port: number;
   private readonly host: string;
   private httpServer?: http.Server;
 
   constructor(host: string, port: number) {
-    migrations.up();
     this.port = port;
     this.host = host;
     this.express = express();
@@ -46,13 +46,15 @@ export class Server {
   }
 
   async listen(): Promise<void> {
+    await migrations.up();
+
     return new Promise((resolve) => {
       const env: string = this.express.get('env');
       this.httpServer = this.express.listen(this.port, () => {
         const host = ['local', 'test'].includes(env)
           ? `${this.host}:${this.port}`
           : this.host;
-        const message: string = `Backend App is running at ${host} in ${env} mode`;
+        const message: string = `Backend App is running at ${host} in ${env} mode in port ${this.port}`;
         logger.info(message);
         resolve();
       });
@@ -64,18 +66,15 @@ export class Server {
   }
 
   async stop(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (this.httpServer) {
-        this.httpServer.close((error) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          resolve();
-        });
-      } else {
-        resolve();
-      }
-    });
+    if (!this.httpServer) return;
+
+    try {
+      await new Promise<void>((resolve, reject) => {
+        this.httpServer?.close((error) => (error ? reject(error) : resolve()));
+      });
+    } catch (error) {
+      logger.error(`Error while stopping the server: ${error}`);
+      throw error;
+    }
   }
 }
