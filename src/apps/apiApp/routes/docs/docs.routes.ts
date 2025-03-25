@@ -16,7 +16,7 @@ export const register = (router: Router) => {
     const server = openApiSpec.servers[0];
     const serverUrl = host?.includes('localhost')
       ? `${host}:${envs.PORT}`
-      : `${host}`;
+      : host;
     server.url = serverUrl;
   }
 

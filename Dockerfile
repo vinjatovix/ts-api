@@ -1,21 +1,32 @@
-# Usa la imagen base con Node.js
-FROM node:20
+FROM node:22 AS build
 
-# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copia los archivos de la aplicación desde la carpeta /src
+COPY package*.json ./
+
+RUN npm install --ignore-scripts
+
 COPY ./ /app
 
-# Instala las dependencias y realiza la construcción
-RUN npm install && npm run build
+RUN npm run build
 
-COPY ./dist /app/dist
 
-# Expone el puerto en el que la aplicación va a ejecutarse
+FROM node:22 AS production
+
+WORKDIR /app
+
+RUN groupadd -r appgroup && useradd -r -g appgroup -m appuser
+
+COPY --from=build /app/dist /app/dist
+COPY --from=build /app/node_modules /app/node_modules
+COPY --from=build /app/dist/src/apps/apiApp/dependency-injection/*.yaml /app/dist/src/apps/apiApp/dependency-injection/
+
+RUN chown -R appuser:appgroup /app
+
 EXPOSE 3000
 ENV PORT=3000
-ENV NODE_ENV=local
+ENV NODE_ENV=production
 
-# Comando para iniciar la aplicación en modo de producción desde la carpeta /app/dist
+USER appuser
+
 CMD ["node", "dist/src/apps/apiApp/start.js"]

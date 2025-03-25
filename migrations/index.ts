@@ -1,20 +1,13 @@
 import { database, config, up as migrationUp } from 'migrate-mongo';
 import { buildLogger } from '../src/Contexts/shared/plugins/logger.plugin';
-import { envs } from '../src/config/plugins/envs.plugin';
 import { version } from '../package.json';
+import { MongoConfigFactory } from '../src/Contexts/shared/infrastructure/persistence/mongo';
 
 const logger = buildLogger('Migrations');
 
-const user = envs.MONGO_USERNAME;
-const password = encodeURIComponent(envs.MONGO_PASSWORD);
-const host = envs.MONGO_URL;
-const rs = `?replicaSet=${envs.MONGO_REPLICA_SET}`;
-const databaseName = envs.MONGO_DB;
-const connectionString = `mongodb://${user}:${password}@${host}/${databaseName}${rs}`;
-
 config.set({
   mongodb: {
-    url: connectionString
+    url: MongoConfigFactory.createMongoUri()
   },
   migrationsDir: `migrations/${version}`,
   changelogCollectionName: 'changelog'
