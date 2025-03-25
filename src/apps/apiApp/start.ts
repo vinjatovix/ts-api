@@ -19,9 +19,11 @@ process.on(
   'unhandledRejection',
   (reason: unknown, promise: Promise<unknown>) => {
     if (reason instanceof Error) {
-      logger.error(`Unhandled Rejection: ${reason.message}, ${promise}`);
+      logger.error(
+        `Unhandled Rejection: ${reason.name} - ${reason.message}, ${reason.stack} ${JSON.stringify(promise)}`
+      );
     } else {
-      logger.error(`Unhandled Rejection: ${reason}, ${promise}`);
+      logger.error(`Unhandled Rejection:  ${JSON.stringify(reason)}`);
     }
     process.exit(1);
   }

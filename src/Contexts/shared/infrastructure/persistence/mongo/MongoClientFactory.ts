@@ -35,8 +35,7 @@ export class MongoClientFactory {
     config: MongoConfig
   ): Promise<MongoClient> {
     try {
-      const connectionString = `${config.connection}://${config.username}:${config.password}@${config.url}/${config.db}`;
-      const client = new MongoClient(connectionString, {
+      const client = new MongoClient(config.connectionString, {
         ignoreUndefined: true,
         pkFactory: { createPk: () => new UUID().toBinary() }
       });
