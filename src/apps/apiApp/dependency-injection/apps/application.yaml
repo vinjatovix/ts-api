@@ -17,6 +17,10 @@ services:
     class: ../../controllers/Auth/ValidateMailController
     arguments: ['@apiApp.Auth.application.ValidateMail']
 
+  Apps.apiApp.controllers.Auth.RefreshTokenController:
+    class: ../../controllers/Auth/RefreshTokenController
+    arguments: ['@apiApp.Auth.application.RefreshToken']
+
   # AUTHORS
   Apps.apiApp.controllers.Authors.PostAuthorController:
     factory:
