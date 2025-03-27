@@ -119,6 +119,29 @@ paths:
               example:
                 message: 'Invalid token'
 
+  /api/v1/Auth/refresh:
+    get:
+      deprecated: false
+      tags:
+        - Auth
+      summary: Refresh Token
+      operationId: RefreshToken
+      security:
+        - bearerAuth: []
+      parameters: []
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+              example:
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjIzOTlmOWI0LTc1NWItNDBiZS04NTAwLTNkOTgxYzc2MmQ0NiIsImVtYWlsIjoidXNlcjE3MDI0MjI2ODgyMTFAdGVzdC5jb20iLCJ1c2VybmFtZSI6InVzZXIxNzAyNDIyNjg4MjExIiwicm9sZXMiOlsidXNlciJdLCJpYXQiOjE3MDI0MjMzMzksImV4cCI6MTcwMjQzMDUzOX0.zS6toKlHdEvuL4k5CBFlyNCCWjkAZbwC1x2AYQqNUhA'
+
   /api/v1/Authors:
     get:
       tags:
