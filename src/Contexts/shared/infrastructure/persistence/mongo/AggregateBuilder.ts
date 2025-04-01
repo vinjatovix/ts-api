@@ -277,6 +277,9 @@ export class AggregateBuilder {
       newValue[field] = {
         $push: fieldsToAdd.reduce((acc, cv) => {
           const fieldWithoutPrefix = cv.replace(`${field}.`, '');
+          if (fieldWithoutPrefix.includes('.')) {
+            return acc;
+          }
           return { ...acc, [fieldWithoutPrefix]: `$${cv}` };
         }, {})
       };

@@ -308,7 +308,7 @@ describe('AggregateBuilder', () => {
     expect(pipeline).toEqual(expectedOutput);
   });
 
-  it('should return the pipeline for full filtered characterBuilding request', () => {
+  it('should return the pipeline for full filtered characterBuilding request with avoidUnwind', () => {
     const _id = '1f17da80-b7c1-4032-bacb-57eaa9dcd1c4';
     const include = [
       'character.book.author',
@@ -320,8 +320,11 @@ describe('AggregateBuilder', () => {
       'previousCircumstances',
       'sceneCircumstances',
       'center',
+      'actor.username',
       'relationshipCircumstances.circumstance',
-      'scene.description'
+      'relationshipCircumstances.character.name',
+      'scene.description',
+      'actionUnits'
     ];
     const list = ['scene.characters'];
     const avoidLookup = ['relationshipCircumstances'];
@@ -335,6 +338,7 @@ describe('AggregateBuilder', () => {
       unwind,
       avoidUnwind
     };
+
     const expectedOutput = [
       {
         $match: {
@@ -473,13 +477,18 @@ describe('AggregateBuilder', () => {
           },
           center: {
             $first: '$center'
+          },
+          actionUnits: {
+            $first: '$actionUnits'
           }
         }
       },
       {
         $project: {
           _id: 1,
+          actionUnits: 1,
           'actor._id': 1,
+          'actor.username': 1,
           'actor.metadata': 1,
           center: 1,
           'character._id': 1,
@@ -492,6 +501,7 @@ describe('AggregateBuilder', () => {
           previousCircumstances: 1,
           'relationshipCircumstances._id': 1,
           'relationshipCircumstances.character._id': 1,
+          'relationshipCircumstances.character.name': 1,
           'relationshipCircumstances.character.metadata': 1,
           'relationshipCircumstances.circumstance': 1,
           'relationshipCircumstances.metadata': 1,
