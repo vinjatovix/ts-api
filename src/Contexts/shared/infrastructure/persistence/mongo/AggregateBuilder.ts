@@ -302,7 +302,7 @@ export class AggregateBuilder {
       const isFieldLookupAllowed = !avoidLookup.some((f) =>
         field.startsWith(`${f}.`)
       );
-      if (isFieldLookupAllowed && isNotIncluded) {
+      if (isFieldLookupAllowed && isNotIncluded && !newValue[field]) {
         newValue[field] = { $first: `$${field}` };
       }
     });
