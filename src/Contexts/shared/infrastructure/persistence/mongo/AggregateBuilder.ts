@@ -5,6 +5,7 @@ export type AggregationOptions = {
   avoidLookup?: string[];
   avoidUnwind?: string[];
   unwind?: string[];
+  filter?: Record<string, unknown>;
 };
 
 type MatchStage = {
@@ -47,6 +48,7 @@ export class AggregateBuilder {
       include = [],
       fields = [],
       list = [],
+      filter = {},
       avoidLookup = [],
       avoidUnwind = []
     }: AggregationOptions
@@ -58,7 +60,10 @@ export class AggregateBuilder {
     );
 
     if (id) {
-      pipeline.push(this.createMatchStage(id));
+      pipeline.push(this.createMatchIdStage(id));
+    }
+    if (Object.keys(filter).length) {
+      pipeline.push({ $match: filter });
     }
     if (include.length) {
       const lookupAndUnwindStages = this.createLookupAndUnwindStages({
@@ -85,7 +90,7 @@ export class AggregateBuilder {
     return pipeline;
   }
 
-  private createMatchStage(id: string): MatchStage {
+  private createMatchIdStage(id: string): MatchStage {
     return { $match: { _id: id } };
   }
 

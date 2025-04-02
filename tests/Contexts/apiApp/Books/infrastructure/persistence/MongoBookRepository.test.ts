@@ -76,6 +76,24 @@ describe('MongoBookRepository', () => {
         expect.arrayContaining([book1, book2])
       );
     });
+
+    it('should return an empty array when no books exist', async () => {
+      expect(await repository.findAll()).toEqual([]);
+    });
+
+    it('should return an array of books filtered by author', async () => {
+      const book1 = BookMother.random();
+      await repository.save(book1);
+
+      const book2 = BookMother.random();
+      await repository.save(book2);
+
+      const authorId = book1.author;
+      const books = await repository.findAll({
+        filter: [`author:${authorId}`]
+      });
+      expect(books).toEqual([book1]);
+    });
   });
 
   describe('remove', () => {
