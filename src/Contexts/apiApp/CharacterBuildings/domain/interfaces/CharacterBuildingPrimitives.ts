@@ -13,6 +13,7 @@ export interface CharacterBuildingPrimitives extends Record<string, unknown> {
   center?: string;
   sceneCircumstances?: string;
   previousCircumstances?: string;
+  startingPoint?: string;
   relationshipCircumstances?: RelationshipCircumstancePrimitives[];
   actionUnits?: ActionUnitPrimitives[];
   metadata: MetadataType;

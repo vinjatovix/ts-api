@@ -19,6 +19,7 @@ export class CharacterBuildingCreatorRequestMother {
     center,
     sceneCircumstances,
     previousCircumstances,
+    startingPoint,
     relationshipCircumstances,
     actionUnits
   }: {
@@ -29,6 +30,7 @@ export class CharacterBuildingCreatorRequestMother {
     center: Center;
     sceneCircumstances: SceneCircumstance;
     previousCircumstances: SceneCircumstance;
+    startingPoint: SceneCircumstance;
     relationshipCircumstances: RelationshipCircumstance[];
     actionUnits?: ActionUnit[];
   }): CharacterBuildingCreatorRequest {
@@ -40,6 +42,7 @@ export class CharacterBuildingCreatorRequestMother {
       center: center.value,
       sceneCircumstances: sceneCircumstances.value,
       previousCircumstances: previousCircumstances.value,
+      startingPoint: startingPoint.value,
       relationshipCircumstances: relationshipCircumstances.map((rc) => {
         const primitives = rc.toPrimitives();
         return {
@@ -62,6 +65,7 @@ export class CharacterBuildingCreatorRequestMother {
       ),
       sceneCircumstances: SceneCircumstanceMother.random(),
       previousCircumstances: SceneCircumstanceMother.random(),
+      startingPoint: SceneCircumstanceMother.random(),
       relationshipCircumstances: [
         new RelationshipCircumstance({
           character: Uuid.random(),

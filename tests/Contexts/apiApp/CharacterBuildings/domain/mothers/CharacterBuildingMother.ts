@@ -31,6 +31,7 @@ export class CharacterBuildingMother {
       previousCircumstances: SceneCircumstanceMother.create(
         command.previousCircumstances
       ),
+      startingPoint: SceneCircumstanceMother.create(command.startingPoint),
       relationshipCircumstances: command.relationshipCircumstances.map(
         RelationshipCircumstance.fromPrimitives
       ),
@@ -51,6 +52,7 @@ export class CharacterBuildingMother {
     center,
     sceneCircumstances,
     previousCircumstances,
+    startingPoint,
     relationshipCircumstances
   }: {
     id?: string;
@@ -60,6 +62,7 @@ export class CharacterBuildingMother {
     center?: string;
     sceneCircumstances?: string;
     previousCircumstances?: string;
+    startingPoint?: string;
     relationshipCircumstances?: { character: string; circumstance: string }[];
   } = {}): CharacterBuilding {
     return this.create({
@@ -81,6 +84,9 @@ export class CharacterBuildingMother {
         : SceneCircumstanceMother.random(),
       previousCircumstances: previousCircumstances
         ? SceneCircumstanceMother.create(previousCircumstances)
+        : SceneCircumstanceMother.random(),
+      startingPoint: startingPoint
+        ? SceneCircumstanceMother.create(startingPoint)
         : SceneCircumstanceMother.random(),
       relationshipCircumstances: relationshipCircumstances
         ? relationshipCircumstances.map((rc) =>

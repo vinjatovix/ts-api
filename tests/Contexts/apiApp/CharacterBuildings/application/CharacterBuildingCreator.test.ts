@@ -19,6 +19,7 @@ const DEFAULT_REQUEST = {
   center: random.arrayElement(['mental', 'emotional', 'instinctive']) as string,
   sceneCircumstances: SceneCircumstanceMother.random().value,
   previousCircumstances: SceneCircumstanceMother.random().value,
+  startingPoint: SceneCircumstanceMother.random().value,
   relationshipCircumstances: [
     {
       character: UuidMother.random().value,
