@@ -25,6 +25,7 @@ export const postReqSchema = [
   body('scene').exists().isUUID(),
   body('sceneCircumstances').exists().isString(),
   body('previousCircumstances').exists().isString(),
+  body('startingPoint').exists().isString(),
   body('relationshipCircumstances').custom(validateRelationshipCircumstances)
 ];
 
@@ -35,6 +36,7 @@ export const patchReqSchema = [
   body('scene').optional().isUUID(),
   body('sceneCircumstances').optional().isString(),
   body('previousCircumstances').optional().isString(),
+  body('startingPoint').optional().isString(),
   body('relationshipCircumstances')
     .optional()
     .custom(validateRelationshipCircumstances)

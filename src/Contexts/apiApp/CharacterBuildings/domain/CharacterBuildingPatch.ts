@@ -14,6 +14,7 @@ export class CharacterBuildingPatch {
   readonly center?: Center;
   readonly sceneCircumstances?: SceneCircumstance;
   readonly previousCircumstances?: SceneCircumstance;
+  readonly startingPoint?: SceneCircumstance;
   readonly relationshipCircumstances?: RelationshipCircumstance[];
   readonly actionUnits?: ActionUnit[];
 
@@ -25,6 +26,7 @@ export class CharacterBuildingPatch {
     center,
     sceneCircumstances,
     previousCircumstances,
+    startingPoint,
     relationshipCircumstances,
     actionUnits
   }: {
@@ -35,6 +37,7 @@ export class CharacterBuildingPatch {
     center?: Center;
     sceneCircumstances?: SceneCircumstance;
     previousCircumstances?: SceneCircumstance;
+    startingPoint?: SceneCircumstance;
     relationshipCircumstances?: RelationshipCircumstance[];
     actionUnits?: ActionUnit[];
   }) {
@@ -46,6 +49,7 @@ export class CharacterBuildingPatch {
     sceneCircumstances && (this.sceneCircumstances = sceneCircumstances);
     previousCircumstances &&
       (this.previousCircumstances = previousCircumstances);
+    startingPoint && (this.startingPoint = startingPoint);
     relationshipCircumstances &&
       (this.relationshipCircumstances = relationshipCircumstances);
     actionUnits && (this.actionUnits = actionUnits);
@@ -61,6 +65,7 @@ export class CharacterBuildingPatch {
         this.center ||
         this.sceneCircumstances ||
         this.previousCircumstances ||
+        this.startingPoint ||
         this.relationshipCircumstances ||
         this.actionUnits
       )
@@ -84,6 +89,9 @@ export class CharacterBuildingPatch {
       ...(this.previousCircumstances && {
         previousCircumstances: this.previousCircumstances.value
       }),
+      ...(this.startingPoint && {
+        startingPoint: this.startingPoint.value
+      }),
       ...(this.relationshipCircumstances && {
         relationshipCircumstances: this.relationshipCircumstances.map((rc) =>
           rc.toPrimitives()
@@ -103,6 +111,7 @@ export class CharacterBuildingPatch {
     center,
     sceneCircumstances,
     previousCircumstances,
+    startingPoint,
     relationshipCircumstances,
     actionUnits
   }: {
@@ -113,6 +122,7 @@ export class CharacterBuildingPatch {
     center?: string;
     sceneCircumstances?: string;
     previousCircumstances?: string;
+    startingPoint?: string;
     relationshipCircumstances?: RelationshipCircumstancePrimitives[];
     actionUnits?: ActionUnitPrimitives[];
   }): CharacterBuildingPatch {
@@ -127,6 +137,9 @@ export class CharacterBuildingPatch {
       }),
       ...(previousCircumstances && {
         previousCircumstances: new SceneCircumstance(previousCircumstances)
+      }),
+      ...(startingPoint && {
+        startingPoint: new SceneCircumstance(startingPoint)
       }),
       ...(relationshipCircumstances && {
         relationshipCircumstances: relationshipCircumstances.map((rc) =>

@@ -7,6 +7,7 @@ export interface CharacterBuildingCreatorRequest
   center: string;
   sceneCircumstances: string;
   previousCircumstances: string;
+  startingPoint: string;
   relationshipCircumstances: {
     character: string;
     circumstance: string;

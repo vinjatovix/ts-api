@@ -136,6 +136,7 @@ class CharacterBuildingPayloadStrategy extends BasePayloadStrategy<CharacterBuil
       center: new Center('mental'),
       sceneCircumstances: SceneCircumstanceMother.random(),
       previousCircumstances: SceneCircumstanceMother.random(),
+      startingPoint: SceneCircumstanceMother.random(),
       relationshipCircumstances: []
     });
   }

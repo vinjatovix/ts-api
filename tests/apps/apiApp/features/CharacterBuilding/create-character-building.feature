@@ -28,6 +28,7 @@ Feature: Create a new CharacterBuilding
         "center": "mental",
         "sceneCircumstances": "Llueve dentro de la iglesia",
         "previousCircumstances": "El gigante robot alienigena atravesó el techo",
+        "startingPoint": "Asustado",
         "relationshipCircumstances": []
       }
       """
@@ -62,6 +63,7 @@ Feature: Create a new CharacterBuilding
         "center": "instinctive",
         "sceneCircumstances": "Felipe está en el sanatorio, es el momento de despedirse.",
         "previousCircumstances": "Fran ha discutido con lorena y acaba de llegar corriendo",
+        "startingPoint": "Muy enfadado",
         "relationshipCircumstances": [
           {
             "character": "a13985dc-5e39-4b99-95f8-1c05545b6d18",
@@ -97,6 +99,7 @@ Feature: Create a new CharacterBuilding
         "center": "emotional",
         "sceneCircumstances": "fsdhfdshgds",
         "previousCircumstances": "pfnsalnflas",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": []
       }
       """
@@ -120,6 +123,7 @@ Feature: Create a new CharacterBuilding
         "center": "emotional",
         "sceneCircumstances": "fsdhfdshgds",
         "previousCircumstances": "pfnsalnflas",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": []
       }
       """
@@ -144,6 +148,7 @@ Feature: Create a new CharacterBuilding
         "center": "emotional",
         "sceneCircumstances": "fsdhfdshgds",
         "previousCircumstances": "pfnsalnflas",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": []
       }
       """
@@ -168,6 +173,7 @@ Feature: Create a new CharacterBuilding
         "center": "emotional",
         "sceneCircumstances": "fsdhfdshgds",
         "previousCircumstances": "pfnsalnflas",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": [
           {
             "character": "95743f15-9f54-494b-a81c-b3044996df24",
@@ -209,6 +215,7 @@ Feature: Create a new CharacterBuilding
         "center": "mental",
         "sceneCircumstances": "Llueve dentro de la iglesia",
         "previousCircumstances": "El gigante robot alienigena atravesó el techo",
+        "startingPoint": "Asustado",
         "relationshipCircumstances": []
       }
       """
@@ -226,6 +233,7 @@ Feature: Create a new CharacterBuilding
         "center": "mental",
         "sceneCircumstances": "SECOND",
         "previousCircumstances": "El gigante robot alienigena atravesó el techo",
+        "startingPoint": "Asustado",
         "relationshipCircumstances": []
       }
       """

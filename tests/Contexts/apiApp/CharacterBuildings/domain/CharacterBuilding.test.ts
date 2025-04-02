@@ -29,6 +29,7 @@ describe('CharacterBuilding', () => {
       ),
       sceneCircumstances: SceneCircumstanceMother.random(),
       previousCircumstances: SceneCircumstanceMother.random(),
+      startingPoint: SceneCircumstanceMother.random(),
       relationshipCircumstances: [
         new RelationshipCircumstance({
           character: UuidMother.random(),
@@ -56,6 +57,7 @@ describe('CharacterBuilding', () => {
       ]) as string,
       sceneCircumstances: SceneCircumstanceMother.random().value,
       previousCircumstances: SceneCircumstanceMother.random().value,
+      startingPoint: SceneCircumstanceMother.random().value,
       relationshipCircumstances: [
         {
           character: random.uuid(),
