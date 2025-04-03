@@ -58,12 +58,16 @@ export class MongoSceneRepository
       return documents.map(this.mapper.toDomain);
     }
 
-    const processedOptions = this.processIncludeOptions(options);
+    const includedOptions = this.processIncludeOptions(options);
+    const { filter } = this.processFilterOptions(options);
     const documents = await this.fetch<PopulatedSceneType>({
-      options: processedOptions
+      options: {
+        ...includedOptions,
+        filter
+      }
     });
 
-    return processedOptions.include
+    return includedOptions.include
       ? documents.map(this.mapper.toPopulatedDomain)
       : documents.map(this.mapper.toDomain);
   }

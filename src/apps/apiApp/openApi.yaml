@@ -317,6 +317,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: filter
+          description: Filter by field
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -498,6 +504,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: filter
+          description: Filter by field
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -678,6 +690,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: filter
+          description: Filter by field
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
@@ -858,6 +876,12 @@ paths:
           schema:
             type: string
           required: false
+        - name: filter
+          description: Filter by field
+          in: query
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Successful operation
