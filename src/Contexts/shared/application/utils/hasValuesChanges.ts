@@ -12,7 +12,7 @@ export function hasValuesChanges(
     request === null ||
     storedData === null
   ) {
-    const data = storedData.value ? storedData.value : storedData;
+    const data = storedData?.value ?? storedData;
     return request !== data;
   }
 
