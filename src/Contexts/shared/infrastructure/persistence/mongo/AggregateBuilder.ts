@@ -256,6 +256,10 @@ export class AggregateBuilder {
       .reduce(
         (acc, currentField) => {
           const fieldWithoutRoot = currentField.replace(`${root}.`, '');
+          const isNestedField = fieldWithoutRoot.includes('.');
+          if (isNestedField) {
+            return acc;
+          }
           acc[fieldWithoutRoot] = `$${currentField}`;
           return acc;
         },
