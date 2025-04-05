@@ -1,5 +1,5 @@
 export function hasValuesChanges(
-  request: Record<string, unknown>,
+  request: Record<string, unknown> | string | number | boolean,
   storedData: Record<string, unknown>,
   marginalisedKeys: string[] = [],
   parentKey = ''
@@ -14,6 +14,27 @@ export function hasValuesChanges(
   ) {
     const data = storedData?.value ?? storedData;
     return request !== data;
+  }
+
+  if (Array.isArray(request) && Array.isArray(storedData)) {
+    if (request.length !== storedData.length) {
+      return true;
+    }
+
+    for (let i = 0; i < request.length; i++) {
+      if (
+        hasValuesChanges(
+          request[i] as Record<string, unknown>,
+          storedData[i] as Record<string, unknown>,
+          marginalisedKeys,
+          `${parentKey}[${i}]`
+        )
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   for (const key of Object.keys(request)) {
