@@ -309,7 +309,9 @@ describe('AggregateBuilder', () => {
   });
 
   it('should return the pipeline for full filtered characterBuilding request with avoidUnwind', () => {
-    const _id = '1f17da80-b7c1-4032-bacb-57eaa9dcd1c4';
+    const filter = {
+      actor: '1f56da80-b7c1-4032-afeb-57eaa9dcd1c4'
+    };
     const include = [
       'character.book.author',
       'scene.characters',
@@ -324,6 +326,7 @@ describe('AggregateBuilder', () => {
       'relationshipCircumstances.circumstance',
       'relationshipCircumstances.character.name',
       'scene.description',
+      'scene.characters.name',
       'actionUnits'
     ];
     const list = ['scene.characters'];
@@ -331,6 +334,7 @@ describe('AggregateBuilder', () => {
     const unwind = ['relationshipCircumstances'];
     const avoidUnwind = ['scene.characters'];
     const options = {
+      filter,
       include,
       fields,
       list,
@@ -342,7 +346,7 @@ describe('AggregateBuilder', () => {
     const expectedOutput = [
       {
         $match: {
-          _id: '1f17da80-b7c1-4032-bacb-57eaa9dcd1c4'
+          actor: filter.actor
         }
       },
       {
@@ -509,6 +513,7 @@ describe('AggregateBuilder', () => {
           'scene.characters._id': 1,
           'scene.characters.metadata': 1,
           'scene.description': 1,
+          'scene.characters.name': 1,
           'scene.metadata': 1,
           sceneCircumstances: 1
         }
@@ -516,7 +521,7 @@ describe('AggregateBuilder', () => {
     ];
 
     const aggregateBuilder = new AggregateBuilder();
-    const pipeline = aggregateBuilder.buildPipeline(_id, options);
+    const pipeline = aggregateBuilder.buildPipeline('', options);
 
     expect(pipeline).toEqual(expectedOutput);
   });
