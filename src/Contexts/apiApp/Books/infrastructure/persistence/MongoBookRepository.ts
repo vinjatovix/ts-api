@@ -1,6 +1,9 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
+import {
+  AggregationOptions,
+  MongoRepository
+} from '../../../../shared/infrastructure/persistence/mongo';
 import { Nullable } from '../../../../shared/domain/types';
 import { Username } from '../../../Auth/domain';
 import { BookByQuery } from '../../application/interfaces';
@@ -46,7 +49,10 @@ export class MongoBookRepository
       return document ? this.mapper.toDomain(document) : null;
     }
 
-    const documents = await this.fetch<PopulatedBookType>({ id, options });
+    const documents = await this.fetch<PopulatedBookType>({
+      id,
+      options: options as AggregationOptions
+    });
 
     return documents.length ? this.mapper.map(documents[0]) : null;
   }
@@ -61,7 +67,10 @@ export class MongoBookRepository
       return documents.map(this.mapper.toDomain);
     }
 
-    const documents = await this.fetch<PopulatedBookType>({ options });
+    const processedOptions = this.processFilterOptions(options);
+    const documents = await this.fetch<PopulatedBookType>({
+      options: processedOptions
+    });
 
     return options.include
       ? documents.map(this.mapper.toPopulatedDomain)

@@ -13,6 +13,7 @@ export interface CharacterBuildingBaseProps {
   sceneCircumstances?: Nullable<SceneCircumstance>;
   previousCircumstances?: Nullable<SceneCircumstance>;
   actionUnits?: Nullable<ActionUnit[]>;
+  startingPoint?: Nullable<SceneCircumstance>;
 }
 
 export class CharacterBuildingBase extends AggregateRoot {
@@ -21,6 +22,7 @@ export class CharacterBuildingBase extends AggregateRoot {
   readonly center: Nullable<Center>;
   readonly sceneCircumstances: Nullable<SceneCircumstance>;
   readonly previousCircumstances: Nullable<SceneCircumstance>;
+  readonly startingPoint: Nullable<SceneCircumstance>;
   readonly actionUnits: Nullable<ActionUnit[]>;
 
   constructor({
@@ -29,7 +31,8 @@ export class CharacterBuildingBase extends AggregateRoot {
     center = null,
     sceneCircumstances = null,
     previousCircumstances = null,
-    actionUnits = null
+    startingPoint = null,
+    actionUnits = null,
   }: CharacterBuildingBaseProps) {
     super();
     this.id = id;
@@ -37,6 +40,7 @@ export class CharacterBuildingBase extends AggregateRoot {
     this.center = center;
     this.sceneCircumstances = sceneCircumstances;
     this.previousCircumstances = previousCircumstances;
+    this.startingPoint = startingPoint;
     this.actionUnits = actionUnits;
   }
 
@@ -47,7 +51,8 @@ export class CharacterBuildingBase extends AggregateRoot {
       center: this.center?.value,
       sceneCircumstances: this.sceneCircumstances?.value,
       previousCircumstances: this.previousCircumstances?.value,
-      actionUnits: this.actionUnits?.map((au) => au.toPrimitives())
+      startingPoint: this.startingPoint?.value,
+      actionUnits: this.actionUnits?.map((au) => au.toPrimitives()),
     };
   }
 
@@ -63,6 +68,9 @@ export class CharacterBuildingBase extends AggregateRoot {
         : null,
       previousCircumstances: primitives.previousCircumstances
         ? new SceneCircumstance(primitives.previousCircumstances)
+        : null,
+      startingPoint: primitives.startingPoint
+        ? new SceneCircumstance(primitives.startingPoint)
         : null,
       actionUnits: primitives.actionUnits?.map((au) =>
         ActionUnit.fromPrimitives(au)

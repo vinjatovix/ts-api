@@ -1,7 +1,10 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Nullable } from '../../../../shared/domain/types';
-import { MongoRepository } from '../../../../shared/infrastructure/persistence/mongo';
+import {
+  AggregationOptions,
+  MongoRepository
+} from '../../../../shared/infrastructure/persistence/mongo';
 import { Username } from '../../../Auth/domain';
 import { CharacterByQuery } from '../../application/interfaces';
 import { Character, PopulatedCharacter, CharacterPatch } from '../../domain';
@@ -74,7 +77,10 @@ export class MongoCharacterRepository
       return documents.map(this.mapper.toDomain);
     }
 
-    const documents = await this.fetch<PopulatedCharacterType>({ options });
+    const processedOptions = this.processFilterOptions(options);
+    const documents = await this.fetch<PopulatedCharacterType>({
+      options: processedOptions
+    });
 
     return options.include
       ? documents.map(this.mapper.toPopulatedDomain)
@@ -93,7 +99,10 @@ export class MongoCharacterRepository
 
       return document ? this.mapper.toDomain(document) : null;
     }
-    const documents = await this.fetch<PopulatedCharacterType>({ id, options });
+    const documents = await this.fetch<PopulatedCharacterType>({
+      id,
+      options: options as AggregationOptions
+    });
 
     return documents.length > 0
       ? this.mapper.toPopulatedDomain(documents[0])

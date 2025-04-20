@@ -68,7 +68,7 @@ export class MongoCharacterBuildingRepository
       customizedOptions.unwind = ['relationshipCircumstances'];
     }
 
-    if (options.fields?.includes('relationshipCircumstances')) {
+    if (/relationshipCircumstances/.test(options.fields?.join(',') ?? '')) {
       customizedOptions.fields = customizedOptions.fields?.reduce(
         (acc: string[], field: string) => {
           if (field === 'relationshipCircumstances') {
@@ -104,8 +104,12 @@ export class MongoCharacterBuildingRepository
     }
     const processedOptions: AggregationOptions =
       this.processIncludeOptions(options);
+    const { filter } = this.processFilterOptions(options);
     const documents = await this.fetch<PopulatedCharacterBuildingType>({
-      options: processedOptions
+      options: {
+        ...processedOptions,
+        filter
+      }
     });
 
     return processedOptions.include

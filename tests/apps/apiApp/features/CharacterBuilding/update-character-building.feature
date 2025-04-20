@@ -45,6 +45,7 @@ Feature: Update an existing characterBuilding
         "center": "mental",
         "sceneCircumstances": "Al volver de la lonja, el pescadero no encuentra a su mujer",
         "previousCircumstances": "En la lonja los precios han subido",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": []
       }
       """

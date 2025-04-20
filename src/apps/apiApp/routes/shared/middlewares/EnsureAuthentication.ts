@@ -18,12 +18,14 @@ export class EnsureAuthentication {
         throw createError.auth('Invalid token');
       }
 
-      const userData = await encrypter.verifyToken(token.split(' ')[1]);
+      const trimmedToken = token.replace('Bearer ', '');
+
+      const userData = await encrypter.verifyToken(trimmedToken);
       if (!userData) {
         throw createError.auth('Invalid token');
       }
 
-      res.locals.user = userData;
+      res.locals.user = { ...userData, token: trimmedToken };
       next();
     } catch (error) {
       next(error);

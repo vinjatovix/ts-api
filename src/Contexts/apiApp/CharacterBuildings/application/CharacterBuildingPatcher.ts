@@ -84,7 +84,12 @@ export class CharacterBuildingPatcher {
       CharacterBuilding | PopulatedCharacterBuilding
     >
   ): Promise<void> {
-    const storedScene = await this.getStoredScene(scene);
+    const storedScene = await this.getStoredScene(
+      scene ??
+        (storedCharacterBuilding.scene instanceof Uuid
+          ? storedCharacterBuilding.scene.value
+          : undefined)
+    );
 
     if (character || relationshipCircumstances) {
       const characters = await this.getSceneCharacters(
@@ -95,7 +100,7 @@ export class CharacterBuildingPatcher {
         characters,
         character,
         relationshipCircumstances,
-        scene
+        scene ?? storedScene?.id?.value
       );
     }
   }
@@ -131,7 +136,12 @@ export class CharacterBuildingPatcher {
           fields: ['characters']
         }
       ));
-    return (charactersSource?.characters ?? []).map((c) => (c as Uuid).value);
+    return (charactersSource?.characters ?? []).map((character) => {
+      if ('id' in character) {
+        return character.id.value;
+      }
+      return character.value;
+    });
   }
 
   private validateCharactersInScene(

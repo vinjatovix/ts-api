@@ -32,6 +32,7 @@ Feature: Delete a specific scene
         "center": "mental",
         "sceneCircumstances": "Delete scene blocker",
         "previousCircumstances": "Doesn't mind",
+        "startingPoint": "Abatido",
         "relationshipCircumstances": []
       }
       """

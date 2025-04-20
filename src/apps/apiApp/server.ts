@@ -12,7 +12,10 @@ import migrations from '../../../migrations';
 import { envs } from '../../config/plugins';
 
 const corsOptions = {
-  origin: envs.ALLOWED_ORIGINS?.split(',') ?? [],
+  origin:
+    envs.ALLOWED_ORIGINS === '*'
+      ? true
+      : (envs.ALLOWED_ORIGINS?.split(',') ?? []),
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true
 };

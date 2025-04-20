@@ -1,11 +1,12 @@
 import { Collection, MongoClient, MongoServerError, ObjectId } from 'mongodb';
-import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 import { Username } from '../../../../apiApp/Auth/domain';
 import { updateMetadata } from '../../../application/utils';
 import { AggregateRoot } from '../../../domain';
 import { MongoErrorHandler } from './MongoErrorHandler';
 import { MongoFetchService } from './MongoFetchService';
 import { Entity } from './types';
+import { AggregationOptions } from './AggregateBuilder';
+import { RequestOptions } from '../../../../../apps/apiApp/shared/interfaces';
 
 export abstract class MongoRepository<T extends AggregateRoot> {
   constructor(private readonly _client: Promise<MongoClient>) {}
@@ -66,11 +67,33 @@ export abstract class MongoRepository<T extends AggregateRoot> {
     options
   }: {
     id?: string;
-    options: Partial<RequestOptions>;
+    options: AggregationOptions;
   }): Promise<T[]> {
     const collection = await this.collection();
     return await this.handleMongoError(
       async () => await MongoFetchService.fetch<T>({ collection, id, options })
     );
+  }
+
+  protected processFilterOptions(options: RequestOptions): AggregationOptions {
+    if (!options.filter) {
+      return options as AggregationOptions;
+    }
+
+    const filter = options.filter.reduce(
+      (acc, curr) => {
+        const [key, value] = curr.split(':');
+
+        return {
+          ...acc,
+          [key]: value.includes(',') ? { $in: value.split(',') } : value
+        };
+      },
+      {} as Record<string, unknown>
+    );
+    return {
+      ...options,
+      filter
+    };
   }
 }

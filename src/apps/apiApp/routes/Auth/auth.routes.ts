@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import {
   LoginController,
+  RefreshTokenController,
   RegisterController,
+  UpdateUserController,
   ValidateMailController
 } from '../../controllers/Auth';
 import container from '../../dependency-injection';
 import { API_PREFIXES } from '../shared';
-import { validateBody, validateReqSchema } from '../shared/middlewares';
+import { auth, validateBody, validateReqSchema } from '../shared/middlewares';
 import {
   loginReqSchema,
   registerReqSchema,
@@ -21,6 +23,10 @@ export const register = (router: Router) => {
   const validateMailController = container.get(
     ValidateMailController.containerId
   );
+  const refreshTokenController = container.get(
+    RefreshTokenController.containerId
+  );
+  const updateController = container.get(UpdateUserController.containerId);
 
   router.post(
     `${prefix}/login`,
@@ -48,6 +54,22 @@ export const register = (router: Router) => {
     validateReqSchema,
     (req: Request, res: Response, next: NextFunction) => {
       validateMailController.run(req, res, next);
+    }
+  );
+
+  router.get(
+    `${prefix}/refresh`,
+    auth,
+    (req: Request, res: Response, next: NextFunction) => {
+      refreshTokenController.run(req, res, next);
+    }
+  );
+
+  router.post(
+    `${prefix}/update`,
+    auth,
+    (req: Request, res: Response, next: NextFunction) => {
+      updateController.run(req, res, next);
     }
   );
 };

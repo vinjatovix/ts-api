@@ -29,3 +29,11 @@ services:
   apiApp.Auth.application.ValidateMail:
     class: ../../../../Contexts/apiApp/Auth/application/ValidateMail
     arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']
+
+  apiApp.Auth.application.RefreshToken:
+    class: ../../../../Contexts/apiApp/Auth/application/RefreshToken
+    arguments: ['@plugin.Encrypter']
+
+  apiApp.Auth.application.UserPatcher:
+    class: ../../../../Contexts/apiApp/Auth/application/UserPatcher
+    arguments: ['@apiApp.Auth.domain.AuthRepository', '@plugin.Encrypter']

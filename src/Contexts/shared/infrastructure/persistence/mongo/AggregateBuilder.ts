@@ -5,6 +5,7 @@ export type AggregationOptions = {
   avoidLookup?: string[];
   avoidUnwind?: string[];
   unwind?: string[];
+  filter?: Record<string, unknown>;
 };
 
 type MatchStage = {
@@ -47,6 +48,7 @@ export class AggregateBuilder {
       include = [],
       fields = [],
       list = [],
+      filter = {},
       avoidLookup = [],
       avoidUnwind = []
     }: AggregationOptions
@@ -58,7 +60,10 @@ export class AggregateBuilder {
     );
 
     if (id) {
-      pipeline.push(this.createMatchStage(id));
+      pipeline.push(this.createMatchIdStage(id));
+    }
+    if (Object.keys(filter).length) {
+      pipeline.push({ $match: filter });
     }
     if (include.length) {
       const lookupAndUnwindStages = this.createLookupAndUnwindStages({
@@ -85,7 +90,7 @@ export class AggregateBuilder {
     return pipeline;
   }
 
-  private createMatchStage(id: string): MatchStage {
+  private createMatchIdStage(id: string): MatchStage {
     return { $match: { _id: id } };
   }
 
@@ -251,6 +256,10 @@ export class AggregateBuilder {
       .reduce(
         (acc, currentField) => {
           const fieldWithoutRoot = currentField.replace(`${root}.`, '');
+          const isNestedField = fieldWithoutRoot.includes('.');
+          if (isNestedField) {
+            return acc;
+          }
           acc[fieldWithoutRoot] = `$${currentField}`;
           return acc;
         },
@@ -277,6 +286,9 @@ export class AggregateBuilder {
       newValue[field] = {
         $push: fieldsToAdd.reduce((acc, cv) => {
           const fieldWithoutPrefix = cv.replace(`${field}.`, '');
+          if (fieldWithoutPrefix.includes('.')) {
+            return acc;
+          }
           return { ...acc, [fieldWithoutPrefix]: `$${cv}` };
         }, {})
       };
@@ -299,7 +311,7 @@ export class AggregateBuilder {
       const isFieldLookupAllowed = !avoidLookup.some((f) =>
         field.startsWith(`${f}.`)
       );
-      if (isFieldLookupAllowed && isNotIncluded) {
+      if (isFieldLookupAllowed && isNotIncluded && !newValue[field]) {
         newValue[field] = { $first: `$${field}` };
       }
     });
