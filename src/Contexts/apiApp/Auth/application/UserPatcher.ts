@@ -24,9 +24,11 @@ export class UserPatcher {
       },
       user
     );
+
+    const encryptedPassword = this.encrypter.hash(password);
     const userPatch = UserPatch.fromPrimitives({
       id: user.id,
-      ...(password && { password })
+      ...(encryptedPassword && { password: encryptedPassword })
     });
 
     await this.repository.update(userPatch, new Username(user.username));

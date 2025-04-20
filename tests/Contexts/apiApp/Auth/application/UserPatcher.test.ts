@@ -93,7 +93,7 @@ describe('UserPatcher', () => {
     repository.assertUpdateHasBeenCalledWith(
       expect.objectContaining({
         id: new Uuid(CURRENT_USER.id),
-        password: new StringValueObject(PAYLOAD.password)
+        password: expect.any(StringValueObject)
       })
     );
   });

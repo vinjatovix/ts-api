@@ -35,5 +35,10 @@ Feature: Update Password
       }
       """
     Then the response status code should be 200
-    Then the response body should be empty
+    Then the response body should be
+      """
+      {
+        "message": "User updated successfully"
+      }
+      """
 
