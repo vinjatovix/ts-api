@@ -52,7 +52,8 @@ describe('UserPatcher', () => {
       await userPatcher.run(PAYLOAD, CURRENT_USER);
     }).rejects.toThrow(
       expect.objectContaining({
-        name: 'AuthError'
+        name: 'AuthError',
+        message: 'Invalid credentials'
       })
     );
   });
@@ -67,22 +68,25 @@ describe('UserPatcher', () => {
       await userPatcher.run(request, CURRENT_USER);
     }).rejects.toThrow(
       expect.objectContaining({
-        name: 'AuthError'
+        name: 'AuthError',
+        message: 'Passwords do not match'
       })
     );
   });
 
   it('should throw an error when the password is the same as the old one', async () => {
     const request = {
-      ...PAYLOAD,
-      password: PAYLOAD.oldPassword
+      password: PAYLOAD.oldPassword,
+      repeatPassword: PAYLOAD.oldPassword,
+      oldPassword: PAYLOAD.oldPassword
     };
 
     expect(async () => {
       await userPatcher.run(request, CURRENT_USER);
     }).rejects.toThrow(
       expect.objectContaining({
-        name: 'AuthError'
+        name: 'AuthError',
+        message: 'New password must be different from old password'
       })
     );
   });
