@@ -3,6 +3,7 @@ import {
   LoginController,
   RefreshTokenController,
   RegisterController,
+  UpdateUserController,
   ValidateMailController
 } from '../../controllers/Auth';
 import container from '../../dependency-injection';
@@ -25,6 +26,7 @@ export const register = (router: Router) => {
   const refreshTokenController = container.get(
     RefreshTokenController.containerId
   );
+  const updateController = container.get(UpdateUserController.containerId);
 
   router.post(
     `${prefix}/login`,
@@ -60,6 +62,14 @@ export const register = (router: Router) => {
     auth,
     (req: Request, res: Response, next: NextFunction) => {
       refreshTokenController.run(req, res, next);
+    }
+  );
+
+  router.post(
+    `${prefix}/update`,
+    auth,
+    (req: Request, res: Response, next: NextFunction) => {
+      updateController.run(req, res, next);
     }
   );
 };
