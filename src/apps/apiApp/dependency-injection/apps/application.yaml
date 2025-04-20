@@ -21,6 +21,10 @@ services:
     class: ../../controllers/Auth/RefreshTokenController
     arguments: ['@apiApp.Auth.application.RefreshToken']
 
+  Apps.apiApp.controllers.Auth.UpdateUserController:
+    class: ../../controllers/Auth/UpdateUserController
+    arguments: ['@apiApp.Auth.application.UserPatcher']
+
   # AUTHORS
   Apps.apiApp.controllers.Authors.PostAuthorController:
     factory:
